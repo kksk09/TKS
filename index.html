@@ -111,6 +111,9 @@
             </tr>
         `).join('');
 
+        const usedPercent = ((data.used / data.total) * 100).toFixed(2);
+        document.getElementById('percentText').innerText = usedPercent + "%";
+
         const today = new Date();
         document.getElementById('current-date').innerText = today.toLocaleDateString('th-TH', { 
             day: 'numeric', month: 'long', year: 'numeric' 
