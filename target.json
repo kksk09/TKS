@@ -1,0 +1,17 @@
+{
+  "report_period": "March 2026",
+  "data": [
+    {
+      "label": "Total of this year",
+      "value": 400000000.00
+    },
+    {
+      "label": "Up to NOW",
+      "value": 1873500.00
+    },
+    {
+      "label": "Total Balance",
+      "value": 398126500.00
+    }
+  ]
+}
