@@ -22,7 +22,8 @@
 
 <div class="dashboard">
     <div class="card-left">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">📊 Target Summary</h2>
+        <h2 class="text-xl font-bold mb-4 text-gray-800">📊 </h2>
+         <h2>New update : <p style="display:inline;" id="date"></p> </h2>
         <table>
             <thead>
                 <tr>
@@ -41,11 +42,12 @@
 
     <div class="right-column">
         <div class="card-graph">
-            <h3 class="font-semibold text-gray-700">Usage Progress</h3>
+            <h3 class="font-semibold text-gray-700"><p style="display:inline;" id="date"></p></h3>
+            
             <div class="chart-container"><canvas id="gaugeChart"></canvas></div>
         </div>
         <div class="card-graph">
-            <h3 class="font-semibold text-gray-700">Budget Allocation</h3>
+            <h3 class="font-semibold text-gray-700"><p style="display:inline;" id="date"></p></h3>
             <div class="chart-container"><canvas id="donutChart"></canvas></div>
         </div>
     </div>
@@ -147,5 +149,23 @@
 
     window.onload = initDashboard;
 </script>
+
+
+
+<script>
+const today = new Date();
+
+const monthNames = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December"
+];
+
+const month = monthNames[today.getMonth()];
+const year = today.getFullYear();
+
+document.getElementById("date").innerHTML = month + " " + year;
+</script>
+
+
 </body>
 </html>
