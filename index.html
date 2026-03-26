@@ -65,17 +65,15 @@
     // ฟังก์ชันหลักในการดึงข้อมูล CSV
     async function initDashboard() {
         try {
-
-            
-        
-        const response = await fetch('target.csv');
+ 
+        const response = await fetch('target.csv?v=' + new Date().getTime());
         if (!response.ok) {
             throw new Error(`หาไฟล์ target.csv ไม่เจอ (Status: ${response.status})`);
         }
             const csvText = await response.text();
 
             Papa.parse(csvText, {
-                header:  false,
+                header:  true,
                 dynamicTyping: true,
                 skipEmptyLines: true,
                 complete: function(results) {
