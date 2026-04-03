@@ -59,7 +59,7 @@
 
   <div class="cards">
     <div class="card total">
-      <div class="label">งบประมาณรวม (Total)</div>
+      <div class="label">Total of this year</div>
       <div class="value" id="val-total">—</div>
     </div>
     <div class="card used">
@@ -108,7 +108,7 @@
           complete: function(results) {
             if (results.data.length > 0) {
               const row = results.data[0];
-              const data = {
+              const data = { 
                 total:   parseFloat(row.total)   || 0,
                 used:    parseFloat(row.used)     || 0,
                 balance: parseFloat(row.balance)  || 0,
