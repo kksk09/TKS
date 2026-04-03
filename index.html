@@ -23,8 +23,12 @@
 <div class="dashboard">
     <div class="card-left">
         <h2 class="text-xl font-bold mb-4 text-gray-800">📊 </h2>
-         <h2>New update : <p style="display:inline;" id="date"></p> </h2>
-        <table>
+         <div class="mt-6 p-4  bg-blue-50 rounded-lg">
+        <p class="text-xl text-red-500 font-bold ">
+         <h2>New update : <p class="text-xl text-red-500 font-bold " style="display:inline;" id="date"></p> </h2>
+         </p>
+        </div>
+         <table>
             <thead>
                 <tr>
                     <th>Description</th>
@@ -61,6 +65,45 @@
 
 <script>
     const formatNum = (num) => new Intl.NumberFormat('th-TH').format(num || 0);
+
+    const SHEET_ID = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+    const GID = '0'; // เปลี่ยนถ้าอยู่ Sheet อื่น
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+
+    async function initDashboardFromGsheet() {
+        try {
+        const url = CSV_URL + '&t=' + new Date().getTime();
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('ไม่สามารถดึงข้อมูลจาก Google Sheets ได้');
+        const csvText = await response.text();
+
+            Papa.parse(csvText, {
+                header: true,        // บอกว่ามี Header (total,used,balance)
+                dynamicTyping: true, // แปลงเป็นตัวเลขให้อัตโนมัติ
+                skipEmptyLines: true,
+                complete: function(results) {
+                    if (results.data.length > 0) {
+                        const csvData = results.data[0];
+                        
+                        // สร้าง Object โดยอ้างอิงชื่อจาก Header ของคุณ
+                        const data = {
+                            total: parseFloat(csvData.total) || 0,
+                            used: parseFloat(csvData.used) || 0,
+                            balance: parseFloat(csvData.balance) || 0
+                        };
+
+                        updateUI(data);
+                        renderCharts(data);
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Error:", error);
+            document.getElementById('data-table-body').innerHTML = 
+                `<tr><td colspan="2" class="text-red-500 text-center">เกิดข้อผิดพลาด: ${error.message}</td></tr>`;
+        }
+    }
 
     async function initDashboard() {
         try {
@@ -156,7 +199,9 @@
         });
     }
 
-    window.onload = initDashboard;
+    //window.onload = initDashboard;
+    window.onload = initDashboardFromGsheet;
+    
 </script>
 
 
