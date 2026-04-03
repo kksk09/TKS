@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #2d3748;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .card .label {
+      font-size: 13px;
+      color: #718096;
+      margin-bottom: 6px;
+    }
+    .card .value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #2d3748;
+    }
+    .card.total .value { color: #3182ce; }
+    .card.used .value  { color: #e53e3e; }
+    .card.balance .value { color: #38a169; }
+    .status {
+      font-size: 13px;
+      color: #a0aec0;
+      margin-top: 1rem;
+    }
+    .error { color: #e53e3e; font-weight: 500; }
+  </style>
+</head>
+<body>
+
+  <h1>📊 Dashboard</h1>
+
+  <div class="cards">
+    <div class="card total">
+      <div class="label">งบประมาณรวม (Total)</div>
+      <div class="value" id="val-total">—</div>
+    </div>
+    <div class="card used">
+      <div class="label">ใช้ไปแล้ว (Used)</div>
+      <div class="value" id="val-used">—</div>
+    </div>
+    <div class="card balance">
+      <div class="label">คงเหลือ (Balance)</div>
+      <div class="value" id="val-balance">—</div>
+    </div>
+  </div>
+
+  <div class="status" id="status">กำลังโหลดข้อมูล...</div>
+
+  <pre id="csv-debug" style="margin-top:1.5rem; background:#1a202c; color:#68d391; padding:1rem; border-radius:8px; font-size:13px; white-space:pre-wrap; word-break:break-all;"></pre>
+
+  <script>
+    const SHEET_ID = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+    const GID = '0'; // เปลี่ยนถ้าอยู่ Sheet อื่น
+
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+    const formatNum = (num) => new Intl.NumberFormat('th-TH').format(num || 0);
+
+    function updateUI(data) {
+      document.getElementById('val-total').textContent   = formatNum(data.total);
+      document.getElementById('val-used').textContent    = formatNum(data.used);
+      document.getElementById('val-balance').textContent = formatNum(data.balance);
+      document.getElementById('status').textContent =
+        'อัปเดตล่าสุด: ' + new Date().toLocaleString('th-TH');
+    }
+
+    async function initDashboard() {
+      try {
+        const url = CSV_URL + '&t=' + new Date().getTime();
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('ไม่สามารถดึงข้อมูลจาก Google Sheets ได้');
+        const csvText = await response.text();
+
+        document.getElementById('csv-debug').textContent = csvText;
+
+        Papa.parse(csvText, {
+          header: true,
+          dynamicTyping: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            if (results.data.length > 0) {
+              const row = results.data[0];
+              const data = {
+                total:   parseFloat(row.total)   || 0,
+                used:    parseFloat(row.used)     || 0,
+                balance: parseFloat(row.balance)  || 0,
+              };
+              updateUI(data);
+            } else {
+              throw new Error('ไม่มีข้อมูลใน Sheet');
+            }
+          },
+          error: function(err) {
+            document.getElementById('status').innerHTML =
+              `<span class="error">Parse error: ${err.message}</span>`;
+          }
+        });
+      } catch (error) {
+        console.error(error);
+        document.getElementById('status').innerHTML =
+          `<span class="error">เกิดข้อผิดพลาด: ${error.message}</span>`;
+      }
+    }
+
+    initDashboard();
+  </script>
+</body>
+</html>
