@@ -72,37 +72,40 @@
 
 
     async function initDashboardFromGsheet() {
-        try {
+            try {
         const url = CSV_URL + '&t=' + new Date().getTime();
         const response = await fetch(url);
         if (!response.ok) throw new Error('ไม่สามารถดึงข้อมูลจาก Google Sheets ได้');
         const csvText = await response.text();
 
-            Papa.parse(csvText, {
-                header: true,        // บอกว่ามี Header (total,used,balance)
-                dynamicTyping: true, // แปลงเป็นตัวเลขให้อัตโนมัติ
-                skipEmptyLines: true,
-                complete: function(results) {
-                    if (results.data.length > 0) {
-                        const csvData = results.data[0];
-                        
-                        // สร้าง Object โดยอ้างอิงชื่อจาก Header ของคุณ
-                        const data = {
-                            total: parseFloat(csvData.total) || 0,
-                            used: parseFloat(csvData.used) || 0,
-                            balance: parseFloat(csvData.balance) || 0
-                        };
-
-                        updateUI(data);
-                        renderCharts(data);
-                    }
-                }
-            });
-        } catch (error) {
-            console.error("Error:", error);
-            document.getElementById('data-table-body').innerHTML = 
-                `<tr><td colspan="2" class="text-red-500 text-center">เกิดข้อผิดพลาด: ${error.message}</td></tr>`;
-        }
+        Papa.parse(csvText, {
+          header: true,
+          dynamicTyping: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            if (results.data.length > 0) {
+              const row = results.data[0];
+              const data = {
+                total:   parseFloat(row.total)   || 0,
+                used:    parseFloat(row.used)     || 0,
+                balance: parseFloat(row.balance)  || 0,
+              };
+                updateUI(data);
+                renderCharts(data);
+            } else {
+              throw new Error('ไม่มีข้อมูลใน Sheet');
+            }
+          },
+          error: function(err) {
+            document.getElementById('status').innerHTML =
+              `<span class="error">Parse error: ${err.message}</span>`;
+          }
+        });
+      } catch (error) {
+        console.error(error);
+        document.getElementById('status').innerHTML =
+          `<span class="error">เกิดข้อผิดพลาด: ${error.message}</span>`;
+      }
     }
 
     async function initDashboard() {
