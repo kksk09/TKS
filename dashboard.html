@@ -99,7 +99,7 @@
         if (!response.ok) throw new Error('ไม่สามารถดึงข้อมูลจาก Google Sheets ได้');
         const csvText = await response.text();
 
-        document.getElementById('csv-debug').textContent = csvText;
+        //document.getElementById('csv-debug').textContent = csvText;
 
         Papa.parse(csvText, {
           header: true,
