@@ -2,26 +2,40 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Target Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box;margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1e1b4b 100%);
             min-height: 100vh;
-            margin: 0;
-            padding: 40px 30px;
+            padding: 24px 16px;
         }
 
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(
+    135deg,
+    #1e1b4b 0%,
+    #312e81 40%,
+    #1e1b4b 100%
+  );
+  min-height: 100vh;
+  margin: 0;
+  padding: 40px 30px;
+}
         /* Subtle animated orb overlay */
         body::before {
             content: '';
             position: fixed;
             top: -200px; left: -200px;
-            width: 600px; height: 600px;
+            width: 500px; height: 500px;
+
             background: radial-gradient(circle, rgba(129,140,248,0.15) 0%, transparent 70%);
             pointer-events: none;
         }
@@ -29,31 +43,43 @@
             content: '';
             position: fixed;
             bottom: -200px; right: -200px;
-            width: 600px; height: 600px;
+            width: 500px; height: 500px;
             background: radial-gradient(circle, rgba(244,114,182,0.10) 0%, transparent 70%);
             pointer-events: none;
         }
 
         .dashboard {
-            display: flex;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 16px;
             max-width: 1200px;
             margin: auto;
             align-items: flex-start;
             position: relative;
         }
+         @media (max-width: 768px) {
+            body { padding: 16px 12px; }
+            .dashboard { grid-template-columns: 1fr; }
+            .right-column { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        }
 
+        @media (max-width: 500px) {
+            body { padding: 12px 10px; }
+            .right-column { grid-template-columns: 1fr !important; }
+            .chart-container { height: 200px; }
+        }
         /* Glass card base */
         .glass {
             background: rgba(255, 255, 255, 0.07);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
+            
             border: 1px solid rgba(255, 255, 255, 0.13);
             border-radius: 20px;
         }
 
         .card-left {
-            flex: 1;
+            /* flex: 1; */
             padding: 28px;
             color: white;
         }
@@ -80,10 +106,10 @@
         }
 
         .card-header h2 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             color: white;
-            margin: 0;
+            margin-bottom: 14px;
         }
 
         .update-badge {
@@ -94,7 +120,7 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             border-radius: 999px;
             padding: 6px 14px;
-            margin: 16px 0;
+            margin-bottom: 16px;
         }
 
         .update-badge .dot {
@@ -102,10 +128,11 @@
             border-radius: 50%;
             background: #818CF8;
             box-shadow: 0 0 0 3px rgba(129,140,248,0.25);
+            flex-shrink: 0;
         }
 
         .update-badge span {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: rgba(255,255,255,0.7);
         }
 
@@ -118,7 +145,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 8px;
+            /* margin-top: 8px; */
         }
 
         thead th {
@@ -164,21 +191,38 @@
             background: rgba(255,255,255,0.05);
             border-radius: 10px;
             font-size: 0.8rem;
-            color: rgba(255,255,255,0.45);
+            color: rgba(255,255,255,0.4);
         }
+
+        /* ── Right column ── */
+        .right-column { display: flex; flex-direction: column; gap: 16px; }
+
+        /* ── Chart cards ── */
+        .card-graph {
+            padding: 20px 16px;
+            text-align: center;
+            color: white;
+            flex: 1;
+        }        
 
         /* Chart card */
         .card-graph h3 {
             font-size: 0.85rem;
             font-weight: 500;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.45);
             text-transform: uppercase;
             letter-spacing: 0.07em;
-            margin: 0 0 4px;
+            margin-bottom: 2px;
+        }
+        .chart-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 2px;
         }
 
         .chart-container {
-            height: 250px;
+            height: 230px;
             position: relative;
             margin-top: 10px;
         }
