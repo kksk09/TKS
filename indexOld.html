@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>Target Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; margin: 0; padding: 30px; }
+        .dashboard { display: flex; gap: 20px; max-width: 1200px; margin: auto; align-items: flex-start; }
+        .card-left { flex: 1; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .right-column { flex: 1.2; display: flex; flex-direction: column; gap: 20px; }
+        .card-graph { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        .value { font-weight: 600; color: #333; font-size: 1.1rem; }
+        .chart-container { height: 250px; position: relative; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="card-left">
+        <h2 class="text-xl font-bold mb-4 text-gray-800">📊 </h2>
+         <div class="mt-6 p-4  bg-blue-50 rounded-lg">
+        <p class="text-xl text-red-500 font-bold ">
+         <h2>New update : <p class="text-xl text-red-500 font-bold " style="display:inline;" id="date"></p> </h2>
+         </p>
+        </div>
+         <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount (THB)</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <tr><td colspan="2" class="text-center py-4">กำลังโหลดข้อมูล...
+                      <pre id="csv-debug" style="margin-top:1.5rem; background:#1a202c; color:#68d391; padding:1rem; border-radius:8px; font-size:13px; white-space:pre-wrap; word-break:break-all;"></pre>
+
+                </td></tr>
+            </tbody>
+        </table>
+        <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+            <p class="text-sm text-blue-600 font-medium">อัปเดตล่าสุด: <span id="current-date"></span></p>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div class="card-graph">
+            <h3 class="font-semibold text-gray-700"><p style="display:inline;" id="date"></p></h3>
+            
+            <div class="chart-container"><canvas id="gaugeChart"></canvas>
+              <div class="gauge-label">
+                    <span class="percentage" id="percentText">0%</span>
+                    <!--span class="label-name">ของงบประมาณทั้งหมด</span-->
+                </div>
+            </div>
+
+        </div>
+        <div class="card-graph">
+            <h3 class="font-semibold text-gray-700"><p style="display:inline;" id="date"></p></h3>
+            <div class="chart-container"><canvas id="donutChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const formatNum = (num) => new Intl.NumberFormat('th-TH').format(num || 0);
+
+    const SHEET_ID = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+    const GID = '0'; // เปลี่ยนถ้าอยู่ Sheet อื่น
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+
+    async function initDashboardFromGsheet() {
+            try {
+        const url = CSV_URL + '&t=' + new Date().getTime();
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('ไม่สามารถดึงข้อมูลจาก Google Sheets ได้');
+        const csvText = await response.text();
+        //document.getElementById('csv-debug').textContent = csvText;
+         document.getElementById('status').textContent = csvText;
+        Papa.parse(csvText, {
+          header: true,
+          dynamicTyping: true,
+          skipEmptyLines: true,
+          complete: function(results) {
+            if (results.data.length > 0) {
+              const row = results.data[0];
+              const data = {
+                total:   parseFloat(row.total)   || 0,
+                used:    parseFloat(row.used)     || 0,
+                balance: parseFloat(row.balance)  || 0,
+              };
+                updateUI(data);
+                renderCharts(data);
+            } else {
+              throw new Error('ไม่มีข้อมูลใน Sheet');
+            }
+          },
+          error: function(err) {
+            document.getElementById('status').innerHTML =
+              `<span class="error">Parse error: ${err.message}</span>`;
+          }
+        });
+      } catch (error) {
+        console.error(error);
+        document.getElementById('status').innerHTML =
+          `<span class="error">เกิดข้อผิดพลาด: ${error.message}</span>`;
+      }
+    }
+
+    async function initDashboard() {
+        try {
+            // เติม ?v=... เพื่อป้องกัน GitHub จำไฟล์เก่า (แก้ปัญหาแก้ CSV แล้วหน้าเว็บไม่เปลี่ยน)
+            // const response = await fetch('target.csv?v=' + new Date().getTime());
+            // if (!response.ok) throw new Error("ไม่พบไฟล์ target.csv");
+            // const csvText = await response.text();
+
+         const url = CSV_URL + '&t=' + new Date().getTime();
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('ไม่สามารถดึงข้อมูลจาก Google Sheets ได้');
+        const csvText = await response.text();
+
+            Papa.parse(csvText, {
+                header: true,        // บอกว่ามี Header (total,used,balance)
+                dynamicTyping: true, // แปลงเป็นตัวเลขให้อัตโนมัติ
+                skipEmptyLines: true,
+                complete: function(results) {
+                    if (results.data.length > 0) {
+                        const csvData = results.data[0];
+                        
+                        // สร้าง Object โดยอ้างอิงชื่อจาก Header ของคุณ
+                        const data = {
+                            total: parseFloat(csvData.total) || 0,
+                            used: parseFloat(csvData.used) || 0,
+                            balance: parseFloat(csvData.balance) || 0
+                        };
+
+                        updateUI(data);
+                        renderCharts(data);
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Error:", error);
+            document.getElementById('data-table-body').innerHTML = 
+                `<tr><td colspan="2" class="text-red-500 text-center">เกิดข้อผิดพลาด: ${error.message}</td></tr>`;
+        }
+    }
+
+    function updateUI(data) {
+        const tableBody = document.getElementById('data-table-body');
+        const rows = [
+            ["Total of this year", data.total],
+            ["Up to NOW", data.used],
+            ["Total Balance", data.balance]
+        ];
+
+        tableBody.innerHTML = rows.map(row => `
+            <tr>
+                <td>${row[0]}</td>
+                <td class="value">${formatNum(row[1])}</td>
+            </tr>
+        `).join('');
+
+        const usedPercent = ((data.used / data.total) * 100).toFixed(2);
+        document.getElementById('percentText').innerText = usedPercent + "%";
+
+        const today = new Date();
+        document.getElementById('current-date').innerText = today.toLocaleDateString('th-TH', { 
+            day: 'numeric', month: 'long', year: 'numeric' 
+        });
+    }
+
+    let gaugeChart, donutChart; // เก็บ instance ของกราฟไว้เพื่อทำลายก่อนวาดใหม่ (ถ้าจำเป็น)
+
+    function renderCharts(data) {
+        const ctx1 = document.getElementById('gaugeChart').getContext('2d');
+        const ctx2 = document.getElementById('donutChart').getContext('2d');
+
+        new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [data.used, Math.max(0, data.total - data.used)],
+                    backgroundColor: ['#4285F4', '#E8EAED'],
+                    borderWidth: 0,
+                    circumference: 180,
+                    rotation: 270,
+                }]
+            },
+            options: { maintainAspectRatio: false, cutout: '80%' }
+        });
+
+        new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['Used', 'Remaining'],
+                datasets: [{
+                    data: [data.used, data.balance],
+                    backgroundColor: ['#EA4335', '#34A853']
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+    }
+
+    window.onload = initDashboard;
+    // window.onload = initDashboardFromGsheet;
+    
+</script>
+
+
+
+<script>
+const today = new Date();
+
+const monthNames = [
+  "January","February","March","April","May","June",
+  "July","August","September","October","November","December"
+];
+
+const month = monthNames[today.getMonth()];
+const year = today.getFullYear();
+
+document.getElementById("date").innerHTML = month + " " + year;
+</script>
+
+
+</body>
+</html>
