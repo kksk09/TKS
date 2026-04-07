@@ -431,19 +431,19 @@ body.apple-theme .theme-btn.active {
             Last updated: <span id="current-date"></span>
         </div>
 
-        <!-- <div class="theme-note">
+        <div class="theme-note">
             เปลี่ยนธีมได้จากตัวแปร <code>THEME</code> ใน JavaScript
-        </div> -->
+        </div>
     </div>
 
     <div class="right-column">
         <div class="card-graph glass">
             <div class="gauge-status" id="gaugeStatus">Healthy</div>
-            <h3>Sales Target Progress <span id="date-gauge"></span></h3>
+            <h3>Sales Target Progress — <span id="date-gauge"></span></h3>
             <div class="chart-container gauge-wrap">
                 <canvas id="gaugeChart"></canvas>
                 <span id="percentText">0%</span>
-                <span id="percentSubText"> </span>
+                <span id="percentSubText">Storage Used</span>
             </div>
         </div>
 
@@ -458,14 +458,14 @@ body.apple-theme .theme-btn.active {
 
 <script>
     // =========================================================
-    // 🎨 Theme Config
+    // 🎨 เปลี่ยนธีมตรงนี้
+    // 'executive' | 'neon' | 'apple'
     // =========================================================
-    const DEFAULT_THEME = 'executive';
+    const THEME = 'executive';
 
     const THEMES = {
         executive: {
             name: 'Executive Dashboard',
-            bodyClass: 'executive-theme',
             css: {
                 '--bg1': '#0f172a',
                 '--bg2': '#1e293b',
@@ -494,7 +494,6 @@ body.apple-theme .theme-btn.active {
 
         neon: {
             name: 'Neon Futuristic',
-            bodyClass: 'neon-theme',
             css: {
                 '--bg1': '#050816',
                 '--bg2': '#1a103f',
@@ -523,7 +522,6 @@ body.apple-theme .theme-btn.active {
 
         apple: {
             name: 'Apple Clean',
-            bodyClass: 'apple-theme',
             css: {
                 '--bg1': '#f3f4f6',
                 '--bg2': '#e5e7eb',
@@ -551,8 +549,21 @@ body.apple-theme .theme-btn.active {
         }
     };
 
-    let currentThemeKey = localStorage.getItem('dashboard-theme') || DEFAULT_THEME;
-    let activeTheme = THEMES[currentThemeKey] || THEMES[DEFAULT_THEME];
+    const activeTheme = THEMES[THEME] || THEMES.executive;
+
+    function applyTheme(theme) {
+        const root = document.documentElement;
+        Object.entries(theme.css).forEach(([key, value]) => {
+            root.style.setProperty(key, value);
+        });
+        document.getElementById('themeName').textContent = theme.name;
+
+        if (THEME === 'apple') {
+            document.body.style.color = '#0f172a';
+        }
+    }
+
+    applyTheme(activeTheme);
 
     const formatNum = (num) => new Intl.NumberFormat('th-TH').format(num || 0);
 
@@ -562,45 +573,6 @@ body.apple-theme .theme-btn.active {
 
     let gaugeChartInstance = null;
     let donutChartInstance = null;
-    let latestData = null;
-
-    function applyTheme(themeKey, rerender = true) {
-        currentThemeKey = themeKey;
-        activeTheme = THEMES[themeKey] || THEMES[DEFAULT_THEME];
-
-        const root = document.documentElement;
-        Object.entries(activeTheme.css).forEach(([key, value]) => {
-            root.style.setProperty(key, value);
-        });
-
-        document.body.classList.remove('executive-theme', 'neon-theme', 'apple-theme');
-        document.body.classList.add(activeTheme.bodyClass);
-
-        localStorage.setItem('dashboard-theme', themeKey);
-
-        updateThemeButtons();
-
-        if (latestData && rerender) {
-            updateUI(latestData);
-            renderCharts(latestData);
-        }
-    }
-
-    function updateThemeButtons() {
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.theme === currentThemeKey);
-        });
-    }
-
-    function initThemeButtons() {
-        document.querySelectorAll('.theme-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const theme = btn.dataset.theme;
-                applyTheme(theme, true);
-            });
-        });
-        updateThemeButtons();
-    }
 
     async function initDashboard() {
         try {
@@ -616,13 +588,13 @@ body.apple-theme .theme-btn.active {
                 complete: function(results) {
                     if (results.data.length > 0) {
                         const csvData = results.data[0];
-                        latestData = {
+                        const data = {
                             total: parseFloat(csvData.total) || 0,
                             used: parseFloat(csvData.used) || 0,
                             balance: parseFloat(csvData.balance) || 0
                         };
-                        updateUI(latestData);
-                        renderCharts(latestData);
+                        updateUI(data);
+                        renderCharts(data);
                     }
                 }
             });
@@ -648,25 +620,24 @@ body.apple-theme .theme-btn.active {
             </tr>
         `).join('');
 
-        const usedPercent = data.total > 0 ? ((data.used / data.total) * 100) : 0; 
-
-        document.getElementById('percentText').innerText = usedPercent.toFixed(2) + '%';
+        const usedPercent = data.total > 0 ? ((data.used / data.total) * 100) : 0;
+        document.getElementById('percentText').innerText = usedPercent.toFixed(1) + '%';
 
         const statusEl = document.getElementById('gaugeStatus');
-        if (usedPercent  < 30   ) {
-            statusEl.textContent = 'Critical';
+        if (usedPercent < 70) {
+            statusEl.textContent = 'Healthy';
             statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-healthy');
-            statusEl.style.background = currentThemeKey === 'apple' ? 'rgba(34,197,94,0.10)' : 'rgba(34,197,94,0.12)';
+            statusEl.style.background = THEME === 'apple' ? 'rgba(34,197,94,0.10)' : 'rgba(34,197,94,0.12)';
             statusEl.style.borderColor = 'rgba(34,197,94,0.18)';
-        } else if (usedPercent  <= 80 ) {
+        } else if (usedPercent < 90) {
             statusEl.textContent = 'Warning';
             statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-warning');
-            statusEl.style.background = currentThemeKey === 'apple' ? 'rgba(245,158,11,0.10)' : 'rgba(245,158,11,0.12)';
+            statusEl.style.background = THEME === 'apple' ? 'rgba(245,158,11,0.10)' : 'rgba(245,158,11,0.12)';
             statusEl.style.borderColor = 'rgba(245,158,11,0.18)';
         } else {
-            statusEl.textContent = 'Healthy';
+            statusEl.textContent = 'Critical';
             statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-critical');
-            statusEl.style.background = currentThemeKey === 'apple' ? 'rgba(239,68,68,0.10)' : 'rgba(239,68,68,0.12)';
+            statusEl.style.background = THEME === 'apple' ? 'rgba(239,68,68,0.10)' : 'rgba(239,68,68,0.12)';
             statusEl.style.borderColor = 'rgba(239,68,68,0.18)';
         }
 
@@ -713,11 +684,10 @@ body.apple-theme .theme-btn.active {
             beforeDatasetDraw(chart) {
                 const { ctx } = chart;
                 ctx.save();
-
-                if (currentThemeKey === 'apple') {
+                if (THEME === 'apple') {
                     ctx.shadowColor = 'rgba(59,130,246,0.16)';
                     ctx.shadowBlur = 12;
-                } else if (currentThemeKey === 'neon') {
+                } else if (THEME === 'neon') {
                     ctx.shadowColor = percent < 70 ? 'rgba(168,85,247,0.55)' :
                                       percent < 90 ? 'rgba(250,204,21,0.50)' :
                                       'rgba(236,72,153,0.55)';
@@ -741,7 +711,7 @@ body.apple-theme .theme-btn.active {
                     data: [data.used, Math.max(0, data.total - data.used)],
                     backgroundColor: [
                         gaugeGradient,
-                        currentThemeKey === 'apple' ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.06)'
+                        THEME === 'apple' ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.06)'
                     ],
                     borderWidth: 0,
                     borderRadius: 22,
@@ -807,11 +777,11 @@ body.apple-theme .theme-btn.active {
                         }
                     },
                     tooltip: {
-                        backgroundColor: currentThemeKey === 'apple' ? 'rgba(255,255,255,0.96)' : 'rgba(15,23,42,0.92)',
-                        borderColor: currentThemeKey === 'apple' ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.08)',
+                        backgroundColor: THEME === 'apple' ? 'rgba(255,255,255,0.96)' : 'rgba(15,23,42,0.92)',
+                        borderColor: THEME === 'apple' ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.08)',
                         borderWidth: 1,
-                        titleColor: currentThemeKey === 'apple' ? '#0f172a' : '#ffffff',
-                        bodyColor: currentThemeKey === 'apple' ? '#334155' : 'rgba(255,255,255,0.88)',
+                        titleColor: THEME === 'apple' ? '#0f172a' : '#ffffff',
+                        bodyColor: THEME === 'apple' ? '#334155' : 'rgba(255,255,255,0.88)',
                         padding: 12,
                         cornerRadius: 12,
                         callbacks: {
@@ -835,11 +805,7 @@ body.apple-theme .theme-btn.active {
         if (el) el.textContent = monthYear;
     });
 
-    window.onload = () => {
-        applyTheme(currentThemeKey, false);
-        initThemeButtons();
-        initDashboard();
-    };
+    window.onload = initDashboard;
 </script>
 
 </body>

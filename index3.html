@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 40%, #111827 100%);
+            min-height: 100vh;
+            padding: 24px 16px;
+            color: white;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px; left: -200px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -220px; right: -220px;
+            width: 540px; height: 540px;
+            background: radial-gradient(circle, rgba(236,72,153,0.10) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 16px;
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 16px 12px; }
+            .dashboard { grid-template-columns: 1fr; }
+            .right-column { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        }
+
+        @media (max-width: 500px) {
+            body { padding: 12px 10px; }
+            .right-column { grid-template-columns: 1fr !important; }
+            .chart-container { height: 210px; }
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 24px;
+            box-shadow:
+                0 10px 35px rgba(0,0,0,0.25),
+                inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .card-left {
+            padding: 28px;
+            color: white;
+            animation: fadeUp 0.8s ease;
+        }
+
+        .right-column {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card-graph {
+            padding: 22px 18px;
+            text-align: center;
+            color: white;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.9s ease;
+        }
+
+        .card-graph::before {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            top: -50px;
+            right: -50px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(99,102,241,0.18), transparent 70%);
+            pointer-events: none;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .card-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 14px;
+        }
+
+        .update-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            padding: 6px 14px;
+            margin-bottom: 16px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .update-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #818CF8;
+            box-shadow: 0 0 0 4px rgba(129,140,248,0.18);
+            flex-shrink: 0;
+        }
+
+        .update-badge span {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .update-badge strong {
+            color: #c7d2fe;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            font-size: 0.72rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255,255,255,0.42);
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            text-align: left;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(255,255,255,0.04);
+            transform: translateX(2px);
+        }
+
+        tbody td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            color: rgba(255,255,255,0.78);
+            font-size: 0.92rem;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .value {
+            font-weight: 700;
+            color: #ffffff !important;
+            font-size: 1.05rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .footer-date {
+            margin-top: 18px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.45);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card-graph h3 {
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.45);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .chart-container {
+            height: 240px;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .gauge-wrap {
+            position: relative;
+        }
+
+        #percentText {
+            position: absolute;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.03em;
+            text-shadow: 0 0 20px rgba(99,102,241,0.25);
+        }
+
+        #percentSubText {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: rgba(255,255,255,0.55);
+            letter-spacing: 0.03em;
+        }
+
+        .gauge-status {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            font-size: 12px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05);
+            color: #93c5fd;
+            backdrop-filter: blur(8px);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        canvas {
+            image-rendering: auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="card-left glass">
+        <div class="card-header">
+            <h2>📊 Overview</h2>
+        </div>
+
+        <div class="update-badge">
+            <span class="dot"></span>
+            <span>New update: <strong id="date-badge"></strong></span>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount (THB)</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <tr><td colspan="2" style="text-align:center; color:rgba(255,255,255,0.4); padding:24px;">Loading data...</td></tr>
+            </tbody>
+        </table>
+
+        <div class="footer-date">
+            Last updated: <span id="current-date"></span>
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div class="card-graph glass">
+            <div class="gauge-status" id="gaugeStatus">Healthy</div>
+            <h3>Sales Target Progress — <span id="date-gauge"></span></h3>
+            <div class="chart-container gauge-wrap">
+                <canvas id="gaugeChart"></canvas>
+                <span id="percentText">0%</span>
+                <span id="percentSubText">Storage Used</span>
+            </div>
+        </div>
+
+        <div class="card-graph glass">
+            <h3>Up to NOW vs Total Balance — <span id="date-donut"></span></h3>
+            <div class="chart-container">
+                <canvas id="donutChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const formatNum = (num) => new Intl.NumberFormat('th-TH').format(num || 0);
+
+    const SHEET_ID = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+    const GID = '0';
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+    let gaugeChartInstance = null;
+    let donutChartInstance = null;
+
+    async function initDashboard() {
+        try {
+            const url = CSV_URL + '&t=' + new Date().getTime();
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Cannot fetch data from Google Sheets');
+            const csvText = await response.text();
+
+            Papa.parse(csvText, {
+                header: true,
+                dynamicTyping: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    if (results.data.length > 0) {
+                        const csvData = results.data[0];
+                        const data = {
+                            total: parseFloat(csvData.total) || 0,
+                            used: parseFloat(csvData.used) || 0,
+                            balance: parseFloat(csvData.balance) || 0
+                        };
+                        updateUI(data);
+                        renderCharts(data);
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Error:", error);
+            document.getElementById('data-table-body').innerHTML =
+                `<tr><td colspan="2" style="color:rgba(255,100,100,0.8); text-align:center; padding:20px;">Error: ${error.message}</td></tr>`;
+        }
+    }
+
+    function updateUI(data) {
+        const tableBody = document.getElementById('data-table-body');
+        const rows = [
+            ["Total of this year", data.total],
+            ["Up to NOW", data.used],
+            ["Total Balance", data.balance]
+        ];
+
+        tableBody.innerHTML = rows.map(row => `
+            <tr>
+                <td>${row[0]}</td>
+                <td class="value">${formatNum(row[1])}</td>
+            </tr>
+        `).join('');
+
+        const usedPercent = data.total > 0 ? ((data.used / data.total) * 100) : 0;
+        document.getElementById('percentText').innerText = usedPercent.toFixed(1) + '%';
+
+        const statusEl = document.getElementById('gaugeStatus');
+        if (usedPercent < 70) {
+            statusEl.textContent = 'Healthy';
+            statusEl.style.color = '#4ADE80';
+            statusEl.style.background = 'rgba(34,197,94,0.12)';
+            statusEl.style.borderColor = 'rgba(74,222,128,0.20)';
+        } else if (usedPercent < 90) {
+            statusEl.textContent = 'Warning';
+            statusEl.style.color = '#FBBF24';
+            statusEl.style.background = 'rgba(245,158,11,0.12)';
+            statusEl.style.borderColor = 'rgba(251,191,36,0.20)';
+        } else {
+            statusEl.textContent = 'Critical';
+            statusEl.style.color = '#FB7185';
+            statusEl.style.background = 'rgba(244,63,94,0.12)';
+            statusEl.style.borderColor = 'rgba(251,113,133,0.20)';
+        }
+
+        const today = new Date();
+        const dateStr = today.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
+        document.getElementById('current-date').innerText = dateStr;
+    }
+
+    function getGaugeGradient(ctx, canvas, percent) {
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+
+        if (percent < 70) {
+            gradient.addColorStop(0, '#22D3EE');
+            gradient.addColorStop(0.5, '#6366F1');
+            gradient.addColorStop(1, '#A855F7');
+        } else if (percent < 90) {
+            gradient.addColorStop(0, '#F59E0B');
+            gradient.addColorStop(1, '#F97316');
+        } else {
+            gradient.addColorStop(0, '#EF4444');
+            gradient.addColorStop(1, '#EC4899');
+        }
+
+        return gradient;
+    }
+
+    function renderCharts(data) {
+        Chart.defaults.color = 'rgba(255,255,255,0.55)';
+        Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, sans-serif";
+
+        const percent = data.total > 0 ? (data.used / data.total) * 100 : 0;
+
+        // Destroy old charts if exist
+        if (gaugeChartInstance) gaugeChartInstance.destroy();
+        if (donutChartInstance) donutChartInstance.destroy();
+
+        // Gauge Chart
+        const gaugeCanvas = document.getElementById('gaugeChart');
+        const ctx1 = gaugeCanvas.getContext('2d');
+        const gaugeGradient = getGaugeGradient(ctx1, gaugeCanvas, percent);
+
+        const glowPlugin = {
+            id: 'glowPlugin',
+            beforeDatasetDraw(chart) {
+                const { ctx } = chart;
+                ctx.save();
+                ctx.shadowColor = percent < 70
+                    ? 'rgba(99,102,241,0.55)'
+                    : percent < 90
+                    ? 'rgba(245,158,11,0.45)'
+                    : 'rgba(244,63,94,0.45)';
+                ctx.shadowBlur = 24;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+            },
+            afterDatasetDraw(chart) {
+                chart.ctx.restore();
+            }
+        };
+
+        gaugeChartInstance = new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [data.used, Math.max(0, data.total - data.used)],
+                    backgroundColor: [
+                        gaugeGradient,
+                        'rgba(255,255,255,0.06)'
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 20,
+                    circumference: 180,
+                    rotation: 270,
+                    hoverOffset: 0,
+                    spacing: 2
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '78%',
+                layout: {
+                    padding: {
+                        top: 10,
+                        bottom: 0
+                    }
+                },
+                animation: {
+                    animateRotate: true,
+                    duration: 1600,
+                    easing: 'easeOutQuart'
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                }
+            },
+            plugins: [glowPlugin]
+        });
+
+        // Donut Chart
+        const ctx2 = document.getElementById('donutChart').getContext('2d');
+        const donutGradient1 = ctx2.createLinearGradient(0, 0, 240, 0);
+        donutGradient1.addColorStop(0, '#F472B6');
+        donutGradient1.addColorStop(1, '#EC4899');
+
+        const donutGradient2 = ctx2.createLinearGradient(0, 0, 240, 0);
+        donutGradient2.addColorStop(0, '#34D399');
+        donutGradient2.addColorStop(1, '#06B6D4');
+
+        donutChartInstance = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['Up to NOW', 'Total Balance'],
+                datasets: [{
+                    data: [data.used, data.balance],
+                    backgroundColor: [donutGradient1, donutGradient2],
+                    borderWidth: 0,
+                    borderRadius: 12,
+                    hoverOffset: 6,
+                    spacing: 3
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '68%',
+                animation: {
+                    duration: 1400,
+                    easing: 'easeOutQuart'
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: 'rgba(255,255,255,0.65)',
+                            padding: 18,
+                            font: { size: 13, weight: '500' },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15,23,42,0.92)',
+                        borderColor: 'rgba(255,255,255,0.08)',
+                        borderWidth: 1,
+                        titleColor: '#fff',
+                        bodyColor: 'rgba(255,255,255,0.85)',
+                        padding: 12,
+                        cornerRadius: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${formatNum(context.raw)} THB`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Set month/year labels
+    const today = new Date();
+    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const monthYear = monthNames[today.getMonth()] + ' ' + today.getFullYear();
+
+    ['date-badge', 'date-gauge', 'date-donut'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = monthYear;
+    });
+
+    window.onload = initDashboard;
+</script>
+
+</body>
+</html>
