@@ -655,18 +655,18 @@ body.apple-theme .theme-btn.active {
         document.getElementById('percentText').innerText = usedPercent.toFixed(2) + '%';
 
         const statusEl = document.getElementById('gaugeStatus');
-        if (usedPercent  < 30   ) {
-            statusEl.textContent = 'Critical';
+        if (usedPercent  >= 80   ) {
+            statusEl.textContent = 'Healthy';
             statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-healthy');
             statusEl.style.background = currentThemeKey === 'apple' ? 'rgba(34,197,94,0.10)' : 'rgba(34,197,94,0.12)';
             statusEl.style.borderColor = 'rgba(34,197,94,0.18)';
-        } else if (usedPercent  <= 80 ) {
+        } else if (usedPercent  >=30 ) {
             statusEl.textContent = 'Warning';
             statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-warning');
             statusEl.style.background = currentThemeKey === 'apple' ? 'rgba(245,158,11,0.10)' : 'rgba(245,158,11,0.12)';
             statusEl.style.borderColor = 'rgba(245,158,11,0.18)';
         } else {
-            statusEl.textContent = 'Healthy';
+            statusEl.textContent = 'Critical';
             statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-critical');
             statusEl.style.background = currentThemeKey === 'apple' ? 'rgba(239,68,68,0.10)' : 'rgba(239,68,68,0.12)';
             statusEl.style.borderColor = 'rgba(239,68,68,0.18)';
@@ -691,9 +691,8 @@ body.apple-theme .theme-btn.active {
     }
 
     function getGaugeColors(percent) {
-        if (percent > 80) return activeTheme.gaugeHealthy;
-        if (percent < 80 ) return activeTheme.gaugeWarning;
-        if (percent < 30 ) return activeTheme.gaugeCritical;
+        if (percent >= 80) return activeTheme.gaugeHealthy;
+        if (percent >= 30 ) return activeTheme.gaugeWarning; 
         return activeTheme.gaugeCritical;
     }
 
