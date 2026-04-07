@@ -438,12 +438,13 @@ body.apple-theme .theme-btn.active {
 
     <div class="right-column">
         <div class="card-graph glass">
-            <div class="gauge-status" id="gaugeStatus">Healthy</div>
+            <!-- <div class="gauge-status" id="gaugeStatus2">Healthy</div> -->
             <h3>Sales Target Progress <span id="date-gauge"></span></h3>
             <div class="chart-container gauge-wrap">
                 <canvas id="gaugeChart"></canvas>
                 <span id="percentText">0%</span>
                 <span id="percentSubText"> </span>
+                <div class="gauge-status" id="gaugeStatus">Healthy</div>
             </div>
         </div>
 
@@ -689,8 +690,9 @@ body.apple-theme .theme-btn.active {
     }
 
     function getGaugeColors(percent) {
-        if (percent < 70) return activeTheme.gaugeHealthy;
-        if (percent < 90) return activeTheme.gaugeWarning;
+        if (percent > 80) return activeTheme.gaugeHealthy;
+        if (percent < 80 ) return activeTheme.gaugeWarning;
+        if (percent < 30 ) return activeTheme.gaugeCritical;
         return activeTheme.gaugeCritical;
     }
 
