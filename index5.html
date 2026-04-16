@@ -391,7 +391,7 @@ body.apple-theme .theme-btn.active {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
     margin-bottom: 24px;
 }
@@ -426,6 +426,52 @@ body.apple-theme .theme-btn.active {
 @media (max-width: 640px) {
     .stats-grid { grid-template-columns: 1fr; }
 }
+
+.footer-date {
+    margin-top: 18px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#current-date {
+    font-size: 0.85rem;
+    color: var(--text-soft);
+    font-weight: 600;
+}
+
+/* ส่วนที่ปรับใหม่ให้เป็นบรรทัดเดียวกัน */
+.status-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* รองรับกรณีหน้าจอแคบ */
+    align-items: center;
+}
+
+.gauge-statusx {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+/* เพิ่มจุด Dot เล็กๆ หน้าตัวอักษรเพื่อความสวยงาม */
+.gauge-statusx::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
         
     </style>
 </head>
@@ -433,15 +479,20 @@ body.apple-theme .theme-btn.active {
 
     <div class="stats-grid">
     <div class="stat-card">
-        <span class="stat-label">เป้าหมายปี 2026</span>
+        <span class="stat-label">TARGET <strong id="year-badge1"></strong></span>
         <span class="stat-value" id="stat-target">0</span>
     </div>
     <div class="stat-card">
-        <span class="stat-label">ยอดจริงปี 2026</span>
+        <span class="stat-label">SALES <strong id="year-badge2"></strong></span>
         <span class="stat-value" id="stat-actual">0</span>
     </div>
     <div class="stat-card">
-        <span class="stat-label">Achievement Rate (2026)</span>
+        <span class="stat-label">Remaining to Target:</span>
+        <span class="stat-value" id="stat-remain">0</span>
+    </div>
+        
+    <div class="stat-card">
+        <span class="stat-label">Achievement Rate <strong id="year-badge3"></strong></span>
         <span class="stat-value rate" id="stat-rate">0%</span>
     </div>
 </div>
@@ -479,10 +530,10 @@ body.apple-theme .theme-btn.active {
                 <tr><td colspan="2" style="text-align:center; color:rgba(255,255,255,0.4); padding:24px;">Loading data...</td></tr>
             </tbody>
         </table>
-
-        <div class="footer-date">
+<div class="status-container">
+    <div class="footer-date">
             <!-- Last updated: Critical [<30%] Warning [>=30%] Healthy[>=80%]  -->
-                <span id="current-date"></span>
+                <!-- <span id="current-date"></span> -->
                 <div class="gauge-statusx" id="status_c">Critical</div>
                 <div class="gauge-statusx" id="status_w">Warning</div>
                 <div class="gauge-statusx" id="status_h">Healthy</div>
@@ -491,6 +542,8 @@ body.apple-theme .theme-btn.active {
                 <span id="status_h">Healthy(>=80%)</span> -->
         </div>
 
+</div>
+    
         <!-- <div class="theme-note">
             เปลี่ยนธีมได้จากตัวแปร <code>THEME</code> ใน JavaScript
         </div> -->
@@ -753,9 +806,13 @@ body.apple-theme .theme-btn.active {
     const statTarget = document.getElementById('stat-target');
     const statActual = document.getElementById('stat-actual');
     const statRate = document.getElementById('stat-rate');
+    const statRemain = document.getElementById('stat-remain');
+    
 
     statTarget.innerText = formatNum(data.total);
     statActual.innerText = formatNum(data.used);
+    statRemain.innerText = formatNum(data.balance);
+    
     statRate.innerText = usedPercent.toFixed(2) + '%';
 
     // Logic เปลี่ยนสีตัวเลข Rate ตามเงื่อนไข
@@ -768,12 +825,17 @@ body.apple-theme .theme-btn.active {
     }
 
         const today = new Date();
-        const dateStr = today.toLocaleDateString('th-TH', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-        });
-        document.getElementById('current-date').innerText = dateStr;
+        const dateStrTH = today.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric'});
+        const dateStr = today.toLocaleDateString('en-EN', { day: 'numeric', month: 'long', year: 'numeric'});
+        
+        //document.getElementById('current-date').innerText = dateStr;
+        document.getElementById('date-badge').innerText = dateStr;
+        //<strong id="year-badge1"></strong>
+        const yyyy = today.getFullYear();
+        document.getElementById('year-badge1').innerText = yyyy;
+        document.getElementById('year-badge2').innerText = yyyy;
+        document.getElementById('year-badge3').innerText = yyyy;
+        
     }
 
     function createGradient(ctx, canvas, colors) {
