@@ -103,13 +103,20 @@
             <div id="gaugeStatus" class="status-badge">...</div>
         </div>
         <div class="card-graph glass">
+            <h3>Comparison by Team</h3>
+            <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSales"></canvas></div>
+        </div>        
+        <div class="card-graph glass">
             <h3>Comparison by Year</h3>
             <div class="chart-container"><canvas id="barChart"></canvas></div>
         </div>
+
     </div>
 </div>
 
 <script>
+
+    // target
     const SHEET_ID = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
     const GID = '0';
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
@@ -164,6 +171,143 @@
         } catch (e) { console.error("Error:", e); }
     }
 
+    
+
+    async function initSales() {
+    try {
+        const SHEET_IDsales = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+        const GIDsales = '2104520398#gid=2104520398';
+        const CSV_URLsales = `https://docs.google.com/spreadsheets/d/${SHEET_IDsales}/export?format=csv&gid=${GIDsales}`;
+        const resp = await fetch(CSV_URLsales + '&t=' + Date.now());
+        const csv = await resp.text();
+
+        Papa.parse(csv, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+                // กรองเฉพาะแถวที่มี Team
+                globalDataSales = results.data
+                    .filter(d => d.Team && d.Team.trim() !== '')
+                    .map(d => ({
+                        team:          d.Team.trim(),
+                        call:          cleanNum(d.No),           // No = Call
+                        sentQuotation: cleanNum(d.SentQuotation),
+                        xOrder:        cleanNum(d['X-Order']),
+                    }));
+
+                processDataSalesTeam(globalDataSales);
+            }
+        });
+    } catch (e) {
+        console.error('initSales error:', e);
+    }
+}
+
+function processDataSalesTeam(data) {
+    const labels = data.map(d => d.team);
+
+    const datasets = [
+        {
+            label: 'Call',
+            data: data.map(d => d.call),
+            backgroundColor: 'rgba(99, 102, 241, 0.8)',   // indigo
+            borderColor:     'rgba(99, 102, 241, 1)',
+            borderWidth: 2,
+            borderRadius: 6,
+        },
+        {
+            label: 'Sent Quotation',
+            data: data.map(d => d.sentQuotation),
+            backgroundColor: 'rgba(34, 197, 94, 0.8)',    // green
+            borderColor:     'rgba(34, 197, 94, 1)',
+            borderWidth: 2,
+            borderRadius: 6,
+        },
+        {
+            label: 'X-Order',
+            data: data.map(d => d.xOrder),
+            backgroundColor: 'rgba(251, 146, 60, 0.8)',   // orange
+            borderColor:     'rgba(251, 146, 60, 1)',
+            borderWidth: 2,
+            borderRadius: 6,
+        },
+    ];
+
+    const ctx = document.getElementById('barChartSales').getContext('2d');
+
+    // ถ้ามี chart เดิมอยู่ให้ destroy ก่อน
+    if (window.barChartSalesInstance) {
+        window.barChartSalesInstance.destroy();
+    }
+
+    window.barChartSalesInstance = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',        // hover แสดงทุก series พร้อมกัน
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        color: '#94a3b8',
+                        font: { size: 13, weight: 'bold' },
+                        padding: 20,
+                        usePointStyle: true,
+                        pointStyleWidth: 12,
+                    },
+                    // ✅ คลิก legend เพื่อเปิด/ปิด series ได้เลย (built-in)
+                    onClick: function(e, legendItem, legend) {
+                        const index = legendItem.datasetIndex;
+                        const ci = legend.chart;
+                        if (ci.isDatasetVisible(index)) {
+                            ci.hide(index);
+                            legendItem.hidden = true;
+                        } else {
+                            ci.show(index);
+                            legendItem.hidden = false;
+                        }
+                    },
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleColor: '#f1f5f9',
+                    bodyColor: '#94a3b8',
+                    borderColor: '#334155',
+                    borderWidth: 1,
+                    padding: 12,
+                    callbacks: {
+                        label: (ctx) => {
+                            const val = ctx.parsed.y;
+                            return ` ${ctx.dataset.label}: ${val.toLocaleString()}`;
+                        },
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#94a3b8', font: { size: 13, weight: 'bold' } },
+                    grid:  { color: 'rgba(255,255,255,0.05)' },
+                },
+                y: {
+                    ticks: {
+                        color: '#94a3b8',
+                        callback: (val) => val.toLocaleString(),
+                    },
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                },
+            },
+        },
+    });
+}
+
+
+  
     function processData(data) {
         if (!data || data.length === 0) return;
         const latest = data[data.length - 1];
@@ -378,6 +522,7 @@ function renderCharts(rate, used, total, data) {
         document.querySelectorAll('.theme-btn').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
         applyTheme(currentThemeKey);
         init();
+        initSales();
     };
 </script>
 </body>
