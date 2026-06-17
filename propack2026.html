@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProPack 2026 Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue-h:#6CA0C8; --blue-s:#2B5FA5; --peach:#E8A87C;
+  --orchid:#C8A2C8; --fennel:#7FAF8A; --marm:#E8622A;
+  --bg:#0E1623; --bg2:#162032; --bg3:#1C2B40;
+  --glass:rgba(255,255,255,0.06); --glass-b:rgba(255,255,255,0.10);
+  --txt:#F0EDE6; --txt-mute:rgba(240,237,230,0.42); --radius:16px;
+}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 55%,var(--bg3) 100%);
+  min-height:100vh; color:var(--txt); padding:28px 20px;
+}
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;max-width:1500px;margin:0 auto 28px;}
+.nav-brand{display:flex;align-items:center;gap:12px;}
+.nav-logo{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--blue-h),var(--blue-s));display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;color:#fff;}
+.nav-title{font-size:1.35rem;font-weight:700;}
+.nav-sub{font-size:0.75rem;color:var(--txt-mute);margin-top:1px;}
+.nav-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:999px;font-size:0.8rem;font-weight:700;text-decoration:none;transition:transform .2s,box-shadow .2s;}
+.nav-btn:hover{transform:translateY(-2px);}
+.btn-home{background:linear-gradient(135deg,#6366F1,#818CF8);color:#fff;box-shadow:0 4px 14px rgba(99,102,241,0.35);}
+.btn-home:hover{box-shadow:0 8px 22px rgba(99,102,241,0.5);}
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;max-width:1500px;margin:0 auto 28px;}
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+.kpi-card{background:var(--glass);border:1px solid var(--glass-b);border-radius:var(--radius);padding:18px 16px;backdrop-filter:blur(16px);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.kpi-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,0.25);}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius) var(--radius) 0 0;background:var(--accent,var(--blue-h));}
+.kpi-card:nth-child(1){--accent:var(--blue-h)} .kpi-card:nth-child(2){--accent:var(--fennel)}
+.kpi-card:nth-child(3){--accent:var(--peach)}  .kpi-card:nth-child(4){--accent:var(--orchid)}
+.kpi-card:nth-child(5){--accent:var(--marm)}   .kpi-card:nth-child(6){--accent:var(--blue-s)}
+.kpi-card:nth-child(7){--accent:var(--fennel)}  .kpi-card:nth-child(8){--accent:var(--peach)}
+.kpi-card:nth-child(9){--accent:var(--orchid)}  .kpi-card:nth-child(10){--accent:var(--marm)}
+.kpi-card:nth-child(11){--accent:var(--blue-h)} .kpi-card:nth-child(12){--accent:var(--fennel)}
+.kpi-card:nth-child(13){--accent:var(--peach)}  .kpi-card:nth-child(14){--accent:var(--orchid)}
+.kpi-label{font-size:0.68rem;color:var(--txt-mute);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:8px;}
+.kpi-value{font-size:1.5rem;font-weight:800;color:var(--txt);line-height:1;}
+.kpi-icon{position:absolute;right:14px;top:14px;font-size:1.4rem;opacity:0.25;}
+/* CHART */
+.chart-section{max-width:1500px;margin:0 auto;background:var(--glass);border:1px solid var(--glass-b);border-radius:20px;backdrop-filter:blur(20px);padding:28px;}
+.chart-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:22px;}
+.chart-title{font-size:1.1rem;font-weight:700;}
+.chart-sub{font-size:0.78rem;color:var(--txt-mute);margin-top:4px;}
+.series-toggles{display:flex;flex-wrap:wrap;gap:8px;}
+.series-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-size:0.75rem;font-weight:600;border:1px solid rgba(255,255,255,0.12);cursor:pointer;transition:all .18s;user-select:none;background:rgba(255,255,255,0.05);}
+.series-pill .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.series-pill.off{opacity:0.3;filter:grayscale(0.6);}
+.chart-wrap{position:relative;height:480px;}
+.loading-msg{text-align:center;color:var(--txt-mute);padding:60px 20px;font-size:0.9rem;}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--glass-b);border-top-color:var(--blue-h);border-radius:50%;animation:spin .7s linear infinite;margin-bottom:12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+/* TABLE */
+.table-section{max-width:1500px;margin:28px auto 0;background:var(--glass);border:1px solid var(--glass-b);border-radius:20px;backdrop-filter:blur(20px);padding:28px;overflow-x:auto;}
+.table-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;}
+.table-title{font-size:1.1rem;font-weight:700;}
+.table-sub{font-size:0.78rem;color:var(--txt-mute);margin-top:4px;}
+.tbl-search{background:rgba(255,255,255,0.07);border:1px solid var(--glass-b);border-radius:999px;padding:8px 16px;color:var(--txt);font-size:0.8rem;font-family:'Space Grotesk',sans-serif;outline:none;width:220px;}
+.tbl-search::placeholder{color:var(--txt-mute);}
+.tbl-search:focus{border-color:var(--blue-h);}
+.data-table{width:100%;border-collapse:collapse;font-size:0.82rem;min-width:900px;}
+.data-table thead tr{border-bottom:2px solid rgba(108,160,200,0.3);}
+.data-table th{padding:12px 14px;text-align:left;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.07em;font-weight:700;color:var(--blue-h);white-space:nowrap;cursor:pointer;user-select:none;}
+.data-table th:hover{color:#fff;}
+.data-table th .sort-icon{margin-left:4px;opacity:0.4;font-size:0.65rem;}
+.data-table th.sort-asc .sort-icon::after{content:'▲';}
+.data-table th.sort-desc .sort-icon::after{content:'▼';}
+.data-table th:not(.sort-asc):not(.sort-desc) .sort-icon::after{content:'⇅';}
+.data-table tbody tr{border-bottom:1px solid rgba(255,255,255,0.05);transition:background .15s;}
+.data-table tbody tr:hover{background:rgba(255,255,255,0.05);}
+.data-table td{padding:11px 14px;color:rgba(240,237,230,0.82);white-space:nowrap;}
+.data-table td:first-child{font-weight:700;color:var(--txt);}
+.data-table td.num{text-align:right;font-variant-numeric:tabular-nums;}
+.data-table td.num-zero{text-align:right;color:var(--txt-mute);}
+.tbl-footer{margin-top:14px;font-size:0.75rem;color:var(--txt-mute);text-align:right;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo">PP</div>
+    <div>
+      <div class="nav-title">ProPack 2026</div>
+      <div class="nav-sub">Sales Performance Dashboard</div>
+    </div>
+  </div>
+  <div>
+    <a href="index.html" class="nav-btn btn-home">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      HOME
+    </a>
+  </div>
+</nav>
+
+<div class="kpi-grid" id="kpiGrid">
+  <div class="loading-msg" style="grid-column:1/-1">
+    <div class="spinner"></div><br>Loading KPI…
+  </div>
+</div>
+
+<div class="chart-section">
+  <div class="chart-header">
+    <div>
+      <div class="chart-title">Salesperson Performance by Series</div>
+      <div class="chart-sub">คลิก Series เพื่อเปิด/ปิดแต่ละแท่ง</div>
+    </div>
+    <div class="series-toggles" id="seriesToggleBar"></div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="salesChart"></canvas>
+  </div>
+  <div class="loading-msg" id="chartLoading">
+    <div class="spinner"></div><br>Loading chart…
+  </div>
+</div>
+
+<!-- TABLE -->
+<div class="table-section">
+  <div class="table-header">
+    <div>
+      <div class="table-title">📋 Data Table — A3 : N</div>
+      <div class="table-sub">คลิก Header เพื่อ Sort | พิมพ์เพื่อ Filter</div>
+    </div>
+    <input class="tbl-search" id="tblSearch" type="text" placeholder="🔍 ค้นหา...">
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="data-table" id="dataTable">
+      <thead id="tblHead"></thead>
+      <tbody id="tblBody"></tbody>
+    </table>
+  </div>
+  <div class="tbl-footer" id="tblFooter"></div>
+  <div class="loading-msg" id="tblLoading">
+    <div class="spinner"></div><br>Loading table…
+  </div>
+</div>
+
+<script>
+const SHEET_ID = '18y6P94E-NKY8QykoelkxcH3ptWTW1tvM';
+const GID      = '1670856370';
+const CSV_URL  = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/export?format=csv&gid=' + GID;
+
+const SERIES_COLORS = [
+  '#6CA0C8','#7FAF8A','#E8A87C','#C8A2C8','#E8622A',
+  '#2B5FA5','#A8C5A0','#D4956A','#9B7EA8','#F0A070',
+  '#4A90D9','#6BBF7A','#F0C060'
+];
+const KPI_ICONS = ['📦','📋','✅','💰','📈','🎯','🔖','🚚','⚙️','📊','🏆','💼','🔔','📌'];
+
+let chartInstance = null;
+let allDatasets   = [];
+let visibleSeries = new Set();
+
+function cleanNum(v) {
+  if (v === undefined || v === null || v === '') return 0;
+  var n = parseFloat(String(v).replace(/,/g, ''));
+  return isNaN(n) ? 0 : n;
+}
+
+function fmtNum(n) {
+  if (Math.abs(n) >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+  if (Math.abs(n) >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+  return String(n);
+}
+
+async function init() {
+  try {
+    var resp = await fetch(CSV_URL + '&t=' + Date.now());
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    var csv = await resp.text();
+    Papa.parse(csv, {
+      skipEmptyLines: false,
+      complete: function(res) {
+        var rows = res.data;
+        console.log('Total rows:', rows.length);
+        rows.slice(0, 5).forEach(function(r, i) {
+          console.log('Row ' + i + ':', r.slice(0, 8));
+        });
+        buildKPI(rows);
+        buildChart(rows);
+        buildTable(rows);
+      },
+      error: function(e) { showError('Parse error: ' + e.message); }
+    });
+  } catch(e) {
+    showError('โหลดไม่ได้: ' + e.message);
+  }
+}
+
+function buildKPI(rows) {
+  var grid      = document.getElementById('kpiGrid');
+  var headerRow = rows[0] || [];
+  var kpiRow    = rows[1] || [];
+  var html = '';
+  for (var k = 0; k < 14; k++) {
+    var c     = 15 + k; // col P = index 15
+    var label = headerRow[c] ? headerRow[c] : ('Col ' + (k + 1));
+    var val   = kpiRow[c] !== undefined ? kpiRow[c] : '—';
+    var numV  = cleanNum(val);
+    var disp  = (val === '' || val === undefined) ? '—' : (isNaN(numV) ? val : fmtNum(numV));
+    html += '<div class="kpi-card">'
+          + '<div class="kpi-icon">' + KPI_ICONS[k] + '</div>'
+          + '<div class="kpi-label">' + label + '</div>'
+          + '<div class="kpi-value">' + disp + '</div>'
+          + '</div>';
+  }
+  grid.innerHTML = html || '<div class="loading-msg">ไม่พบข้อมูล KPI</div>';
+}
+
+function buildChart(rows) {
+  document.getElementById('chartLoading').style.display = 'none';
+
+  // หา dataRows จาก row index 2 ลงไป ที่ col A ไม่ว่าง
+  var dataRows = [];
+  for (var i = 2; i < rows.length; i++) {
+    var v = rows[i][0];
+    if (v !== undefined && v !== null && String(v).trim() !== '') {
+      dataRows.push(rows[i]);
+    }
+  }
+
+  console.log('dataRows found:', dataRows.length);
+  dataRows.forEach(function(r, i) {
+    console.log('  [' + i + '] A=' + r[0] + ' | B=' + r[1] + ' | C=' + r[2]);
+  });
+
+  if (!dataRows.length) {
+    var el = document.getElementById('chartLoading');
+    el.innerHTML = '<div style="color:#E8622A">⚠️ ไม่พบข้อมูลใน Col A (row 3+)<br><small>ดู console log เพื่อตรวจสอบครับ</small></div>';
+    el.style.display = 'block';
+    return;
+  }
+
+  var names      = dataRows.map(function(r) { return r[0].trim(); });
+  var headerRow  = rows[0] || [];
+  var seriesLabels = [];
+  for (var c = 1; c <= 13; c++) {
+    seriesLabels.push(headerRow[c] ? headerRow[c].trim() : ('Series ' + c));
+  }
+
+  allDatasets = seriesLabels.map(function(lbl, i) {
+    var color = SERIES_COLORS[i] || '#888';
+    return {
+      label: lbl,
+      data: dataRows.map(function(r) { return cleanNum(r[i + 1]); }),
+      backgroundColor: color + 'CC',
+      borderColor: color,
+      borderWidth: 1,
+      borderRadius: 5,
+      borderSkipped: false
+    };
+  });
+
+  allDatasets.forEach(function(_, i) { visibleSeries.add(i); });
+  buildTogglePills(seriesLabels);
+  renderChart(names);
+}
+
+function buildTogglePills(seriesLabels) {
+  var bar = document.getElementById('seriesToggleBar');
+  bar.innerHTML = seriesLabels.map(function(lbl, i) {
+    return '<div class="series-pill" data-idx="' + i + '" onclick="toggleSeries(' + i + ')">'
+         + '<span class="dot" style="background:' + (SERIES_COLORS[i] || '#888') + '"></span>'
+         + lbl + '</div>';
+  }).join('');
+}
+
+function toggleSeries(idx) {
+  var pill = document.querySelector('.series-pill[data-idx="' + idx + '"]');
+  if (visibleSeries.has(idx)) {
+    visibleSeries.delete(idx);
+    pill.classList.add('off');
+  } else {
+    visibleSeries.add(idx);
+    pill.classList.remove('off');
+  }
+  if (!chartInstance) return;
+  chartInstance.data.datasets.forEach(function(ds, i) {
+    chartInstance.getDatasetMeta(i).hidden = !visibleSeries.has(i);
+  });
+  chartInstance.update();
+}
+
+function renderChart(names) {
+  var ctx = document.getElementById('salesChart').getContext('2d');
+  if (chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: { labels: names, datasets: allDatasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(10,18,32,0.92)',
+          titleColor: '#94a3b8',
+          bodyColor: '#F0EDE6',
+          borderColor: 'rgba(255,255,255,0.10)',
+          borderWidth: 1,
+          padding: 12,
+          cornerRadius: 10,
+          callbacks: {
+            label: function(ctx) {
+              return '  ' + ctx.dataset.label + ': ' + ctx.parsed.y.toLocaleString();
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          ticks: { color: '#94a3b8', font: { size: 11 } },
+          border: { display: false }
+        },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.05)' },
+          ticks: { color: '#94a3b8', font: { size: 11 }, precision: 0 },
+          border: { display: false }
+        }
+      },
+      animation: { duration: 600, easing: 'easeOutQuart' },
+      interaction: { mode: 'index', intersect: false }
+    }
+  });
+}
+
+function showError(msg) {
+  document.getElementById('kpiGrid').innerHTML =
+    '<div class="loading-msg" style="grid-column:1/-1;color:#E8622A">⚠️ ' + msg + '</div>';
+  var cl = document.getElementById('chartLoading');
+  cl.innerHTML = '<div style="color:#E8622A">⚠️ ' + msg + '</div>';
+  cl.style.display = 'block';
+}
+
+// ── TABLE ──────────────────────────────────────────
+var tableAllRows   = [];  // raw data rows (index 2+, col 0-13)
+var tableHeaders   = [];  // col A-N labels from row 0
+var sortColIdx     = -1;
+var sortAsc        = true;
+
+function buildTable(rows) {
+  document.getElementById('tblLoading').style.display = 'none';
+
+  tableHeaders = (rows[0] || []).slice(0, 14); // col A-N = index 0-13
+
+  // collect rows from index 2 that have ANY value in col A-N
+  tableAllRows = [];
+  for (var i = 2; i < rows.length; i++) {
+    var r = rows[i].slice(0, 14);
+    var hasVal = r.some(function(v) { return v !== undefined && v !== null && String(v).trim() !== ''; });
+    if (hasVal) tableAllRows.push(r);
+  }
+
+  // build header
+  var thead = document.getElementById('tblHead');
+  var hCells = tableHeaders.map(function(h, i) {
+    var label = h ? h : ('Col ' + String.fromCharCode(65 + i));
+    return '<th onclick="sortTable(' + i + ')">' + label + '<span class="sort-icon"></span></th>';
+  }).join('');
+  thead.innerHTML = '<tr>' + hCells + '</tr>';
+
+  renderTable(tableAllRows);
+  updateFooter(tableAllRows.length, tableAllRows.length);
+
+  // search
+  document.getElementById('tblSearch').addEventListener('input', function() {
+    var q = this.value.toLowerCase().trim();
+    var filtered = q
+      ? tableAllRows.filter(function(r) {
+          return r.some(function(v) { return String(v).toLowerCase().indexOf(q) !== -1; });
+        })
+      : tableAllRows;
+    renderTable(filtered);
+    updateFooter(filtered.length, tableAllRows.length);
+  });
+}
+
+function renderTable(rows) {
+  var tbody = document.getElementById('tblBody');
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="14" style="text-align:center;color:var(--txt-mute);padding:30px">ไม่พบข้อมูล</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(function(r) {
+    var cells = r.map(function(v, i) {
+      if (i === 0) return '<td>' + (v || '—') + '</td>';
+      var num = parseFloat(String(v).replace(/,/g, ''));
+      if (!isNaN(num) && v !== '' && v !== undefined && v !== null) {
+        var cls = num === 0 ? 'num-zero' : 'num';
+        return '<td class="' + cls + '">' + num.toLocaleString() + '</td>';
+      }
+      return '<td>' + (v !== undefined && v !== null && v !== '' ? v : '—') + '</td>';
+    }).join('');
+    return '<tr>' + cells + '</tr>';
+  }).join('');
+}
+
+function sortTable(colIdx) {
+  // toggle direction if same col
+  if (sortColIdx === colIdx) {
+    sortAsc = !sortAsc;
+  } else {
+    sortColIdx = colIdx;
+    sortAsc = true;
+  }
+
+  // update header classes
+  var ths = document.querySelectorAll('.data-table th');
+  ths.forEach(function(th, i) {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (i === colIdx) th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
+  });
+
+  var q = document.getElementById('tblSearch').value.toLowerCase().trim();
+  var working = q
+    ? tableAllRows.filter(function(r) {
+        return r.some(function(v) { return String(v).toLowerCase().indexOf(q) !== -1; });
+      })
+    : tableAllRows.slice();
+
+  working.sort(function(a, b) {
+    var va = a[colIdx]; var vb = b[colIdx];
+    var na = parseFloat(String(va).replace(/,/g, ''));
+    var nb = parseFloat(String(vb).replace(/,/g, ''));
+    if (!isNaN(na) && !isNaN(nb)) return sortAsc ? na - nb : nb - na;
+    var sa = String(va || '').toLowerCase();
+    var sb = String(vb || '').toLowerCase();
+    return sortAsc ? sa.localeCompare(sb) : sb.localeCompare(sa);
+  });
+
+  renderTable(working);
+  updateFooter(working.length, tableAllRows.length);
+}
+
+function updateFooter(shown, total) {
+  document.getElementById('tblFooter').textContent =
+    'แสดง ' + shown + ' / ' + total + ' แถว';
+}
+
+init();
+</script>
+</body>
+</html>
