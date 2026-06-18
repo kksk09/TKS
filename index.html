@@ -467,7 +467,7 @@ function renderCharts(rate, used, total, data) {
             displayColor = rootStyles.getPropertyValue('--status-healthy');
         }
 
-        document.getElementById('percentText').innerText = rate.toFixed(1) + '%';
+        document.getElementById('percentText').innerText = rate.toFixed(2) + '%';
         document.getElementById('percentText').style.color = displayColor;
         const badge = document.getElementById('gaugeStatus');
         badge.innerText = rate < 30 ? 'CRITICAL' : (rate < 80 ? 'WARNING' : 'HEALTHY');
