@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Data - ProPack 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --blue-h:  #6CA0C8;
+  --blue-s:  #2B5FA5;
+  --peach:   #E8A87C;
+  --orchid:  #C8A2C8;
+  --fennel:  #7FAF8A;
+  --marm:    #E8622A;
+  --bg:      #EDF4FA;
+  --glass:   rgba(255,255,255,0.72);
+  --glass-b: rgba(43,95,165,0.13);
+  --shadow:  0 4px 20px rgba(43,95,165,0.09);
+  --shadow-h:0 12px 32px rgba(43,95,165,0.16);
+  --txt:     #1A2B3C;
+  --txt-soft:#3D5670;
+  --txt-mute:rgba(26,43,60,0.45);
+  --radius:  16px;
+}
+
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background: linear-gradient(145deg,#DFF0FA 0%,#E8F3F9 40%,#EDF6F3 100%);
+  min-height:100vh;
+  color:var(--txt);
+  padding:28px 20px 48px;
+}
+
+/* ── NAV ── */
+.nav{
+  display:flex; align-items:center; justify-content:space-between;
+  max-width:1500px; margin:0 auto 28px;
+  flex-wrap:wrap; gap:16px;
+}
+.nav-brand{ display:flex; align-items:center; gap:12px; }
+.nav-logo{
+  width:42px; height:42px; border-radius:12px;
+  background:linear-gradient(135deg,var(--blue-h),var(--blue-s));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1rem; font-weight:900; color:#fff;
+  box-shadow:0 4px 12px rgba(43,95,165,0.30);
+}
+.nav-title{ font-size:1.3rem; font-weight:700; color:var(--txt); }
+.nav-sub{ font-size:0.74rem; color:var(--txt-mute); margin-top:2px; }
+.nav-btn{
+  display:inline-flex; align-items:center; gap:7px;
+  padding:9px 20px; border-radius:999px; font-size:0.8rem;
+  font-weight:700; text-decoration:none; transition:transform .2s,box-shadow .2s;
+}
+.nav-btn:hover{ transform:translateY(-2px); }
+.btn-home{
+  background:linear-gradient(135deg,#6366F1,#818CF8);
+  color:#fff; box-shadow:0 4px 14px rgba(99,102,241,0.30);
+}
+.btn-home:hover{ box-shadow:0 8px 22px rgba(99,102,241,0.45); }
+.btn-propack{
+  background:linear-gradient(135deg,#F59E0B,#FBBF24);
+  color:#1a1a1a; box-shadow:0 4px 14px rgba(245,158,11,0.30);
+}
+.btn-propack:hover{ box-shadow:0 8px 22px rgba(245,158,11,0.45); }
+.nav-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+
+/* ── TABLE SECTION ── */
+.table-section{
+  max-width:1500px; margin:0 auto;
+  background:var(--glass); border:1px solid var(--glass-b);
+  border-radius:20px; backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  padding:28px; box-shadow:var(--shadow);
+}
+.table-header{
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:12px; margin-bottom:18px;
+}
+.table-title{ font-size:1.15rem; font-weight:700; color:var(--txt); }
+.table-sub{ font-size:0.76rem; color:var(--txt-mute); margin-top:3px; }
+
+.tbl-controls{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.tbl-search{
+  background:rgba(43,95,165,0.06); border:1px solid var(--glass-b);
+  border-radius:999px; padding:9px 18px; color:var(--txt);
+  font-size:0.83rem; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  outline:none; width:260px; transition:border-color .2s,box-shadow .2s;
+}
+.tbl-search::placeholder{ color:var(--txt-mute); }
+.tbl-search:focus{ border-color:var(--blue-h); box-shadow:0 0 0 3px rgba(108,160,200,0.18); }
+
+.tbl-pagesize{
+  background:rgba(43,95,165,0.06); border:1px solid var(--glass-b);
+  border-radius:999px; padding:9px 14px; color:var(--txt-soft);
+  font-size:0.8rem; font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  outline:none; cursor:pointer;
+}
+
+.data-table{ width:100%; border-collapse:collapse; font-size:0.82rem; min-width:900px; }
+.data-table thead tr{ border-bottom:2px solid rgba(43,95,165,0.18); }
+.data-table th{
+  padding:12px 14px; text-align:left;
+  font-size:0.68rem; text-transform:uppercase; letter-spacing:0.07em;
+  font-weight:700; color:var(--blue-s); white-space:nowrap;
+  cursor:pointer; user-select:none; transition:color .15s;
+  position:sticky; top:0; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px);
+}
+.data-table th:hover{ color:var(--marm); }
+.data-table th .sort-icon{ margin-left:4px; opacity:0.4; font-size:0.62rem; }
+.data-table th.sort-asc  .sort-icon::after{ content:'▲'; }
+.data-table th.sort-desc .sort-icon::after{ content:'▼'; }
+.data-table th:not(.sort-asc):not(.sort-desc) .sort-icon::after{ content:'⇅'; }
+
+.data-table tbody tr{
+  border-bottom:1px solid rgba(43,95,165,0.07);
+  transition:background .14s;
+}
+.data-table tbody tr:hover{ background:rgba(43,95,165,0.05); }
+.data-table td{ padding:11px 14px; color:var(--txt-soft); white-space:nowrap; }
+.data-table td:first-child{ font-weight:700; color:var(--txt); }
+.data-table td.num{ text-align:right; font-variant-numeric:tabular-nums; color:var(--txt); }
+.data-table td.num-zero{ text-align:right; color:var(--txt-mute); }
+
+.table-scroll{ overflow-x:auto; max-height:640px; overflow-y:auto; border-radius:12px; }
+
+/* ── PAGINATION ── */
+.tbl-footer{
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:14px; margin-top:18px;
+}
+.tbl-count{ font-size:0.78rem; color:var(--txt-mute); }
+.pagination{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.page-btn{
+  min-width:34px; height:34px; padding:0 10px;
+  border-radius:10px; border:1px solid var(--glass-b);
+  background:rgba(43,95,165,0.05); color:var(--txt-soft);
+  font-size:0.8rem; font-weight:700; cursor:pointer;
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  transition:all .15s; display:flex; align-items:center; justify-content:center;
+}
+.page-btn:hover:not(:disabled){ background:rgba(43,95,165,0.14); color:var(--blue-s); }
+.page-btn.active{ background:linear-gradient(135deg,var(--blue-h),var(--blue-s)); color:#fff; border-color:transparent; }
+.page-btn:disabled{ opacity:0.35; cursor:not-allowed; }
+.page-ellipsis{ color:var(--txt-mute); padding:0 4px; font-size:0.8rem; }
+
+/* ── LOADING ── */
+.loading-msg{ text-align:center; color:var(--txt-mute); padding:50px 20px; font-size:0.88rem; }
+.spinner{
+  display:inline-block; width:22px; height:22px;
+  border:3px solid rgba(43,95,165,0.15);
+  border-top-color:var(--blue-h);
+  border-radius:50%; animation:spin .7s linear infinite; margin-bottom:10px;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo">CU</div>
+    <div>
+      <div class="nav-title">Customer Data</div>
+      <div class="nav-sub">รายชื่อและข้อมูลลูกค้า</div>
+    </div>
+  </div>
+  <div class="nav-actions">
+    <a href="index.html" class="nav-btn btn-home">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      HOME
+    </a>
+   
+  </div>
+</nav>
+
+<!-- TABLE -->
+<div class="table-section">
+  <div class="table-header">
+    <div>
+      <div class="table-title">📋 Customer List</div>
+      <div class="table-sub">คลิก Header เพื่อ Sort &nbsp;|&nbsp; พิมพ์เพื่อค้นหา &nbsp;|&nbsp; เลือกจำนวนแถวต่อหน้าได้</div>
+    </div>
+    <div class="tbl-controls">
+      <select class="tbl-pagesize" id="tblPageSize">
+        <option value="10">10 แถว/หน้า</option>
+        <option value="25" selected>25 แถว/หน้า</option>
+        <option value="50">50 แถว/หน้า</option>
+        <option value="100">100 แถว/หน้า</option>
+        <option value="all">แสดงทั้งหมด</option>
+      </select>
+      <input class="tbl-search" id="tblSearch" type="text" placeholder="🔍 ค้นหาลูกค้า...">
+    </div>
+  </div>
+
+  <div class="table-scroll">
+    <table class="data-table">
+      <thead id="tblHead"></thead>
+      <tbody id="tblBody"></tbody>
+    </table>
+  </div>
+
+  <div id="tblLoading" class="loading-msg">
+    <div class="spinner"></div><br>Loading customer data…
+  </div>
+
+  <div class="tbl-footer">
+    <div class="tbl-count" id="tblCount"></div>
+    <div class="pagination" id="tblPagination"></div>
+  </div>
+</div>
+
+<script>
+// OLD
+// https://docs.google.com/spreadsheets/d/1VXsYKrQaOs0kZy2SC4yO-3CHm4yN5AyR/edit?gid=509251614#gid=509251614
+// NEW
+// https://docs.google.com/spreadsheets/d/1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0/edit?gid=509251614#gid=509251614
+var SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
+var GID      = '509251614';
+var CSV_URL  =  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+
+var tableHeaders  = [];
+var tableAllRows  = [];   // ข้อมูลทั้งหมด (ไม่ผ่าน filter)
+var filteredRows  = [];   // ข้อมูลหลังค้นหา/เรียง
+var sortColIdx    = -1;
+var sortAsc       = true;
+var currentPage   = 1;
+var pageSize      = 25;   // 'all' หรือตัวเลข
+
+function cleanNumCandidate(v) {
+  if (v === undefined || v === null || v === '') return NaN;
+  var s = String(v).replace(/,/g,'').trim();
+  if (s === '') return NaN;
+  var n = parseFloat(s);
+  return n;
+}
+
+async function init() {
+  try {
+    var resp = await fetch(CSV_URL + '&t=' + Date.now());
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    var csv = await resp.text();
+    Papa.parse(csv, {
+      header: true,
+      skipEmptyLines: true,
+      complete: function(res) {
+        tableHeaders = res.meta && res.meta.fields ? res.meta.fields : [];
+        tableAllRows = res.data.filter(function(row){
+          return tableHeaders.some(function(h){
+            var v = row[h];
+            return v !== undefined && v !== null && String(v).trim() !== '';
+          });
+        });
+        buildTableHead();
+        applyFilterSortPaginate();
+        document.getElementById('tblLoading').style.display = 'none';
+      },
+      error: function(e) { showError('Parse error: ' + e.message); }
+    });
+  } catch (e) {
+    showError('โหลดข้อมูลไม่ได้: ' + e.message);
+  }
+}
+
+function buildTableHead() {
+  var thead = document.getElementById('tblHead');
+  thead.innerHTML = '<tr>' + tableHeaders.map(function(h, i){
+    var lbl = h ? h : ('Col ' + (i+1));
+    return '<th onclick="sortTable(' + i + ')">' + lbl + '<span class="sort-icon"></span></th>';
+  }).join('') + '</tr>';
+}
+
+function getRowValues(row) {
+  return tableHeaders.map(function(h){ return row[h]; });
+}
+
+function applyFilterSortPaginate() {
+  var q = document.getElementById('tblSearch').value.toLowerCase().trim();
+
+  // ── Search ──
+  filteredRows = q
+    ? tableAllRows.filter(function(row){
+        return tableHeaders.some(function(h){
+          var v = row[h];
+          return v !== undefined && v !== null && String(v).toLowerCase().indexOf(q) !== -1;
+        });
+      })
+    : tableAllRows.slice();
+
+  // ── Sort ──
+  if (sortColIdx !== -1) {
+    var col = tableHeaders[sortColIdx];
+    filteredRows.sort(function(a, b){
+      var na = cleanNumCandidate(a[col]), nb = cleanNumCandidate(b[col]);
+      if (!isNaN(na) && !isNaN(nb)) return sortAsc ? na - nb : nb - na;
+      var sa = String(a[col] || '').toLowerCase(), sb = String(b[col] || '').toLowerCase();
+      return sortAsc ? sa.localeCompare(sb) : sb.localeCompare(sa);
+    });
+  }
+
+  currentPage = 1;
+  renderPage();
+}
+
+function renderPage() {
+  var total = filteredRows.length;
+  var size = pageSize === 'all' ? Math.max(total, 1) : pageSize;
+  var totalPages = Math.max(1, Math.ceil(total / size));
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  var start = (currentPage - 1) * size;
+  var pageRows = pageSize === 'all' ? filteredRows : filteredRows.slice(start, start + size);
+
+  renderTableBody(pageRows);
+  renderPagination(totalPages);
+
+  var shownStart = total === 0 ? 0 : start + 1;
+  var shownEnd   = pageSize === 'all' ? total : Math.min(start + size, total);
+  document.getElementById('tblCount').textContent =
+    'แสดง ' + shownStart + '–' + shownEnd + ' จากทั้งหมด ' + total + ' แถว' +
+    (total !== tableAllRows.length ? ' (กรองจาก ' + tableAllRows.length + ' แถว)' : '');
+}
+
+function renderTableBody(rows) {
+  var tbody = document.getElementById('tblBody');
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="' + Math.max(tableHeaders.length,1) + '" style="text-align:center;color:var(--txt-mute);padding:28px">ไม่พบข้อมูล</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(function(row){
+    var vals = getRowValues(row);
+    return '<tr>' + vals.map(function(v, i){
+      if (i === 0) return '<td>' + (v !== undefined && v !== null && v !== '' ? v : '—') + '</td>';
+      var num = cleanNumCandidate(v);
+      if (!isNaN(num) && v !== '' && v !== undefined && v !== null) {
+        return '<td class="' + (num === 0 ? 'num-zero' : 'num') + '">' + num.toLocaleString() + '</td>';
+      }
+      return '<td>' + (v !== undefined && v !== null && v !== '' ? v : '—') + '</td>';
+    }).join('') + '</tr>';
+  }).join('');
+}
+
+function renderPagination(totalPages) {
+  var el = document.getElementById('tblPagination');
+  if (pageSize === 'all' || totalPages <= 1) { el.innerHTML = ''; return; }
+
+  var html = '';
+  html += '<button class="page-btn" ' + (currentPage===1?'disabled':'') + ' onclick="goToPage(' + (currentPage-1) + ')">‹</button>';
+
+  var pages = getPageList(currentPage, totalPages);
+  pages.forEach(function(p){
+    if (p === '...') { html += '<span class="page-ellipsis">…</span>'; }
+    else {
+      html += '<button class="page-btn ' + (p===currentPage?'active':'') + '" onclick="goToPage(' + p + ')">' + p + '</button>';
+    }
+  });
+
+  html += '<button class="page-btn" ' + (currentPage===totalPages?'disabled':'') + ' onclick="goToPage(' + (currentPage+1) + ')">›</button>';
+  el.innerHTML = html;
+}
+
+function getPageList(cur, total) {
+  var delta = 1, range = [], out = [];
+  for (var i = Math.max(2, cur-delta); i <= Math.min(total-1, cur+delta); i++) range.push(i);
+
+  out.push(1);
+  if (range.length && range[0] > 2) out.push('...');
+  out = out.concat(range);
+  if (range.length && range[range.length-1] < total-1) out.push('...');
+  if (total > 1) out.push(total);
+  return out;
+}
+
+function goToPage(p) {
+  currentPage = p;
+  renderPage();
+  document.querySelector('.table-scroll').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function sortTable(colIdx) {
+  sortAsc = (sortColIdx === colIdx) ? !sortAsc : true;
+  sortColIdx = colIdx;
+  document.querySelectorAll('.data-table th').forEach(function(th, i){
+    th.classList.remove('sort-asc','sort-desc');
+    if (i === colIdx) th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
+  });
+  applyFilterSortPaginate();
+}
+
+document.getElementById('tblSearch').addEventListener('input', function(){
+  applyFilterSortPaginate();
+});
+
+document.getElementById('tblPageSize').addEventListener('change', function(){
+  pageSize = this.value === 'all' ? 'all' : parseInt(this.value, 10);
+  currentPage = 1;
+  renderPage();
+});
+
+function showError(msg){
+  document.getElementById('tblLoading').innerHTML = '<span style="color:#E8622A">⚠️ ' + msg + '</span>';
+}
+
+init();
+</script>
+</body>
+</html>
