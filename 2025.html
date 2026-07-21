@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target vs Actual Dashboard - 2025</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            /* Default: Executive (Dark Tone) */
+            --bg1: #0f172a; --bg2: #1e293b; --bg3: #111827;
+            --glass: rgba(255,255,255,0.07);
+            --glass-border: rgba(255,255,255,0.10);
+            --text-main: #ffffff; 
+            --text-soft: rgba(255,255,255,0.85);
+            --text-muted: rgba(255,255,255,0.50);
+            --status-healthy: #4ADE80;
+            --status-warning: #FBBF24;
+            --status-critical: #FB7185;
+            --gauge-empty: rgba(255,255,255,0.08);
+            --grid-color: rgba(255,255,255,0.05);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+            min-height: 100vh; padding: 30px 20px; color: var(--text-main); transition: all 0.3s ease;
+        }
+        .stats-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            gap: 20px; margin-bottom: 30px; max-width: 1400px; margin-left: auto; margin-right: auto; 
+        }
+        .stat-card { padding: 24px; }
+
+        /* ✅ Tooltip อธิบายสูตรตอน hover การ์ด */
+        .stat-card.has-tip { position: relative; cursor: help; }
+        .stat-card.has-tip .tip-icon {
+            position: absolute; top: 14px; right: 16px;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: rgba(255,255,255,0.12); color: var(--text-muted);
+            font-size: 0.68rem; font-weight: 700; display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s, color 0.2s;
+        }
+        .stat-card.has-tip:hover .tip-icon { background: #818CF8; color: #fff; }
+        .stat-card.has-tip .tip-box {
+            position: absolute; left: 50%; bottom: calc(100% + 10px); transform: translateX(-50%) translateY(6px);
+            min-width: 240px; max-width: 300px;
+            background: #0f172a; color: #E2E8F0;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px; padding: 12px 14px;
+            font-size: 0.75rem; font-weight: 500; line-height: 1.5;
+            text-transform: none; letter-spacing: normal;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transition: opacity 0.18s ease, transform 0.18s ease;
+            z-index: 50;
+        }
+        .stat-card.has-tip .tip-box b { color: #A5B4FC; font-weight: 700; }
+        .stat-card.has-tip .tip-box::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border: 6px solid transparent; border-top-color: #0f172a;
+        }
+        .stat-card.has-tip:hover .tip-box {
+            opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+        }
+        @media (max-width: 640px) {
+            .stat-card.has-tip .tip-box { left: 0; transform: translateX(0) translateY(6px); }
+            .stat-card.has-tip:hover .tip-box { transform: translateX(0) translateY(0); }
+            .stat-card.has-tip .tip-box::after { left: 20px; }
+        }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+        .stat-value { font-size: 2rem; font-weight: 800; display: block; margin-top: 8px; color: var(--text-main); }
+        
+        .dashboardBCK { display: grid; grid-template-columns: 1fr 1.5fr; gap: 24px; max-width: 1400px; margin: auto; }
+        .dashboard { display: flex; align-items: flex-start; grid-template-columns: 1fr 1.5fr; gap: 24px; max-width: 1400px; margin: auto; }
+        
+        @media (max-width: 1024px) { .dashboard { grid-template-columns: 1fr; } }
+
+        .glass { 
+            background: var(--glass); backdrop-filter: blur(20px); 
+            border: 1px solid var(--glass-border); border-radius: 24px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+        }
+        .card-left { 
+                    padding: 30px;
+                    flex: 0 0 380px;   /* ✅ กำหนดความกว้างตายตัว ไม่ยืด */
+                    min-width: 0;
+                }
+        .card-right{  flex: 1;           /* ✅ ขยายเต็มที่เหลือ */
+                        min-width: 0;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 24px; }
+        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .theme-switcher { display: flex; gap: 6px; background: rgba(0,0,0,0.15); padding: 5px; border-radius: 999px; border: 1px solid var(--glass-border); }
+        .theme-btn { border: none; padding: 8px 18px; border-radius: 999px; cursor: pointer; background: transparent; color: var(--text-soft); font-size: 0.8rem; font-weight: 600; }
+        .theme-btn.active { background: #818CF8; color: #fff !important; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-size: 0.75rem; color: var(--text-muted); padding: 15px 12px; border-bottom: 1px solid var(--glass-border); }
+        td { padding: 16px 12px; border-bottom: 1px solid var(--glass-border); color: var(--text-soft); }
+        .value { font-weight: 700; color: var(--text-main); text-align: right; }
+
+        .footer-date { margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.1); border-radius: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .gauge-statusx { font-size: 0.75rem; font-weight: 700; padding: 10px 16px; border-radius: 999px; display: flex; align-items: center; gap: 8px; }
+        .gauge-statusx::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+        .card-graph { padding: 30px; text-align: center; margin-bottom: 20px; }
+        .card-graph h3 { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 20px; text-align: left; font-weight: 700; }
+        .chart-desc { font-size: 0.78rem; color: var(--text-muted); text-align: left; line-height: 1.6; margin-top: -12px; margin-bottom: 18px; }
+        .chart-insight {
+            margin-top: 14px; padding: 10px 14px; border-radius: 12px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
+            font-size: 0.8rem; color: var(--text-soft); text-align: left; line-height: 1.6;
+        }
+        .chart-insight b { color: var(--status-healthy); }
+        .chart-insight b.warn { color: var(--status-warning); }
+        .chart-insight b.bad { color: var(--status-critical); }
+        .chart-container { height: 300px; position: relative; }
+        .gauge-wrap #percentText { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); font-size: 2.8rem; font-weight: 900; }
+        .status-badge { display: inline-block; padding: 8px 20px; border-radius: 999px; font-size: 0.8rem; font-weight: 800; margin-top: 15px; }
+
+        /* ✅ Loading overlay */
+        #loading-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+            background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+            transition: opacity 0.4s ease;
+        }
+        #loading-overlay.hidden { opacity: 0; pointer-events: none; }
+        .loading-spinner {
+            width: 54px; height: 54px; border-radius: 50%;
+            border: 4px solid var(--glass-border);
+            border-top-color: #818CF8;
+            animation: spin 0.9s linear infinite;
+        }
+        .loading-text { color: var(--text-soft); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.05em; }
+        .loading-sub { color: var(--text-muted); font-size: 0.75rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ✅ ทำให้เนื้อหาหลักซ่อนไว้ก่อนจนกว่าจะโหลดเสร็จ (กันเห็นค่า 0 กระพริบ) */
+        #main-content { opacity: 0; transition: opacity 0.4s ease; }
+        #main-content.ready { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <!-- ✅ Loading overlay -->
+    <div id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">กำลังโหลดข้อมูล...</div>
+        <div class="loading-sub">Fetching data from Google Sheets</div>
+    </div>
+
+    <div id="main-content">
+
+    <!-- Navigation Buttons -->
+<div style="
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+">
+    <a href="index.html" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 22px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #6366F1, #818CF8);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-decoration: none;
+        letter-spacing: 0.05em;
+        box-shadow: 0 4px 15px rgba(99,102,241,0.4);
+        transition: transform 0.2s, box-shadow 0.2s;
+    "
+    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(99,102,241,0.55)'"
+    onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(99,102,241,0.4)'"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        HOME
+    </a>
+
+    <a href="index.html" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 22px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #F59E0B, #FBBF24);
+        color: #1a1a1a;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-decoration: none;
+        letter-spacing: 0.05em;
+        box-shadow: 0 4px 15px rgba(245,158,11,0.4);
+        transition: transform 0.2s, box-shadow 0.2s;
+    "
+    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(245,158,11,0.55)'"
+    onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(245,158,11,0.4)'"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+            <!-- <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/> -->
+            <path d="M22 21H2V3h2v16h2V9h4v10h2V5h4v14h2v-6h4v6z"/>
+
+            <!-- <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/> -->
+
+
+        </svg>
+        2026
+    </a>
+ 
+
+<a href="customer.html" style="
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #0bf532, #81ec23);
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 15px rgba(34,197,94,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+"
+onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(34,197,94,0.55)'"
+onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(34,197,94,0.4)'"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+    </svg>
+    Customer
+</a>
+
+  </div>
+
+
+<div class="stats-grid">
+    <div class="stat-card glass"><span class="stat-label">Target <span class="target-year"></span></span><span class="stat-value" id="stat-target">0</span></div>
+    <div class="stat-card glass"><span class="stat-label">Actual Sales <span class="target-year"></span></span><span class="stat-value" id="stat-actual" style="color: var(--status-healthy);">0</span></div>
+    <div class="stat-card glass"><span class="stat-label">Achievement Rate</span><span class="stat-value" id="stat-rate">0%</span></div>
+</div>
+<div class="stats-grid">
+    <div class="stat-card glass"><span class="stat-label">Remaining rate <span class="target-year"></span></span><span class="stat-value" id="stat-remaining">0%</span></div>
+    <div class="stat-card glass"><span class="stat-label">Working Days Left <span class="target-year"></span></span><span class="stat-value" id="stat-working" style="color: var(--status-healthy);">0</span></div>
+    <div class="stat-card glass"><span class="stat-label">Required Sales / Day</span><span class="stat-value" id="stat-sale_per_day">0</span></div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card glass has-tip">
+        <span class="tip-icon">?</span>
+        <div class="tip-box">คาดการณ์ยอดขาย ณ สิ้นปี จากอัตราขายเฉลี่ยปัจจุบัน<br><b>สูตร:</b> Actual × (จำนวนวันทั้งปี ÷ จำนวนวันที่ผ่านไปแล้ว)</div>
+        <span class="stat-label">Forecast End of Year</span><span class="stat-value" id="stat-forecast">0</span>
+    </div>
+    <div class="stat-card glass has-tip">
+        <span class="tip-icon">?</span>
+        <div class="tip-box">อัตราการปิดการขายจากใบเสนอราคาเป็นออเดอร์จริง<br><b>สูตร:</b> (รวม PO ทั้งหมด ÷ รวม Quotation ทั้งหมด) × 100</div>
+        <span class="stat-label">Conversion Rate (QT → Order)</span><span class="stat-value" id="stat-conversion">0%</span>
+    </div>
+    <div class="stat-card glass has-tip">
+        <span class="tip-icon">?</span>
+        <div class="tip-box">ยอดขายที่ยังขาดอยู่กว่าจะถึงเป้าหมาย<br><b>สูตร:</b> Target − Actual</div>
+        <span class="stat-label">Sales Gap</span><span class="stat-value" id="stat-gap">0</span>
+    </div>
+</div>
+<div class="stats-grid">
+    <div class="stat-card glass has-tip">
+        <span class="tip-icon">?</span>
+        <div class="tip-box">สัดส่วนวันที่ผ่านไปแล้วของปีนี้ เทียบกับทั้งปี<br><b>สูตร:</b> (วันที่ผ่านไปแล้ว ÷ จำนวนวันทั้งปี) × 100</div>
+        <span class="stat-label">Time Progress <span class="target-year"></span></span><span class="stat-value" id="stat-timeprogress">0%</span>
+    </div>
+    <div class="stat-card glass has-tip">
+        <span class="tip-icon">?</span>
+        <div class="tip-box">เทียบว่ายอดขายนำหน้าหรือตามหลังแผนเวลาที่ผ่านไป<br><b>สูตร:</b> (Achievement Rate ÷ Time Progress) × 100<br>≥100% = นำหน้าแผน &nbsp;|&nbsp; &lt;100% = ตามหลังแผน</div>
+        <span class="stat-label">Performance Index</span><span class="stat-value" id="stat-perfindex">0%</span>
+    </div>
+
+        <div class="stat-card glass has-tip">
+        <span class="tip-icon">?</span>
+        <div class="tip-box">ยอดรวมมูลค่าใบเสนอราคาที่ส่งแล้วในปี 2025<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2025 และ Status2 = '07-Sent Quotation'</div>
+        <span class="stat-label">Total QT</span><span class="stat-value" id="stat-total-qt">0</span>
+    </div>
+    <div class="stat-card glass has-tip">
+        <span class="tip-icon">?</span>
+        <div class="tip-box">ยอดรวมมูลค่าออเดอร์ที่ปิดแล้วในปี 2025<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2025 และ Status2 = '13-Order'</div>
+        <span class="stat-label">Total PO</span><span class="stat-value" id="stat-total-po">0</span>
+    </div>
+
+</div>
+
+
+
+<div class="dashboard">
+    <div class="card-left glass">
+            <div class="theme-switcher">
+                <button class="theme-btn" data-theme="executive">Executive</button>
+                <button class="theme-btn" data-theme="neon">Neon</button>
+                <button class="theme-btn" data-theme="apple">Apple</button>
+            </div>        
+        <div class="toolbar">
+            <h2>📊 Overview</h2>
+        </div>
+        <table>
+            <thead><tr><th>Year</th><th style="text-align:right">Target (THB)</th><th style="text-align:right">Actual (Used)</th></tr></thead>
+            <tbody id="data-table-body"></tbody>
+        </table>
+ 
+    <div style="margin-top: 24px;">
+         <div class="card-graph glass ">
+            <h2> ( 2025 )</h2>
+            <h5>Comparison by Salesman (QT vs PO )</h5>
+            <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSaleman"></canvas></div>
+        </div>
+    </div>
+
+    </div>
+
+ 
+       
+
+    <div class="card-right">
+        <div class="card-graph glass">
+            <h3>Yearly Progress</h3>
+            <div class="chart-container gauge-wrap">
+                <canvas id="gaugeChart"></canvas>
+                <span id="percentText">0%</span>
+            </div>
+            <div id="gaugeStatus" class="status-badge">...</div>
+            
+    <div class="footer-date">         
+    <div class="gauge-statusx" id="status_c">Critical (< 30%)</div>
+    <div class="gauge-statusx" id="status_w">Warning (30-80%)</div>
+    <div class="gauge-statusx" id="status_h">Healthy (> 80%)</div>  
+
+        </div>
+
+    
+    </div>
+
+        <div class="card-graph glass">
+            <h3>Monthly Sales &amp; Growth (2025)</h3>
+            <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSales"></canvas></div>
+        </div>        
+        <div class="card-graph glass">
+            <h3>Comparison by Year</h3>
+            <div class="chart-container"><canvas id="barChart"></canvas></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ✅ Sales Performance Analytics -->
+<div style="max-width:1400px; margin:32px auto 0;">
+    <h2 style="color:var(--text-main); font-size:1.15rem; margin-bottom:18px; padding-left:4px;">📈 Sales Performance Analytics</h2>
+
+    <div style="display:grid; grid-template-columns: 1.3fr 1fr; gap:24px; margin-bottom:24px;">
+        <div class="card-graph glass" style="text-align:left;">
+            <h3>Sales Funnel by Stage (2025)</h3>
+            <p class="chart-desc">จำนวนดีลที่อยู่ในแต่ละขั้นตอนของการขาย เรียงตามลำดับกระบวนการ (00 → 13) ยิ่งแท่งไหนสั้นกว่าขั้นก่อนหน้ามาก แปลว่ามีการหลุด/ตกหล่นที่ขั้นนั้นเยอะ</p>
+            <div class="chart-container" style="height:360px;"><canvas id="funnelChart"></canvas></div>
+            <div id="funnelInsight" class="chart-insight"></div>
+        </div>
+        <div class="card-graph glass">
+            <h3>Win Rate: Order vs Lost Order (2025)</h3>
+            <p class="chart-desc">สัดส่วนดีลที่ปิดสำเร็จ (Order) เทียบกับดีลที่หลุด (Lost Order) — วัดสุขภาพการปิดการขายของทีมโดยรวม</p>
+            <div class="chart-container" style="height:360px;"><canvas id="winRateDonut"></canvas></div>
+            <div id="winRateSummary" class="chart-insight"></div>
+        </div>
+    </div>
+
+    <div class="card-graph glass" style="text-align:left; margin-bottom:24px;">
+        <h3>Cumulative Sales vs Target Pace (2025)</h3>
+        <p class="chart-desc">เส้นทึบ = ยอดขายสะสมจริงในแต่ละเดือน เทียบกับเส้นประ = เป้าหมายตามจังหวะเวลาที่ควรจะเป็น (แบ่งเป้าเท่า ๆ กันทั้ง 12 เดือน) ถ้าเส้นทึบอยู่เหนือเส้นประ แปลว่ายอดขายนำหน้าแผน</p>
+        <div class="chart-container" style="height:340px;"><canvas id="cumulativeChart"></canvas></div>
+        <div id="cumulativeInsight" class="chart-insight"></div>
+    </div>
+
+    <div class="card-graph glass" style="text-align:left; margin-bottom:24px;">
+        <h3>Year-over-Year Monthly Comparison</h3>
+        <p class="chart-desc">เปรียบเทียบยอดขายรายเดือนของแต่ละปีในกราฟเดียวกัน ช่วยดูรูปแบบตามฤดูกาล (seasonality) และเทียบว่าปีนี้ทำได้ดีกว่าหรือแย่กว่าปีก่อนช่วงเดือนไหนบ้าง</p>
+        <div class="chart-container" style="height:340px;"><canvas id="yoyChart"></canvas></div>
+        <div id="yoyInsight" class="chart-insight"></div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:24px;">
+        <div class="card-graph glass" style="text-align:left;">
+            <h3>Pipeline Value by Stage (2025)</h3>
+            <p class="chart-desc">มูลค่าเงิน (บาท) ที่ค้างอยู่ในแต่ละขั้นตอนของ pipeline บอกได้ว่าเงินไปกองอยู่ตรงไหนเยอะที่สุด ต้องเร่งผลักดันขั้นไหนเป็นพิเศษ</p>
+            <div class="chart-container" style="height:380px;"><canvas id="pipelineChart"></canvas></div>
+            <div id="pipelineInsight" class="chart-insight"></div>
+        </div>
+        <div class="card-graph glass" style="text-align:left;">
+            <h3>Sales Leaderboard (2025)</h3>
+            <p class="chart-desc">จัดอันดับพนักงานขาย Top 15 ตามยอดขายจริง (PO) เทียบกับมูลค่า Quotation ที่เสนอไป (ยังไม่มีเป้ารายบุคคลในชีท จึงแสดงเป็นอันดับเทียบกันเองในทีม)</p>
+            <div class="chart-container" style="height:380px;"><canvas id="leaderboardChart"></canvas></div>
+            <div id="leaderboardInsight" class="chart-insight"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // target
+    const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
+    const GID = '918753587';
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+    
+    const DEFAULT_THEME = 'executive';
+// NEW    
+// https://docs.google.com/spreadsheets/d/1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0/edit?gid=918753587#gid=918753587
+// OLD
+// https://docs.google.com/spreadsheets/d/1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0/edit?gid=48822130#gid=48822130
+const THEMES = {
+        executive: { css: {
+            '--bg1': '#0f172a', '--bg2': '#1e293b', '--bg3': '#111827',
+            '--glass': 'rgba(255,255,255,0.07)', '--glass-border': 'rgba(255,255,255,0.10)',
+            '--text-main': '#ffffff', '--text-soft': 'rgba(255,255,255,0.85)', '--text-muted': 'rgba(255,255,255,0.50)',
+            '--status-healthy': '#22C55E', '--status-warning': '#F59E0B', '--status-critical': '#EF4444', 
+            '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)'
+        }},
+        neon: { css: {
+            '--bg1': '#050816', '--bg2': '#1a103f', '--bg3': '#09090f',
+            '--glass': 'rgba(255,255,255,0.05)', '--glass-border': 'rgba(168,85,247,0.18)',
+            '--text-main': '#F8FAFC', '--text-soft': 'rgba(248,250,252,0.85)', '--text-muted': 'rgba(248,250,252,0.50)',
+            '--status-healthy': '#22D3EE', '--status-warning': '#FACC15', '--status-critical': '#FB7185', 
+            '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)'
+        }},
+        apple: { css: {
+            '--bg1': '#f3f4f6', '--bg2': '#e5e7eb', '--bg3': '#f8fafc',
+            '--glass': '#ffffff', '--glass-border': 'rgba(0,0,0,0.08)',
+            '--text-main': '#1d1d1f', '--text-soft': '#424245', '--text-muted': '#86868b',
+            '--status-healthy': '#28cd41', '--status-warning': '#ffcc00', '--status-critical': '#ff3b30', 
+            '--gauge-empty': '#e2e8f0', '--grid-color': 'rgba(0,0,0,0.05)'
+        }}
+    };
+
+    let gaugeChart = null, barChart = null, globalData = null;
+    let currentThemeKey = localStorage.getItem('dashboard-theme') || DEFAULT_THEME;
+
+    // ✅ state สำหรับ Sales Performance Analytics (รอข้อมูลครบ 3 แหล่งก่อนค่อย render)
+    let monthlyByYear = null;      // { '2024':[12 nums], '2025':[...], '2026':[...] }
+    let statusSummaryRows = null;  // [{ year, status2, count, amt, cost }]
+    let latestTargetInfo = null;   // { total, used, year }
+    let extraChartsRendered = false;
+
+    const cleanNum = (val) => {
+        if (typeof val === 'number') return val;
+        if (!val) return 0;
+        return parseFloat(val.toString().replace(/,/g, '').trim()) || 0;
+    };
+
+    async function init() {
+        try {
+            const resp = await fetch(CSV_URL + '&t=' + Date.now());
+            const csv = await resp.text();
+
+            Papa.parse(csv, {
+                header: false, skipEmptyLines: true,
+                complete: (results) => {
+                    const rows = results.data;
+
+                    // ✅ หาแถว header จริง (แถวที่มีคำว่า "Year" และ "Target") แทนการ fix ตำแหน่งคอลัมน์ตายตัว
+                    // กันปัญหาคอลัมน์เลื่อน/สลับตำแหน่งจากการ merge cell หรือแก้ไขชีท
+                    const headerRowIndex = rows.findIndex(r =>
+                        r.some(c => c && c.toString().trim() === 'Year') &&
+                        r.some(c => c && c.toString().trim() === 'Target')
+                    );
+                    const header = headerRowIndex !== -1 ? rows[headerRowIndex] : rows[1];
+
+                    const findCol = (name) => header.findIndex(h => h && h.toString().trim().toLowerCase() === name.toLowerCase());
+                    const idx = {
+                        target:    findCol('Target'),
+                        year:      findCol('Year'),
+                        actual:    findCol('Amt'),
+                        balance:   findCol('Balance'),
+                        achieve:   findCol('Achieve_Rate'),
+                        remaining: findCol('Remaining_rate'),
+                        working:   findCol('Working Days Left'),
+                        required:  findCol('Required Sales / Day')
+                    };
+
+                    const startRow = (headerRowIndex !== -1 ? headerRowIndex : 1) + 1;
+
+                    // ✅ ดึงเฉพาะแถวที่คอลัมน์ Year เป็นตัวเลข 4 หลัก (ตัดแถว TOTAL ออก)
+                    const yearRows = rows.slice(startRow).filter(r =>
+                        r[idx.year] && /^\d{4}$/.test(r[idx.year].toString().trim())
+                    );
+
+                    globalData = yearRows.map(r => ({
+                        year: r[idx.year].toString().trim(),
+                        total: cleanNum(r[idx.target]),
+                        used: cleanNum(r[idx.actual]),
+                        balance: cleanNum(r[idx.balance]),
+                        achieveRate: cleanNum(r[idx.achieve])
+                    })).sort((a, b) => a.year - b.year);
+
+                    processData(globalData);
+
+                    // ✅ Remaining rate / Working Days Left / Required Sales per Day -> ใช้แถวของปีล่าสุด
+                    const latestYear = globalData.length ? globalData[globalData.length - 1].year : null;
+                    const latestRow = yearRows.find(r => r[idx.year].toString().trim() === latestYear);
+
+                    if (latestRow) {
+                        const remaining   = cleanNum(latestRow[idx.remaining]);
+                        const workingDays = cleanNum(latestRow[idx.working]);
+                        const salesPerDay = cleanNum(latestRow[idx.required]);
+
+                        const remEl = document.getElementById('stat-remaining');
+                        const workEl = document.getElementById('stat-working');
+                        const spdEl = document.getElementById('stat-sale_per_day');
+
+                        if (remEl) {
+                            remEl.innerText = remaining.toFixed(2) + '%';
+                            remEl.style.color = remaining > 70 ? 'var(--status-critical)' : (remaining > 20 ? 'var(--status-warning)' : 'var(--status-healthy)');
+                        }
+                        if (workEl) workEl.innerText = workingDays.toLocaleString();
+                        if (spdEl) spdEl.innerText = salesPerDay.toLocaleString(undefined, { maximumFractionDigits: 2 });
+                    }
+
+                    markLoaded(); // ✅ โหลดข้อมูล target เสร็จแล้ว
+                }
+            });
+
+        } catch (e) { console.error("Error:", e); markLoaded(); }
+    }
+
+    
+    async function initSalesMan() {
+    try {
+        const SHEET_IDsalesMan = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
+        const GIDsalesMan = '918753587';
+        const CSV_URLsalesMan = `https://docs.google.com/spreadsheets/d/${SHEET_IDsalesMan}/export?format=csv&gid=${GIDsalesMan}`;
+        const resp = await fetch(CSV_URLsalesMan + '&t=' + Date.now());
+        const csv = await resp.text();
+// NEW    
+// https://docs.google.com/spreadsheets/d/1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0/edit?gid=918753587#gid=918753587
+        // OLD        
+// https://docs.google.com/spreadsheets/d/1VXsYKrQaOs0kZy2SC4yO-3CHm4yN5AyR/edit?gid=918753587#gid=918753587
+
+        Papa.parse(csv, {
+            header: false, // ✅ อ่านแบบตำแหน่งคอลัมน์ดิบ (ไม่อิง header)
+            skipEmptyLines: true,
+            complete: (results) => {
+                const rows = results.data;
+
+                // ✅ ตำแหน่งคอลัมน์: V = Year, W = SaleMan, X = Status2, Z = Amt (0-based index) — ตาราง SaleMan ฝั่งซ้าย
+                const COL_YEAR    = 21; // V
+                const COL_SALEMAN = 22; // W
+                const COL_STATUS2 = 23; // X
+                const COL_AMT     = 25; // Z
+                const START_ROW = 2;    // แถว 3 (index 2)
+                const END_ROW   = 129;  // แถว 130 (index 129)
+                const ALLOWED_STATUS = ['13-Order', '07-Sent Quotation'];
+                const FILTER_YEAR = '2025';
+
+                // ✅ ตาราง summary (Year / Status2 / Count / Amt / Cost) เป็นคนละตารางกัน อยู่ที่ P,Q,R,S,T (0-based)
+                const COL_YEAR_P   = 15; // P
+                const COL_STATUS_Q = 16; // Q
+                const COL_COUNT_R  = 17; // R
+                const COL_AMT_S    = 18; // S
+                const COL_COST_T   = 19; // T
+
+                const rawRows = rows.slice(START_ROW, END_ROW + 1);
+
+                // ✅ Group ตาม SaleMan แล้วรวมยอด Amt แยกตาม Status2 (filter เฉพาะปี 2025 และ 13-Order / 07-Sent Quotation)
+                const grouped = {};
+                rawRows.forEach(r => {
+                    const year = r[COL_YEAR] ? r[COL_YEAR].toString().trim() : '';
+                    const name = r[COL_SALEMAN] ? r[COL_SALEMAN].toString().trim() : '';
+                    const status2 = r[COL_STATUS2] ? r[COL_STATUS2].toString().trim() : '';
+                    if (year !== FILTER_YEAR || !name || !ALLOWED_STATUS.includes(status2)) return;
+
+                    const amt = cleanNum(r[COL_AMT]);
+                    if (!grouped[name]) grouped[name] = { name, quotation: 0, po: 0 };
+
+                    if (status2 === '07-Sent Quotation') grouped[name].quotation += amt;
+                    if (status2 === '13-Order')          grouped[name].po += amt;
+                });
+
+                // ✅ Total QT / Total PO: SUM(col S) ที่ col P = 2025 และ col Q (Status2) ตรงตามเงื่อนไข
+                // สแกนทุกแถว (ไม่ใช้ START_ROW/END_ROW ของตาราง SaleMan เพราะเป็นคนละตารางกัน)
+                let totalQT = 0;
+                let totalPO = 0;
+                statusSummaryRows = [];
+                rows.forEach(r => {
+                    const yearP = r[COL_YEAR_P] ? r[COL_YEAR_P].toString().trim() : '';
+                    const statusQraw = r[COL_STATUS_Q] ? r[COL_STATUS_Q].toString().trim() : '';
+                    if (!/^\d{4}$/.test(yearP) || !statusQraw) return; // ข้ามแถว TOTAL / แถวว่าง
+
+                    const statusQ = statusQraw.toLowerCase();
+                    const amtS = cleanNum(r[COL_AMT_S]);
+
+                    if (yearP === FILTER_YEAR) {
+                        if (statusQ === '07-sent quotation') totalQT += amtS;
+                        if (statusQ === '13-order')           totalPO += amtS;
+                    }
+
+                    // ✅ เก็บไว้ใช้กับ Funnel / Win Rate / Pipeline Value chart
+                    statusSummaryRows.push({
+                        year: yearP,
+                        status2: statusQraw,
+                        count: cleanNum(r[COL_COUNT_R]),
+                        amt: amtS,
+                        cost: cleanNum(r[COL_COST_T]),
+                    });
+                });
+
+                // ✅ อัปเดต card Total QT / Total PO
+                const qtEl = document.getElementById('stat-total-qt');
+                const poEl = document.getElementById('stat-total-po');
+                if (qtEl) qtEl.innerText = totalQT.toLocaleString();
+                if (poEl) poEl.innerText = totalPO.toLocaleString();
+
+                dataSaleMan = Object.values(grouped);
+
+                processDataSalesMan(dataSaleMan);
+                markLoaded(); // ✅ โหลดข้อมูล salesman เสร็จแล้ว
+                tryRenderExtraCharts();
+            }
+        });
+    } catch (e) {
+        console.error('initSalesMan error:', e);
+        markLoaded();
+    }
+}
+
+
+    async function initSales() {
+    try {
+        const SHEET_IDsales = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
+        const GIDsales = '918753587';
+        const CSV_URLsales = `https://docs.google.com/spreadsheets/d/${SHEET_IDsales}/export?format=csv&gid=${GIDsales}`;
+        const resp = await fetch(CSV_URLsales + '&t=' + Date.now());
+        const csv = await resp.text();
+// https://docs.google.com/spreadsheets/d/1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0/edit?gid=918753587#gid=918753587
+
+        Papa.parse(csv, {
+            header: false, // ✅ อ่านแบบตำแหน่งคอลัมน์ดิบ เพื่อดึงตาราง AC3:AO10
+            skipEmptyLines: true,
+            complete: (results) => {
+                const rows = results.data;
+
+                // ✅ ตำแหน่งคอลัมน์ (0-based): AC = Year, AD-AO = ยอดขายรายเดือน (ม.ค.-ธ.ค.)
+                const COL_YEAR_LABEL   = 28; // AC
+                const MONTH_COL_START  = 29; // AD (ม.ค.)
+                const MONTH_COL_END    = 40; // AO (ธ.ค.)
+                const ROW_START = 2; // แถว 3 (index 2)
+                const ROW_END   = 9; // แถว 10 (index 9)
+                const FILTER_YEAR = '2025';
+                const MONTH_LABELS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+
+                const rangeRows = rows.slice(ROW_START, ROW_END + 1);
+
+                // ✅ หาแถวที่ตรงกับปี 2025 จากคอลัมน์ AB ถ้าไม่เจอ fallback ไปแถวสุดท้ายในช่วง (สมมติเรียงปีจากน้อยไปมาก)
+                let targetRow = rangeRows.find(r => r[COL_YEAR_LABEL] && r[COL_YEAR_LABEL].toString().trim() === FILTER_YEAR);
+                if (!targetRow) {
+                    console.warn('[Monthly Sales] ไม่พบแถวที่ AC = "2025" ในช่วงแถว 3-10 — ใช้แถวสุดท้ายในช่วงแทน กรุณาตรวจสอบตำแหน่งคอลัมน์ Year (AC) อีกครั้ง');
+                    targetRow = rangeRows[rangeRows.length - 1];
+                }
+
+                const monthlyValues = [];
+                for (let c = MONTH_COL_START; c <= MONTH_COL_END; c++) {
+                    monthlyValues.push(targetRow ? cleanNum(targetRow[c]) : 0);
+                }
+
+                // ✅ % Growth เทียบเดือนก่อนหน้า (เดือนแรกไม่มีเดือนก่อนหน้าในชุดนี้ -> null)
+                const growthValues = monthlyValues.map((v, i) => {
+                    if (i === 0) return null;
+                    const prev = monthlyValues[i - 1];
+                    if (!prev) return null;
+                    return ((v - prev) / prev) * 100;
+                });
+
+                renderMonthlySalesChart(MONTH_LABELS, monthlyValues, growthValues);
+
+                // ✅ เก็บ monthly ของทุกปีที่เจอในช่วง (สำหรับ Cumulative vs Target + YoY Overlay)
+                monthlyByYear = {};
+                rangeRows.forEach(r => {
+                    const yLabel = r[COL_YEAR_LABEL] ? r[COL_YEAR_LABEL].toString().trim() : '';
+                    if (!/^\d{4}$/.test(yLabel)) return;
+                    const vals = [];
+                    for (let c = MONTH_COL_START; c <= MONTH_COL_END; c++) vals.push(cleanNum(r[c]));
+                    monthlyByYear[yLabel] = vals;
+                });
+                window._monthLabelsTH = MONTH_LABELS;
+
+                markLoaded(); // ✅ โหลดข้อมูล monthly sales เสร็จแล้ว
+                tryRenderExtraCharts();
+            }
+        });
+    } catch (e) {
+        console.error('initSales error:', e);
+        markLoaded();
+    }
+}
+
+// ✅ Mixed Chart: Bar = ยอดขายรายเดือนปี 2025, Line = % Growth เทียบเดือนก่อน
+function renderMonthlySalesChart(labels, monthlyValues, growthValues) {
+    const canvas = document.getElementById('barChartSales');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    if (window.barChartSalesInstance) {
+        window.barChartSalesInstance.destroy();
+    }
+
+    window.barChartSalesInstance = new Chart(ctx, {
+        data: {
+            labels,
+            datasets: [
+                {
+                    type: 'bar',
+                    label: 'ยอดขาย 2025',
+                    data: monthlyValues,
+                    backgroundColor: 'rgba(99, 102, 241, 0.8)',   // indigo
+                    borderColor: 'rgba(99, 102, 241, 1)',
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    yAxisID: 'y',
+                    order: 2,
+                },
+                {
+                    type: 'line',
+                    label: '% Growth (เทียบเดือนก่อน)',
+                    data: growthValues,
+                    borderColor: 'rgba(251, 146, 60, 1)',        // orange
+                    backgroundColor: 'rgba(251, 146, 60, 1)',
+                    borderWidth: 2.5,
+                    tension: 0.35,
+                    spanGaps: true,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: 'rgba(251, 146, 60, 1)',
+                    yAxisID: 'y1',
+                    order: 1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        color: '#94a3b8',
+                        font: { size: 13, weight: 'bold' },
+                        padding: 20,
+                        usePointStyle: true,
+                        pointStyleWidth: 12,
+                    },
+                    onClick: function(e, legendItem, legend) {
+                        const index = legendItem.datasetIndex;
+                        const ci = legend.chart;
+                        if (ci.isDatasetVisible(index)) { ci.hide(index); legendItem.hidden = true; }
+                        else { ci.show(index); legendItem.hidden = false; }
+                    },
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleColor: '#f1f5f9',
+                    bodyColor: '#94a3b8',
+                    borderColor: '#334155',
+                    borderWidth: 1,
+                    padding: 12,
+                    callbacks: {
+                        label: (ctx) => {
+                            if (ctx.dataset.yAxisID === 'y1') {
+                                return ctx.parsed.y === null ? ' % Growth: N/A' : ` % Growth: ${ctx.parsed.y.toFixed(2)}%`;
+                            }
+                            return ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}`;
+                        },
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#94a3b8', font: { size: 12, weight: 'bold' } },
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                },
+                y: {
+                    position: 'left',
+                    ticks: {
+                        color: '#94a3b8',
+                        callback: (val) => {
+                            if (val >= 1000000) return (val / 1000000) + 'M';
+                            if (val >= 1000) return (val / 1000) + 'K';
+                            return val;
+                        },
+                    },
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    title: { display: true, text: 'ยอดขาย (บาท)', color: '#94a3b8' },
+                },
+                y1: {
+                    position: 'right',
+                    ticks: {
+                        color: '#FDBA74',
+                        callback: (val) => val + '%',
+                    },
+                    grid: { drawOnChartArea: false },
+                    title: { display: true, text: '% Growth', color: '#FDBA74' },
+                },
+            },
+        },
+    });
+}
+
+
+  
+    function processData(data) {
+        if (!data || data.length === 0) return;
+        const latest_2026 = data[data.length - 1];
+        const latest = data.find(d => d.year === '2025') || data[data.length - 1];
+
+        // ✅ Target = A3, Actual Sales = C3, Achievement Rate = E3 (อ่านค่าจากชีทตรง ๆ)
+        const rate = latest.achieveRate;
+
+        document.querySelectorAll('.target-year').forEach(el => el.innerText = latest.year);
+        document.getElementById('stat-target').innerText = latest.total.toLocaleString();
+        document.getElementById('stat-actual').innerText = latest.used.toLocaleString();
+        const rateEl = document.getElementById('stat-rate');
+        rateEl.innerText = rate.toFixed(2) + '%';
+        
+        const statusColor = rate < 30 ? 'var(--status-critical)' : (rate < 80 ? 'var(--status-warning)' : 'var(--status-healthy)');
+        rateEl.style.color = statusColor;
+
+        document.getElementById('data-table-body').innerHTML = data.slice().reverse().map(row => `
+            <tr><td>${row.year}</td><td class="value">${row.total.toLocaleString()}</td><td class="value" style="color: var(--status-healthy)">${row.used.toLocaleString()}</td></tr>
+        `).join('');
+
+        updateStatusLegend();
+        renderCharts(rate, latest.used, latest.total, data);
+        renderAdvancedStats(latest); // ✅ Forecast / Sales Gap / Time Progress / Performance Index
+
+        latestTargetInfo = { total: latest.total, used: latest.used, year: latest.year };
+        tryRenderExtraCharts();
+    }
+
+    // ✅ Forecast End of Year, Sales Gap, Time Progress %, Performance Index
+    function renderAdvancedStats(latest) {
+        const total = latest.total;
+        const used = latest.used;
+        const rate = latest.achieveRate; // Achievement Rate %
+        const year = parseInt(latest.year, 10);
+
+        // --- Sales Gap = ยอดที่ยังขาดอยู่ (Target - Actual) ---
+        const gap = Math.max(0, total - used);
+        const gapEl = document.getElementById('stat-gap');
+        if (gapEl) {
+            gapEl.innerText = gap.toLocaleString();
+            gapEl.style.color = gap === 0 ? 'var(--status-healthy)' : 'var(--status-warning)';
+        }
+
+        // --- Time Progress % = สัดส่วนวันที่ผ่านไปแล้วของปีนี้ ---
+        const today = new Date();
+        const startOfYear = new Date(year, 0, 1);
+        const endOfYear = new Date(year, 11, 31);
+        const totalDaysInYear = Math.round((endOfYear - startOfYear) / 86400000) + 1;
+        let elapsedDays;
+        if (today.getFullYear() > year) {
+            elapsedDays = totalDaysInYear; // ปีผ่านไปแล้วทั้งปี
+        } else if (today.getFullYear() < year) {
+            elapsedDays = 0; // ปียังไม่เริ่ม
+        } else {
+            elapsedDays = Math.round((today - startOfYear) / 86400000) + 1;
+        }
+        elapsedDays = Math.min(Math.max(elapsedDays, 0), totalDaysInYear);
+        const timeProgress = totalDaysInYear > 0 ? (elapsedDays / totalDaysInYear) * 100 : 0;
+
+        const tpEl = document.getElementById('stat-timeprogress');
+        if (tpEl) tpEl.innerText = timeProgress.toFixed(2) + '%';
+
+        // --- Forecast End of Year = ยอดขายที่คาดว่าจะได้เมื่อจบปี ตาม run-rate ปัจจุบัน ---
+        const safeElapsed = Math.max(elapsedDays, 1);
+        const forecast = elapsedDays > 0 ? used * (totalDaysInYear / safeElapsed) : used;
+        const forecastEl = document.getElementById('stat-forecast');
+        if (forecastEl) {
+            forecastEl.innerText = forecast.toLocaleString(undefined, { maximumFractionDigits: 0 });
+            forecastEl.style.color = forecast >= total ? 'var(--status-healthy)' : (forecast >= total * 0.8 ? 'var(--status-warning)' : 'var(--status-critical)');
+        }
+
+        // --- Performance Index = Achievement Rate เทียบกับ Time Progress (>100% = นำหน้าแผน, <100% = ตามหลังแผน) ---
+        const perfIndex = timeProgress > 0 ? (rate / timeProgress) * 100 : 0;
+        const perfEl = document.getElementById('stat-perfindex');
+        if (perfEl) {
+            perfEl.innerText = perfIndex.toFixed(1) + '%';
+            perfEl.style.color = perfIndex >= 100 ? 'var(--status-healthy)' : (perfIndex >= 80 ? 'var(--status-warning)' : 'var(--status-critical)');
+        }
+    }
+function renderCharts(rate, used, total, data) {
+        const canvas = document.getElementById('gaugeChart');
+        const gCtx = canvas.getContext('2d');
+        const rootStyles = getComputedStyle(document.documentElement);
+        
+        // ดึงสีจาก CSS Variables มาใช้ใน Chart.js
+        const colorMuted = rootStyles.getPropertyValue('--text-muted').trim();
+        const colorSoft = rootStyles.getPropertyValue('--text-soft').trim();
+        const gridColor = rootStyles.getPropertyValue('--grid-color').trim();
+        const emptyColor = rootStyles.getPropertyValue('--gauge-empty').trim();
+
+        if (gaugeChart) gaugeChart.destroy();
+
+        // --- ส่วนของ Gauge Chart ---
+        let gradient = gCtx.createLinearGradient(0, 0, canvas.width, 0);
+        let displayColor = '';
+        if (rate < 30) {
+            gradient.addColorStop(0, '#DC2626'); gradient.addColorStop(1, '#FB7185');
+            displayColor = rootStyles.getPropertyValue('--status-critical');
+        } else if (rate < 80) {
+            gradient.addColorStop(0, '#EA580C'); gradient.addColorStop(1, '#FBBF24');
+            displayColor = rootStyles.getPropertyValue('--status-warning');
+        } else {
+            gradient.addColorStop(0, '#16A34A'); gradient.addColorStop(1, '#4ADE80');
+            displayColor = rootStyles.getPropertyValue('--status-healthy');
+        }
+
+        document.getElementById('percentText').innerText = rate.toFixed(2) + '%';
+        document.getElementById('percentText').style.color = displayColor;
+        const badge = document.getElementById('gaugeStatus');
+        badge.innerText = rate < 30 ? 'CRITICAL' : (rate < 80 ? 'WARNING' : 'HEALTHY');
+        badge.style.background = displayColor + '22'; badge.style.color = displayColor;
+
+        gaugeChart = new Chart(gCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [used, Math.max(0, total - used)],
+                    backgroundColor: [gradient, emptyColor],
+                    borderWidth: 0, circumference: 180, rotation: 270, borderRadius: 15
+                }]
+            },
+            options: { cutout: '82%', maintainAspectRatio: false, plugins: { tooltip: { enabled: false } } }
+        });
+
+        // --- ส่วนของ Bar Chart (แก้ไขเรื่องสีฟอนต์ตรงนี้) ---
+        const bCtx = document.getElementById('barChart').getContext('2d');
+        if (barChart) barChart.destroy();
+        barChart = new Chart(bCtx, {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.year),
+                datasets: [
+                    { label: 'Target', data: data.map(d => d.total), backgroundColor: 'transparent', borderColor: '#818CF8', borderWidth: 2, borderRadius: 5 },
+                    { label: 'Actual', data: data.map(d => d.used), backgroundColor: rootStyles.getPropertyValue('--status-healthy'), borderRadius: 5 }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        type: 'logarithmic', 
+                        grid: { color: gridColor }, 
+                        ticks: { 
+                            color: colorMuted, // เปลี่ยนเป็นสีสว่างตามธีม
+                            callback: function(value) {
+                                const remain = value / (Math.pow(10, Math.floor(Math.log10(value))));
+                                if (remain === 1 || remain === 2 || remain === 5) {
+                                    if (value >= 1000000) return (value / 1000000) + 'M';
+                                    if (value >= 1000) return (value / 1000) + 'K';
+                                    return value;
+                                }
+                                return null;
+                            }
+                        }
+                    },
+                    x: { 
+                        ticks: { 
+                            color: colorSoft // เปลี่ยนเป็นสีสว่างตามธีม
+                        }, 
+                        grid: { display: false } 
+                    }
+                },
+                plugins: { 
+                    legend: { 
+                        labels: { 
+                            color: colorSoft, // สีตัวหนังสือ Target/Actual ด้านบน
+                            usePointStyle: true, 
+                            font: { weight: '600' } 
+                        } 
+                    } 
+                }
+            }
+        });
+    }
+    function renderChartsOld(rate, used, total, data) {
+        const canvas = document.getElementById('gaugeChart');
+        const gCtx = canvas.getContext('2d');
+        const rootStyles = getComputedStyle(document.documentElement);
+        const emptyColor = rootStyles.getPropertyValue('--gauge-empty').trim();
+
+        if (gaugeChart) gaugeChart.destroy();
+
+        let gradient = gCtx.createLinearGradient(0, 0, canvas.width, 0);
+        let displayColor = '';
+        if (rate < 30) {
+            gradient.addColorStop(0, '#DC2626'); gradient.addColorStop(1, '#FB7185');
+            displayColor = rootStyles.getPropertyValue('--status-critical');
+        } else if (rate < 80) {
+            gradient.addColorStop(0, '#EA580C'); gradient.addColorStop(1, '#FBBF24');
+            displayColor = rootStyles.getPropertyValue('--status-warning');
+        } else {
+            gradient.addColorStop(0, '#16A34A'); gradient.addColorStop(1, '#4ADE80');
+            displayColor = rootStyles.getPropertyValue('--status-healthy');
+        }
+
+        document.getElementById('percentText').innerText = rate.toFixed(1) + '%';
+        document.getElementById('percentText').style.color = displayColor;
+        const badge = document.getElementById('gaugeStatus');
+        badge.innerText = rate < 30 ? 'CRITICAL' : (rate < 80 ? 'WARNING' : 'HEALTHY');
+        badge.style.background = displayColor + '22'; badge.style.color = displayColor;
+
+        gaugeChart = new Chart(gCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [used, Math.max(0, total - used)],
+                    backgroundColor: [gradient, emptyColor],
+                    borderWidth: 0, circumference: 180, rotation: 270, borderRadius: 15
+                }]
+            },
+            options: { cutout: '82%', maintainAspectRatio: false, plugins: { tooltip: { enabled: false } } }
+        });
+
+        const bCtx = document.getElementById('barChart').getContext('2d');
+        if (barChart) barChart.destroy();
+        barChart = new Chart(bCtx, {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.year),
+                datasets: [
+                    { label: 'Target', data: data.map(d => d.total), backgroundColor: 'transparent', borderColor: '#818CF8', borderWidth: 2, borderRadius: 5 },
+                    { label: 'Actual', data: data.map(d => d.used), backgroundColor: rootStyles.getPropertyValue('--status-healthy'), borderRadius: 5 }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        type: 'logarithmic', 
+                        grid: { color: rootStyles.getPropertyValue('--grid-color') }, 
+                        ticks: { 
+                            color: 'var(--text-muted)',
+                            callback: function(value) {
+                                const remain = value / (Math.pow(10, Math.floor(Math.log10(value))));
+                                if (remain === 1 || remain === 2 || remain === 5) {
+                                    if (value >= 1000000) return (value / 1000000) + 'M';
+                                    if (value >= 1000) return (value / 1000) + 'K';
+                                    return value;
+                                }
+                                return null;
+                            }
+                        }
+                    },
+                    x: { ticks: { color: 'var(--text-soft)' }, grid: { display: false } }
+                },
+                plugins: { legend: { labels: { color: 'var(--text-soft)', usePointStyle: true, font: { weight: '600' } } } }
+            }
+        });
+    }
+// gen bar sale man
+function processDataSalesMan(data) {
+    const canvas = document.getElementById('barChartSaleman');
+
+    // ✅ Conversion Rate (Quotation → Order) = รวม PO ทั้งหมด / รวม Quotation ทั้งหมด
+    const totalQuotation = data.reduce((sum, d) => sum + d.quotation, 0);
+    const totalPO = data.reduce((sum, d) => sum + d.po, 0);
+    const conversionRate = totalQuotation > 0 ? (totalPO / totalQuotation) * 100 : 0;
+    const convEl = document.getElementById('stat-conversion');
+    if (convEl) {
+        convEl.innerText = conversionRate.toFixed(2) + '%';
+        convEl.style.color = conversionRate >= 50 ? 'var(--status-healthy)' : (conversionRate >= 20 ? 'var(--status-warning)' : 'var(--status-critical)');
+    }
+
+    if (!canvas) return;
+
+    // เรียงตาม Quotation มากสุด
+    const sorted = [...data].sort((a, b) => (b.quotation + b.po) - (a.quotation + a.po));
+
+    const labels    = sorted.map(d => d.name);
+    const quotation = sorted.map(d => d.quotation);
+    const po        = sorted.map(d => d.po);
+
+    // ทำลาย chart เก่า (ถ้ามี)
+    if (window._chartSaleman) {
+        window._chartSaleman.destroy();
+    }
+
+    window._chartSaleman = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Quotation',
+                    data: quotation,
+                    backgroundColor: 'rgba(99, 179, 237, 0.85)',   // ฟ้า
+                    borderColor:     'rgba(66, 153, 225, 1)',
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                },
+                {
+                    label: 'PO',
+                    data: po,
+                    backgroundColor: 'rgba(104, 211, 145, 0.85)',  // เขียว
+                    borderColor:     'rgba(72, 187, 120, 1)',
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'y',          // แนวนอน
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#e2e8f0',
+                        font: { size: 13, family: 'Inter, sans-serif' },
+                        usePointStyle: true,
+                        pointStyleWidth: 10,
+                        padding: 20,
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleColor: '#94a3b8',
+                    bodyColor: '#f1f5f9',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.x.toLocaleString()}`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(255,255,255,0.06)',
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        color: '#94a3b8',
+                        font: { size: 11 },
+                        precision: 0,
+                    },
+                    border: { display: false }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: {
+                        color: '#e2e8f0',
+                        font: { size: 12, weight: '500' },
+                    },
+                    border: { display: false }
+                }
+            },
+            animation: {
+                duration: 600,
+                easing: 'easeOutQuart',
+            }
+        }
+    });
+}
+
+    // ══════════════════════════════════════════════════════════
+    // ✅ Sales Performance Analytics — รอข้อมูลครบ 3 แหล่งก่อน render
+    // ══════════════════════════════════════════════════════════
+    const PALETTE = ['#6366F1','#22C55E','#F59E0B','#FB7185','#22D3EE','#A78BFA','#2DD4BF','#F472B6','#38BDF8','#A3E635','#FB923C','#EF4444'];
+    const ANALYTICS_YEAR = '2025';
+
+    function tryRenderExtraCharts() {
+        if (extraChartsRendered) return;
+        if (!monthlyByYear || !statusSummaryRows || !latestTargetInfo || !window.dataSaleMan) return;
+        extraChartsRendered = true;
+        renderSalesFunnel();
+        renderWinRateDonut();
+        renderCumulativeVsTarget();
+        renderYoYOverlay();
+        renderPipelineValueByStage();
+        renderLeaderboard();
+    }
+
+    function stagePrefix(status2) {
+        const n = parseInt(String(status2).split('-')[0], 10);
+        return isNaN(n) ? 999 : n;
+    }
+
+    // 1) Sales Funnel by Stage
+    function renderSalesFunnel() {
+        const canvas = document.getElementById('funnelChart');
+        if (!canvas) return;
+
+        const stageRows = statusSummaryRows
+            .filter(r => r.year === ANALYTICS_YEAR)
+            .sort((a, b) => stagePrefix(a.status2) - stagePrefix(b.status2));
+
+        const labels = stageRows.map(r => r.status2);
+        const counts = stageRows.map(r => r.count);
+        const colors = stageRows.map((_, i) => PALETTE[i % PALETTE.length]);
+
+        // ✅ หาขั้นที่มีอัตราหลุด (drop-off) มากที่สุดระหว่าง 2 ขั้นที่ติดกัน
+        const insightEl = document.getElementById('funnelInsight');
+        if (insightEl) {
+            let worstDrop = -1, worstFrom = '', worstTo = '';
+            for (let i = 1; i < counts.length; i++) {
+                if (counts[i - 1] > 0) {
+                    const drop = (1 - counts[i] / counts[i - 1]) * 100;
+                    if (drop > worstDrop) { worstDrop = drop; worstFrom = labels[i - 1]; worstTo = labels[i]; }
+                }
+            }
+            insightEl.innerHTML = worstDrop >= 0
+                ? `จุดที่หลุดมากที่สุด: <b class="bad">${worstFrom} → ${worstTo}</b> (ลดลง ${worstDrop.toFixed(1)}%) — ควรโฟกัสแก้ตรงนี้ก่อน`
+                : 'ยังไม่มีข้อมูลเพียงพอสำหรับวิเคราะห์จุดหลุด';
+        }
+
+        if (window._funnelChartInstance) window._funnelChartInstance.destroy();
+        window._funnelChartInstance = new Chart(canvas, {
+            type: 'bar',
+            data: { labels, datasets: [{ label: 'จำนวนดีล', data: counts, backgroundColor: colors, borderRadius: 6, borderSkipped: false }] },
+            options: {
+                indexAxis: 'y',
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#94a3b8',
+                        callbacks: { label: ctx => ` ${ctx.parsed.x.toLocaleString()} ดีล` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: 'var(--text-muted)' }, grid: { color: 'var(--grid-color)' } },
+                    y: { ticks: { color: 'var(--text-soft)', font: { size: 11 } }, grid: { display: false } }
+                }
+            }
+        });
+    }
+
+    // 2) Cumulative Sales vs Target Pace
+    function renderCumulativeVsTarget() {
+        const canvas = document.getElementById('cumulativeChart');
+        if (!canvas) return;
+        const monthly = monthlyByYear[ANALYTICS_YEAR];
+        if (!monthly || !latestTargetInfo) return;
+
+        const labels = window._monthLabelsTH || ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+        let running = 0;
+        const cumulativeActual = monthly.map(v => (running += v));
+        const target = latestTargetInfo.total;
+        const targetPace = labels.map((_, i) => (target / 12) * (i + 1));
+
+        // ✅ เทียบยอดสะสม ณ เดือนล่าสุดที่มีข้อมูล กับเป้าตามจังหวะเวลา
+        const insightEl = document.getElementById('cumulativeInsight');
+        if (insightEl) {
+            let lastIdx = -1;
+            monthly.forEach((v, i) => { if (v > 0) lastIdx = i; });
+            if (lastIdx >= 0) {
+                const actualCum = cumulativeActual[lastIdx];
+                const paceCum = targetPace[lastIdx];
+                const diffPct = paceCum > 0 ? ((actualCum - paceCum) / paceCum) * 100 : 0;
+                const ahead = diffPct >= 0;
+                insightEl.innerHTML =
+                    `ข้อมูล ณ ${labels[lastIdx]}: ยอดขายสะสม ${actualCum.toLocaleString()} บาท เทียบเป้าที่ควรทำได้ ${paceCum.toLocaleString()} บาท → ` +
+                    `<b class="${ahead ? '' : 'bad'}">${ahead ? 'นำหน้าแผน' : 'ตามหลังแผน'} ${Math.abs(diffPct).toFixed(1)}%</b>`;
+            } else {
+                insightEl.innerHTML = 'ยังไม่มีข้อมูลยอดขายของปีนี้';
+            }
+        }
+
+        if (window._cumulativeChartInstance) window._cumulativeChartInstance.destroy();
+        window._cumulativeChartInstance = new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [
+                    { label: 'ยอดขายสะสมจริง', data: cumulativeActual, borderColor: '#22C55E', backgroundColor: 'rgba(34,197,94,0.15)', borderWidth: 2.5, fill: true, tension: 0.3, pointRadius: 3 },
+                    { label: 'เป้าหมายตามจังหวะเวลา (Pace)', data: targetPace, borderColor: '#818CF8', borderDash: [6, 4], borderWidth: 2, fill: false, tension: 0, pointRadius: 0 },
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { labels: { color: 'var(--text-soft)', usePointStyle: true } },
+                    tooltip: {
+                        backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#94a3b8',
+                        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: 'var(--text-soft)' }, grid: { display: false } },
+                    y: { ticks: { color: 'var(--text-muted)', callback: v => v >= 1e6 ? (v/1e6)+'M' : v.toLocaleString() }, grid: { color: 'var(--grid-color)' } }
+                }
+            }
+        });
+    }
+
+    // 3) Win Rate Donut
+    function renderWinRateDonut() {
+        const canvas = document.getElementById('winRateDonut');
+        if (!canvas) return;
+
+        const rows2025 = statusSummaryRows.filter(r => r.year === ANALYTICS_YEAR);
+        const orderRow = rows2025.find(r => r.status2.toLowerCase() === '13-order');
+        const lostRow  = rows2025.find(r => r.status2.toLowerCase() === '11-lost order');
+        const orderCount = orderRow ? orderRow.count : 0;
+        const lostCount  = lostRow ? lostRow.count : 0;
+        const orderAmt   = orderRow ? orderRow.amt : 0;
+        const lostAmt    = lostRow ? lostRow.amt : 0;
+        const winRate = (orderCount + lostCount) > 0 ? (orderCount / (orderCount + lostCount)) * 100 : 0;
+
+        if (window._winRateDonutInstance) window._winRateDonutInstance.destroy();
+        window._winRateDonutInstance = new Chart(canvas, {
+            type: 'doughnut',
+            data: {
+                labels: ['Order (ปิดสำเร็จ)', 'Lost Order (หลุด)'],
+                datasets: [{ data: [orderCount, lostCount], backgroundColor: ['#22C55E', '#FB7185'], borderWidth: 0 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '68%',
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: 'var(--text-soft)', usePointStyle: true } },
+                    tooltip: {
+                        backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#94a3b8',
+                        callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed.toLocaleString()} ดีล` }
+                    }
+                }
+            }
+        });
+
+        const summaryEl = document.getElementById('winRateSummary');
+        if (summaryEl) {
+            summaryEl.innerHTML =
+                `Win Rate: <b style="color:var(--status-healthy)">${winRate.toFixed(1)}%</b>` +
+                ` &nbsp;|&nbsp; มูลค่า Order: ${orderAmt.toLocaleString()} บาท` +
+                ` &nbsp;|&nbsp; มูลค่า Lost: ${lostAmt.toLocaleString()} บาท`;
+        }
+    }
+
+    // 4) Year-over-Year Overlay
+    function renderYoYOverlay() {
+        const canvas = document.getElementById('yoyChart');
+        if (!canvas) return;
+        const labels = window._monthLabelsTH || ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+        const years = Object.keys(monthlyByYear).sort();
+        const yoyColors = { }; // มอบสีให้แต่ละปีแบบสม่ำเสมอ
+        const colorList = ['#818CF8', '#FBBF24', '#22C55E', '#FB7185', '#22D3EE'];
+        years.forEach((y, i) => yoyColors[y] = colorList[i % colorList.length]);
+
+        const datasets = years.map(y => ({
+            label: y,
+            data: monthlyByYear[y],
+            borderColor: yoyColors[y],
+            backgroundColor: yoyColors[y],
+            borderWidth: y === ANALYTICS_YEAR ? 3 : 2,
+            tension: 0.3,
+            pointRadius: 3,
+            fill: false,
+        }));
+
+        // ✅ เทียบยอดสะสม "ช่วงเวลาเดียวกัน" ของปีนี้กับปีก่อนหน้า
+        const insightEl = document.getElementById('yoyInsight');
+        if (insightEl) {
+            const thisYearData = monthlyByYear[ANALYTICS_YEAR];
+            const prevYear = String(parseInt(ANALYTICS_YEAR, 10) - 1);
+            const prevYearData = monthlyByYear[prevYear];
+            let lastIdx = -1;
+            if (thisYearData) thisYearData.forEach((v, i) => { if (v > 0) lastIdx = i; });
+
+            if (thisYearData && prevYearData && lastIdx >= 0) {
+                const sumThis = thisYearData.slice(0, lastIdx + 1).reduce((a, b) => a + b, 0);
+                const sumPrev = prevYearData.slice(0, lastIdx + 1).reduce((a, b) => a + b, 0);
+                const growth = sumPrev > 0 ? ((sumThis - sumPrev) / sumPrev) * 100 : null;
+                insightEl.innerHTML = growth === null
+                    ? `${ANALYTICS_YEAR} (ม.ค.-${labels[lastIdx]}): ${sumThis.toLocaleString()} บาท — ไม่มีข้อมูลปี ${prevYear} ช่วงเดียวกันเพื่อเทียบ`
+                    : `${ANALYTICS_YEAR} (ม.ค.-${labels[lastIdx]}): ${sumThis.toLocaleString()} บาท เทียบปี ${prevYear} ช่วงเดียวกัน ${sumPrev.toLocaleString()} บาท → ` +
+                      `<b class="${growth >= 0 ? '' : 'bad'}">${growth >= 0 ? 'เติบโต' : 'ลดลง'} ${Math.abs(growth).toFixed(1)}%</b>`;
+            } else {
+                insightEl.innerHTML = 'ยังไม่มีข้อมูลเพียงพอสำหรับเทียบปีต่อปี';
+            }
+        }
+
+        if (window._yoyChartInstance) window._yoyChartInstance.destroy();
+        window._yoyChartInstance = new Chart(canvas, {
+            type: 'line',
+            data: { labels, datasets },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { labels: { color: 'var(--text-soft)', usePointStyle: true } },
+                    tooltip: {
+                        backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#94a3b8',
+                        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: 'var(--text-soft)' }, grid: { display: false } },
+                    y: { ticks: { color: 'var(--text-muted)', callback: v => v >= 1e6 ? (v/1e6)+'M' : v.toLocaleString() }, grid: { color: 'var(--grid-color)' } }
+                }
+            }
+        });
+    }
+
+    // 5) Pipeline Value by Stage
+    function renderPipelineValueByStage() {
+        const canvas = document.getElementById('pipelineChart');
+        if (!canvas) return;
+
+        const stageRows = statusSummaryRows
+            .filter(r => r.year === ANALYTICS_YEAR)
+            .sort((a, b) => stagePrefix(a.status2) - stagePrefix(b.status2));
+
+        const labels = stageRows.map(r => r.status2);
+        const amounts = stageRows.map(r => r.amt);
+        const colors = stageRows.map((_, i) => PALETTE[i % PALETTE.length]);
+
+        // ✅ ขั้นที่มีมูลค่าเงินค้างอยู่มากที่สุด (ไม่นับ 13-Order เพราะปิดแล้ว)
+        const insightEl = document.getElementById('pipelineInsight');
+        if (insightEl) {
+            const pending = stageRows.filter(r => r.status2.toLowerCase() !== '13-order');
+            const topStage = pending.reduce((max, r) => (r.amt > (max ? max.amt : -1) ? r : max), null);
+            insightEl.innerHTML = topStage
+                ? `มูลค่าค้างเยอะที่สุดอยู่ที่ขั้น <b class="warn">${topStage.status2}</b> (${topStage.amt.toLocaleString()} บาท) — ควรเร่งผลักดันขั้นนี้เป็นพิเศษ`
+                : 'ยังไม่มีข้อมูลมูลค่าคงเหลือใน pipeline';
+        }
+
+        if (window._pipelineChartInstance) window._pipelineChartInstance.destroy();
+        window._pipelineChartInstance = new Chart(canvas, {
+            type: 'bar',
+            data: { labels, datasets: [{ label: 'มูลค่า (บาท)', data: amounts, backgroundColor: colors, borderRadius: 6, borderSkipped: false }] },
+            options: {
+                indexAxis: 'y',
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#94a3b8',
+                        callbacks: { label: ctx => ` ${ctx.parsed.x.toLocaleString()} บาท` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: 'var(--text-muted)', callback: v => v >= 1e6 ? (v/1e6)+'M' : v.toLocaleString() }, grid: { color: 'var(--grid-color)' } },
+                    y: { ticks: { color: 'var(--text-soft)', font: { size: 11 } }, grid: { display: false } }
+                }
+            }
+        });
+    }
+
+    // 6) Sales Leaderboard (ranking ตามยอดขายจริง / PO)
+    function renderLeaderboard() {
+        const canvas = document.getElementById('leaderboardChart');
+        if (!canvas) return;
+
+        const sorted = [...window.dataSaleMan].sort((a, b) => b.po - a.po).slice(0, 15);
+        const labels = sorted.map(d => d.name);
+        const poData = sorted.map(d => d.po);
+        const qtData = sorted.map(d => d.quotation);
+
+        // ✅ ผู้ทำยอดขายสูงสุด และอัตราปิดการขายเฉลี่ยทั้งทีม
+        const insightEl = document.getElementById('leaderboardInsight');
+        if (insightEl && sorted.length > 0) {
+            const top = sorted[0];
+            const teamQt = window.dataSaleMan.reduce((s, d) => s + d.quotation, 0);
+            const teamPo = window.dataSaleMan.reduce((s, d) => s + d.po, 0);
+            const teamRate = teamQt > 0 ? (teamPo / teamQt) * 100 : 0;
+            insightEl.innerHTML =
+                `อันดับ 1: <b>${top.name}</b> (${top.po.toLocaleString()} บาท) — ` +
+                `อัตราปิดการขายเฉลี่ยทั้งทีม ${teamRate.toFixed(1)}%`;
+        }
+
+        if (window._leaderboardChartInstance) window._leaderboardChartInstance.destroy();
+        window._leaderboardChartInstance = new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [
+                    { label: 'ยอดขายจริง (PO)', data: poData, backgroundColor: 'rgba(34,197,94,0.85)', borderRadius: 6, borderSkipped: false },
+                    { label: 'Quotation', data: qtData, backgroundColor: 'rgba(99,179,237,0.5)', borderRadius: 6, borderSkipped: false },
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { color: 'var(--text-soft)', usePointStyle: true } },
+                    tooltip: {
+                        backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#94a3b8',
+                        callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.x.toLocaleString()} บาท` }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: 'var(--text-muted)', callback: v => v >= 1e6 ? (v/1e6)+'M' : v.toLocaleString() }, grid: { color: 'var(--grid-color)' } },
+                    y: { ticks: { color: 'var(--text-soft)', font: { size: 11 } }, grid: { display: false } }
+                }
+            }
+        });
+    }
+
+    function updateStatusLegend() {
+        ['status_c', 'status_w', 'status_h'].forEach((id, i) => {
+            const colorVar = ['--status-critical', '--status-warning', '--status-healthy'][i];
+            const color = getComputedStyle(document.documentElement).getPropertyValue(colorVar);
+            const el = document.getElementById(id);
+            if(el) { el.style.color = color; el.style.background = color + '15'; el.style.borderColor = color + '30'; }
+        });
+    }
+
+    function applyTheme(themeKey) {
+        currentThemeKey = themeKey;
+        const theme = THEMES[themeKey] || THEMES[DEFAULT_THEME];
+        Object.entries(theme.css).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+        localStorage.setItem('dashboard-theme', themeKey);
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.theme === themeKey));
+        if (globalData) processData(globalData);
+    }
+
+    // ✅ นับจำนวนแหล่งข้อมูลที่ต้องรอโหลด (target, sales team, salesman) แล้วค่อยซ่อน overlay
+    let loadingRemaining = 3;
+    function hideLoadingOverlay() {
+        const overlay = document.getElementById('loading-overlay');
+        const content = document.getElementById('main-content');
+        if (content) content.classList.add('ready');
+        if (overlay) {
+            overlay.classList.add('hidden');
+            setTimeout(() => { overlay.style.display = 'none'; }, 450);
+        }
+    }
+    function markLoaded() {
+        loadingRemaining = Math.max(0, loadingRemaining - 1);
+        if (loadingRemaining === 0) hideLoadingOverlay();
+    }
+
+    window.onload = () => {
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
+        applyTheme(currentThemeKey);
+        init();
+        initSales();
+        initSalesMan();
+
+        // ✅ กันจอโหลดค้าง ถ้าเน็ตช้า/พังเกิน 15 วิ ให้ปิด overlay เองแล้วแสดงข้อมูลเท่าที่มี
+        setTimeout(() => { if (loadingRemaining > 0) hideLoadingOverlay(); }, 15000);
+    };
+</script>
+</div>
+</body>
+</html>
