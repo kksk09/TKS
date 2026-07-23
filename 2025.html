@@ -285,14 +285,14 @@ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15p
         <span class="stat-label">Performance Index</span><span class="stat-value" id="stat-perfindex">0%</span>
     </div>
 
-        <div class="stat-card glass has-tip">
+        <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" onclick="goToDetail('qt')" title="คลิกเพื่อดูรายละเอียด" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(129,140,248,0.25)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
         <span class="tip-icon">?</span>
-        <div class="tip-box">ยอดรวมมูลค่าใบเสนอราคาที่ส่งแล้วในปี 2025<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2025 และ Status2 = '07-Sent Quotation'</div>
+        <div class="tip-box">ยอดรวมมูลค่าใบเสนอราคาที่ส่งแล้วในปี 2025<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2025 และ Status2 = '07-Sent Quotation'<br><br>🔍 คลิกเพื่อดูรายละเอียด</div>
         <span class="stat-label">Total QT</span><span class="stat-value" id="stat-total-qt">0</span>
     </div>
-    <div class="stat-card glass has-tip">
+    <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" onclick="goToDetail('po')" title="คลิกเพื่อดูรายละเอียด" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(129,140,248,0.25)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
         <span class="tip-icon">?</span>
-        <div class="tip-box">ยอดรวมมูลค่าออเดอร์ที่ปิดแล้วในปี 2025<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2025 และ Status2 = '13-Order'</div>
+        <div class="tip-box">ยอดรวมมูลค่าออเดอร์ที่ปิดแล้วในปี 2025<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2025 และ Status2 = '13-Order'<br><br>🔍 คลิกเพื่อดูรายละเอียด</div>
         <span class="stat-label">Total PO</span><span class="stat-value" id="stat-total-po">0</span>
     </div>
 
@@ -413,6 +413,11 @@ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15p
     // target
     const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
     const GID = '918753587';
+    const CURRENT_YEAR = '2025'; // ✅ ปีของหน้านี้ ใช้ส่งไปหน้า detail.html ตอนคลิก Total QT / Total PO
+
+    function goToDetail(type) {
+        window.location.href = `detail.html?year=${CURRENT_YEAR}&type=${type}`;
+    }
     const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
     
     const DEFAULT_THEME = 'executive';
