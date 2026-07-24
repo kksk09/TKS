@@ -243,8 +243,8 @@ const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?form
 
 // ✅ ช่วงคอลัมน์ BD:BN (0-based index) ตามที่ระบุ
 // ✅ ช่วงคอลัมน์ต่างกันตามประเภท (โครงสร้างคอลัมน์เหมือนกันทั้งคู่: Year, Customer, Quotation No., Job Name, Staff, Amount THB, Cost THB, Margin, Margin%, PO(Month), Last Update)
-const COL_START = TYPE_PARAM === 'po' ? 43 : 55; // AR (PO) หรือ BD (QT)
-const COL_END   = TYPE_PARAM === 'po' ? 53 : 65; // BB (PO) หรือ BN (QT)
+const COL_START = TYPE_PARAM === 'po' ? 43 : 53; // AR (PO) หรือ BD (QT)
+const COL_END   = TYPE_PARAM === 'po' ? 51 : 61; // BB (PO) หรือ BN (QT)
 const HEADER_ROW_INDEX = 1; // แถว 2 (index 1) — สมมติตามรูปแบบ banner แถว1 / header แถว2 / data แถว3+
 const DATA_START_ROW   = 2; // แถว 3
 
@@ -326,8 +326,7 @@ async function init() {
           });
 
         buildTableHead();
-        applyFilterSortPaginate();
-        computeSummary();
+        applyFilterSortPaginate(); // ✅ คำนวณ summary ให้ในตัวอยู่แล้ว (ครอบคลุมทั้ง initial load และตอนค้นหา)
         document.getElementById('tblLoading').style.display = 'none';
       },
       error: function(e) { showError('Parse error: ' + e.message); }
@@ -347,12 +346,13 @@ function buildTableHead() {
   }).join('') + '</tr>';
 }
 
-function computeSummary() {
-  document.getElementById('sumCount').textContent = tableAllRows.length.toLocaleString();
+function computeSummary(rows) {
+  rows = rows || tableAllRows;
+  document.getElementById('sumCount').textContent = rows.length.toLocaleString();
   const amtEl = document.getElementById('sumAmt');
   if (amtColIdx === -1) { amtEl.textContent = '-'; return; }
   const key = headerKey(amtColIdx);
-  const total = tableAllRows.reduce((s, row) => {
+  const total = rows.reduce((s, row) => {
     const n = cleanNumCandidate(row[key]);
     return s + (isNaN(n) ? 0 : n);
   }, 0);
@@ -379,6 +379,7 @@ function applyFilterSortPaginate() {
     });
   }
 
+  computeSummary(filteredRows); // ✅ sum ยอดใหม่ตามผลค้นหา/กรองปัจจุบัน
   currentPage = 1;
   renderPage();
 }
