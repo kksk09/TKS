@@ -283,7 +283,7 @@ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15p
         <span class="stat-label">Performance Index</span><span class="stat-value" id="stat-perfindex">0%</span>
     </div>
 
-        <!-- <div class="stat-card glass has-tip"> -->
+    
 		 
         <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" 
         onclick="goToDetail('qt')" title="คลิกเพื่อดูรายละเอียด" 
@@ -354,10 +354,6 @@ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15p
             <h3>Monthly Sales &amp; Growth (2026)</h3>
             <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSales"></canvas></div>
         </div>        
-        <div class="card-graph glass" style="display:none;">
-            <h3>Comparison by Year</h3>
-            <div class="chart-container"><canvas id="barChart"></canvas></div>
-        </div>
 
     </div>
 </div>
@@ -386,6 +382,13 @@ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15p
         <p class="chart-desc">เส้นทึบ = ยอดขายสะสมจริงในแต่ละเดือน เทียบกับเส้นประ = เป้าหมายตามจังหวะเวลาที่ควรจะเป็น (แบ่งเป้าเท่า ๆ กันทั้ง 12 เดือน) ถ้าเส้นทึบอยู่เหนือเส้นประ แปลว่ายอดขายนำหน้าแผน</p>
         <div class="chart-container" style="height:340px;"><canvas id="cumulativeChart"></canvas></div>
         <div id="cumulativeInsight" class="chart-insight"></div>
+    </div>
+
+    <div class="card-graph glass" style="text-align:left; margin-bottom:24px;">
+        <h3>QT Count &amp; Amount by Month</h3>
+        <p class="chart-desc">แท่ง = จำนวนใบเสนอราคา (Count of QT) ต่อเดือน เทียบกับเส้น = มูลค่ารวม (Amount of QT) บนแกนขวา แยกแกนเพราะหน่วยต่างกันเกินไป</p>
+        <div class="chart-container" style="height:340px;"><canvas id="barChart"></canvas></div>
+        <div id="qtComboInsight" class="chart-insight"></div>
     </div>
 
     <div class="card-graph glass" style="text-align:left; margin-bottom:24px;">
@@ -631,6 +634,25 @@ const THEMES = {
                 dataSaleMan = Object.values(grouped);
 
                 processDataSalesMan(dataSaleMan);
+
+                // ✅ ตาราง Year-Month / Count of QT / Amount of QT อยู่ที่ BL,BM,BN (0-based)
+                const COL_YEARMONTH = 63; // BL เช่น "2026-01"
+                const COL_COUNT_QT  = 64; // BM
+                const COL_AMOUNT_QT = 65; // BN
+
+                const monthlyCountQT  = new Array(12).fill(0);
+                const monthlyAmountQT = new Array(12).fill(0);
+                rows.forEach(r => {
+                    const ym = r[COL_YEARMONTH] ? r[COL_YEARMONTH].toString().trim() : '';
+                    const m = ym.match(/^(\d{4})-(\d{2})$/);
+                    if (!m || m[1] !== FILTER_YEAR) return;
+                    const monthIdx = parseInt(m[2], 10) - 1;
+                    if (monthIdx < 0 || monthIdx > 11) return;
+                    monthlyCountQT[monthIdx]  += cleanNum(r[COL_COUNT_QT]);
+                    monthlyAmountQT[monthIdx] += cleanNum(r[COL_AMOUNT_QT]);
+                });
+                renderQtComboChart(monthlyCountQT, monthlyAmountQT);
+
                 markLoaded(); // ✅ โหลดข้อมูล salesman เสร็จแล้ว
                 tryRenderExtraCharts();
             }
@@ -638,6 +660,93 @@ const THEMES = {
     } catch (e) {
         console.error('initSalesMan error:', e);
         markLoaded();
+    }
+}
+
+// ✅ Combo Chart: Bar = Count of QT (แกนซ้าย), Line = Amount of QT (แกนขวา)
+function renderQtComboChart(monthlyCount, monthlyAmount) {
+    const canvas = document.getElementById('barChart');
+    if (!canvas) return;
+
+    const labels = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+
+    if (barChart) barChart.destroy();
+    barChart = new Chart(canvas, {
+        data: {
+            labels,
+            datasets: [
+                {
+                    type: 'bar',
+                    label: 'Count of QT',
+                    data: monthlyCount,
+                    backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                    borderColor: 'rgba(99, 102, 241, 1)',
+                    borderRadius: 6,
+                    yAxisID: 'y',
+                    order: 2,
+                },
+                {
+                    type: 'line',
+                    label: 'Amount of QT',
+                    data: monthlyAmount,
+                    borderColor: 'rgba(251, 146, 60, 1)',
+                    backgroundColor: 'rgba(251, 146, 60, 1)',
+                    borderWidth: 2.5,
+                    tension: 0.35,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    pointBackgroundColor: 'rgba(251, 146, 60, 1)',
+                    yAxisID: 'y1',
+                    order: 1,
+                },
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: {
+                    display: true, position: 'top',
+                    labels: { color: '#94a3b8', font: { size: 13, weight: 'bold' }, padding: 20, usePointStyle: true, pointStyleWidth: 12 },
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b', titleColor: '#f1f5f9', bodyColor: '#94a3b8',
+                    borderColor: '#334155', borderWidth: 1, padding: 12,
+                    callbacks: {
+                        label: (ctx) => ctx.dataset.yAxisID === 'y1'
+                            ? ` Amount of QT: ${ctx.parsed.y.toLocaleString()} บาท`
+                            : ` Count of QT: ${ctx.parsed.y.toLocaleString()} ใบ`,
+                    },
+                },
+            },
+            scales: {
+                x: { ticks: { color: '#94a3b8', font: { size: 12, weight: 'bold' } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                y: {
+                    position: 'left',
+                    ticks: { color: '#94a3b8', precision: 0 },
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    title: { display: true, text: 'Count of QT (ใบ)', color: '#94a3b8' },
+                },
+                y1: {
+                    position: 'right',
+                    ticks: { color: '#FDBA74', callback: (v) => v >= 1e6 ? (v/1e6)+'M' : v.toLocaleString() },
+                    grid: { drawOnChartArea: false },
+                    title: { display: true, text: 'Amount of QT (บาท)', color: '#FDBA74' },
+                },
+            },
+        },
+    });
+
+    // ✅ Insight: เดือนที่มี Count เยอะสุด และเดือนที่มี Amount เยอะสุด
+    const insightEl = document.getElementById('qtComboInsight');
+    if (insightEl) {
+        const labelsTH = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+        const maxCountIdx = monthlyCount.indexOf(Math.max(...monthlyCount));
+        const maxAmountIdx = monthlyAmount.indexOf(Math.max(...monthlyAmount));
+        insightEl.innerHTML =
+            `เดือนที่ส่ง QT เยอะสุด: <b>${labelsTH[maxCountIdx]}</b> (${monthlyCount[maxCountIdx].toLocaleString()} ใบ) — ` +
+            `เดือนที่มูลค่า QT สูงสุด: <b>${labelsTH[maxAmountIdx]}</b> (${monthlyAmount[maxAmountIdx].toLocaleString()} บาท)`;
     }
 }
 
@@ -947,56 +1056,6 @@ function renderCharts(rate, used, total, data) {
                 }]
             },
             options: { cutout: '82%', maintainAspectRatio: false, plugins: { tooltip: { enabled: false } } }
-        });
-
-        // --- ส่วนของ Bar Chart (แก้ไขเรื่องสีฟอนต์ตรงนี้) ---
-        const bCtx = document.getElementById('barChart').getContext('2d');
-        if (barChart) barChart.destroy();
-        barChart = new Chart(bCtx, {
-            type: 'bar',
-            data: {
-                labels: data.map(d => d.year),
-                datasets: [
-                    { label: 'Target', data: data.map(d => d.total), backgroundColor: 'transparent', borderColor: '#818CF8', borderWidth: 2, borderRadius: 5 },
-                    { label: 'Actual', data: data.map(d => d.used), backgroundColor: rootStyles.getPropertyValue('--status-healthy'), borderRadius: 5 }
-                ]
-            },
-            options: {
-                maintainAspectRatio: false,
-                scales: {
-                    y: { 
-                        type: 'logarithmic', 
-                        grid: { color: gridColor }, 
-                        ticks: { 
-                            color: colorMuted, // เปลี่ยนเป็นสีสว่างตามธีม
-                            callback: function(value) {
-                                const remain = value / (Math.pow(10, Math.floor(Math.log10(value))));
-                                if (remain === 1 || remain === 2 || remain === 5) {
-                                    if (value >= 1000000) return (value / 1000000) + 'M';
-                                    if (value >= 1000) return (value / 1000) + 'K';
-                                    return value;
-                                }
-                                return null;
-                            }
-                        }
-                    },
-                    x: { 
-                        ticks: { 
-                            color: colorSoft // เปลี่ยนเป็นสีสว่างตามธีม
-                        }, 
-                        grid: { display: false } 
-                    }
-                },
-                plugins: { 
-                    legend: { 
-                        labels: { 
-                            color: colorSoft, // สีตัวหนังสือ Target/Actual ด้านบน
-                            usePointStyle: true, 
-                            font: { weight: '600' } 
-                        } 
-                    } 
-                }
-            }
         });
     }
     function renderChartsOld(rate, used, total, data) {
