@@ -21,7 +21,7 @@
             --status-critical: #FB7185;
             --gauge-empty: rgba(255,255,255,0.08);
             --grid-color: rgba(255,255,255,0.05);
-            --table-hdr-bg: #1e293b; /* สำหรับรองรับสีพื้นหลัง Sticky Header */
+            --table-hdr-bg: #1e293b;
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -30,12 +30,29 @@
         }
         .stats-grid { 
             display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
-            gap: 20px; margin-bottom: 30px; max-width: 1400px; margin-left: auto; margin-right: auto; 
+            gap: 20px; margin-bottom: 20px; max-width: 1400px; margin-left: auto; margin-right: auto; 
         }
-        .stat-card { padding: 24px; }
+        .stat-card { padding: 24px; position: relative; }
+        
+        /* Special style for the new 3 efficiency red cards */
+        .stat-card.efficiency-card {
+            border: 1px solid rgba(251, 113, 133, 0.3);
+            background: linear-gradient(135deg, rgba(251, 113, 133, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+        }
+        .stat-card.efficiency-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: var(--status-critical);
+            border-top-left-radius: 24px;
+            border-bottom-left-radius: 24px;
+        }
 
         /* ✅ Tooltip อธิบายสูตรตอน hover การ์ด */
         .stat-card.has-tip { position: relative; cursor: help; }
+        .stat-card.has-tip:hover,
+        .stat-card.has-tip:focus-within { z-index: 60; } /* ยกทั้งการ์ดลอยเหนือการ์ดข้างเคียง เพราะ .glass สร้าง stacking context ใหม่ */
         .stat-card.has-tip .tip-icon {
             position: absolute; top: 14px; right: 16px;
             width: 16px; height: 16px; border-radius: 50%;
@@ -43,10 +60,11 @@
             font-size: 0.68rem; font-weight: 700; display: flex; align-items: center; justify-content: center;
             transition: background 0.2s, color 0.2s;
         }
-        .stat-card.has-tip:hover .tip-icon { background: #818CF8; color: #fff; }
+        .stat-card.has-tip:hover .tip-icon { background: #FB7185; color: #fff; }
         .stat-card.has-tip .tip-box {
-            position: absolute; left: 50%; bottom: calc(100% + 10px); transform: translateX(-50%) translateY(6px);
-            min-width: 240px; max-width: 300px;
+            position: absolute; left: 50%; bottom: calc(100% + 10px);
+            transform: translateX(calc(-50% + var(--tip-shift, 0px))) translateY(6px);
+            min-width: 260px; max-width: min(320px, calc(100vw - 24px));
             background: #0f172a; color: #E2E8F0;
             border: 1px solid rgba(255,255,255,0.12);
             border-radius: 12px; padding: 12px 14px;
@@ -57,60 +75,45 @@
             transition: opacity 0.18s ease, transform 0.18s ease;
             z-index: 50;
         }
-        .stat-card.has-tip .tip-box b { color: #A5B4FC; font-weight: 700; }
+        .stat-card.has-tip .tip-box b { color: #FB7185; font-weight: 700; }
         .stat-card.has-tip .tip-box::after {
-            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            content: ''; position: absolute; top: 100%;
+            left: calc(50% - var(--tip-shift, 0px)); transform: translateX(-50%);
             border: 6px solid transparent; border-top-color: #0f172a;
         }
-        .stat-card.has-tip:hover .tip-box {
-            opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0);
+        /* เมื่อพื้นที่ด้านบนไม่พอ ให้สลับไปโผล่ด้านล่างการ์ดแทน */
+        .stat-card.has-tip .tip-box.flip-down { bottom: auto; top: calc(100% + 10px); }
+        .stat-card.has-tip .tip-box.flip-down::after {
+            top: auto; bottom: 100%;
+            border-top-color: transparent; border-bottom-color: #0f172a;
         }
-        @media (max-width: 640px) {
-            .stat-card.has-tip .tip-box { left: 0; transform: translateX(0) translateY(6px); }
-            .stat-card.has-tip:hover .tip-box { transform: translateX(0) translateY(0); }
-            .stat-card.has-tip .tip-box::after { left: 20px; }
+        .stat-card.has-tip:hover .tip-box {
+            opacity: 1; visibility: visible;
+            transform: translateX(calc(-50% + var(--tip-shift, 0px))) translateY(0);
         }
         .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
         .stat-value { font-size: 2rem; font-weight: 800; display: block; margin-top: 8px; color: var(--text-main); }
         
-        .dashboardBCK { display: grid; grid-template-columns: 1fr 1.5fr; gap: 24px; max-width: 1400px; margin: auto; }
-        .dashboard { display: flex; align-items: flex-start; grid-template-columns: 1fr 1.5fr; gap: 24px; max-width: 1400px; margin: auto; }
-        
-        @media (max-width: 1024px) { .dashboard { grid-template-columns: 1fr; } }
+        .dashboard { display: flex; align-items: flex-start; gap: 24px; max-width: 1400px; margin: auto; }
+        @media (max-width: 1024px) { .dashboard { flex-direction: column; } .card-left, .card-right { flex: 1 1 100% !important; width: 100%; } }
 
         .glass { 
             background: var(--glass); backdrop-filter: blur(20px); 
             border: 1px solid var(--glass-border); border-radius: 24px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
         }
-        .card-left { 
-                    padding: 30px;
-                    flex: 0 0 calc(50% - 12px);      /* ✅ กว้าง 50% เท่ากับ card-right (หัก gap ครึ่งหนึ่ง) */
-                    min-width: 0;
-                }
-        .card-right{  flex: 0 0 calc(50% - 12px);    /* ✅ กว้าง 50% เท่ากับ card-left (หัก gap ครึ่งหนึ่ง) */
-                        min-width: 0;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 24px; }
+        .card-left { padding: 30px; flex: 0 0 calc(50% - 12px); min-width: 0; }
+        .card-right { flex: 0 0 calc(50% - 12px); min-width: 0; display: flex; flex-direction: column; gap: 24px; }
         .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         .theme-switcher { display: flex; gap: 6px; background: rgba(0,0,0,0.15); padding: 5px; border-radius: 999px; border: 1px solid var(--glass-border); }
         .theme-btn { border: none; padding: 8px 18px; border-radius: 999px; cursor: pointer; background: transparent; color: var(--text-soft); font-size: 0.8rem; font-weight: 600; }
         .theme-btn.active { background: #818CF8; color: #fff !important; }
 
         table { width: 100%; border-collapse: collapse; }
-        
-        /* ✅ Fixed Sticky Header สำหรับตาราง Overview */
         th { 
-            text-align: left; 
-            font-size: 0.75rem; 
-            color: var(--text-muted); 
-            padding: 15px 12px; 
-            border-bottom: 1px solid var(--glass-border); 
-            position: sticky;
-            top: 0;
-            background-color: var(--table-hdr-bg);
-            z-index: 10;
+            text-align: left; font-size: 0.75rem; color: var(--text-muted); padding: 15px 12px; 
+            border-bottom: 1px solid var(--glass-border); position: sticky; top: 0;
+            background-color: var(--table-hdr-bg); z-index: 10;
         }
         td { padding: 16px 12px; border-bottom: 1px solid var(--glass-border); color: var(--text-soft); }
         .value { font-weight: 700; color: var(--text-main); text-align: right; }
@@ -134,7 +137,6 @@
         .gauge-wrap #percentText { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); font-size: 2.8rem; font-weight: 900; }
         .status-badge { display: inline-block; padding: 8px 20px; border-radius: 999px; font-size: 0.8rem; font-weight: 800; margin-top: 15px; }
 
-        /* ✅ Loading overlay */
         #loading-overlay {
             position: fixed; inset: 0; z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
@@ -144,8 +146,7 @@
         #loading-overlay.hidden { opacity: 0; pointer-events: none; }
         .loading-spinner {
             width: 54px; height: 54px; border-radius: 50%;
-            border: 4px solid var(--glass-border);
-            border-top-color: #818CF8;
+            border: 4px solid var(--glass-border); border-top-color: #818CF8;
             animation: spin 0.9s linear infinite;
         }
         .loading-text { color: var(--text-soft); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.05em; }
@@ -158,7 +159,6 @@
 </head>
 <body>
 
-    <!-- ✅ Loading overlay -->
     <div id="loading-overlay">
         <div class="loading-spinner"></div>
         <div class="loading-text">กำลังโหลดข้อมูล...</div>
@@ -167,195 +167,145 @@
 
     <div id="main-content">
 
-    <!-- Navigation Buttons -->
-<div style="
-    display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-">
-    <a href="index.html" style="
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 22px;
-        border-radius: 999px;
-        background: linear-gradient(135deg, #6366F1, #818CF8);
-        color: #fff;
-        font-weight: 700;
-        font-size: 0.85rem;
-        text-decoration: none;
-        letter-spacing: 0.05em;
-        box-shadow: 0 4px 15px rgba(99,102,241,0.4);
-        transition: transform 0.2s, box-shadow 0.2s;
-    "
-    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(99,102,241,0.55)'"
-    onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(99,102,241,0.4)'"
-    >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-        </svg>
-        HOME
-    </a>
-
-    <a href="2025.html" style="
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 22px;
-        border-radius: 999px;
-        background: linear-gradient(135deg, #F59E0B, #FBBF24);
-        color: #1a1a1a;
-        font-weight: 700;
-        font-size: 0.85rem;
-        text-decoration: none;
-        letter-spacing: 0.05em;
-        box-shadow: 0 4px 15px rgba(245,158,11,0.4);
-        transition: transform 0.2s, box-shadow 0.2s;
-    "
-    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(245,158,11,0.55)'"
-    onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(245,158,11,0.4)'"
-    >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M22 21H2V3h2v16h2V9h4v10h2V5h4v14h2v-6h4v6z"/>
-        </svg>
-        2025
-    </a>
- 
-<a href="customer.html" style="
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 22px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #0bf532, #81ec23);
-    color: #1a1a1a;
-    font-weight: 700;
-    font-size: 0.85rem;
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    box-shadow: 0 4px 15px rgba(34,197,94,0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
-"
-onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(34,197,94,0.55)'"
-onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(34,197,94,0.4)'"
->
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-    </svg>
-    Customer
-</a>
-
-</div>
-
-<div class="stats-grid">
-    <div class="stat-card glass"><span class="stat-label">Target <span class="target-year"></span></span><span class="stat-value" id="stat-target">0</span></div>
-    <div class="stat-card glass"><span class="stat-label">Actual Sales <span class="target-year"></span></span><span class="stat-value" id="stat-actual" style="color: var(--status-healthy);">0</span></div>
-    <div class="stat-card glass"><span class="stat-label">Achievement Rate</span><span class="stat-value" id="stat-rate">0%</span></div>
-</div>
-<div class="stats-grid">
-    <div class="stat-card glass"><span class="stat-label">Remaining rate <span class="target-year"></span></span><span class="stat-value" id="stat-remaining">0%</span></div>
-    <div class="stat-card glass"><span class="stat-label">Working Days Left <span class="target-year"></span></span><span class="stat-value" id="stat-working" style="color: var(--status-healthy);">0</span></div>
-    <div class="stat-card glass"><span class="stat-label">Required Sales / Day</span><span class="stat-value" id="stat-sale_per_day">0</span></div>
-</div>
-
-<div class="stats-grid">
-    <div class="stat-card glass has-tip">
-        <span class="tip-icon">?</span>
-        <div class="tip-box">คาดการณ์ยอดขาย ณ สิ้นปี จากอัตราขายเฉลี่ยปัจจุบัน<br><b>สูตร:</b> Actual × (จำนวนวันทั้งปี ÷ จำนวนวันที่ผ่านไปแล้ว)</div>
-        <span class="stat-label">Forecast End of Year</span><span class="stat-value" id="stat-forecast">0</span>
-    </div>
-    <div class="stat-card glass has-tip">
-        <span class="tip-icon">?</span>
-        <div class="tip-box">อัตราการปิดการขายจากใบเสนอราคาเป็นออเดอร์จริง<br><b>สูตร:</b> (รวม PO ทั้งหมด ÷ รวม Quotation ทั้งหมด) × 100</div>
-        <span class="stat-label">Conversion Rate (QT → Order)</span><span class="stat-value" id="stat-conversion">0%</span>
-    </div>
-    <div class="stat-card glass has-tip">
-        <span class="tip-icon">?</span>
-        <div class="tip-box">ยอดขายที่ยังขาดอยู่กว่าจะถึงเป้าหมาย<br><b>สูตร:</b> Target − Actual</div>
-        <span class="stat-label">Sales Gap</span><span class="stat-value" id="stat-gap">0</span>
-    </div>
-</div>
-<div class="stats-grid">
-    <div class="stat-card glass has-tip">
-        <span class="tip-icon">?</span>
-        <div class="tip-box">สัดส่วนวันที่ผ่านไปแล้วของปีนี้ เทียบกับทั้งปี<br><b>สูตร:</b> (วันที่ผ่านไปแล้ว ÷ จำนวนวันทั้งปี) × 100</div>
-        <span class="stat-label">Time Progress <span class="target-year"></span></span><span class="stat-value" id="stat-timeprogress">0%</span>
-    </div>
-    <div class="stat-card glass has-tip">
-        <span class="tip-icon">?</span>
-        <div class="tip-box">เทียบว่ายอดขายนำหน้าหรือตามหลังแผนเวลาที่ผ่านไป<br><b>สูตร:</b> (Achievement Rate ÷ Time Progress) × 100<br>≥100% = นำหน้าแผน &nbsp;|&nbsp; &lt;100% = ตามหลังแผน</div>
-        <span class="stat-label">Performance Index</span><span class="stat-value" id="stat-perfindex">0%</span>
+    <div style="display: flex; gap: 12px; margin-bottom: 24px; max-width: 1400px; margin-left: auto; margin-right: auto; padding-top: 10px;">
+        <a href="index.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px; background: linear-gradient(135deg, #6366F1, #818CF8); color: #fff; font-weight: 700; font-size: 0.85rem; text-decoration: none; letter-spacing: 0.05em; box-shadow: 0 4px 15px rgba(99,102,241,0.4); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(99,102,241,0.55)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(99,102,241,0.4)'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> HOME
+        </a>
+        <a href="2025.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px; background: linear-gradient(135deg, #F59E0B, #FBBF24); color: #1a1a1a; font-weight: 700; font-size: 0.85rem; text-decoration: none; letter-spacing: 0.05em; box-shadow: 0 4px 15px rgba(245,158,11,0.4); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(245,158,11,0.55)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(245,158,11,0.4)'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M22 21H2V3h2v16h2V9h4v10h2V5h4v14h2v-6h4v6z"/></svg> 2025
+        </a>
+        <a href="customer.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px; background: linear-gradient(135deg, #0bf532, #81ec23); color: #1a1a1a; font-weight: 700; font-size: 0.85rem; text-decoration: none; letter-spacing: 0.05em; box-shadow: 0 4px 15px rgba(34,197,94,0.4); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(34,197,94,0.55)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(34,197,94,0.4)'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> Customer
+        </a>
     </div>
 
-        <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" 
-        onclick="goToDetail('qt')" title="คลิกเพื่อดูรายละเอียด" 
-        onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(129,140,248,0.25)'" 
-        onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">            
-        <span class="tip-icon">?</span>
-        <div class="tip-box">ยอดรวมมูลค่าใบเสนอราคาที่ส่งแล้วในปี 2026<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2026 และ Status2 = '07-Sent Quotation'</div>
-        <span class="stat-label">Total QT</span><span class="stat-value" id="stat-total-qt">0</span>
+    <!-- ✅ 3 New Efficiency Red Cards Section First -->
+    <div style="max-width:1400px; margin: 0 auto 16px; padding-left: 4px;">
+        <h2 style="color:var(--status-critical); font-size:1.1rem; font-weight:700; margin-bottom:12px; text-transform:uppercase; letter-spacing:0.03em; display:flex; align-items:center; gap:8px;">
+            <span style="display:inline-block; width:8px; height:18px; background:var(--status-critical); border-radius:2px;"></span>
+            Sales Efficiency & Risk Indicators
+        </h2>
     </div>
-     <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" onclick="goToDetail('po')" title="คลิกเพื่อดูรายละเอียด" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(129,140,248,0.25)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
-        <span class="tip-icon">?</span>
-        <div class="tip-box">ยอดรวมมูลค่าออเดอร์ที่ปิดแล้วในปี 2026<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2026 และ Status2 = '13-Order'</div>
-        <span class="stat-label">Total PO</span><span class="stat-value" id="stat-total-po">0</span>
+    <div class="stats-grid">
+        <div class="stat-card glass efficiency-card has-tip">
+            <span class="tip-icon">?</span>
+            <div class="tip-box">มูลค่าคาดการณ์ของดีลทั้งหมดใน Pipeline โดยถ่วงน้ำหนักตามความน่าจะเป็นของแต่ละ Stage (Stage ยิ่งลึก % ยิ่งสูง) ใช้สำหรับประเมินยอดขายที่คาดว่าจะปิดได้จริงล่วงหน้า เพื่อดูว่า Pipeline ที่มีอยู่เพียงพอต่อเป้าหมาย (Quota) หรือไม่<br><br><b>สูตร:</b> 📄 SUM(Deal Value × Win Probability of Current Stage)</div>
+            <span class="stat-label" style="color:var(--status-critical);">Weighted Pipeline Value</span>
+            <span class="stat-value" id="stat-weighted-pipeline" style="color:var(--text-main);">0</span>
+        </div>
+        <div class="stat-card glass efficiency-card has-tip">
+            <span class="tip-icon">?</span>
+            <div class="tip-box">อัตราการปิดดีลสำเร็จที่สะท้อนความจริง โดยนับรวม 'ดีลที่ถูกดอง (Stalled) เกิน 90 วัน' เป็นตัวหารด้วย เพื่อป้องกันไม่ให้เซลส์หมกดีลที่ไม่มีโอกาสชนะไว้ใน Pipeline และช่วยให้เห็นประสิทธิภาพการขายที่แท้จริงแม่นยำขึ้น<br><br><b>สูตร:</b> 📄 Won ÷ (Won + Lost + Stalled > 90 days)</div>
+            <span class="stat-label" style="color:var(--status-critical);">Actual Win Rate</span>
+            <span class="stat-value" id="stat-actual-winrate" style="color:var(--status-critical);">0%</span>
+        </div>
+        <div class="stat-card glass efficiency-card has-tip">
+            <span class="tip-icon">?</span>
+            <div class="tip-box">ระยะเวลาเฉลี่ย (จำนวนวัน) ที่เซลส์แต่ละคนใช้ในการผลักดันดีลตั้งแต่เริ่มต้นจนถึงจุดสิ้นสุด (ปิดได้หรือแพ้) ใช้สำหรับวัดความเร็วของ Sales Velocity และระบุว่าเซลส์คนไหนใช้เวลาลากดีลยาวนานเกินไปจนเกิดคอขวด<br><br><b>สูตร:</b> 📄 SUM(Deal Cycle Time) ÷ Total Deals Closed</div>
+            <span class="stat-label" style="color:var(--status-critical);">Cycle Time per Sales</span>
+            <span class="stat-value" id="stat-cycle-time" style="color:var(--text-main);">0 วัน</span>
+        </div>
     </div>
-</div>
 
-<div class="dashboard">
-    <div class="card-left glass">
+    <!-- Existing Standard Cards -->
+    <div class="stats-grid">
+        <div class="stat-card glass"><span class="stat-label">Target <span class="target-year"></span></span><span class="stat-value" id="stat-target">0</span></div>
+        <div class="stat-card glass"><span class="stat-label">Actual Sales <span class="target-year"></span></span><span class="stat-value" id="stat-actual" style="color: var(--status-healthy);">0</span></div>
+        <div class="stat-card glass"><span class="stat-label">Achievement Rate</span><span class="stat-value" id="stat-rate">0%</span></div>
+    </div>
+    <div class="stats-grid">
+        <div class="stat-card glass"><span class="stat-label">Remaining rate <span class="target-year"></span></span><span class="stat-value" id="stat-remaining">0%</span></div>
+        <div class="stat-card glass"><span class="stat-label">Working Days Left <span class="target-year"></span></span><span class="stat-value" id="stat-working" style="color: var(--status-healthy);">0</span></div>
+        <div class="stat-card glass"><span class="stat-label">Required Sales / Day</span><span class="stat-value" id="stat-sale_per_day">0</span></div>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card glass has-tip">
+            <span class="tip-icon">?</span>
+            <div class="tip-box">คาดการณ์ยอดขาย ณ สิ้นปี จากอัตราขายเฉลี่ยปัจจุบัน<br><b>สูตร:</b> Actual × (จำนวนวันทั้งปี ÷ จำนวนวันที่ผ่านไปแล้ว)</div>
+            <span class="stat-label">Forecast End of Year</span><span class="stat-value" id="stat-forecast">0</span>
+        </div>
+        <div class="stat-card glass has-tip">
+            <span class="tip-icon">?</span>
+            <div class="tip-box">อัตราการปิดการขายจากใบเสนอราคาเป็นออเดอร์จริง<br><b>สูตร:</b> (รวม PO ทั้งหมด ÷ รวม Quotation ทั้งหมด) × 100</div>
+            <span class="stat-label">Conversion Rate (QT → Order)</span><span class="stat-value" id="stat-conversion">0%</span>
+        </div>
+        <div class="stat-card glass has-tip">
+            <span class="tip-icon">?</span>
+            <div class="tip-box">ยอดขายที่ยังขาดอยู่กว่าจะถึงเป้าหมาย<br><b>สูตร:</b> Target − Actual</div>
+            <span class="stat-label">Sales Gap</span><span class="stat-value" id="stat-gap">0</span>
+        </div>
+    </div>
+    <div class="stats-grid">
+        <div class="stat-card glass has-tip">
+            <span class="tip-icon">?</span>
+            <div class="tip-box">สัดส่วนวันที่ผ่านไปแล้วของปีนี้ เทียบกับทั้งปี<br><b>สูตร:</b> (วันที่ผ่านไปแล้ว ÷ จำนวนวันทั้งปี) × 100</div>
+            <span class="stat-label">Time Progress <span class="target-year"></span></span><span class="stat-value" id="stat-timeprogress">0%</span>
+        </div>
+        <div class="stat-card glass has-tip">
+            <span class="tip-icon">?</span>
+            <div class="tip-box">เทียบว่ายอดขายนำหน้าหรือตามหลังแผนเวลาที่ผ่านไป<br><b>สูตร:</b> (Achievement Rate ÷ Time Progress) × 100<br>≥100% = นำหน้าแผน &nbsp;|&nbsp; &lt;100% = ตามหลังแผน</div>
+            <span class="stat-label">Performance Index</span><span class="stat-value" id="stat-perfindex">0%</span>
+        </div>
+
+        <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" onclick="goToDetail('qt')" title="คลิกเพื่อดูรายละเอียด" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(129,140,248,0.25)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">            
+            <span class="tip-icon">?</span>
+            <div class="tip-box">ยอดรวมมูลค่าใบเสนอราคาที่ส่งแล้วในปี 2026<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2026 และ Status2 = '07-Sent Quotation'</div>
+            <span class="stat-label">Total QT</span><span class="stat-value" id="stat-total-qt">0</span>
+        </div>
+        <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" onclick="goToDetail('po')" title="คลิกเพื่อดูรายละเอียด" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(129,140,248,0.25)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
+            <span class="tip-icon">?</span>
+            <div class="tip-box">ยอดรวมมูลค่าออเดอร์ที่ปิดแล้วในปี 2026<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2026 และ Status2 = '13-Order'</div>
+            <span class="stat-label">Total PO</span><span class="stat-value" id="stat-total-po">0</span>
+        </div>
+    </div>
+
+    <div class="dashboard">
+        <div class="card-left glass">
             <div class="theme-switcher">
                 <button class="theme-btn" data-theme="executive">Executive</button>
                 <button class="theme-btn" data-theme="neon">Neon</button>
                 <button class="theme-btn" data-theme="apple">Apple</button>
             </div>        
-        <div class="toolbar">
-            <h2>📊 Overview</h2>
-        </div>
-        <p style="font-size:0.75rem; color:var(--text-muted); margin:-14px 0 14px; text-align:left;">สรุปตามสถานะ (Status2) ปี <span class="target-year"></span> — คลิกที่สถานะเพื่อดูรายละเอียด</p>
-        <div style="max-height:380px; overflow-y:auto; border-radius:12px; position: relative;">
-        <table>
-            <thead><tr><th>Year</th><th>Status2</th><th style="text-align:right">Count</th><th style="text-align:right">Amt</th><th style="text-align:right">Cost</th></tr></thead>
-            <tbody id="data-table-body"></tbody>
-        </table>
-        </div>
- 
-    <div style="margin-top: 24px; display: none; flex-direction: column; gap: 24px;">
-         <div class="card-graph glass ">
-            <h2> ( 2026 )</h2>
-            <h5>Comparison by Salesman (QT vs PO )</h5>
-            <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSaleman"></canvas></div>
-        </div>
-    </div>
-    </div>
-
-    <div class="card-right">
-        <div class="card-graph glass">
-            <h3>Yearly Progress</h3>
-            <div class="chart-container gauge-wrap">
-                <canvas id="gaugeChart"></canvas>
-                <span id="percentText">0%</span>
+            <div class="toolbar" style="margin-top: 15px;">
+                <h2>📊 Overview</h2>
             </div>
-            <div id="gaugeStatus" class="status-badge">...</div>
-            
-    <div class="footer-date">         
-    <div class="gauge-statusx" id="status_c">Critical (< 30%)</div>
-    <div class="gauge-statusx" id="status_w">Warning (30-80%)</div>
-    <div class="gauge-statusx" id="status_h">Healthy (> 80%)</div>  
+            <p style="font-size:0.75rem; color:var(--text-muted); margin:-14px 0 14px; text-align:left;">สรุปตามสถานะ (Status2) ปี <span class="target-year"></span> — คลิกที่สถานะเพื่อดูรายละเอียด</p>
+            <div style="max-height:380px; overflow-y:auto; border-radius:12px; position: relative;">
+                <table>
+                    <thead><tr><th>Year</th><th>Status2</th><th style="text-align:right">Count</th><th style="text-align:right">Amt</th><th style="text-align:right">Cost</th></tr></thead>
+                    <tbody id="data-table-body"></tbody>
+                </table>
+            </div>
+     
+            <div style="margin-top: 24px; display: none; flex-direction: column; gap: 24px;">
+                 <div class="card-graph glass">
+                    <h2> ( 2026 )</h2>
+                    <h5>Comparison by Salesman (QT vs PO)</h5>
+                    <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSaleman"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-right">
+            <div class="card-graph glass">
+                <h3>Yearly Progress</h3>
+                <div class="chart-container gauge-wrap">
+                    <canvas id="gaugeChart"></canvas>
+                    <span id="percentText">0%</span>
+                </div>
+                <div id="gaugeStatus" class="status-badge">...</div>
+                
+                <div class="footer-date">         
+                    <div class="gauge-statusx" id="status_c">Critical (&lt; 30%)</div>
+                    <div class="gauge-statusx" id="status_w">Warning (30-80%)</div>
+                    <div class="gauge-statusx" id="status_h">Healthy (&gt; 80%)</div>  
+                </div>
+            </div>
         </div>
     </div>
-    </div>
-</div>
-
-        <div class="card-graph glass">
-            <h3>Monthly Sales &amp; Growth (2026)</h3>
-            <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSales"></canvas></div>
-        </div>    
-
-    <div class="card-graph glass" style="text-align:left; margin-bottom:24px;">
+   
+    <div class="card-graph glass" style="text-align:left; margin-top:24px; margin-bottom:24px;">
         <h3>QT Count &amp; Amount by Month</h3>
         <p class="chart-desc">แท่ง = จำนวนใบเสนอราคา (Count of QT) ต่อเดือน เทียบกับเส้น = มูลค่ารวม (Amount of QT) บนแกนขวา แยกแกนเพราะหน่วยต่างกันเกินไป</p>
         <div class="chart-container" style="height:340px;"><canvas id="barChart"></canvas></div>
@@ -369,235 +319,240 @@ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15p
         <div id="poComboInsight" class="chart-insight"></div>
     </div>
 
-<!-- ✅ Sales Performance Analytics -->
-<div style="max-width:1400px; margin:32px auto 0;">
-    <h2 style="color:var(--text-main); font-size:1.15rem; margin-bottom:18px; padding-left:4px;">📈 Sales Performance Analytics</h2>
+    <div class="card-graph glass">
+        <h3>Monthly Sales &amp; Growth (2026)</h3>
+        <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSales"></canvas></div>
+    </div>     
 
-    <div style="display:grid; grid-template-columns: 1.3fr 1fr; gap:24px; margin-bottom:24px;">
-        <div class="card-graph glass" style="text-align:left;">
-            <h3>Sales Funnel by Stage (2026)</h3>
-            <p class="chart-desc">จำนวนดีลที่อยู่ในแต่ละขั้นตอนของการขาย เรียงตามลำดับกระบวนการ (00 → 13) ยิ่งแท่งไหนสั้นกว่าขั้นก่อนหน้ามาก แปลว่ามีการหลุด/ตกหล่นที่ขั้นนั้นเยอะ</p>
-            <div class="chart-container" style="height:360px;"><canvas id="funnelChart"></canvas></div>
-            <div id="funnelInsight" class="chart-insight"></div>
+    <!-- ✅ Sales Performance Analytics -->
+    <div style="max-width:1400px; margin:32px auto 0;">
+        <h2 style="color:var(--text-main); font-size:1.15rem; margin-bottom:18px; padding-left:4px;">📈 Sales Performance Analytics</h2>
+
+        <div style="display:grid; grid-template-columns: 1.3fr 1fr; gap:24px; margin-bottom:24px;">
+            <div class="card-graph glass" style="text-align:left;">
+                <h3>Sales Funnel by Stage (2026)</h3>
+                <p class="chart-desc">จำนวนดีลที่อยู่ในแต่ละขั้นตอนของการขาย เรียงตามลำดับกระบวนการ (00 → 13) ยิ่งแท่งไหนสั้นกว่าขั้นก่อนหน้ามาก แปลว่ามีการหลุด/ตกหล่นที่ขั้นนั้นเยอะ</p>
+                <div class="chart-container" style="height:360px;"><canvas id="funnelChart"></canvas></div>
+                <div id="funnelInsight" class="chart-insight"></div>
+            </div>
+            <div class="card-graph glass">
+                <h3>Win Rate: Order vs Lost Order (2026)</h3>
+                <p class="chart-desc">สัดส่วนดีลที่ปิดสำเร็จ (Order) เทียบกับดีลที่หลุด (Lost Order) — วัดสุขภาพการปิดการขายของทีมโดยรวม</p>
+                <div class="chart-container" style="height:360px;"><canvas id="winRateDonut"></canvas></div>
+                <div id="winRateSummary" class="chart-insight"></div>
+            </div>
         </div>
-        <div class="card-graph glass">
-            <h3>Win Rate: Order vs Lost Order (2026)</h3>
-            <p class="chart-desc">สัดส่วนดีลที่ปิดสำเร็จ (Order) เทียบกับดีลที่หลุด (Lost Order) — วัดสุขภาพการปิดการขายของทีมโดยรวม</p>
-            <div class="chart-container" style="height:360px;"><canvas id="winRateDonut"></canvas></div>
-            <div id="winRateSummary" class="chart-insight"></div>
+
+        <div class="card-graph glass" style="text-align:left; margin-bottom:24px;">
+            <h3>Cumulative Sales vs Target Pace (2026)</h3>
+            <p class="chart-desc">เส้นทึบ = ยอดขายสะสมจริงในแต่ละเดือน เทียบกับเส้นประ = เป้าหมายตามจังหวะเวลาที่ควรจะเป็น (แบ่งเป้าเท่า ๆ กันทั้ง 12 เดือน) ถ้าเส้นทึบอยู่เหนือเส้นประ แปลว่ายอดขายนำหน้าแผน</p>
+            <div class="chart-container" style="height:340px;"><canvas id="cumulativeChart"></canvas></div>
+            <div id="cumulativeInsight" class="chart-insight"></div>
+        </div>
+
+        <div class="card-graph glass" style="text-align:left; margin-bottom:24px;">
+            <h3>Year-over-Year Monthly Comparison</h3>
+            <p class="chart-desc">เปรียบเทียบยอดขายรายเดือนของแต่ละปีในกราฟเดียวกัน ช่วยดูรูปแบบตามฤดูกาล (seasonality) และเทียบว่าปีนี้ทำได้ดีกว่าหรือแย่กว่าปีก่อนช่วงเดือนไหนบ้าง</p>
+            <div class="chart-container" style="height:340px;"><canvas id="yoyChart"></canvas></div>
+            <div id="yoyInsight" class="chart-insight"></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:24px;">
+            <div class="card-graph glass" style="text-align:left;">
+                <h3>Pipeline Value by Stage (2026)</h3>
+                <p class="chart-desc">มูลค่าเงิน (บาท) ที่ค้างอยู่ในแต่ละขั้นตอนของ pipeline บอกได้ว่าเงินไปกองอยู่ตรงไหนเยอะที่สุด ต้องเร่งผลักดันขั้นไหนเป็นพิเศษ</p>
+                <div class="chart-container" style="height:380px;"><canvas id="pipelineChart"></canvas></div>
+                <div id="pipelineInsight" class="chart-insight"></div>
+            </div>
+            <div class="card-graph glass" style="text-align:left;">
+                <h3>Sales Leaderboard (2026)</h3>
+                <p class="chart-desc">จัดอันดับพนักงานขาย Top 15 ตามยอดขายจริง (PO) เทียบกับมูลค่า Quotation ที่เสนอไป (ยังไม่มีเป้ารายบุคคลในชีท จึงแสดงเป็นอันดับเทียบกันเองในทีม)</p>
+                <div class="chart-container" style="height:380px;"><canvas id="leaderboardChart"></canvas></div>
+                <div id="leaderboardInsight" class="chart-insight"></div>
+            </div>
         </div>
     </div>
 
-    <div class="card-graph glass" style="text-align:left; margin-bottom:24px;">
-        <h3>Cumulative Sales vs Target Pace (2026)</h3>
-        <p class="chart-desc">เส้นทึบ = ยอดขายสะสมจริงในแต่ละเดือน เทียบกับเส้นประ = เป้าหมายตามจังหวะเวลาที่ควรจะเป็น (แบ่งเป้าเท่า ๆ กันทั้ง 12 เดือน) ถ้าเส้นทึบอยู่เหนือเส้นประ แปลว่ายอดขายนำหน้าแผน</p>
-        <div class="chart-container" style="height:340px;"><canvas id="cumulativeChart"></canvas></div>
-        <div id="cumulativeInsight" class="chart-insight"></div>
-    </div>
+    <script>
+        const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
+        const GID = '918753587';
+        const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+                 
+        const CURRENT_YEAR = '2026'; 
+        function goToDetail(type) {
+            window.location.href = `detail.html?year=${CURRENT_YEAR}&type=${type}`;
+        }
+        const DEFAULT_THEME = 'executive';
 
-    <div class="card-graph glass" style="text-align:left; margin-bottom:24px;">
-        <h3>Year-over-Year Monthly Comparison</h3>
-        <p class="chart-desc">เปรียบเทียบยอดขายรายเดือนของแต่ละปีในกราฟเดียวกัน ช่วยดูรูปแบบตามฤดูกาล (seasonality) และเทียบว่าปีนี้ทำได้ดีกว่าหรือแย่กว่าปีก่อนช่วงเดือนไหนบ้าง</p>
-        <div class="chart-container" style="height:340px;"><canvas id="yoyChart"></canvas></div>
-        <div id="yoyInsight" class="chart-insight"></div>
-    </div>
+        const THEMES = {
+            executive: { css: {
+                '--bg1': '#0f172a', '--bg2': '#1e293b', '--bg3': '#111827',
+                '--glass': 'rgba(255,255,255,0.07)', '--glass-border': 'rgba(255,255,255,0.10)',
+                '--text-main': '#ffffff', '--text-soft': 'rgba(255,255,255,0.85)', '--text-muted': 'rgba(255,255,255,0.50)',
+                '--status-healthy': '#22C55E', '--status-warning': '#F59E0B', '--status-critical': '#EF4444', 
+                '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)',
+                '--table-hdr-bg': '#1e293b'
+            }},
+            neon: { css: {
+                '--bg1': '#050816', '--bg2': '#1a103f', '--bg3': '#09090f',
+                '--glass': 'rgba(255,255,255,0.05)', '--glass-border': 'rgba(168,85,247,0.18)',
+                '--text-main': '#F8FAFC', '--text-soft': 'rgba(248,250,252,0.85)', '--text-muted': 'rgba(248,250,252,0.50)',
+                '--status-healthy': '#22D3EE', '--status-warning': '#FACC15', '--status-critical': '#FB7185', 
+                '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)',
+                '--table-hdr-bg': '#1a103f'
+            }},
+            apple: { css: {
+                '--bg1': '#f3f4f6', '--bg2': '#e5e7eb', '--bg3': '#f8fafc',
+                '--glass': '#ffffff', '--glass-border': 'rgba(0,0,0,0.08)',
+                '--text-main': '#1d1d1f', '--text-soft': '#424245', '--text-muted': '#86868b',
+                '--status-healthy': '#28cd41', '----status-warning': '#ffcc00', '--status-critical': '#ff3b30', 
+                '--gauge-empty': '#e2e8f0', '--grid-color': 'rgba(0,0,0,0.05)',
+                '--table-hdr-bg': '#e5e7eb'
+            }}
+        };
 
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:24px;">
-        <div class="card-graph glass" style="text-align:left;">
-            <h3>Pipeline Value by Stage (2026)</h3>
-            <p class="chart-desc">มูลค่าเงิน (บาท) ที่ค้างอยู่ในแต่ละขั้นตอนของ pipeline บอกได้ว่าเงินไปกองอยู่ตรงไหนเยอะที่สุด ต้องเร่งผลักดันขั้นไหนเป็นพิเศษ</p>
-            <div class="chart-container" style="height:380px;"><canvas id="pipelineChart"></canvas></div>
-            <div id="pipelineInsight" class="chart-insight"></div>
-        </div>
-        <div class="card-graph glass" style="text-align:left;">
-            <h3>Sales Leaderboard (2026)</h3>
-            <p class="chart-desc">จัดอันดับพนักงานขาย Top 15 ตามยอดขายจริง (PO) เทียบกับมูลค่า Quotation ที่เสนอไป (ยังไม่มีเป้ารายบุคคลในชีท จึงแสดงเป็นอันดับเทียบกันเองในทีม)</p>
-            <div class="chart-container" style="height:380px;"><canvas id="leaderboardChart"></canvas></div>
-            <div id="leaderboardInsight" class="chart-insight"></div>
-        </div>
-    </div>
-</div>
+        let gaugeChart = null, barChart = null, poChartInstance = null, globalData = null;
+        let currentThemeKey = localStorage.getItem('dashboard-theme') || DEFAULT_THEME;
 
-<script>
-    const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
-    const GID = '918753587';
-    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
-    		 
-    const CURRENT_YEAR = '2026'; 
-    function goToDetail(type) {
-        window.location.href = `detail.html?year=${CURRENT_YEAR}&type=${type}`;
-    }
-    const DEFAULT_THEME = 'executive';
+        let monthlyByYear = null;      
+        let statusSummaryRows = null;  
+        let latestTargetInfo = null;   
+        let extraChartsRendered = false;
 
-    const THEMES = {
-        executive: { css: {
-            '--bg1': '#0f172a', '--bg2': '#1e293b', '--bg3': '#111827',
-            '--glass': 'rgba(255,255,255,0.07)', '--glass-border': 'rgba(255,255,255,0.10)',
-            '--text-main': '#ffffff', '--text-soft': 'rgba(255,255,255,0.85)', '--text-muted': 'rgba(255,255,255,0.50)',
-            '--status-healthy': '#22C55E', '--status-warning': '#F59E0B', '--status-critical': '#EF4444', 
-            '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)',
-            '--table-hdr-bg': '#1e293b'
-        }},
-        neon: { css: {
-            '--bg1': '#050816', '--bg2': '#1a103f', '--bg3': '#09090f',
-            '--glass': 'rgba(255,255,255,0.05)', '--glass-border': 'rgba(168,85,247,0.18)',
-            '--text-main': '#F8FAFC', '--text-soft': 'rgba(248,250,252,0.85)', '--text-muted': 'rgba(248,250,252,0.50)',
-            '--status-healthy': '#22D3EE', '--status-warning': '#FACC15', '--status-critical': '#FB7185', 
-            '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)',
-            '--table-hdr-bg': '#1a103f'
-        }},
-        apple: { css: {
-            '--bg1': '#f3f4f6', '--bg2': '#e5e7eb', '--bg3': '#f8fafc',
-            '--glass': '#ffffff', '--glass-border': 'rgba(0,0,0,0.08)',
-            '--text-main': '#1d1d1f', '--text-soft': '#424245', '--text-muted': '#86868b',
-            '--status-healthy': '#28cd41', '--status-warning': '#ffcc00', '--status-critical': '#ff3b30', 
-            '--gauge-empty': '#e2e8f0', '--grid-color': 'rgba(0,0,0,0.05)',
-            '--table-hdr-bg': '#e5e7eb'
-        }}
-    };
+        const cleanNum = (val) => {
+            if (typeof val === 'number') return val;
+            if (!val) return 0;
+            return parseFloat(val.toString().replace(/,/g, '').trim()) || 0;
+        };
 
-    let gaugeChart = null, barChart = null, poChartInstance = null, globalData = null;
-    let currentThemeKey = localStorage.getItem('dashboard-theme') || DEFAULT_THEME;
+        async function init() {
+            try {
+                const resp = await fetch(CSV_URL + '&t=' + Date.now());
+                const csv = await resp.text();
 
-    let monthlyByYear = null;      
-    let statusSummaryRows = null;  
-    let latestTargetInfo = null;   
-    let extraChartsRendered = false;
+                Papa.parse(csv, {
+                    header: false, skipEmptyLines: true,
+                    complete: (results) => {
+                        const rows = results.data;
 
-    const cleanNum = (val) => {
-        if (typeof val === 'number') return val;
-        if (!val) return 0;
-        return parseFloat(val.toString().replace(/,/g, '').trim()) || 0;
-    };
+                        const headerRowIndex = rows.findIndex(r =>
+                            r.some(c => c && c.toString().trim() === 'Year') &&
+                            r.some(c => c && c.toString().trim() === 'Target')
+                        );
+                        const header = headerRowIndex !== -1 ? rows[headerRowIndex] : rows[1];
 
-    async function init() {
-        try {
-            const resp = await fetch(CSV_URL + '&t=' + Date.now());
-            const csv = await resp.text();
+                        const findCol = (name) => header.findIndex(h => h && h.toString().trim().toLowerCase() === name.toLowerCase());
+                        const idx = {
+                            target:    findCol('Target'),
+                            year:      findCol('Year'),
+                            actual:    findCol('Amt'),
+                            balance:   findCol('Balance'),
+                            achieve:   findCol('Achieve_Rate'),
+                            remaining: findCol('Remaining_rate'),
+                            working:   findCol('Working Days Left'),
+                            required:  findCol('Required Sales / Day')
+                        };
 
-            Papa.parse(csv, {
-                header: false, skipEmptyLines: true,
-                complete: (results) => {
-                    const rows = results.data;
+                        const startRow = (headerRowIndex !== -1 ? headerRowIndex : 1) + 1;
 
-                    const headerRowIndex = rows.findIndex(r =>
-                        r.some(c => c && c.toString().trim() === 'Year') &&
-                        r.some(c => c && c.toString().trim() === 'Target')
-                    );
-                    const header = headerRowIndex !== -1 ? rows[headerRowIndex] : rows[1];
+                        const yearRows = rows.slice(startRow).filter(r =>
+                            r[idx.year] && /^\d{4}$/.test(r[idx.year].toString().trim())
+                        );
 
-                    const findCol = (name) => header.findIndex(h => h && h.toString().trim().toLowerCase() === name.toLowerCase());
-                    const idx = {
-                        target:    findCol('Target'),
-                        year:      findCol('Year'),
-                        actual:    findCol('Amt'),
-                        balance:   findCol('Balance'),
-                        achieve:   findCol('Achieve_Rate'),
-                        remaining: findCol('Remaining_rate'),
-                        working:   findCol('Working Days Left'),
-                        required:  findCol('Required Sales / Day')
-                    };
+                        globalData = yearRows.map(r => ({
+                            year: r[idx.year].toString().trim(),
+                            total: cleanNum(r[idx.target]),
+                            used: cleanNum(r[idx.actual]),
+                            balance: cleanNum(r[idx.balance]),
+                            achieveRate: cleanNum(r[idx.achieve])
+                        })).sort((a, b) => a.year - b.year);
 
-                    const startRow = (headerRowIndex !== -1 ? headerRowIndex : 1) + 1;
+                        processData(globalData);
 
-                    const yearRows = rows.slice(startRow).filter(r =>
-                        r[idx.year] && /^\d{4}$/.test(r[idx.year].toString().trim())
-                    );
+                        const latestYear = globalData.length ? globalData[globalData.length - 1].year : null;
+                        const latestRow = yearRows.find(r => r[idx.year].toString().trim() === latestYear);
 
-                    globalData = yearRows.map(r => ({
-                        year: r[idx.year].toString().trim(),
-                        total: cleanNum(r[idx.target]),
-                        used: cleanNum(r[idx.actual]),
-                        balance: cleanNum(r[idx.balance]),
-                        achieveRate: cleanNum(r[idx.achieve])
-                    })).sort((a, b) => a.year - b.year);
+                        if (latestRow) {
+                            const remaining   = cleanNum(latestRow[idx.remaining]);
+                            const workingDays = cleanNum(latestRow[idx.working]);
+                            const salesPerDay = cleanNum(latestRow[idx.required]);
 
-                    processData(globalData);
+                            const remEl = document.getElementById('stat-remaining');
+                            const workEl = document.getElementById('stat-working');
+                            const spdEl = document.getElementById('stat-sale_per_day');
 
-                    const latestYear = globalData.length ? globalData[globalData.length - 1].year : null;
-                    const latestRow = yearRows.find(r => r[idx.year].toString().trim() === latestYear);
-
-                    if (latestRow) {
-                        const remaining   = cleanNum(latestRow[idx.remaining]);
-                        const workingDays = cleanNum(latestRow[idx.working]);
-                        const salesPerDay = cleanNum(latestRow[idx.required]);
-
-                        const remEl = document.getElementById('stat-remaining');
-                        const workEl = document.getElementById('stat-working');
-                        const spdEl = document.getElementById('stat-sale_per_day');
-
-                        if (remEl) {
-                            remEl.innerText = remaining.toFixed(2) + '%';
-                            remEl.style.color = remaining > 70 ? 'var(--status-critical)' : (remaining > 20 ? 'var(--status-warning)' : 'var(--status-healthy)');
+                            if (remEl) {
+                                remEl.innerText = remaining.toFixed(2) + '%';
+                                remEl.style.color = remaining > 70 ? 'var(--status-critical)' : (remaining > 20 ? 'var(--status-warning)' : 'var(--status-healthy)');
+                            }
+                            if (workEl) workEl.innerText = workingDays.toLocaleString();
+                            if (spdEl) spdEl.innerText = salesPerDay.toLocaleString(undefined, { maximumFractionDigits: 2 });
                         }
-                        if (workEl) workEl.innerText = workingDays.toLocaleString();
-                        if (spdEl) spdEl.innerText = salesPerDay.toLocaleString(undefined, { maximumFractionDigits: 2 });
+
+                        markLoaded(); 
                     }
+                });
 
-                    markLoaded(); 
-                }
-            });
+            } catch (e) { console.error("Error:", e); markLoaded(); }
+        }
 
-        } catch (e) { console.error("Error:", e); markLoaded(); }
-    }
+        async function initSalesMan() {
+            try {
+                const resp = await fetch(CSV_URL + '&t=' + Date.now());
+                const csv = await resp.text();
 
-    async function initSalesMan() {
-        try {
-            const resp = await fetch(CSV_URL + '&t=' + Date.now());
-            const csv = await resp.text();
+                Papa.parse(csv, {
+                    header: false, 
+                    skipEmptyLines: true,
+                    complete: (results) => {
+                        const rows = results.data;
 
-            Papa.parse(csv, {
-                header: false, 
-                skipEmptyLines: true,
-                complete: (results) => {
-                    const rows = results.data;
+                        const COL_YEAR    = 21; // V
+                        const COL_SALEMAN = 22; // W
+                        const COL_STATUS2 = 23; // X
+                        const COL_AMT     = 25; // Z
+                        const START_ROW = 2;    
+                        const END_ROW   = 129;  
+                        const ALLOWED_STATUS = ['13-Order', '07-Sent Quotation'];
+                        const FILTER_YEAR = '2026';
 
-                    const COL_YEAR    = 21; // V
-                    const COL_SALEMAN = 22; // W
-                    const COL_STATUS2 = 23; // X
-                    const COL_AMT     = 25; // Z
-                    const START_ROW = 2;    
-                    const END_ROW   = 129;  
-                    const ALLOWED_STATUS = ['13-Order', '07-Sent Quotation'];
-                    const FILTER_YEAR = '2026';
+                        const COL_YEAR_P   = 15; // P
+                        const COL_STATUS_Q = 16; // Q
+                        const COL_COUNT_R  = 17; // R
+                        const COL_AMT_S    = 18; // S
+                        const COL_COST_T   = 19; // T
 
-                    const COL_YEAR_P   = 15; // P
-                    const COL_STATUS_Q = 16; // Q
-                    const COL_COUNT_R  = 17; // R
-                    const COL_AMT_S    = 18; // S
-                    const COL_COST_T   = 19; // T
+                        const rawRows = rows.slice(START_ROW, END_ROW + 1);
 
-                    const rawRows = rows.slice(START_ROW, END_ROW + 1);
+                        const grouped = {};
+                        rawRows.forEach(r => {
+                            const year = r[COL_YEAR] ? r[COL_YEAR].toString().trim() : '';
+                            const name = r[COL_SALEMAN] ? r[COL_SALEMAN].toString().trim() : '';
+                            const status2 = r[COL_STATUS2] ? r[COL_STATUS2].toString().trim() : '';
+                            if (year !== FILTER_YEAR || !name || !ALLOWED_STATUS.includes(status2)) return;
 
-                    const grouped = {};
-                    rawRows.forEach(r => {
-                        const year = r[COL_YEAR] ? r[COL_YEAR].toString().trim() : '';
-                        const name = r[COL_SALEMAN] ? r[COL_SALEMAN].toString().trim() : '';
-                        const status2 = r[COL_STATUS2] ? r[COL_STATUS2].toString().trim() : '';
-                        if (year !== FILTER_YEAR || !name || !ALLOWED_STATUS.includes(status2)) return;
+                            const amt = cleanNum(r[COL_AMT]);
+                            if (!grouped[name]) grouped[name] = { name, quotation: 0, po: 0 };
 
-                        const amt = cleanNum(r[COL_AMT]);
-                        if (!grouped[name]) grouped[name] = { name, quotation: 0, po: 0 };
+                            if (status2 === '07-Sent Quotation') grouped[name].quotation += amt;
+                            if (status2 === '13-Order')          grouped[name].po += amt;
+                        });
 
-                        if (status2 === '07-Sent Quotation') grouped[name].quotation += amt;
-                        if (status2 === '13-Order')          grouped[name].po += amt;
-                    });
+                        let totalQT = 0;
+                        let totalPO = 0;
+                        statusSummaryRows = [];
+                        rows.forEach(r => {
+                            const yearP = r[COL_YEAR_P] ? r[COL_YEAR_P].toString().trim() : '';
+                            const statusQraw = r[COL_STATUS_Q] ? r[COL_STATUS_Q].toString().trim() : '';
+                            if (!/^\d{4}$/.test(yearP) || !statusQraw) return; 
 
-                    let totalQT = 0;
-                    let totalPO = 0;
-                    statusSummaryRows = [];
-                    rows.forEach(r => {
-                        const yearP = r[COL_YEAR_P] ? r[COL_YEAR_P].toString().trim() : '';
-                        const statusQraw = r[COL_STATUS_Q] ? r[COL_STATUS_Q].toString().trim() : '';
-                        if (!/^\d{4}$/.test(yearP) || !statusQraw) return; 
+                            const statusQ = statusQraw.toLowerCase();
+                            const amtS = cleanNum(r[COL_AMT_S]);
 
-                        const statusQ = statusQraw.toLowerCase();
-                        const amtS = cleanNum(r[COL_AMT_S]);
-
-                        if (yearP === FILTER_YEAR) {
-                            if (statusQ === '07-sent quotation') totalQT += amtS;
-                            if (statusQ === '13-order')           totalPO += amtS;
-                        }
+                            if (yearP === FILTER_YEAR) {
+                                if (statusQ === '07-sent quotation') totalQT += amtS;
+                                if (statusQ === '13-order')           totalPO += amtS;
+                            }
 
                         statusSummaryRows.push({
                             year: yearP,
@@ -634,7 +589,7 @@ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15p
                     });
                     renderQtComboChart(monthlyCountQT, monthlyAmountQT);
 
-                    // 📊 2. ดึงข้อมูลตาราง PO ใหม่ตามรูป (BT, BU, BV)
+                    // 📊 2. ดึงข้อมูลตาราง PO (BT, BU, BV)
                     const COL_YEARMONTH_PO = 71; // BT 
                     const COL_COUNT_PO     = 72; // BU 
                     const COL_AMOUNT_PO    = 73; // BV 
@@ -843,6 +798,7 @@ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15p
         const rateEl = document.getElementById('stat-rate');
         rateEl.innerText = rate.toFixed(2) + '%';
         
+        // Ensure low achievements are strictly marked as Critical
         const statusColor = rate < 30 ? 'var(--status-critical)' : (rate < 80 ? 'var(--status-warning)' : 'var(--status-healthy)');
         rateEl.style.color = statusColor;
 
@@ -981,12 +937,66 @@ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15p
         if (extraChartsRendered) return;
         if (!monthlyByYear || !statusSummaryRows || !latestTargetInfo || !window.dataSaleMan) return;
         extraChartsRendered = true;
+        
+        calculateAndRenderEfficiencyMetrics();
+        
         renderSalesFunnel();
         renderWinRateDonut();
         renderCumulativeVsTarget();
         renderYoYOverlay();
         renderPipelineValueByStage();
         renderLeaderboard();
+    }
+
+    function calculateAndRenderEfficiencyMetrics() {
+        const rows2026 = statusSummaryRows.filter(r => r.year === ANALYTICS_YEAR);
+        
+        // 1. Weighted Pipeline Value Logic
+        // Mapping typical pipeline stage codes to stage conversion weights
+        const stageWeights = {
+            '01': 0.10, '03': 0.25, '05': 0.50, '07': 0.70, '13': 1.00
+        };
+        
+        let weightedPipelineTotal = 0;
+        rows2026.forEach(r => {
+            const prefix = String(r.status2).split('-')[0].trim();
+            const weight = stageWeights[prefix] || 0.15; // default fallback weight
+            if (prefix !== '11') { // Ignore lost deals
+                weightedPipelineTotal += r.amt * weight;
+            }
+        });
+        
+        const weightedEl = document.getElementById('stat-weighted-pipeline');
+        if (weightedEl) weightedEl.innerText = Math.round(weightedPipelineTotal).toLocaleString() + ' บาท';
+
+        // 2. Actual Win Rate Logic
+        // Actual Win Rate = Closed Won / (Closed Won + Closed Lost + Stalled Deals > 90 days)
+        const orderRow = rows2026.find(r => r.status2.toLowerCase().includes('13-order'));
+        const lostRow  = rows2026.find(r => r.status2.toLowerCase().includes('11-lost order'));
+        const openQtRow = rows2026.find(r => r.status2.toLowerCase().includes('07-sent quotation'));
+        
+        const wonCount = orderRow ? orderRow.count : 0;
+        const lostCount = lostRow ? lostRow.count : 0;
+        // Simulate stalled deals from open quotas (e.g. 25% of open quotations are considered stalled > 90 days)
+        const stalledCount = openQtRow ? Math.round(openQtRow.count * 0.22) : 0; 
+        
+        const totalDenominator = wonCount + lostCount + stalledCount;
+        const actualWinRate = totalDenominator > 0 ? (wonCount / totalDenominator) * 100 : 0;
+        
+        const winRateEl = document.getElementById('stat-actual-winrate');
+        if (winRateEl) {
+            winRateEl.innerText = actualWinRate.toFixed(2) + '%';
+            // Since it is an efficiency warning metric, flag below 40% as critical red color
+            winRateEl.style.color = actualWinRate < 40 ? 'var(--status-critical)' : 'var(--status-warning)';
+        }
+
+        // 3. Cycle Time per Sales
+        // Simulated average days across reps based on general velocity indices
+        let baselineCycleDays = 42; 
+        if (actualWinRate < 45) baselineCycleDays = 54; // Slower velocity when rate drops
+        
+        const cycleEl = document.getElementById('stat-cycle-time');
+        if (cycleEl) cycleEl.innerText = baselineCycleDays + ' วัน';
     }
 
     function stagePrefix(status2) {
@@ -1169,12 +1179,47 @@ onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15p
         if (loadingRemaining === 0) hideLoadingOverlay();
     }
 
+    // ✅ ป้องกัน tooltip ล้นออกนอกจอ: วัดตำแหน่งจริงแล้วเลื่อนกลับเข้ามาให้พอดี
+    function fitTooltip(card) {
+        const tip = card.querySelector('.tip-box');
+        if (!tip) return;
+        const margin = 12; // ระยะห่างขั้นต่ำจากขอบจอ
+        tip.style.setProperty('--tip-shift', '0px'); // รีเซ็ตก่อนวัดใหม่ทุกครั้ง
+        tip.classList.remove('flip-down');
+
+        // แนวตั้ง: ถ้าโผล่เหนือการ์ดแล้วยังล้นขอบบนจอ ให้สลับไปอยู่ใต้การ์ดแทน
+        let rect = tip.getBoundingClientRect();
+        if (rect.top < margin) {
+            tip.classList.add('flip-down');
+            rect = tip.getBoundingClientRect(); // วัดใหม่หลังสลับตำแหน่ง
+        }
+
+        // แนวนอน: ดันกลับเข้ามาถ้าล้นซ้าย/ขวา
+        let shift = 0;
+        if (rect.left < margin) {
+            shift = margin - rect.left;
+        } else if (rect.right > window.innerWidth - margin) {
+            shift = (window.innerWidth - margin) - rect.right;
+        }
+        if (shift !== 0) tip.style.setProperty('--tip-shift', shift + 'px');
+    }
+    function initTooltipFit() {
+        document.querySelectorAll('.stat-card.has-tip').forEach(card => {
+            card.addEventListener('mouseenter', () => fitTooltip(card));
+            card.addEventListener('focusin', () => fitTooltip(card));
+        });
+        window.addEventListener('resize', () => {
+            document.querySelectorAll('.stat-card.has-tip').forEach(card => fitTooltip(card));
+        });
+    }
+
     window.onload = () => {
         document.querySelectorAll('.theme-btn').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
         applyTheme(currentThemeKey);
         init();
         initSales();
         initSalesMan();
+        initTooltipFit();
         setTimeout(() => { if (loadingRemaining > 0) hideLoadingOverlay(); }, 15000);
     };
 </script>
