@@ -52,6 +52,7 @@ body{
 }
 .badge-qt{ background:rgba(99,179,237,0.18); color:#2B6CB0; }
 .badge-po{ background:rgba(34,197,94,0.18); color:#15803D; }
+.badge-generic{ background:rgba(129,140,248,0.18); color:#4338CA; }
 
 /* ── SUMMARY ── */
 .summary-row{
@@ -118,18 +119,16 @@ body{
 
 .table-scroll{ overflow-x:hidden; max-height:75vh; overflow-y:auto; border-radius:12px; }
 
-/* ✅ กำหนดความกว้างคอลัมน์ตามลำดับคงที่: Year, Customer, Quotation No., Job Name, Staff, Amount THB, Cost THB, Margin, Margin%, PO(Month), Last Update */
-.data-table th:nth-child(1),  .data-table td:nth-child(1)  { width:5%;  }
-.data-table th:nth-child(2),  .data-table td:nth-child(2)  { width:12%; }
-.data-table th:nth-child(3),  .data-table td:nth-child(3)  { width:10%; }
-.data-table th:nth-child(4),  .data-table td:nth-child(4)  { width:22%; }
-.data-table th:nth-child(5),  .data-table td:nth-child(5)  { width:8%;  }
-.data-table th:nth-child(6),  .data-table td:nth-child(6)  { width:9%;  }
-.data-table th:nth-child(7),  .data-table td:nth-child(7)  { width:8%;  }
-.data-table th:nth-child(8),  .data-table td:nth-child(8)  { width:8%;  }
-.data-table th:nth-child(9),  .data-table td:nth-child(9)  { width:6%;  }
-.data-table th:nth-child(10), .data-table td:nth-child(10) { width:5%;  }
-.data-table th:nth-child(11), .data-table td:nth-child(11) { width:7%;  }
+/* ✅ กำหนดความกว้างคอลัมน์ตามลำดับคงที่: Customer, Quotation No., Job Name, Staff, Status2, Amount THB, Cost THB, PO(Month), Last Update */
+.data-table th:nth-child(1), .data-table td:nth-child(1) { width:14%; }
+.data-table th:nth-child(2), .data-table td:nth-child(2) { width:11%; }
+.data-table th:nth-child(3), .data-table td:nth-child(3) { width:20%; }
+.data-table th:nth-child(4), .data-table td:nth-child(4) { width:9%;  }
+.data-table th:nth-child(5), .data-table td:nth-child(5) { width:13%; }
+.data-table th:nth-child(6), .data-table td:nth-child(6) { width:11%; }
+.data-table th:nth-child(7), .data-table td:nth-child(7) { width:10%; }
+.data-table th:nth-child(8), .data-table td:nth-child(8) { width:6%;  }
+.data-table th:nth-child(9), .data-table td:nth-child(9) { width:6%;  }
 
 .tbl-footer{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:18px; }
 .tbl-count{ font-size:0.78rem; color:var(--txt-mute); }
@@ -231,31 +230,52 @@ body{
 </div>
 
 <script>
-// ✅ อ่านค่า year / type จาก query string ที่ส่งมาจากการคลิก card Total QT / Total PO
+// ✅ อ่านค่า year / type จาก query string ที่ส่งมาจากการคลิกลิงก์ในตาราง Status Overview
 const params   = new URLSearchParams(window.location.search);
 const YEAR_PARAM = (params.get('year') || '').trim();
-const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase(); // 'qt' หรือ 'po'
+const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase().substring(0, 2); // เช่น '07', '13' (สองหลักแรกของ Status2) — ตัดเหลือ 2 ตัวแรกเผื่อมีคนส่งข้อความเต็มมา
 
 // ✅ sheet เดียวกับ dashBoard (target/salesman ใช้ตัวนี้อยู่แล้ว)
 const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
 const GID      = '918753587';
 const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
-// ✅ ช่วงคอลัมน์ BD:BN (0-based index) ตามที่ระบุ
-// ✅ ช่วงคอลัมน์ต่างกันตามประเภท (โครงสร้างคอลัมน์เหมือนกันทั้งคู่: Year, Customer, Quotation No., Job Name, Staff, Amount THB, Cost THB, Margin, Margin%, PO(Month), Last Update)
-const COL_START = TYPE_PARAM === 'po' ? 43 : 53; // AR (PO) หรือ BD (QT)
-const COL_END   = TYPE_PARAM === 'po' ? 51 : 61; // BB (PO) หรือ BN (QT)
-const HEADER_ROW_INDEX = 1; // แถว 2 (index 1) — สมมติตามรูปแบบ banner แถว1 / header แถว2 / data แถว3+
+const HEADER_ROW_INDEX = 1; // แถว 2 (index 1) — banner แถว1 / header แถว2 / data แถว3+
 const DATA_START_ROW   = 2; // แถว 3
 
-let tableHeaders  = [];  // header label ของแต่ละคอลัมน์ในช่วง BD:BN
+// ✅ แปลงตัวอักษรคอลัมน์ (เช่น "CB") เป็น index แบบ 0-based
+function colLetterToIndex(letters) {
+  let n = 0;
+  for (let i = 0; i < letters.length; i++) n = n * 26 + (letters.charCodeAt(i) - 64);
+  return n - 1;
+}
+const YEAR_COL_INDEX = colLetterToIndex('CB'); // คอลัมน์ปี ใช้เป็นเงื่อนไข filter
+
+// ✅ คอลัมน์ที่ต้องแสดง — ระบุตำแหน่งตัวอักษรคอลัมน์ตรงๆ ตามชีทจริง (ไม่ค้นด้วยชื่อ header อีกต่อไป
+//    เพราะถ้ามีคอลัมน์อื่นชื่อคล้ายกันอยู่ในชีท การค้นด้วยชื่ออาจไปเจอคอลัมน์ผิดตัว)
+//    Year(CB) Customer(CC) QuotationNo(CD) JobName(CE) Staff(CF) Status2(CG) AmountTHB(CH) CostTHB(CI) POMonth(CJ) LastUpdate(CK)
+const DISPLAY_COLUMNS = [
+  { label: 'Customer',       col: 'CC' },
+  { label: 'Quotation No.',  col: 'CD' },
+  { label: 'Job Name',       col: 'CE' },
+  { label: 'Staff',          col: 'CF' },
+  { label: 'Status2',        col: 'CG' },
+  { label: 'Amount THB',     col: 'CH' },
+  { label: 'Cost THB',       col: 'CI' },
+  { label: 'PO(Month)',      col: 'CJ' }, // สมมติว่าอยู่ถัดจาก Cost THB — แจ้งได้ถ้าตัวอักษรจริงไม่ตรงนี้
+  { label: 'Last Update',    col: 'CK' }, // สมมติว่าอยู่ถัดไปอีกคอลัมน์ — แจ้งได้ถ้าตัวอักษรจริงไม่ตรงนี้
+];
+const colIndexMap = DISPLAY_COLUMNS.map(c => colLetterToIndex(c.col));
+const TYPE_COL_INDEX = colIndexMap[DISPLAY_COLUMNS.findIndex(c => c.label === 'Status2')]; // ใช้คอลัมน์เดียวกับที่โชว์ผล ประกันว่า filter กับที่แสดงตรงกันเสมอ
+
+let tableHeaders  = DISPLAY_COLUMNS.map(c => c.label); // header label คงที่ตามลำดับที่กำหนด
 let tableAllRows  = [];  // แถวข้อมูล (object ตาม header) หลัง filter year+type แล้ว
 let filteredRows  = [];
 let sortColIdx    = -1;
 let sortAsc       = true;
 let currentPage   = 1;
 let pageSize      = 25;
-let amtColIdx     = -1; // คอลัมน์ที่ดูเหมือนเป็นมูลค่าเงิน (ถ้ามี) สำหรับ sum summary
+let amtColIdx     = -1; // index ใน DISPLAY_COLUMNS ของ "Amount THB" สำหรับ sum summary
 
 function cleanNumCandidate(v) {
   if (v === undefined || v === null || v === '') return NaN;
@@ -267,15 +287,13 @@ function cleanNumCandidate(v) {
   return parseFloat(s);
 }
 
-function updateBadges() {
-  const isQT = TYPE_PARAM === 'qt';
-  const label = isQT ? 'Total QT' : (TYPE_PARAM === 'po' ? 'Total PO' : (TYPE_PARAM || '-'));
-  const rangeLabel = TYPE_PARAM === 'po' ? 'AR:BB' : 'BD:BN';
+function updateBadges(statusLabel) {
+  const label = statusLabel || (TYPE_PARAM || '-');
   document.getElementById('typeBadgeInline').textContent = label + ' · ' + (YEAR_PARAM || '-');
-  document.querySelector('.nav-sub').textContent = `ข้อมูลจาก sheet: dashBoard (${rangeLabel})`;
+  document.querySelector('.nav-sub').textContent = `ข้อมูลจาก sheet: dashBoard (กรองด้วยคอลัมน์ CB=ปี, CG=ประเภท)`;
   const badgeEl = document.getElementById('typeBadge');
   badgeEl.textContent = label;
-  badgeEl.className = 'badge ' + (isQT ? 'badge-qt' : 'badge-po');
+  badgeEl.className = 'badge badge-generic';
   document.getElementById('sumYear').textContent = YEAR_PARAM || '-';
   document.getElementById('sumType').textContent = label;
 }
@@ -292,38 +310,33 @@ async function init() {
       skipEmptyLines: true,
       complete: function(res) {
         const rows = res.data;
-        const headerRow = rows[HEADER_ROW_INDEX] || [];
 
-        // ✅ label คอลัมน์ในช่วงที่เลือก (Year, Customer, Quotation No., Job Name, Staff, Amount THB, Cost THB, Margin, Margin%, PO(Month), Last Update)
-        const rangeHeaders = [];
-        for (let c = COL_START; c <= COL_END; c++) {
-          rangeHeaders.push(headerRow[c] ? headerRow[c].toString().trim() : ('Col ' + (c + 1)));
-        }
-        tableHeaders = rangeHeaders;
-
-        // ✅ Year เป็นคอลัมน์แรกของทั้งสองช่วงเสมอ (AR / BD) ไม่ต้องเดาแล้ว
-        const yearLocalIdx = 0;
-
-        // ✅ หาคอลัมน์ที่น่าจะเป็นมูลค่าเงิน (ชื่อมี Amt/Amount/มูลค่า) ไว้โชว์ยอดรวม
-        amtColIdx = rangeHeaders.findIndex(h => /amt|amount|มูลค่า|value/i.test(h));
-        if (amtColIdx === -1) document.getElementById('noteBox').style.display = 'block';
+        amtColIdx = DISPLAY_COLUMNS.findIndex(c => c.label === 'Amount THB');
 
         const dataRows = rows.slice(DATA_START_ROW);
 
-        // ✅ Filter ตาม Year เท่านั้น (ประเภท QT/PO กำหนดโดยช่วงคอลัมน์ที่เลือกไปแล้ว)
+        // ✅ Filter: คอลัมน์ CB (ปี) ต้องตรงกับ year param และคอลัมน์ CG (Status2) สองหลักแรกต้องตรงกับ type param
+        let firstMatchStatus = '';
         tableAllRows = dataRows
-          .map(r => r.slice(COL_START, COL_END + 1))
           .filter(r => {
-            const yVal = r[yearLocalIdx] ? r[yearLocalIdx].toString().trim() : '';
-            if (!yVal) return false;
+            const yVal = r[YEAR_COL_INDEX] ? r[YEAR_COL_INDEX].toString().trim() : '';
+            const typeVal = r[TYPE_COL_INDEX] ? r[TYPE_COL_INDEX].toString().trim() : '';
+            if (!yVal || !typeVal) return false;
             if (YEAR_PARAM && yVal !== YEAR_PARAM) return false;
+            if (TYPE_PARAM && typeVal.substring(0, 2).toLowerCase() !== TYPE_PARAM) return false;
+            if (!firstMatchStatus) firstMatchStatus = typeVal;
             return true;
           })
           .map(r => {
             const obj = {};
-            tableHeaders.forEach((h, i) => { obj[h + '__' + i] = r[i]; });
+            DISPLAY_COLUMNS.forEach((c, i) => {
+              const srcIdx = colIndexMap[i];
+              obj[c.label + '__' + i] = srcIdx === -1 ? '' : r[srcIdx];
+            });
             return obj;
           });
+
+        if (firstMatchStatus) updateBadges(firstMatchStatus); // ✅ โชว์ชื่อสถานะเต็มแทนโค้ดตัวเลขเมื่อรู้แล้ว
 
         buildTableHead();
         applyFilterSortPaginate(); // ✅ คำนวณ summary ให้ในตัวอยู่แล้ว (ครอบคลุมทั้ง initial load และตอนค้นหา)
@@ -412,7 +425,7 @@ function renderTableBody(rows) {
   tbody.innerHTML = rows.map(row => {
     return '<tr>' + tableHeaders.map((h, i) => {
       const v = row[headerKey(i)];
-      const isYearCol = /year|ปี/i.test(h) || i === 0; // ✅ คอลัมน์ Year (คอลัมน์แรกของช่วงเสมอ) ไม่ใส่ comma
+      const isYearCol = /year|ปี/i.test(h);
       const num = cleanNumCandidate(v);
       if (isYearCol && v !== '' && v !== undefined && v !== null) {
         return `<td>${v}</td>`; // แสดงเลขปีตรงๆ ไม่ format comma

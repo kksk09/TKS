@@ -248,12 +248,12 @@
             <span class="stat-label">Performance Index</span><span class="stat-value" id="stat-perfindex">0%</span>
         </div>
 
-        <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" onclick="goToDetail('qt')" title="คลิกเพื่อดูรายละเอียด" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(129,140,248,0.25)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">            
+        <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" onclick="goToDetail('07')" title="คลิกเพื่อดูรายละเอียด" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(129,140,248,0.25)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">            
             <span class="tip-icon">?</span>
             <div class="tip-box">ยอดรวมมูลค่าใบเสนอราคาที่ส่งแล้วในปี 2026<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2026 และ Status2 = '07-Sent Quotation'</div>
             <span class="stat-label">Total QT</span><span class="stat-value" id="stat-total-qt">0</span>
         </div>
-        <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" onclick="goToDetail('po')" title="คลิกเพื่อดูรายละเอียด" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(129,140,248,0.25)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
+        <div class="stat-card glass has-tip" style="cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;" onclick="goToDetail('13')" title="คลิกเพื่อดูรายละเอียด" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 24px rgba(129,140,248,0.25)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='none'">
             <span class="tip-icon">?</span>
             <div class="tip-box">ยอดรวมมูลค่าออเดอร์ที่ปิดแล้วในปี 2026<br><b>สูตร:</b> SUM(คอลัมน์ S) ที่ P = 2026 และ Status2 = '13-Order'</div>
             <span class="stat-label">Total PO</span><span class="stat-value" id="stat-total-po">0</span>
@@ -694,12 +694,16 @@
 
         tbody.innerHTML = rowsForYear.map(r => {
             const key = r.status2.toLowerCase();
-            let statusCell = r.status2;
-            if (key === '07-sent quotation') {
-                statusCell = `<a href="detail.html?year=${ANALYTICS_YEAR}&type=qt" style="color:#818CF8; text-decoration:underline;">${r.status2}</a>`;
-            } else if (key === '13-order') {
-                statusCell = `<a href="detail.html?year=${ANALYTICS_YEAR}&type=po" style="color:#4ADE80; text-decoration:underline;">${r.status2}</a>`;
-            }
+            // let statusCell = r.status2;
+            // if (key === '07-sent quotation') {
+            //     statusCell = `<a href="detail.html?year=${ANALYTICS_YEAR}&type=qt" style="color:#818CF8; text-decoration:underline;">${r.status2}</a>`;
+            // } else if (key === '13-order') {
+            //     statusCell = `<a href="detail.html?year=${ANALYTICS_YEAR}&type=po" style="color:#4ADE80; text-decoration:underline;">${r.status2}</a>`;
+            // }
+             const type = key.substring(0, 2); // สองหลักแรกของ key เช่น "07", "13"
+            //const type = key.toString();
+            const statusCell = `<a href="detail.html?year=${ANALYTICS_YEAR}&type=${type}" style="color:#818CF8; text-decoration:underline;">${r.status2}</a>`;
+
             return `<tr>
                 <td>${r.year}</td>
                 <td>${statusCell}</td>
