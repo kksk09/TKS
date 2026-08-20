@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรแกรมคำนวณเวลา</title>
+    <style>
+        /* ตกแต่งหน้าตา (CSS) ให้ดูทันสมัยและสะอาดตา */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 320px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .input-box {
+            display: flex;
+            flex-direction: column;
+            width: 45%;
+        }
+        label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+        input[type="number"] {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+            text-align: center;
+        }
+        input[type="number"]:focus {
+            border-color: #007bff;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result-box {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+        }
+        .result-title {
+            font-size: 14px;
+            color: #888;
+            margin: 0;
+        }
+        #result {
+            font-size: 32px;
+            color: #28a745;
+            margin-top: 5px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>คำนวณเวลา (+4 ชม.)</h2>
+
+        <!-- ฟอร์มกรอกข้อมูลพร้อมปุ่ม Submit -->
+        <form id="timeForm">
+            <div class="input-group">
+                <div class="input-box">
+                    <label for="tbH">ชั่วโมง (0-23)</label>
+                    <input type="number" id="tbH" value="9" min="0" max="23" required>
+                </div>
+                <div class="input-box">
+                    <label for="tbM">นาที (0-59)</label>
+                    <input type="number" id="tbM" value="00" min="0" max="59" required>
+                </div>
+            </div>
+
+            <button type="submit">คำนวณเวลา</button>
+        </form>
+
+        <!-- ส่วนแสดงผลลัพธ์ -->
+        <div class="result-box">
+            <p class="result-title">เวลาใหม่คือ</p>
+            <strong id="result">14:30</strong>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("timeForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // ดึงค่าตัวเลขจาก Text Box
+            let inputHour = parseInt(document.getElementById("tbH").value) || 0;
+            let inputMinute = parseInt(document.getElementById("tbM").value) || 0;
+
+            // ข้อที่ 1: ตรวจสอบและแจ้งเตือนเมื่อกรอกเลขเกินขีดจำกัด (ชั่วโมงต้องอยู่ระหว่าง 0-23 และ นาทีต้องอยู่ระหว่าง 0-59)
+            if (inputHour < 0 || inputHour > 23) {
+                alert("กรุณากรอกชั่วโมงให้อยู่ในช่วง 0 ถึง 23 เท่านั้นครับ");
+                return;
+            }
+            if (inputMinute < 0 || inputMinute > 59) {
+                alert("กรุณากรอกนาทีให้อยู่ในช่วง 0 ถึง 59 เท่านั้นครับ");
+                return;
+            }
+
+            // สร้างวัตถุเวลาและตั้งค่าตามที่กรอกมา
+            let time = new Date();
+            time.setHours(inputHour, inputMinute, 0);
+
+            // คำนวณตามสูตรเดิม (บวกเพิ่ม 4 ชั่วโมง)
+            time.setHours(time.getHours() + 4);
+
+            // จัดรูปแบบตัวเลขให้สวยงาม (ใส่เลข 0 นำหน้าหากเป็นหลักเดียว)
+            let hours = String(time.getHours()).padStart(2, '0');
+            let minutes = String(time.getMinutes()).padStart(2, '0');
+            let finalTime = hours + ":" + minutes;
+
+            // แสดงผลลัพธ์บนหน้าจอ
+            document.getElementById("result").innerText = finalTime;
+        });
+    </script>
+
+    <script>
+    function calculateTime() {
+
+        // ดึงค่าจาก TextBox
+        let inputHour = parseInt(document.getElementById("tbH").value) || 0;
+        let inputMinute = parseInt(document.getElementById("tbM").value) || 0;
+
+        // ตรวจสอบช่วงของข้อมูล
+        if (inputHour < 0 || inputHour > 23) {
+            document.getElementById("result").innerText = "ชั่วโมงไม่ถูกต้อง";
+            return;
+        }
+
+        if (inputMinute < 0 || inputMinute > 59) {
+            document.getElementById("result").innerText = "นาทีไม่ถูกต้อง";
+            return;
+        }
+
+        // สร้างเวลา
+        let time = new Date();
+        time.setHours(inputHour, inputMinute, 0);
+
+        // บวก 4 ชั่วโมง
+        time.setHours(time.getHours() + 4);
+
+        // Format HH:mm
+        let hours = String(time.getHours()).padStart(2, '0');
+        let minutes = String(time.getMinutes()).padStart(2, '0');
+
+        // แสดงผลทันที
+        document.getElementById("result").innerText =
+            hours + ":" + minutes;
+    }
+
+
+    // พิมพ์ตัวเลขปุ๊บ → คำนวณทันที
+    document.getElementById("tbH").addEventListener("input", calculateTime);
+    document.getElementById("tbM").addEventListener("input", calculateTime);
+
+
+    // ป้องกัน Submit Form
+    document.getElementById("timeForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        calculateTime();
+    });
+
+
+    // คำนวณครั้งแรกตอนเปิดหน้า
+    calculateTime();
+</script>
+
+</body>
+</html>
