@@ -234,7 +234,8 @@ body{
 // ✅ อ่านค่า year / type จาก query string ที่ส่งมาจากการคลิกลิงก์ในตาราง Status Overview
 const params   = new URLSearchParams(window.location.search);
 const YEAR_PARAM = (params.get('year') || '').trim();
-const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase().substring(0, 2); // เช่น '07', '13' (สองหลักแรกของ Status2) — index.html ส่งรหัสตัวเลขมาตรงๆ อยู่แล้ว
+const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase().substring(0, 2);
+const MTH_PARAM = (params.get('mth') || '').trim().padStart(2, '0'); // เดือน 01-12 จากกราฟ // เช่น '07', '13' (สองหลักแรกของ Status2) — index.html ส่งรหัสตัวเลขมาตรงๆ อยู่แล้ว
 
 // ✅ sheet ใหม่ (gid=48822130) — คนละตารางกับ dashBoard เดิม แต่เป็นตัวที่มีข้อมูล Amount ถูกต้อง
 const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
@@ -251,6 +252,7 @@ function colLetterToIndex(letters) {
   return n - 1;
 }
 const YEAR_COL_INDEX = colLetterToIndex('B'); // คอลัมน์ปี ใช้เป็นเงื่อนไข filter
+const LAST_UPDATE_COL_INDEX = colLetterToIndex('S'); // Lasted/Last Update On ใช้กรองเดือน
 
 // ✅ คอลัมน์ที่ต้องแสดง — ตรงกับ sheet gid=48822130
 //    Year(B) Customer(C) QuotationNo(H) JobName(M) Sale(N) Support(O) Status2(R) PO(Month)(T) Requirement(U) AmountTHB(Y) CostTHB(AA)
@@ -296,12 +298,34 @@ function cleanNumCandidate(v) {
 function updateBadges(statusLabel) {
   const label = statusLabel || (TYPE_PARAM || '-');
   document.getElementById('typeBadgeInline').textContent = label + ' · ' + (YEAR_PARAM || '-');
-  document.querySelector('.nav-sub').textContent = `ข้อมูลจาก sheet gid: ${GID} (กรองด้วยคอลัมน์ B=ปี, R=ประเภท)`;
+  document.querySelector('.nav-sub').textContent =
+    `ข้อมูลจาก sheet gid: ${GID} (กรอง B=ปี, R=ประเภท, S=Last Update${MTH_PARAM ? ', เดือน=' + MTH_PARAM : ''})`;
   const badgeEl = document.getElementById('typeBadge');
   badgeEl.textContent = label;
   badgeEl.className = 'badge badge-generic';
-  document.getElementById('sumYear').textContent = YEAR_PARAM || '-';
-  document.getElementById('sumType').textContent = label;
+  document.getElementById('sumYear').textContent = YEAR_PARAM || '-' ;
+  document.getElementById('sumType').textContent =
+    MTH_PARAM ? `${label} · เดือน ${MTH_PARAM}` : label;
+}
+
+// รองรับ Last Update ในรูปแบบ D/M/YYYY, DD/MM/YYYY
+function parseMonthFromLastUpdate(v) {
+  if (!v) return '';
+  const s = String(v).trim();
+
+  // D/M/YYYY หรือ DD/MM/YYYY
+  let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (m) return String(parseInt(m[2], 10)).padStart(2, '0');
+
+  // fallback สำหรับรูปแบบ YYYY-MM-DD
+  m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (m) return String(parseInt(m[2], 10)).padStart(2, '0');
+
+  // fallback สำหรับ Date string ที่ browser parse ได้
+  const dt = new Date(s);
+  if (!isNaN(dt.getTime())) return String(dt.getMonth() + 1).padStart(2, '0');
+
+  return '';
 }
 
 async function init() {
@@ -330,6 +354,13 @@ async function init() {
             if (!yVal || !typeVal) return false;
             if (YEAR_PARAM && yVal !== YEAR_PARAM) return false;
             if (TYPE_PARAM && typeVal.substring(0, 2).toLowerCase() !== TYPE_PARAM) return false;
+
+            // ถ้ามี mth ให้กรองเดือนจากคอลัมน์ S (Last Update On)
+            if (MTH_PARAM) {
+              const rowMonth = parseMonthFromLastUpdate(r[LAST_UPDATE_COL_INDEX]);
+              if (rowMonth !== MTH_PARAM) return false;
+            }
+
             if (!firstMatchStatus) firstMatchStatus = typeVal;
             return true;
           })
@@ -422,45 +453,27 @@ function renderPage() {
     (total !== tableAllRows.length ? ` (กรองจาก ${tableAllRows.length} แถว)` : '');
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-function isNumericDisplayColumn(header) {
-  return /^(Amount THB|Cost THB)$/i.test(String(header).trim());
-}
-
 function renderTableBody(rows) {
   const tbody = document.getElementById('tblBody');
   if (!rows.length) {
     tbody.innerHTML = `<tr><td colspan="${Math.max(tableHeaders.length,1)}" style="text-align:center;color:var(--txt-mute);padding:28px">ไม่พบข้อมูล</td></tr>`;
     return;
   }
-
   tbody.innerHTML = rows.map(row => {
     return '<tr>' + tableHeaders.map((h, i) => {
       const v = row[headerKey(i)];
-      const text = v === undefined || v === null || v === '' ? '' : String(v);
-
-      // Preserve descriptive fields such as Customer as text.
-      // Format only explicit money columns as numbers.
-      if (isNumericDisplayColumn(h)) {
-        const num = cleanNumCandidate(text);
-        if (!isNaN(num) && text !== '') {
-          return `<td class="num">${num.toLocaleString()}</td>`;
-        }
+      const isYearCol = /year|ปี/i.test(h);
+      const num = cleanNumCandidate(v);
+      if (isYearCol && v !== '' && v !== undefined && v !== null) {
+        return `<td>${v}</td>`; // แสดงเลขปีตรงๆ ไม่ format comma
       }
-
-      return `<td>${text === '' ? '—' : escapeHtml(text)}</td>`;
+      if (!isNaN(num) && v !== '' && v !== undefined && v !== null) {
+        return `<td class="num">${num.toLocaleString()}</td>`;
+      }
+      return `<td>${(v !== undefined && v !== null && v !== '') ? v : '—'}</td>`;
     }).join('') + '</tr>';
   }).join('');
 }
-
 
 function renderPagination(totalPages) {
   const el = document.getElementById('tblPagination');

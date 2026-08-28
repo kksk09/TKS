@@ -234,7 +234,9 @@ body{
 // ✅ อ่านค่า year / type จาก query string ที่ส่งมาจากการคลิกลิงก์ในตาราง Status Overview
 const params   = new URLSearchParams(window.location.search);
 const YEAR_PARAM = (params.get('year') || '').trim();
-const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase().substring(0, 2); // เช่น '07', '13' (สองหลักแรกของ Status2) — index.html ส่งรหัสตัวเลขมาตรงๆ อยู่แล้ว
+const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase().substring(0, 2);
+const mthRaw = (params.get('mth') || '').trim();
+const MTH_PARAM = mthRaw !== '' ? mthRaw.padStart(2, '0') : ''; // เดือน 01-12 จากกราฟ — ถ้าไม่ส่ง mth มาเลยต้องเป็นค่าว่างจริงๆ ไม่ใช่ "00"
 
 // ✅ sheet ใหม่ (gid=48822130) — คนละตารางกับ dashBoard เดิม แต่เป็นตัวที่มีข้อมูล Amount ถูกต้อง
 const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
@@ -251,8 +253,10 @@ function colLetterToIndex(letters) {
   return n - 1;
 }
 const YEAR_COL_INDEX = colLetterToIndex('B'); // คอลัมน์ปี ใช้เป็นเงื่อนไข filter
+const LAST_UPDATE_COL_INDEX = colLetterToIndex('S'); // Lasted/Last Update On ใช้กรองเดือน
 
 // ✅ คอลัมน์ที่ต้องแสดง — ตรงกับ sheet gid=48822130
+// หมายเหตุ: ค่าจาก Google Sheets จะถูก clean double quote ก่อนนำไปแสดง
 //    Year(B) Customer(C) QuotationNo(H) JobName(M) Sale(N) Support(O) Status2(R) PO(Month)(T) Requirement(U) AmountTHB(Y) CostTHB(AA)
 const STATUS2_COL = 'R'; // ✅ ใช้กรองข้อมูลเท่านั้น (เทียบ 2 หลักแรก) ไม่เอามาโชว์เป็นคอลัมน์ในตาราง
 const DISPLAY_COLUMNS = [
@@ -279,6 +283,80 @@ let currentPage   = 1;
 let pageSize      = 25;
 let amtColIdx     = -1; // index ใน DISPLAY_COLUMNS ของ "Amount THB" สำหรับ sum summary
 
+// ✅ ทำความสะอาดค่าที่อ่านจาก Google Sheets CSV
+// - ลบ double quote ที่ติดมากับค่าจาก CSV เช่น "ABC" -> ABC
+// - แปลง escaped quote "" -> "
+// - ไม่ลบ quote ที่อยู่กลางข้อความ
+function cleanSheetValue(v) {
+  if (v === undefined || v === null) return '';
+  let s = String(v).replace(/^\uFEFF/, '').trim();
+
+  // กรณี Google Sheets/CSV ส่ง quote ครอบค่ามาอีกชั้น
+  if (s.length >= 2 && s.startsWith('"') && s.endsWith('"')) {
+    s = s.slice(1, -1).replace(/""/g, '"');
+  } else {
+    // กรณี quote หลุดมาเป็นส่วนหนึ่งของค่า
+    s = s.replace(/^"+|"+$/g, '').replace(/""/g, '"');
+  }
+
+  return s.trim();
+}
+
+// ✅ ซ่อมแถว CSV ที่มี comma ใน Job Name แล้วทำให้คอลัมน์หลัง Job Name เลื่อนไป 1+ ช่อง
+// ตัวอย่าง: Job Name = Replace Control System for BigBag 1,2
+// ถ้า CSV ต้นทางส่งมาโดยไม่ quote ถูกต้อง จะรวมกลับเป็น Job Name เดิม
+function repairSheetRow(rawRow) {
+  if (!Array.isArray(rawRow)) return rawRow;
+
+  const row = rawRow.map(cleanSheetValue);
+
+  // ถ้าไม่มี type filter ให้ไม่เดาโครงสร้างแถว
+  if (!TYPE_PARAM) return row;
+
+  // หา Status2 (R = index 17) จากตำแหน่งที่เลื่อนไปทางขวาเล็กน้อย
+  // จำกัดไว้เพื่อไม่ไปแตะกรณีข้อมูลผิดปกติอย่างรุนแรง
+  const searchEnd = Math.min(row.length - 1, TYPE_COL_INDEX + 5);
+  let statusIdx = -1;
+
+  for (let i = TYPE_COL_INDEX; i <= searchEnd; i++) {
+    const v = cleanSheetValue(row[i]).toLowerCase();
+    if (v && v.substring(0, 2) === TYPE_PARAM) {
+      statusIdx = i;
+      break;
+    }
+  }
+
+  const shift = statusIdx - TYPE_COL_INDEX;
+
+  // มีการเลื่อนจริง และจุดเริ่มต้นของปัญหาอยู่ก่อน/ที่ Job Name
+  if (shift > 0 && shift <= 5) {
+    const repaired = row.slice();
+
+    // รวมชิ้นส่วนที่แตกจาก Job Name กลับเข้าด้วยกันด้วย comma
+    const jobParts = row.slice(colLetterToIndex('M'), colLetterToIndex('M') + shift + 1);
+    repaired[colLetterToIndex('M')] = jobParts
+      .filter(v => v !== '')
+      .join(',');
+
+    // เลื่อนข้อมูลหลัง Job Name กลับมาตำแหน่งเดิม
+    const targetStart = colLetterToIndex('N');
+    const sourceStart = targetStart + shift;
+
+    for (let i = targetStart; i < repaired.length; i++) {
+      repaired[i] = row[i + shift] !== undefined ? row[i + shift] : '';
+    }
+
+    console.warn(
+      '[data repair] พบ CSV column shift =', shift,
+      'ช่อง — รวมค่ากลับที่ Job Name:', repaired[colLetterToIndex('M')]
+    );
+
+    return repaired;
+  }
+
+  return row;
+}
+
 function cleanNumCandidate(v) {
   if (v === undefined || v === null || v === '') return NaN;
   let s = String(v).replace(/,/g,'').trim();
@@ -296,12 +374,34 @@ function cleanNumCandidate(v) {
 function updateBadges(statusLabel) {
   const label = statusLabel || (TYPE_PARAM || '-');
   document.getElementById('typeBadgeInline').textContent = label + ' · ' + (YEAR_PARAM || '-');
-  document.querySelector('.nav-sub').textContent = `ข้อมูลจาก sheet gid: ${GID} (กรองด้วยคอลัมน์ B=ปี, R=ประเภท)`;
+  document.querySelector('.nav-sub').textContent =
+    `ข้อมูลจาก sheet gid: ${GID} (กรอง B=ปี, R=ประเภท, S=Last Update${MTH_PARAM ? ', เดือน=' + MTH_PARAM : ''})`;
   const badgeEl = document.getElementById('typeBadge');
   badgeEl.textContent = label;
   badgeEl.className = 'badge badge-generic';
-  document.getElementById('sumYear').textContent = YEAR_PARAM || '-';
-  document.getElementById('sumType').textContent = label;
+  document.getElementById('sumYear').textContent = YEAR_PARAM || '-' ;
+  document.getElementById('sumType').textContent =
+    MTH_PARAM ? `${label} · เดือน ${MTH_PARAM}` : label;
+}
+
+// รองรับ Last Update ในรูปแบบ D/M/YYYY, DD/MM/YYYY, D.M.YYYY
+function parseMonthFromLastUpdate(v) {
+  if (!v) return '';
+  const s = String(v).trim();
+
+  // D/M/YYYY หรือ DD/MM/YYYY หรือ D.M.YYYY
+  let m = s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})/);
+  if (m) return String(parseInt(m[2], 10)).padStart(2, '0');
+
+  // fallback สำหรับรูปแบบ YYYY-MM-DD
+  m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (m) return String(parseInt(m[2], 10)).padStart(2, '0');
+
+  // fallback สำหรับ Date string ที่ browser parse ได้
+  const dt = new Date(s);
+  if (!isNaN(dt.getTime())) return String(dt.getMonth() + 1).padStart(2, '0');
+
+  return '';
 }
 
 async function init() {
@@ -313,23 +413,62 @@ async function init() {
 
     Papa.parse(csv, {
       header: false,
+      dynamicTyping: false,
+      quoteChar: '"',
+      escapeChar: '"',
       skipEmptyLines: true,
       complete: function(res) {
         const rows = res.data;
 
         amtColIdx = DISPLAY_COLUMNS.findIndex(c => c.label === 'Amount THB');
 
-        const dataRows = rows.slice(DATA_START_ROW);
+        // ✅ ทำความสะอาด double quote และซ่อมแถวที่ Job Name มี comma แล้ว column เลื่อน
+        const dataRows = rows
+          .slice(DATA_START_ROW)
+          .map(repairSheetRow);
+
+        // ✅ ตรวจจับแถวที่ column เพี้ยน (เช่น เซลล์มี comma/เครื่องหมายคำพูดที่ escape ไม่ถูกต้อง ทำให้คอลัมน์เลื่อน)
+        // ใช้ความยาวแถวที่พบบ่อยที่สุด (mode) เป็นค่าอ้างอิง แถวที่สั้น/ยาวผิดปกติมากถือว่าเพี้ยน ข้ามไปแล้วเตือนใน console
+        const lenCounts = {};
+        dataRows.forEach(r => { lenCounts[r.length] = (lenCounts[r.length] || 0) + 1; });
+        const expectedLen = Object.keys(lenCounts).reduce((a, b) => lenCounts[a] > lenCounts[b] ? a : b, Object.keys(lenCounts)[0]);
+        const EXPECTED_LEN = parseInt(expectedLen, 10) || 0;
+        let dbgCorruptRows = 0;
 
         // ✅ Filter: คอลัมน์ CB (ปี) ต้องตรงกับ year param และคอลัมน์ CG (Status2) สองหลักแรกต้องตรงกับ type param
         let firstMatchStatus = '';
+        let dbgYearTypeMatch = 0, dbgMonthMatch = 0, dbgMonthSampleLogged = 0;
         tableAllRows = dataRows
-          .filter(r => {
-            const yVal = r[YEAR_COL_INDEX] ? r[YEAR_COL_INDEX].toString().trim() : '';
-            const typeVal = r[TYPE_COL_INDEX] ? r[TYPE_COL_INDEX].toString().trim() : '';
+          .filter((r, idx) => {
+            // ✅ ข้ามแถวที่จำนวนคอลัมน์เพี้ยนไปจากปกติมาก (สัญญาณว่า CSV แตกคอลัมน์ผิดจากคอมม่า/เครื่องหมายคำพูดในเซลล์)
+            if (EXPECTED_LEN && Math.abs(r.length - EXPECTED_LEN) > 3) {
+              dbgCorruptRows++;
+              if (dbgCorruptRows <= 5) {
+                console.warn('[data corrupt] แถวข้อมูลที่', idx + DATA_START_ROW + 1, 'มีจำนวนคอลัมน์ผิดปกติ (', r.length, 'แทนที่จะเป็น', EXPECTED_LEN, ') — น่าจะมีคอมม่า/เครื่องหมายคำพูดในเซลล์ที่ทำให้ CSV แตกคอลัมน์ผิด ข้ามแถวนี้ไปก่อน:', r);
+              }
+              return false;
+            }
+
+            const yVal = cleanSheetValue(r[YEAR_COL_INDEX]);
+            const typeVal = cleanSheetValue(r[TYPE_COL_INDEX]);
             if (!yVal || !typeVal) return false;
             if (YEAR_PARAM && yVal !== YEAR_PARAM) return false;
             if (TYPE_PARAM && typeVal.substring(0, 2).toLowerCase() !== TYPE_PARAM) return false;
+
+            dbgYearTypeMatch++;
+
+            // ถ้ามี mth ให้กรองเดือนจากคอลัมน์ S (Last Update On)
+            if (MTH_PARAM) {
+              const rawLastUpdate = cleanSheetValue(r[LAST_UPDATE_COL_INDEX]);
+              const rowMonth = parseMonthFromLastUpdate(rawLastUpdate);
+              if (dbgMonthSampleLogged < 5) {
+                console.log('[mth debug] Last Update raw:', JSON.stringify(rawLastUpdate), '-> parsed month:', JSON.stringify(rowMonth), '| ต้องการ:', JSON.stringify(MTH_PARAM));
+                dbgMonthSampleLogged++;
+              }
+              if (rowMonth !== MTH_PARAM) return false;
+            }
+
+            dbgMonthMatch++;
             if (!firstMatchStatus) firstMatchStatus = typeVal;
             return true;
           })
@@ -337,10 +476,19 @@ async function init() {
             const obj = {};
             DISPLAY_COLUMNS.forEach((c, i) => {
               const srcIdx = colIndexMap[i];
-              obj[c.label + '__' + i] = srcIdx === -1 ? '' : r[srcIdx];
+              obj[c.label + '__' + i] =
+                srcIdx === -1 ? '' : cleanSheetValue(r[srcIdx]);
             });
             return obj;
           });
+
+        if (dbgCorruptRows > 0) {
+          console.warn('[data corrupt] รวมข้ามแถวที่คอลัมน์เพี้ยนไปทั้งหมด', dbgCorruptRows, 'แถว — แนะนำเช็คเซลล์ที่มีคอมม่าไม่ได้ใส่ quote ครอบ (เช่น "Co., Ltd.") หรือมีเครื่องหมายคำพูดพิเศษ (" ” ‘) ปนอยู่ในเซลล์นั้นๆ');
+        }
+        console.log('[mth debug] สรุป: ตรง year+type =', dbgYearTypeMatch, '| ตรง year+type+month =', dbgMonthMatch, '| MTH_PARAM =', JSON.stringify(MTH_PARAM));
+        if (MTH_PARAM && dbgYearTypeMatch > 0 && dbgMonthMatch === 0) {
+          console.warn('[mth debug] มีแถวที่ตรง year+type แต่ไม่มีแถวไหนตรงเดือนเลย — ลองดู sample ค่า Last Update ด้านบนว่า format ตรงกับที่คาดไว้ไหม (คาดว่าเป็น D/M/YYYY)');
+        }
 
         if (firstMatchStatus) updateBadges(firstMatchStatus); // ✅ โชว์ชื่อสถานะเต็มแทนโค้ดตัวเลขเมื่อรู้แล้ว
 
@@ -422,45 +570,27 @@ function renderPage() {
     (total !== tableAllRows.length ? ` (กรองจาก ${tableAllRows.length} แถว)` : '');
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-function isNumericDisplayColumn(header) {
-  return /^(Amount THB|Cost THB)$/i.test(String(header).trim());
-}
-
 function renderTableBody(rows) {
   const tbody = document.getElementById('tblBody');
   if (!rows.length) {
     tbody.innerHTML = `<tr><td colspan="${Math.max(tableHeaders.length,1)}" style="text-align:center;color:var(--txt-mute);padding:28px">ไม่พบข้อมูล</td></tr>`;
     return;
   }
-
   tbody.innerHTML = rows.map(row => {
     return '<tr>' + tableHeaders.map((h, i) => {
       const v = row[headerKey(i)];
-      const text = v === undefined || v === null || v === '' ? '' : String(v);
-
-      // Preserve descriptive fields such as Customer as text.
-      // Format only explicit money columns as numbers.
-      if (isNumericDisplayColumn(h)) {
-        const num = cleanNumCandidate(text);
-        if (!isNaN(num) && text !== '') {
-          return `<td class="num">${num.toLocaleString()}</td>`;
-        }
+      const isYearCol = /year|ปี/i.test(h);
+      const num = cleanNumCandidate(v);
+      if (isYearCol && v !== '' && v !== undefined && v !== null) {
+        return `<td>${v}</td>`; // แสดงเลขปีตรงๆ ไม่ format comma
       }
-
-      return `<td>${text === '' ? '—' : escapeHtml(text)}</td>`;
+      if (!isNaN(num) && v !== '' && v !== undefined && v !== null) {
+        return `<td class="num">${num.toLocaleString()}</td>`;
+      }
+      return `<td>${(v !== undefined && v !== null && v !== '') ? v : '—'}</td>`;
     }).join('') + '</tr>';
   }).join('');
 }
-
 
 function renderPagination(totalPages) {
   const el = document.getElementById('tblPagination');

@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Detail - Target vs Actual Dashboard</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -234,12 +233,19 @@ body{
 // ✅ อ่านค่า year / type จาก query string ที่ส่งมาจากการคลิกลิงก์ในตาราง Status Overview
 const params   = new URLSearchParams(window.location.search);
 const YEAR_PARAM = (params.get('year') || '').trim();
-const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase().substring(0, 2); // เช่น '07', '13' (สองหลักแรกของ Status2) — index.html ส่งรหัสตัวเลขมาตรงๆ อยู่แล้ว
+const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase().substring(0, 2);
+const mthRaw = (params.get('mth') || '').trim();
+const MTH_PARAM = mthRaw !== '' ? mthRaw.padStart(2, '0') : ''; // เดือน 01-12 จากกราฟ — ถ้าไม่ส่ง mth มาเลยต้องเป็นค่าว่างจริงๆ ไม่ใช่ "00"
 
 // ✅ sheet ใหม่ (gid=48822130) — คนละตารางกับ dashBoard เดิม แต่เป็นตัวที่มีข้อมูล Amount ถูกต้อง
 const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
 const GID      = '48822130';
-const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+// ✅ เปลี่ยนจาก CSV export มาใช้ Google Visualization API (JSON) แทน
+// เหตุผล: CSV ต้องพึ่งการ escape comma/quote ในเซลล์ให้ถูกต้อง ถ้าเซลล์ไหนมีเครื่องหมายคำพูดไม่ปิดคู่
+// จะทำให้ Papa Parse "กลืน" เนื้อหาข้ามคอลัมน์/ข้ามแถวโดยไม่รู้ตัว — JSON ไม่มีปัญหานี้เลย เพราะ JSON.parse
+// แยกแยะ string กับ delimiter ได้แม่นยำ 100% ไม่ว่าเซลล์จะมีคอมม่า/เครื่องหมายคำพูดกี่ตัวก็ตาม
+// &headers=0 บอก Google ว่าไม่ต้องเดา header เอง เราจะจัดการแถว banner/header/data เองด้วย DATA_START_ROW เหมือนเดิม
+const JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&headers=0`;
 
 const HEADER_ROW_INDEX = 1; // แถว 2 (index 1) — banner แถว1 / header แถว2 / data แถว3+
 const DATA_START_ROW   = 2; // แถว 3
@@ -250,7 +256,47 @@ function colLetterToIndex(letters) {
   for (let i = 0; i < letters.length; i++) n = n * 26 + (letters.charCodeAt(i) - 64);
   return n - 1;
 }
+
+// ✅ แปลงค่าจาก cell ของ gviz ให้เป็น string/number ธรรมดา เหมือนที่โค้ดเดิมคาดหวังจาก CSV
+//    - เซลล์ว่าง -> ''
+//    - เซลล์ตัวเลข -> คืนเป็น number ตรงๆ (ไม่มี "THB" หรือ comma ปนมาแบบตอนอ่าน CSV แล้ว)
+//    - เซลล์วันที่ (Google เก็บเป็น Date type จริง) -> ค่าที่ได้จะเป็น string แบบ "Date(2026,7,10)"
+//      (เดือนนับแบบ 0-based ตาม JS Date) แปลงเป็น "D/M/YYYY" ให้ตรงกับ parser เดิมที่ใช้อยู่ทั้งไฟล์
+function gvizCellToRaw(cell) {
+  if (!cell || cell.v === null || cell.v === undefined) return '';
+  const v = cell.v;
+  if (typeof v === 'string' && v.indexOf('Date(') === 0) {
+    const m = v.match(/^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)$/);
+    if (m) {
+      const day = parseInt(m[3], 10);
+      const month = parseInt(m[2], 10) + 1; // gviz ให้เดือนแบบ 0-based ต้อง +1
+      const year = parseInt(m[1], 10);
+      return `${day}/${month}/${year}`; // ให้ตรงกับ format ที่ parseMonthFromLastUpdate อ่านอยู่แล้ว
+    }
+  }
+  return v;
+}
+
+// ✅ ดึงข้อมูลจาก Google Visualization API แล้วแปลงเป็น array of arrays แบบเดียวกับที่ CSV เคยให้
+async function fetchSheetRowsAsJSON(url) {
+  const resp = await fetch(url + '&t=' + Date.now());
+  if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  const text = await resp.text();
+
+  // ✅ Google ห่อ response มาเป็น JSONP ต้องแกะออกก่อนค่อย JSON.parse
+  const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?\s*$/);
+  if (!match) throw new Error('ไม่สามารถแกะรูปแบบ response จาก Google ได้');
+  const json = JSON.parse(match[1]);
+
+  if (json.status === 'error') {
+    const msg = (json.errors && json.errors[0] && json.errors[0].detailed_message) || 'gviz query error';
+    throw new Error(msg);
+  }
+
+  return json.table.rows.map(row => (row.c || []).map(gvizCellToRaw));
+}
 const YEAR_COL_INDEX = colLetterToIndex('B'); // คอลัมน์ปี ใช้เป็นเงื่อนไข filter
+const LAST_UPDATE_COL_INDEX = colLetterToIndex('S'); // Lasted/Last Update On ใช้กรองเดือน
 
 // ✅ คอลัมน์ที่ต้องแสดง — ตรงกับ sheet gid=48822130
 //    Year(B) Customer(C) QuotationNo(H) JobName(M) Sale(N) Support(O) Status2(R) PO(Month)(T) Requirement(U) AmountTHB(Y) CostTHB(AA)
@@ -296,60 +342,92 @@ function cleanNumCandidate(v) {
 function updateBadges(statusLabel) {
   const label = statusLabel || (TYPE_PARAM || '-');
   document.getElementById('typeBadgeInline').textContent = label + ' · ' + (YEAR_PARAM || '-');
-  document.querySelector('.nav-sub').textContent = `ข้อมูลจาก sheet gid: ${GID} (กรองด้วยคอลัมน์ B=ปี, R=ประเภท)`;
+  document.querySelector('.nav-sub').textContent =
+    `ข้อมูลจาก sheet gid: ${GID} (กรอง B=ปี, R=ประเภท, S=Last Update${MTH_PARAM ? ', เดือน=' + MTH_PARAM : ''})`;
   const badgeEl = document.getElementById('typeBadge');
   badgeEl.textContent = label;
   badgeEl.className = 'badge badge-generic';
-  document.getElementById('sumYear').textContent = YEAR_PARAM || '-';
-  document.getElementById('sumType').textContent = label;
+  document.getElementById('sumYear').textContent = YEAR_PARAM || '-' ;
+  document.getElementById('sumType').textContent =
+    MTH_PARAM ? `${label} · เดือน ${MTH_PARAM}` : label;
+}
+
+// รองรับ Last Update ในรูปแบบ D/M/YYYY, DD/MM/YYYY, D.M.YYYY
+function parseMonthFromLastUpdate(v) {
+  if (!v) return '';
+  const s = String(v).trim();
+
+  // D/M/YYYY หรือ DD/MM/YYYY หรือ D.M.YYYY
+  let m = s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})/);
+  if (m) return String(parseInt(m[2], 10)).padStart(2, '0');
+
+  // fallback สำหรับรูปแบบ YYYY-MM-DD
+  m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (m) return String(parseInt(m[2], 10)).padStart(2, '0');
+
+  // fallback สำหรับ Date string ที่ browser parse ได้
+  const dt = new Date(s);
+  if (!isNaN(dt.getTime())) return String(dt.getMonth() + 1).padStart(2, '0');
+
+  return '';
 }
 
 async function init() {
   updateBadges();
   try {
-    const resp = await fetch(CSV_URL + '&t=' + Date.now());
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const csv = await resp.text();
+    const rows = await fetchSheetRowsAsJSON(JSON_URL);
 
-    Papa.parse(csv, {
-      header: false,
-      skipEmptyLines: true,
-      complete: function(res) {
-        const rows = res.data;
+    amtColIdx = DISPLAY_COLUMNS.findIndex(c => c.label === 'Amount THB');
 
-        amtColIdx = DISPLAY_COLUMNS.findIndex(c => c.label === 'Amount THB');
+    const dataRows = rows.slice(DATA_START_ROW);
 
-        const dataRows = rows.slice(DATA_START_ROW);
+    // ✅ Filter: คอลัมน์ B (ปี) ต้องตรงกับ year param และคอลัมน์ R (Status2) สองหลักแรกต้องตรงกับ type param
+    let firstMatchStatus = '';
+    let dbgYearTypeMatch = 0, dbgMonthMatch = 0, dbgMonthSampleLogged = 0;
+    tableAllRows = dataRows
+      .filter(r => {
+        const yVal = r[YEAR_COL_INDEX] ? r[YEAR_COL_INDEX].toString().trim() : '';
+        const typeVal = r[TYPE_COL_INDEX] ? r[TYPE_COL_INDEX].toString().trim() : '';
+        if (!yVal || !typeVal) return false;
+        if (YEAR_PARAM && yVal !== YEAR_PARAM) return false;
+        if (TYPE_PARAM && typeVal.substring(0, 2).toLowerCase() !== TYPE_PARAM) return false;
 
-        // ✅ Filter: คอลัมน์ CB (ปี) ต้องตรงกับ year param และคอลัมน์ CG (Status2) สองหลักแรกต้องตรงกับ type param
-        let firstMatchStatus = '';
-        tableAllRows = dataRows
-          .filter(r => {
-            const yVal = r[YEAR_COL_INDEX] ? r[YEAR_COL_INDEX].toString().trim() : '';
-            const typeVal = r[TYPE_COL_INDEX] ? r[TYPE_COL_INDEX].toString().trim() : '';
-            if (!yVal || !typeVal) return false;
-            if (YEAR_PARAM && yVal !== YEAR_PARAM) return false;
-            if (TYPE_PARAM && typeVal.substring(0, 2).toLowerCase() !== TYPE_PARAM) return false;
-            if (!firstMatchStatus) firstMatchStatus = typeVal;
-            return true;
-          })
-          .map(r => {
-            const obj = {};
-            DISPLAY_COLUMNS.forEach((c, i) => {
-              const srcIdx = colIndexMap[i];
-              obj[c.label + '__' + i] = srcIdx === -1 ? '' : r[srcIdx];
-            });
-            return obj;
-          });
+        dbgYearTypeMatch++;
 
-        if (firstMatchStatus) updateBadges(firstMatchStatus); // ✅ โชว์ชื่อสถานะเต็มแทนโค้ดตัวเลขเมื่อรู้แล้ว
+        // ถ้ามี mth ให้กรองเดือนจากคอลัมน์ S (Last Update On)
+        if (MTH_PARAM) {
+          const rawLastUpdate = r[LAST_UPDATE_COL_INDEX];
+          const rowMonth = parseMonthFromLastUpdate(rawLastUpdate);
+          if (dbgMonthSampleLogged < 5) {
+            console.log('[mth debug] Last Update raw:', JSON.stringify(rawLastUpdate), '-> parsed month:', JSON.stringify(rowMonth), '| ต้องการ:', JSON.stringify(MTH_PARAM));
+            dbgMonthSampleLogged++;
+          }
+          if (rowMonth !== MTH_PARAM) return false;
+        }
 
-        buildTableHead();
-        applyFilterSortPaginate(); // ✅ คำนวณ summary ให้ในตัวอยู่แล้ว (ครอบคลุมทั้ง initial load และตอนค้นหา)
-        document.getElementById('tblLoading').style.display = 'none';
-      },
-      error: function(e) { showError('Parse error: ' + e.message); }
-    });
+        dbgMonthMatch++;
+        if (!firstMatchStatus) firstMatchStatus = typeVal;
+        return true;
+      })
+      .map(r => {
+        const obj = {};
+        DISPLAY_COLUMNS.forEach((c, i) => {
+          const srcIdx = colIndexMap[i];
+          obj[c.label + '__' + i] = srcIdx === -1 ? '' : r[srcIdx];
+        });
+        return obj;
+      });
+
+    console.log('[mth debug] สรุป: ตรง year+type =', dbgYearTypeMatch, '| ตรง year+type+month =', dbgMonthMatch, '| MTH_PARAM =', JSON.stringify(MTH_PARAM));
+    if (MTH_PARAM && dbgYearTypeMatch > 0 && dbgMonthMatch === 0) {
+      console.warn('[mth debug] มีแถวที่ตรง year+type แต่ไม่มีแถวไหนตรงเดือนเลย — ลองดู sample ค่า Last Update ด้านบนว่า format ตรงกับที่คาดไว้ไหม (คาดว่าเป็น D/M/YYYY)');
+    }
+
+    if (firstMatchStatus) updateBadges(firstMatchStatus); // ✅ โชว์ชื่อสถานะเต็มแทนโค้ดตัวเลขเมื่อรู้แล้ว
+
+    buildTableHead();
+    applyFilterSortPaginate(); // ✅ คำนวณ summary ให้ในตัวอยู่แล้ว (ครอบคลุมทั้ง initial load และตอนค้นหา)
+    document.getElementById('tblLoading').style.display = 'none';
   } catch (e) {
     showError('โหลดข้อมูลไม่ได้: ' + e.message);
   }
@@ -447,8 +525,8 @@ function renderTableBody(rows) {
       const v = row[headerKey(i)];
       const text = v === undefined || v === null || v === '' ? '' : String(v);
 
-      // Preserve descriptive fields such as Customer as text.
-      // Format only explicit money columns as numbers.
+      // Preserve all descriptive fields, including Customer, as text.
+      // Apply numeric formatting only to explicit money columns.
       if (isNumericDisplayColumn(h)) {
         const num = cleanNumCandidate(text);
         if (!isNaN(num) && text !== '') {
