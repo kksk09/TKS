@@ -407,7 +407,7 @@
         // QT = 07-Sent Quotation, PO = 13-Order
         function goToMonthlyDetail(type, monthIndex) {
             const mth = String(monthIndex + 1).padStart(2, '0');
-            window.location.href = `detailMth.html?year=${encodeURIComponent(CURRENT_YEAR)}&type=${encodeURIComponent(type)}&mth=${mth}`;
+            window.location.href = `detail.html?year=${encodeURIComponent(CURRENT_YEAR)}&type=${encodeURIComponent(type)}&mth=${mth}`;
         }
         const DEFAULT_THEME = 'executive';
 

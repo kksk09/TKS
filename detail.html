@@ -233,13 +233,17 @@ body{
 <script>
 // ✅ อ่านค่า year / type จาก query string ที่ส่งมาจากการคลิกลิงก์ในตาราง Status Overview
 const params   = new URLSearchParams(window.location.search);
-const YEAR_PARAM = (params.get('year') || '').trim();
+const yearRaw = (params.get('year') || '').trim();
+const YEAR_PARAM = yearRaw !== '' ? yearRaw : String(new Date().getFullYear()); // ✅ ถ้าไม่ส่ง year มา ใช้ปีปัจจุบันแทน
 const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase().substring(0, 2); // เช่น '07', '13' (สองหลักแรกของ Status2) — index.html ส่งรหัสตัวเลขมาตรงๆ อยู่แล้ว
+const mthRaw = (params.get('mth') || '').trim();
+const MTH_PARAM = mthRaw !== '' ? mthRaw.padStart(2, '0') : ''; // เดือน 01-12 — ถ้าไม่ส่ง mth มาเลยต้องเป็นค่าว่างจริงๆ ไม่ใช่ "00" (padStart ของสตริงว่างจะได้ "00" ถ้าไม่เช็คก่อน)
 
 // ✅ sheet ใหม่ (gid=48822130) — คนละตารางกับ dashBoard เดิม แต่เป็นตัวที่มีข้อมูล Amount ถูกต้อง
 const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
 const GID      = '48822130';
 const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
 
 const HEADER_ROW_INDEX = 1; // แถว 2 (index 1) — banner แถว1 / header แถว2 / data แถว3+
 const DATA_START_ROW   = 2; // แถว 3
@@ -269,6 +273,7 @@ const DISPLAY_COLUMNS = [
 ];
 const colIndexMap = DISPLAY_COLUMNS.map(c => colLetterToIndex(c.col));
 const TYPE_COL_INDEX = colLetterToIndex(STATUS2_COL); // ยังใช้กรองด้วยคอลัมน์นี้เหมือนเดิม
+const LAST_UPDATE_COL_INDEX = colLetterToIndex('S'); // ใช้คำนวณเดือนสำหรับ filter mth
 
 let tableHeaders  = DISPLAY_COLUMNS.map(c => c.label); // header label คงที่ตามลำดับที่กำหนด
 let tableAllRows  = [];  // แถวข้อมูล (object ตาม header) หลัง filter year+type แล้ว
@@ -293,15 +298,37 @@ function cleanNumCandidate(v) {
   return parseFloat(s);
 }
 
+// ✅ คอนเซปการหาเดือน: ดึงเลขเดือน (01-12) จากคอลัมน์ Last Update มาเทียบกับ mth ที่ส่งมา
+// รองรับ Last Update ในรูปแบบ D/M/YYYY, DD/MM/YYYY, D.M.YYYY (ตัวคั่นเป็น / หรือ .) — เดือนคือกลุ่มที่ 2
+function parseMonthFromLastUpdate(v) {
+  if (!v) return '';
+  const s = String(v).trim();
+
+  // D/M/YYYY หรือ DD/MM/YYYY หรือ D.M.YYYY
+  let m = s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})/);
+  if (m) return String(parseInt(m[2], 10)).padStart(2, '0');
+
+  // fallback สำหรับรูปแบบ YYYY-MM-DD
+  m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (m) return String(parseInt(m[2], 10)).padStart(2, '0');
+
+  // fallback สำหรับ Date string ที่ browser parse ได้
+  const dt = new Date(s);
+  if (!isNaN(dt.getTime())) return String(dt.getMonth() + 1).padStart(2, '0');
+
+  return '';
+}
+
 function updateBadges(statusLabel) {
   const label = statusLabel || (TYPE_PARAM || '-');
-  document.getElementById('typeBadgeInline').textContent = label + ' · ' + (YEAR_PARAM || '-');
-  document.querySelector('.nav-sub').textContent = `ข้อมูลจาก sheet gid: ${GID} (กรองด้วยคอลัมน์ B=ปี, R=ประเภท)`;
+  const labelWithMonth = label + (MTH_PARAM ? ` · เดือน ${MTH_PARAM}` : '');
+  document.getElementById('typeBadgeInline').textContent = labelWithMonth + ' · ' + (YEAR_PARAM || '-');
+  document.querySelector('.nav-sub').textContent = `ข้อมูลจาก sheet gid: ${GID} (กรอง B=ปี, R=ประเภท` + (MTH_PARAM ? ', S=เดือน' : '') + ')';
   const badgeEl = document.getElementById('typeBadge');
-  badgeEl.textContent = label;
+  badgeEl.textContent = labelWithMonth;
   badgeEl.className = 'badge badge-generic';
   document.getElementById('sumYear').textContent = YEAR_PARAM || '-';
-  document.getElementById('sumType').textContent = label;
+  document.getElementById('sumType').textContent = labelWithMonth;
 }
 
 async function init() {
@@ -321,7 +348,8 @@ async function init() {
 
         const dataRows = rows.slice(DATA_START_ROW);
 
-        // ✅ Filter: คอลัมน์ CB (ปี) ต้องตรงกับ year param และคอลัมน์ CG (Status2) สองหลักแรกต้องตรงกับ type param
+        // ✅ Filter: คอลัมน์ CB (ปี) ต้องตรงกับ year param, คอลัมน์ CG (Status2) สองหลักแรกต้องตรงกับ type param
+        // และถ้ามี mth ให้เทียบเลขเดือนที่คำนวณได้จาก Last Update ด้วย
         let firstMatchStatus = '';
         tableAllRows = dataRows
           .filter(r => {
@@ -330,6 +358,13 @@ async function init() {
             if (!yVal || !typeVal) return false;
             if (YEAR_PARAM && yVal !== YEAR_PARAM) return false;
             if (TYPE_PARAM && typeVal.substring(0, 2).toLowerCase() !== TYPE_PARAM) return false;
+
+            // ✅ mth: คำนวณเลขเดือนจาก Last Update แล้วใช้เป็นเงื่อนไขเทียบ
+            if (MTH_PARAM) {
+              const rowMonth = parseMonthFromLastUpdate(r[LAST_UPDATE_COL_INDEX]);
+              if (rowMonth !== MTH_PARAM) return false;
+            }
+
             if (!firstMatchStatus) firstMatchStatus = typeVal;
             return true;
           })
