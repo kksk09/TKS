@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Detail - Target vs Actual Dashboard</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -225,7 +224,12 @@ body{
 // ✅ sheet ใหม่ (gid=48822130) — คนละตารางกับ dashBoard เดิม แต่เป็นตัวที่มีข้อมูล Amount ถูกต้อง
 const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
 const GID      = '48822130';
-const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+// ✅ เปลี่ยนจาก CSV export มาใช้ Google Visualization API (JSON) แทน
+// เหตุผล: CSV ต้องพึ่งการ escape comma/quote ในเซลล์ให้ถูกต้อง ถ้าเซลล์ไหนมีเครื่องหมายคำพูดไม่ปิดคู่
+// จะทำให้ parser "กลืน" เนื้อหาข้ามคอลัมน์/ข้ามแถวโดยไม่รู้ตัว — JSON ไม่มีปัญหานี้เลย เพราะ JSON.parse
+// แยกแยะ string กับ delimiter ได้แม่นยำ 100% ไม่ว่าเซลล์จะมีคอมม่า/เครื่องหมายคำพูดกี่ตัวก็ตาม
+// &headers=0 บอก Google ว่าไม่ต้องเดา header เอง เราจะจัดการแถว banner/header/data เองด้วย DATA_START_ROW เหมือนเดิม
+const JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&headers=0`;
 
 const HEADER_ROW_INDEX = 1; // แถว 2 (index 1) — banner แถว1 / header แถว2 / data แถว3+
 const DATA_START_ROW   = 2; // แถว 3
@@ -235,6 +239,45 @@ function colLetterToIndex(letters) {
   let n = 0;
   for (let i = 0; i < letters.length; i++) n = n * 26 + (letters.charCodeAt(i) - 64);
   return n - 1;
+}
+
+// ✅ แปลงค่าจาก cell ของ gviz ให้เป็น string/number ธรรมดา เหมือนที่โค้ดเดิมคาดหวังจาก CSV
+//    - เซลล์ว่าง -> ''
+//    - เซลล์ตัวเลข -> คืนเป็น number ตรงๆ (ไม่มี "THB" หรือ comma ปนมาแบบตอนอ่าน CSV แล้ว)
+//    - เซลล์วันที่ (Google เก็บเป็น Date type จริง) -> ค่าที่ได้จะเป็น string แบบ "Date(2026,7,10)"
+//      (เดือนนับแบบ 0-based ตาม JS Date) แปลงเป็น "D/M/YYYY" ให้ตรงกับ parser เดิมที่ใช้อยู่ทั้งไฟล์
+function gvizCellToRaw(cell) {
+  if (!cell || cell.v === null || cell.v === undefined) return '';
+  const v = cell.v;
+  if (typeof v === 'string' && v.indexOf('Date(') === 0) {
+    const m = v.match(/^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)$/);
+    if (m) {
+      const day = parseInt(m[3], 10);
+      const month = parseInt(m[2], 10) + 1; // gviz ให้เดือนแบบ 0-based ต้อง +1
+      const year = parseInt(m[1], 10);
+      return `${day}/${month}/${year}`;
+    }
+  }
+  return v;
+}
+
+// ✅ ดึงข้อมูลจาก Google Visualization API แล้วแปลงเป็น array of arrays แบบเดียวกับที่ CSV เคยให้
+async function fetchSheetRowsAsJSON(url) {
+  const resp = await fetch(url + '&t=' + Date.now());
+  if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  const text = await resp.text();
+
+  // ✅ Google ห่อ response มาเป็น JSONP ต้องแกะออกก่อนค่อย JSON.parse
+  const match = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?\s*$/);
+  if (!match) throw new Error('ไม่สามารถแกะรูปแบบ response จาก Google ได้');
+  const json = JSON.parse(match[1]);
+
+  if (json.status === 'error') {
+    const msg = (json.errors && json.errors[0] && json.errors[0].detailed_message) || 'gviz query error';
+    throw new Error(msg);
+  }
+
+  return json.table.rows.map(row => (row.c || []).map(gvizCellToRaw));
 }
 
 // ✅ คอลัมน์ที่ต้องแสดง — ตรงกับ sheet gid=48822130
@@ -278,38 +321,27 @@ function cleanNumCandidate(v) {
 
 async function init() {
   try {
-    const resp = await fetch(CSV_URL + '&t=' + Date.now());
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    const csv = await resp.text();
+    const rows = await fetchSheetRowsAsJSON(JSON_URL);
 
-    Papa.parse(csv, {
-      header: false,
-      skipEmptyLines: true,
-      complete: function(res) {
-        const rows = res.data;
+    amtColIdx = DISPLAY_COLUMNS.findIndex(c => c.label === 'Amount THB');
 
-        amtColIdx = DISPLAY_COLUMNS.findIndex(c => c.label === 'Amount THB');
+    const dataRows = rows.slice(DATA_START_ROW);
 
-        const dataRows = rows.slice(DATA_START_ROW);
+    // ✅ ดึงข้อมูลทั้งหมด ไม่มีการกรองตาม year/type/mth
+    tableAllRows = dataRows
+      .filter(r => r.some(cell => cell !== undefined && cell !== null && cell.toString().trim() !== '')) // ตัดแถวว่างล้วนทิ้ง
+      .map(r => {
+        const obj = {};
+        DISPLAY_COLUMNS.forEach((c, i) => {
+          const srcIdx = colIndexMap[i];
+          obj[c.label + '__' + i] = srcIdx === -1 ? '' : r[srcIdx];
+        });
+        return obj;
+      });
 
-        // ✅ ดึงข้อมูลทั้งหมด ไม่มีการกรองตาม year/type/mth
-        tableAllRows = dataRows
-          .filter(r => r.some(cell => cell !== undefined && cell !== null && cell.toString().trim() !== '')) // ตัดแถวว่างล้วนทิ้ง
-          .map(r => {
-            const obj = {};
-            DISPLAY_COLUMNS.forEach((c, i) => {
-              const srcIdx = colIndexMap[i];
-              obj[c.label + '__' + i] = srcIdx === -1 ? '' : r[srcIdx];
-            });
-            return obj;
-          });
-
-        buildTableHead();
-        applyFilterSortPaginate(); // ✅ คำนวณ summary ให้ในตัวอยู่แล้ว (ครอบคลุมทั้ง initial load และตอนค้นหา)
-        document.getElementById('tblLoading').style.display = 'none';
-      },
-      error: function(e) { showError('Parse error: ' + e.message); }
-    });
+    buildTableHead();
+    applyFilterSortPaginate(); // ✅ คำนวณ summary ให้ในตัวอยู่แล้ว (ครอบคลุมทั้ง initial load และตอนค้นหา)
+    document.getElementById('tblLoading').style.display = 'none';
   } catch (e) {
     showError('โหลดข้อมูลไม่ได้: ' + e.message);
   }
