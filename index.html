@@ -486,7 +486,7 @@
                         const yearRows = rows.slice(startRow).filter(r =>
                             r[idx.year] && /^\d{4}$/.test(r[idx.year].toString().trim())
                         );
-
+                        console.log("Year Rows:", yearRows);// debug log to check the extracted year rows
                         globalData = yearRows.map(r => ({
                             year: r[idx.year].toString().trim(),
                             total: cleanNum(r[idx.target]),
@@ -494,10 +494,12 @@
                             balance: cleanNum(r[idx.balance]),
                             achieveRate: cleanNum(r[idx.achieve])
                         })).sort((a, b) => a.year - b.year);
-
+                        console.log("Processed Global Data:", globalData); // debug log to check the processed global data  
                         processData(globalData);
 
-                        const latestYear = globalData.length ? globalData[globalData.length - 1].year : null;
+                        const latestYear = globalData.some(d => d.year === CURRENT_YEAR)
+                            ? CURRENT_YEAR
+                            : (globalData.length ? globalData[globalData.length - 1].year : null); // ✅ หาปีที่ตรงกับ CURRENT_YEAR ก่อน ถ้าไม่เจอค่อย fallback เป็นปีล่าสุด
                         const latestRow = yearRows.find(r => r[idx.year].toString().trim() === latestYear);
 
                         if (latestRow) {
@@ -841,7 +843,7 @@
   
     function processData(data) {
         if (!data || data.length === 0) return;
-        const latest = data[data.length - 1];
+        const latest = data.find(d => d.year === CURRENT_YEAR) || data[data.length - 1]; // ✅ หาปีที่ตรงกับ CURRENT_YEAR ก่อน ถ้าไม่เจอค่อย fallback เป็นปีล่าสุด
         const rate = latest.achieveRate;
 
         document.querySelectorAll('.target-year').forEach(el => el.innerText = latest.year);
