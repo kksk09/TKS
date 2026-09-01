@@ -229,7 +229,10 @@ const GID      = '48822130';
 // จะทำให้ parser "กลืน" เนื้อหาข้ามคอลัมน์/ข้ามแถวโดยไม่รู้ตัว — JSON ไม่มีปัญหานี้เลย เพราะ JSON.parse
 // แยกแยะ string กับ delimiter ได้แม่นยำ 100% ไม่ว่าเซลล์จะมีคอมม่า/เครื่องหมายคำพูดกี่ตัวก็ตาม
 // &headers=0 บอก Google ว่าไม่ต้องเดา header เอง เราจะจัดการแถว banner/header/data เองด้วย DATA_START_ROW เหมือนเดิม
-const JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&headers=0`;
+// ✅ ระบุ range ให้ชัดเจน เพราะถ้าไม่ระบุ gviz จะพยายามเดาขอบเขตตารางเอง แล้วมักหยุดอ่านก่อนถึงแถวสุดท้ายจริง
+// (เจอปัญหาจริง: ชีทมี 736 แถว แต่ gviz เดาแล้วหยุดที่ 33 แถว) — ระบุช่วงกว้างพอเผื่อข้อมูลเพิ่มในอนาคตด้วย
+const SHEET_RANGE = 'A1:BZ5000';
+const JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&headers=0&range=${SHEET_RANGE}`;
 
 const HEADER_ROW_INDEX = 1; // แถว 2 (index 1) — banner แถว1 / header แถว2 / data แถว3+
 const DATA_START_ROW   = 2; // แถว 3
@@ -276,7 +279,7 @@ async function fetchSheetRowsAsJSON(url) {
     const msg = (json.errors && json.errors[0] && json.errors[0].detailed_message) || 'gviz query error';
     throw new Error(msg);
   }
-
+  console.log('Fetched gviz JSON:', json.table.rows.length, 'rows');
   return json.table.rows.map(row => (row.c || []).map(gvizCellToRaw));
 }
 
