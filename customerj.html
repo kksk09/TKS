@@ -62,16 +62,11 @@ body{
   color:#fff; box-shadow:0 4px 14px rgba(99,102,241,0.30);
 }
 .btn-home:hover{ box-shadow:0 8px 22px rgba(99,102,241,0.45); }
-.btn-propack{
-  background:linear-gradient(135deg,#F59E0B,#FBBF24);
-  color:#1a1a1a; box-shadow:0 4px 14px rgba(245,158,11,0.30);
-}
-.btn-propack:hover{ box-shadow:0 8px 22px rgba(245,158,11,0.45); }
 .nav-actions{ display:flex; gap:10px; flex-wrap:wrap; }
 
 /* ── TABLE SECTION ── */
 .table-section{
-  max-width:1500px; margin:0 auto;
+  max-width:100%; margin:0 auto;
   background:var(--glass); border:1px solid var(--glass-b);
   border-radius:20px; backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
   padding:28px; box-shadow:var(--shadow);
@@ -100,17 +95,24 @@ body{
   outline:none; cursor:pointer;
 }
 
-.data-table{ width:100%; border-collapse:collapse; font-size:0.82rem; min-width:900px; }
+/* ✅ ปรับแต่ง CSS Table ให้ Wrap ข้อความพอดีจอ ไม่ล้นพ้นหน้า */
+.data-table{ 
+  width:100%; 
+  table-layout: fixed; 
+  border-collapse:collapse; 
+  font-size:0.82rem; 
+}
 .data-table thead tr{ border-bottom:2px solid rgba(43,95,165,0.18); }
 .data-table th{
-  padding:12px 14px; text-align:left;
+  padding:12px 10px; text-align:left;
   font-size:0.68rem; text-transform:uppercase; letter-spacing:0.07em;
-  font-weight:700; color:var(--blue-s); white-space:nowrap;
+  font-weight:700; color:var(--blue-s);
+  white-space:normal; word-wrap:break-word; overflow-wrap:anywhere;
   cursor:pointer; user-select:none; transition:color .15s;
   position:sticky; top:0; background:rgba(255,255,255,0.92); backdrop-filter:blur(6px);
 }
 .data-table th:hover{ color:var(--marm); }
-.data-table th .sort-icon{ margin-left:4px; opacity:0.4; font-size:0.62rem; }
+.data-table th .sort-icon{ margin-left:4px; opacity:0.4; font-size:0.62rem; display:inline-block; }
 .data-table th.sort-asc  .sort-icon::after{ content:'▲'; }
 .data-table th.sort-desc .sort-icon::after{ content:'▼'; }
 .data-table th:not(.sort-asc):not(.sort-desc) .sort-icon::after{ content:'⇅'; }
@@ -120,12 +122,21 @@ body{
   transition:background .14s;
 }
 .data-table tbody tr:hover{ background:rgba(43,95,165,0.05); }
-.data-table td{ padding:11px 14px; color:var(--txt-soft); white-space:nowrap; }
+.data-table td{ 
+  padding:11px 10px; color:var(--txt-soft); 
+  text-align:left;
+  white-space:normal; word-wrap:break-word; overflow-wrap:anywhere;
+}
 .data-table td:first-child{ font-weight:700; color:var(--txt); }
-.data-table td.num{ text-align:right; font-variant-numeric:tabular-nums; color:var(--txt); }
-.data-table td.num-zero{ text-align:right; color:var(--txt-mute); }
 
-.table-scroll{ overflow-x:auto; max-height:640px; overflow-y:auto; border-radius:12px; }
+.data-table td.full-name-text{
+  text-align:left !important;
+  font-weight:700;
+  color:var(--txt);
+  white-space:normal; word-wrap:break-word; overflow-wrap:anywhere;
+}
+
+.table-scroll{ overflow-x:hidden; max-height:640px; overflow-y:auto; border-radius:12px; }
 
 /* ── PAGINATION ── */
 .tbl-footer{
@@ -180,7 +191,6 @@ body{
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       HOME
     </a>
-   
   </div>
 </nav>
 
@@ -191,7 +201,7 @@ body{
   <div class="table-header">
     <div>
       <div class="table-title">📋 Customer List</div>
-      <div class="table-sub">คลิก Header เพื่อ Sort &nbsp;|&nbsp; พิมพ์เพื่อค้นหา &nbsp;|&nbsp; เลือกจำนวนแถวต่อหน้าได้</div>
+      <div class="table-sub">แสดงข้อมูล Col A ถึง Col H แบบตัดขึ้นบรรทัดใหม่ตามความกว้างหน้าจอ</div>
     </div>
     <div class="tbl-controls">
       <select class="tbl-pagesize" id="tblPageSize">
@@ -223,27 +233,20 @@ body{
 </div>
 
 <script>
-// OLD
-// https://docs.google.com/spreadsheets/d/1VXsYKrQaOs0kZy2SC4yO-3CHm4yN5AyR/edit?gid=509251614#gid=509251614
-// NEW
-// https://docs.google.com/spreadsheets/d/1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0/edit?gid=509251614#gid=509251614
 var SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
 var GID      = '509251614';
 
-// ✅ JSON (gviz) เป็นแหล่งหลัก — parsing สะอาด ไม่มีปัญหาคอมม่า/เครื่องหมายคำพูดในเซลล์ทำให้คอลัมน์เลื่อน
 var JSON_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}`;
+var CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
 
-// ✅ CSV ใช้เป็นตัวเช็คสำรอง — CSV export ไม่ถูก Filter/Filter view บนชีทบังหน้าเหมือน gviz JSON
-// ถ้า gviz คืนแถวน้อยกว่า CSV มาก แปลว่ามี filter ค้างอยู่บนชีท จะสลับไปใช้ข้อมูลจาก CSV แทนแล้วเตือนบนหน้าเว็บ
-var CSV_URL  =  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
-
+var DISPLAY_COL_INDEXES = [0, 1, 2, 3, 4, 5, 6, 7]; // Col A - Col H
 var tableHeaders  = [];
-var tableAllRows  = [];   // ข้อมูลทั้งหมด (ไม่ผ่าน filter)
-var filteredRows  = [];   // ข้อมูลหลังค้นหา/เรียง
+var tableAllRows  = [];   
+var filteredRows  = [];   
 var sortColIdx    = -1;
 var sortAsc       = true;
 var currentPage   = 1;
-var pageSize      = 25;   // 'all' หรือตัวเลข
+var pageSize      = 25;   
 
 function cleanNumCandidate(v) {
   if (v === undefined || v === null || v === '') return NaN;
@@ -253,15 +256,16 @@ function cleanNumCandidate(v) {
   return n;
 }
 
-// ✅ แปลงค่าจาก cell ของ gviz ให้เป็น string/number ธรรมดา เหมือนที่โค้ดเดิมคาดหวังจาก CSV
 function gvizCellToRaw(cell) {
-  if (!cell || cell.v === null || cell.v === undefined) return '';
+  if (!cell) return '';
+  if (cell.f !== undefined && cell.f !== null && cell.f !== '') return cell.f;
+  if (cell.v === null || cell.v === undefined) return '';
   var v = cell.v;
   if (typeof v === 'string' && v.indexOf('Date(') === 0) {
     var m = v.match(/^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)$/);
     if (m) {
       var day = parseInt(m[3], 10);
-      var month = parseInt(m[2], 10) + 1; // gviz ให้เดือนแบบ 0-based ต้อง +1
+      var month = parseInt(m[2], 10) + 1;
       var year = parseInt(m[1], 10);
       return day + '/' + month + '/' + year;
     }
@@ -269,7 +273,6 @@ function gvizCellToRaw(cell) {
   return v;
 }
 
-// ✅ ดึงข้อมูลจาก Google Visualization API แล้วแปลงเป็น { headers, rows } แบบเดียวกับที่ Papa header:true เคยให้
 function fetchSheetAsJSON(url) {
   return fetch(url + '&t=' + Date.now())
     .then(function(resp) {
@@ -294,8 +297,6 @@ function fetchSheetAsJSON(url) {
     });
 }
 
-// ✅ ดึงข้อมูลสำรองจาก CSV export (ไม่ถูก filter บนชีทบังหน้า) — ใช้ Papa Parse error-reporting
-// ตัดแถวที่ parse ผิดพลาด (เช่น เครื่องหมายคำพูดไม่ปิดคู่) ออกไปด้วย เป็น safety net อีกชั้น
 function fetchSheetAsCSV(url) {
   return new Promise(function(resolve, reject) {
     fetch(url + '&t=' + Date.now())
@@ -334,23 +335,37 @@ async function init() {
 
     var result = jsonResult;
 
-    // ✅ เช็คไขว้กับ CSV — ถ้า gviz JSON ได้แถวน้อยกว่า CSV อย่างมีนัยสำคัญ แปลว่ามี filter ค้างอยู่บนชีท
     try {
       var csvResult = await fetchSheetAsCSV(CSV_URL);
       var csvCount = countNonEmptyRows(csvResult.headers, csvResult.rows);
 
-      if (csvCount > jsonCount + 2) { // เผื่อความคลาดเคลื่อนเล็กน้อยจากแถวว่าง/trailing cell
+      if (csvCount > jsonCount + 2) { 
         result = csvResult;
         var warnBox = document.getElementById('filterWarnBox');
         warnBox.style.display = 'block';
-        warnBox.innerHTML = '⚠️ ตรวจพบว่าข้อมูลจาก Google อาจถูกจำกัดด้วย Filter ที่เปิดค้างอยู่บนชีท (พบ ' + jsonCount + ' แถวจากช่องทางหลัก แต่มีจริง ' + csvCount + ' แถว) — ระบบสลับไปใช้ข้อมูลชุดเต็มให้อัตโนมัติ แนะนำเปิด Google Sheet แล้วปิด Filter ทิ้ง (Data &gt; Turn off filter) เพื่อความถูกต้องระยะยาว';
+        warnBox.innerHTML = '⚠️ ตรวจพบว่าข้อมูลจาก Google อาจถูกจำกัดด้วย Filter ที่เปิดค้างอยู่บนชีท (พบ ' + jsonCount + ' แถวจากช่องทางหลัก แต่มีจริง ' + csvCount + ' แถว) — ระบบสลับไปใช้ข้อมูลชุดเต็มให้อัตโนมัติ';
       }
     } catch (csvErr) {
-      console.warn('ตรวจสอบข้อมูลสำรองจาก CSV ไม่สำเร็จ (ใช้ข้อมูลจาก JSON ต่อไปตามปกติ):', csvErr.message);
+      console.warn('ตรวจสอบข้อมูลสำรองจาก CSV ไม่สำเร็จ:', csvErr.message);
     }
 
-    tableHeaders = result.headers;
-    tableAllRows = result.rows.filter(function(row){
+    var sourceHeaders = result.headers || [];
+    var displayHeaders = DISPLAY_COL_INDEXES.map(function(idx){
+      return sourceHeaders[idx] || ('Col ' + String.fromCharCode(65 + idx));
+    });
+
+    tableHeaders = displayHeaders;
+
+    tableAllRows = result.rows.map(function(row){
+      var obj = {};
+      DISPLAY_COL_INDEXES.forEach(function(srcIdx, displayIdx){
+        var sourceHeader = sourceHeaders[srcIdx];
+        var value = sourceHeader !== undefined ? row[sourceHeader] : '';
+        value = value === undefined || value === null ? '' : String(value);
+        obj[displayHeaders[displayIdx]] = value;
+      });
+      return obj;
+    }).filter(function(row){
       return tableHeaders.some(function(h){
         var v = row[h];
         return v !== undefined && v !== null && String(v).trim() !== '';
@@ -374,13 +389,15 @@ function buildTableHead() {
 }
 
 function getRowValues(row) {
-  return tableHeaders.map(function(h){ return row[h]; });
+  return tableHeaders.map(function(h){
+    var value = row[h];
+    return value === undefined || value === null ? '' : String(value);
+  });
 }
 
 function applyFilterSortPaginate() {
   var q = document.getElementById('tblSearch').value.toLowerCase().trim();
 
-  // ── Search ──
   filteredRows = q
     ? tableAllRows.filter(function(row){
         return tableHeaders.some(function(h){
@@ -390,13 +407,20 @@ function applyFilterSortPaginate() {
       })
     : tableAllRows.slice();
 
-  // ── Sort ──
   if (sortColIdx !== -1) {
     var col = tableHeaders[sortColIdx];
     filteredRows.sort(function(a, b){
-      var na = cleanNumCandidate(a[col]), nb = cleanNumCandidate(b[col]);
-      if (!isNaN(na) && !isNaN(nb)) return sortAsc ? na - nb : nb - na;
-      var sa = String(a[col] || '').toLowerCase(), sb = String(b[col] || '').toLowerCase();
+      var valA = a[col] === undefined || a[col] === null ? '' : a[col];
+      var valB = b[col] === undefined || b[col] === null ? '' : b[col];
+
+      var numA = cleanNumCandidate(valA);
+      var numB = cleanNumCandidate(valB);
+
+      if (!isNaN(numA) && !isNaN(numB)) {
+        return sortAsc ? numA - numB : numB - numA;
+      }
+      var sa = String(valA).toLowerCase();
+      var sb = String(valB).toLowerCase();
       return sortAsc ? sa.localeCompare(sb) : sb.localeCompare(sa);
     });
   }
@@ -433,12 +457,13 @@ function renderTableBody(rows) {
   tbody.innerHTML = rows.map(function(row){
     var vals = getRowValues(row);
     return '<tr>' + vals.map(function(v, i){
-      if (i === 0) return '<td>' + (v !== undefined && v !== null && v !== '' ? v : '—') + '</td>';
-      var num = cleanNumCandidate(v);
-      if (!isNaN(num) && v !== '' && v !== undefined && v !== null) {
-        return '<td class="' + (num === 0 ? 'num-zero' : 'num') + '">' + num.toLocaleString() + '</td>';
+      var displayValue = (v !== undefined && v !== null && v !== '') ? String(v) : '—';
+
+      if (i === 0) {
+        return '<td class="full-name-text">' + displayValue + '</td>';
       }
-      return '<td>' + (v !== undefined && v !== null && v !== '' ? v : '—') + '</td>';
+
+      return '<td>' + displayValue + '</td>';
     }).join('') + '</tr>';
   }).join('');
 }
