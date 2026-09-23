@@ -8,7 +8,7 @@ import requests # type: ignore
 # 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
 
 # กำหนดค่ากำหนดการเชื่อมต่อ
-NOTION_TOKEN = "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"
+NOTION_TOKEN = ""
 DATABASE_ID = "086e547f7b06430b84dbd082ba3824ea"
 
 url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
