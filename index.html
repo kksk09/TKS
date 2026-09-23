@@ -321,7 +321,20 @@
             </div>
         </div>
     </div>
-   
+ <br
+<!-- ==================== QT Count & Amount by Sales ==================== -->
+<div class="card-graph glass" style="margin-bottom: 24px;">
+    <h3>QT Count & Amount by Sales</h3>
+    <p class="chart-desc">
+        แท่งฟ้า = จำนวน QT (07-Sent Quotation) &nbsp;|&nbsp;
+        แท่งเขียว = จำนวน PO (13-Order) &nbsp;|&nbsp;
+        เส้นส้ม = มูลค่า QT (บาท)
+    </p>
+    <div class="chart-container" style="height: 380px;">
+        <canvas id="salesQtPoChart"></canvas>
+    </div>
+</div>
+    
     <div class="card-graph glass" style="text-align:left; margin-top:24px; margin-bottom:24px;">
         <h3>QT Count &amp; Amount by Month</h3>
         <p class="chart-desc">แท่ง = จำนวนใบเสนอราคา (Count of QT) ต่อเดือน เทียบกับเส้น = มูลค่ารวม (Amount of QT) บนแกนขวา แยกแกนเพราะหน่วยต่างกันเกินไป</p>
@@ -659,6 +672,145 @@
             markLoaded();
         }
     }
+
+ // ==================== QT Count & Amount by Sales ====================
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0/export?format=csv&gid=48822130';
+
+function renderSalesQtPoChart(year) {
+    Papa.parse(SHEET_CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+            const rows = results.data;
+
+            // กรองตามปี
+            const filtered = rows.filter(r => String(r.Year).trim() === String(year));
+
+            // จัดกลุ่มตามชื่อ Sale
+            const salesMap = {};
+
+            filtered.forEach(r => {
+                const sale = (r.Sales || '').trim();
+                if (!sale) return;
+
+                if (!salesMap[sale]) {
+                    salesMap[sale] = { qtCount: 0, poCount: 0, qtAmount: 0 };
+                }
+
+                const status = (r.Status2 || '').trim();
+                const amount = parseFloat(String(r['Amount THB'] || '0').replace(/[^0-9.-]/g, '')) || 0;
+
+                if (status === '07-Sent Quotation') {
+                    salesMap[sale].qtCount += 1;
+                    salesMap[sale].qtAmount += amount;
+                }
+                if (status === '13-Order') {
+                    salesMap[sale].poCount += 1;
+                }
+            });
+
+            // เรียงตามชื่อ Sale
+            const labels = Object.keys(salesMap).sort((a, b) => a.localeCompare(b, 'th'));
+            const qtCounts = labels.map(s => salesMap[s].qtCount);
+            const poCounts = labels.map(s => salesMap[s].poCount);
+            const qtAmounts = labels.map(s => salesMap[s].qtAmount);
+
+            const canvas = document.getElementById('salesQtPoChart');
+            if (!canvas) return;
+
+            if (window._salesQtPoChart) {
+                window._salesQtPoChart.destroy();
+            }
+
+            window._salesQtPoChart = new Chart(canvas, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: 'QT Count',
+                            data: qtCounts,
+                            backgroundColor: 'rgba(99, 102, 241, 0.85)',   // Indigo
+                            borderRadius: 6,
+                            yAxisID: 'y',
+                            order: 2
+                        },
+                        {
+                            type: 'bar',
+                            label: 'PO Count',
+                            data: poCounts,
+                            backgroundColor: 'rgba(34, 197, 94, 0.85)',    // Green
+                            borderRadius: 6,
+                            yAxisID: 'y',
+                            order: 3
+                        },
+                        {
+                            type: 'line',
+                            label: 'QT Amount (บาท)',
+                            data: qtAmounts,
+                            borderColor: '#F59E0B',                        // Amber
+                            backgroundColor: 'rgba(245, 158, 11, 0.15)',
+                            borderWidth: 2.5,
+                            tension: 0.3,
+                            pointRadius: 4,
+                            pointBackgroundColor: '#F59E0B',
+                            yAxisID: 'y1',
+                            order: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#e2e8f0',
+                                usePointStyle: true,
+                                padding: 16
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(ctx) {
+                                    if (ctx.dataset.label.includes('Amount')) {
+                                        return ctx.dataset.label + ': ' + ctx.raw.toLocaleString() + ' บาท';
+                                    }
+                                    return ctx.dataset.label + ': ' + ctx.raw;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#94a3b8', maxRotation: 45, minRotation: 45 },
+                            grid: { color: 'rgba(255,255,255,0.05)' }
+                        },
+                        y: {
+                            position: 'left',
+                            title: { display: true, text: 'จำนวน (Count)', color: '#94a3b8' },
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(255,255,255,0.05)' }
+                        },
+                        y1: {
+                            position: 'right',
+                            title: { display: true, text: 'มูลค่า (บาท)', color: '#F59E0B' },
+                            ticks: { color: '#F59E0B' },
+                            grid: { drawOnChartArea: false }
+                        }
+                    }
+                }
+            });
+        }
+    });
+}   
 
     function renderQtComboChart(monthlyCount, monthlyAmount) {
         const canvas = document.getElementById('barChart');
@@ -1284,6 +1436,9 @@
         initSales();
         initSalesMan();
         initTooltipFit();
+        // เรียกกราฟใหม่ QT by salesman และ PO by salesman หลังจากโหลดข้อมูลเสร็จ
+        const year = new URLSearchParams(window.location.search).get('year') || '2026';
+        renderSalesQtPoChart(year);
         setTimeout(() => { if (loadingRemaining > 0) hideLoadingOverlay(); }, 15000);
 
 
