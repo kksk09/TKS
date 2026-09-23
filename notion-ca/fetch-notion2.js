@@ -2,7 +2,8 @@ const { Client } = require("@notionhq/client");
 const fs = require("fs");
 
 // ================== ตั้งค่า ==================
-const NOTION_TOKEN = "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";
+// const NOTION_TOKEN = "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";
+const NOTION_TOKEN = process.env.NOTION_TOKEN || "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";
 const DATABASE_ID = "086e547f7b06430b84dbd082ba3824ea";
 const YEAR = process.argv[2] ? parseInt(process.argv[2]) : 2026;
 // ============================================
