@@ -2,7 +2,10 @@ name: Update Notion Calendar Data
 
 on:
   schedule:
-    - cron: '0 1 * * *'   # ทุกวัน 08:00 น. ไทย
+    # รันทุกวันเวลา 08:00 น. ประเทศไทย (01:00 UTC)
+    - cron: '0 1 * * *'
+  
+  # สามารถกดรันเองได้จาก GitHub Actions
   workflow_dispatch:
 
 jobs:
@@ -22,7 +25,7 @@ jobs:
         working-directory: ./notion-ca
         run: npm install
 
-      - name: Run fetch script
+      - name: Run fetch-notion.js
         working-directory: ./notion-ca
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
@@ -33,5 +36,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add notion-ca/data.json notion-ca/data-2026.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "Auto update Notion data $(date +'%Y-%m-%d %H:%M')"
-          git push
+          git diff --quiet && git diff --staged --quiet || (
+            git commit -m "Auto update Notion data $(date +'%Y-%m-%d %H:%M')"
+            git push
+          )
