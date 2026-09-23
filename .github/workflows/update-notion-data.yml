@@ -2,11 +2,13 @@ name: Update Notion Calendar Data
 
 on:
   schedule:
-    # รันทุกวันเวลา 08:00 น. ประเทศไทย (01:00 UTC)
+    # ทุกวัน 08:00 น. ประเทศไทย (01:00 UTC)
     - cron: '0 1 * * *'
   
-  # สามารถกดรันเองได้จาก GitHub Actions
   workflow_dispatch:
+
+permissions:
+  contents: write   # สำคัญมาก ต้องมีสิทธิ์เขียนไฟล์
 
 jobs:
   update-data:
@@ -15,6 +17,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -36,21 +40,11 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          git add notion-ca/data.json notion-ca/data-2026.json notion-ca/package-lock.json
+          git add notion-ca/data.json notion-ca/data-2026.json notion-ca/package-lock.json || true
           
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
             git commit -m "Auto update Notion data $(date +'%Y-%m-%d %H:%M')"
             git push
-          fi        
-
-      # - name: Commit and push updated data
-      #   run: |
-      #     git config --local user.email "github-actions[bot]@users.noreply.github.com"
-      #     git config --local user.name "github-actions[bot]"
-      #     git add notion-ca/data.json notion-ca/data-2026.json
-      #     git diff --quiet && git diff --staged --quiet || (
-      #       git commit -m "Auto update Notion data $(date +'%Y-%m-%d %H:%M')"
-      #       git push
-          # )
+          fi
