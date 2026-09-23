@@ -1,11 +1,10 @@
 import json
 import requests # type: ignore
 
-# https://app.notion.com/p/tsukasabangkok/086e547f7b06430b84dbd082ba3824ea?v=3c39393f5e124387afeb1ace78e8aa78
+# 086e547f7b06430b84dbd082ba3824ea
 # db_id = 086e547f7b06430b84dbd082ba3824ea
 # Internal Integration Token = 
-# assetsVersion=23.13.20260903.0022
-# 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
+# assetsVersion=23.13.20260903.0022 
 
 # กำหนดค่ากำหนดการเชื่อมต่อ
 NOTION_TOKEN = ""
