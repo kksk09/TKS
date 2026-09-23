@@ -35,8 +35,22 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add notion-ca/data.json notion-ca/data-2026.json
-          git diff --quiet && git diff --staged --quiet || (
+          
+          git add notion-ca/data.json notion-ca/data-2026.json notion-ca/package-lock.json
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
             git commit -m "Auto update Notion data $(date +'%Y-%m-%d %H:%M')"
             git push
-          )
+          fi        
+
+      # - name: Commit and push updated data
+      #   run: |
+      #     git config --local user.email "github-actions[bot]@users.noreply.github.com"
+      #     git config --local user.name "github-actions[bot]"
+      #     git add notion-ca/data.json notion-ca/data-2026.json
+      #     git diff --quiet && git diff --staged --quiet || (
+      #       git commit -m "Auto update Notion data $(date +'%Y-%m-%d %H:%M')"
+      #       git push
+          # )
