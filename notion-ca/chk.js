@@ -1,6 +1,6 @@
 const { Client } = require("@notionhq/client");
 
-const notion = new Client({ auth: "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" });
+const notion = new Client({ auth: "" });
 
 async function checkOnePage() {
   const pageId = "3d6770a5-c90b-80ac-a108-f17882532d23"; // id จากที่คุณส่งมา
