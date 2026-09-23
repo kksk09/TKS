@@ -263,17 +263,6 @@
     "url": "https://app.notion.com/p/Carabao-online-meeting-3-3e4770a5c90b80e999d7fac417f0bad2"
   },
   {
-    "id": "3e4770a5-c90b-80b1-ba9d-fdfd7b3a9940",
-    "title": "ไม่มีชื่อ",
-    "date": "2026-09-25",
-    "end": null,
-    "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-09-23T10:31:00.000Z",
-    "url": "https://app.notion.com/p/3e4770a5c90b80b1ba9dfdfd7b3a9940"
-  },
-  {
     "id": "3e1770a5-c90b-8096-938c-fe5f7902c5d2",
     "title": "F PLUS PRESENTATION// Rotary Valve discussion",
     "date": "2026-09-25",
@@ -328,6 +317,20 @@
     "employeesText": "Nack",
     "last_edited": "2026-08-27T02:45:00.000Z",
     "url": "https://app.notion.com/p/3c9770a5c90b80a795f4da55717a164a"
+  },
+  {
+    "id": "3e4770a5-c90b-8005-98f1-c2f472472422",
+    "title": "Friendship Co., Ltd.",
+    "date": "2026-09-24",
+    "end": null,
+    "note": "",
+    "employees": [
+      "KO",
+      "Title"
+    ],
+    "employeesText": "KO, Title",
+    "last_edited": "2026-09-23T11:31:00.000Z",
+    "url": "https://app.notion.com/p/Friendship-Co-Ltd-3e4770a5c90b800598f1c2f472472422"
   },
   {
     "id": "3e1770a5-c90b-805e-b462-c282156f3da7",
