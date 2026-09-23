@@ -1,0 +1,1364 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target vs Actual Dashboard - 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            /* Default: Executive (Dark Tone) */
+            --bg1: #0f172a; --bg2: #1e293b; --bg3: #111827;
+            --glass: rgba(255,255,255,0.07);
+            --glass-border: rgba(255,255,255,0.10);
+            --text-main: #ffffff; 
+            --text-soft: rgba(255,255,255,0.85);
+            --text-muted: rgba(255,255,255,0.50);
+            --status-healthy: #4ADE80;
+            --status-warning: #FBBF24;
+            --status-critical: #FB7185;
+            --gauge-empty: rgba(255,255,255,0.08);
+            --grid-color: rgba(255,255,255,0.05);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+            min-height: 100vh; padding: 30px 20px; color: var(--text-main); transition: all 0.3s ease;
+        }
+        .stats-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            gap: 20px; margin-bottom: 30px; max-width: 1400px; margin-left: auto; margin-right: auto; 
+        }
+        .stat-card { padding: 24px; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+        .stat-value { font-size: 2rem; font-weight: 800; display: block; margin-top: 8px; color: var(--text-main); }
+        
+        .dashboardBCK { display: grid; grid-template-columns: 1fr 1.5fr; gap: 24px; max-width: 1400px; margin: auto; }
+        .dashboard { display: flex; align-items: flex-start; grid-template-columns: 1fr 1.5fr; gap: 24px; max-width: 1400px; margin: auto; }
+        
+        @media (max-width: 1024px) { .dashboard { grid-template-columns: 1fr; } }
+
+        .glass { 
+            background: var(--glass); backdrop-filter: blur(20px); 
+            border: 1px solid var(--glass-border); border-radius: 24px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+        }
+        .card-left { 
+                    padding: 30px;
+                    flex: 0 0 380px;   /* ✅ กำหนดความกว้างตายตัว ไม่ยืด */
+                    min-width: 0;
+                }
+        .card-right{  flex: 1;           /* ✅ ขยายเต็มที่เหลือ */
+                        min-width: 0;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 24px; }
+        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .theme-switcher { display: flex; gap: 6px; background: rgba(0,0,0,0.15); padding: 5px; border-radius: 999px; border: 1px solid var(--glass-border); }
+        .theme-btn { border: none; padding: 8px 18px; border-radius: 999px; cursor: pointer; background: transparent; color: var(--text-soft); font-size: 0.8rem; font-weight: 600; }
+        .theme-btn.active { background: #818CF8; color: #fff !important; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-size: 0.75rem; color: var(--text-muted); padding: 15px 12px; border-bottom: 1px solid var(--glass-border); }
+        td { padding: 16px 12px; border-bottom: 1px solid var(--glass-border); color: var(--text-soft); }
+        .value { font-weight: 700; color: var(--text-main); text-align: right; }
+
+        .footer-date { margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.1); border-radius: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .gauge-statusx { font-size: 0.75rem; font-weight: 700; padding: 10px 16px; border-radius: 999px; display: flex; align-items: center; gap: 8px; }
+        .gauge-statusx::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+        .card-graph { padding: 30px; text-align: center; margin-bottom: 20px; }
+        .card-graph h3 { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 20px; text-align: left; font-weight: 700; }
+        .chart-container { height: 300px; position: relative; }
+        .gauge-wrap #percentText { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); font-size: 2.8rem; font-weight: 900; }
+        .status-badge { display: inline-block; padding: 8px 20px; border-radius: 999px; font-size: 0.8rem; font-weight: 800; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="stats-grid">
+    <div class="stat-card glass"><span class="stat-label">Target <span class="target-year"></span></span><span class="stat-value" id="stat-target">0</span></div>
+    <div class="stat-card glass"><span class="stat-label">Actual Sales <span class="target-year"></span></span><span class="stat-value" id="stat-actual" style="color: var(--status-healthy);">0</span></div>
+    <div class="stat-card glass"><span class="stat-label">Achievement Rate</span><span class="stat-value" id="stat-rate">0%</span></div>
+</div>
+
+<div class="dashboard">
+    <div class="card-left glass">
+            <div class="theme-switcher">
+                <button class="theme-btn" data-theme="executive">Executive</button>
+                <button class="theme-btn" data-theme="neon">Neon</button>
+                <button class="theme-btn" data-theme="apple">Apple</button>
+            </div>        
+        <div class="toolbar">
+            <h2>📊 Overview</h2>
+        </div>
+        <table>
+            <thead><tr><th>Year</th><th style="text-align:right">Target (THB)</th><th style="text-align:right">Actual (Used)</th></tr></thead>
+            <tbody id="data-table-body"></tbody>
+        </table>
+        <div class="footer-date">
+            <div class="gauge-statusx" id="status_c">Critical (< 30%)</div>
+            <div class="gauge-statusx" id="status_w">Warning (30-80%)</div>
+            <div class="gauge-statusx" id="status_h">Healthy (> 80%)</div>
+        </div> 
+    <div style="margin-top: 24px;">
+         <div class="card-graph glass ">
+            <h2> ( 2026 )</h2>
+            <h5>Comparison by Salesman (QT vs PO )</h5>
+            <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSaleman"></canvas></div>
+        </div>
+    </div>
+
+    </div>
+
+ 
+       
+
+    <div class="card-right">
+        <div class="card-graph glass">
+            <h3>Yearly Progress</h3>
+            <div class="chart-container gauge-wrap">
+                <canvas id="gaugeChart"></canvas>
+                <span id="percentText">0%</span>
+            </div>
+            <div id="gaugeStatus" class="status-badge">...</div>
+        </div>
+        <div class="card-graph glass">
+            <h3>Comparison by Team</h3>
+            <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSales"></canvas></div>
+        </div>        
+        <div class="card-graph glass">
+            <h3>Comparison by Year</h3>
+            <div class="chart-container"><canvas id="barChart"></canvas></div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    // target
+    const SHEET_ID = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+    const GID = '0';
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+    const DEFAULT_THEME = 'executive';
+
+    const THEMES = {
+        executive: { css: {
+            '--bg1': '#0f172a', '--bg2': '#1e293b', '--bg3': '#111827',
+            '--glass': 'rgba(255,255,255,0.07)', '--glass-border': 'rgba(255,255,255,0.10)',
+            '--text-main': '#ffffff', '--text-soft': 'rgba(255,255,255,0.85)', '--text-muted': 'rgba(255,255,255,0.50)',
+            '--status-healthy': '#22C55E', '--status-warning': '#F59E0B', '--status-critical': '#EF4444', 
+            '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)'
+        }},
+        neon: { css: {
+            '--bg1': '#050816', '--bg2': '#1a103f', '--bg3': '#09090f',
+            '--glass': 'rgba(255,255,255,0.05)', '--glass-border': 'rgba(168,85,247,0.18)',
+            '--text-main': '#F8FAFC', '--text-soft': 'rgba(248,250,252,0.85)', '--text-muted': 'rgba(248,250,252,0.50)',
+            '--status-healthy': '#22D3EE', '--status-warning': '#FACC15', '--status-critical': '#FB7185', 
+            '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)'
+        }},
+        apple: { css: {
+            '--bg1': '#f3f4f6', '--bg2': '#e5e7eb', '--bg3': '#f8fafc',
+            '--glass': '#ffffff', '--glass-border': 'rgba(0,0,0,0.08)',
+            '--text-main': '#1d1d1f', '--text-soft': '#424245', '--text-muted': '#86868b',
+            '--status-healthy': '#28cd41', '--status-warning': '#ffcc00', '--status-critical': '#ff3b30', 
+            '--gauge-empty': '#e2e8f0', '--grid-color': 'rgba(0,0,0,0.05)'
+        }}
+    };
+
+    let gaugeChart = null, barChart = null, globalData = null;
+    let currentThemeKey = localStorage.getItem('dashboard-theme') || DEFAULT_THEME;
+
+    const cleanNum = (val) => {
+        if (typeof val === 'number') return val;
+        if (!val) return 0;
+        return parseFloat(val.toString().replace(/,/g, '').trim()) || 0;
+    };
+
+    async function init() {
+        try {
+            const resp = await fetch(CSV_URL + '&t=' + Date.now());
+            const csv = await resp.text();
+            Papa.parse(csv, {
+                header: true, skipEmptyLines: true,
+                complete: (results) => {
+                    globalData = results.data.filter(d => d.year).map(d => ({
+                        year: d.year, total: cleanNum(d.total), used: cleanNum(d.used)
+                    })).sort((a, b) => a.year - b.year);
+                    processData(globalData);
+                }
+            });
+        } catch (e) { console.error("Error:", e); }
+    }
+
+    
+    async function initSalesMan() {
+    try {
+        const SHEET_IDsalesMan = '15kuRzp8uSZVKqhA4oeONmZiu73pUjllv';
+        const GIDsalesMan = '2051998916#gid=2051998916';
+        const CSV_URLsalesMan = `https://docs.google.com/spreadsheets/d/${SHEET_IDsalesMan}/export?format=csv&gid=${GIDsalesMan}`;
+        const resp = await fetch(CSV_URLsalesMan + '&t=' + Date.now());
+        const csv = await resp.text();
+
+        Papa.parse(csv, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+            dataSaleMan = results.data
+                .filter(d => d.SaleMan && d.SaleMan.trim() !== '')
+                .map(d => ({
+                    name:      d.SaleMan.trim(),
+                    quotation: cleanNum(d.Quotation),
+                    po:        cleanNum(d.PO),
+                }));
+
+
+                processDataSalesMan(dataSaleMan);
+            }
+        });
+    } catch (e) {
+        console.error('initSalesMan error:', e);
+    }
+}
+
+
+    async function initSales() {
+    try {
+        const SHEET_IDsales = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+        const GIDsales = '2104520398#gid=2104520398';
+        const CSV_URLsales = `https://docs.google.com/spreadsheets/d/${SHEET_IDsales}/export?format=csv&gid=${GIDsales}`;
+        const resp = await fetch(CSV_URLsales + '&t=' + Date.now());
+        const csv = await resp.text();
+
+        Papa.parse(csv, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+                // กรองเฉพาะแถวที่มี Team
+                globalDataSales = results.data
+                    .filter(d =>  d.Team && d.Team.trim() !== '')
+                    .map(d => ({
+                        team:          d.Team.trim(),
+                        call:          cleanNum(d.No),           // No = Call
+                        sentQuotation: cleanNum(d.SentQuotation),
+                        xOrder:        cleanNum(d['X-Order']),
+                    }));
+
+                processDataSalesTeam(globalDataSales);
+            }
+        });
+    } catch (e) {
+        console.error('initSales error:', e);
+    }
+}
+
+function processDataSalesTeam(data) {
+    const labels = data.map(d => d.team);
+
+    const datasets = [
+        {
+            label: 'Call',
+            data: data.map(d => d.call),
+            backgroundColor: 'rgba(99, 102, 241, 0.8)',   // indigo
+            borderColor:     'rgba(99, 102, 241, 1)',
+            borderWidth: 2,
+            borderRadius: 6,
+        },
+        {
+            label: 'Sent Quotation',
+            data: data.map(d => d.sentQuotation),
+            backgroundColor: 'rgba(34, 197, 94, 0.8)',    // green
+            borderColor:     'rgba(34, 197, 94, 1)',
+            borderWidth: 2,
+            borderRadius: 6,
+        },
+        {
+            label: 'X-Order',
+            data: data.map(d => d.xOrder),
+            backgroundColor: 'rgba(251, 146, 60, 0.8)',   // orange
+            borderColor:     'rgba(251, 146, 60, 1)',
+            borderWidth: 2,
+            borderRadius: 6,
+        },
+    ];
+
+    const ctx = document.getElementById('barChartSales').getContext('2d');
+
+    // ถ้ามี chart เดิมอยู่ให้ destroy ก่อน
+    if (window.barChartSalesInstance) {
+        window.barChartSalesInstance.destroy();
+    }
+
+    window.barChartSalesInstance = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',        // hover แสดงทุก series พร้อมกัน
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        color: '#94a3b8',
+                        font: { size: 13, weight: 'bold' },
+                        padding: 20,
+                        usePointStyle: true,
+                        pointStyleWidth: 12,
+                    },
+                    // ✅ คลิก legend เพื่อเปิด/ปิด series ได้เลย (built-in)
+                    onClick: function(e, legendItem, legend) {
+                        const index = legendItem.datasetIndex;
+                        const ci = legend.chart;
+                        if (ci.isDatasetVisible(index)) {
+                            ci.hide(index);
+                            legendItem.hidden = true;
+                        } else {
+                            ci.show(index);
+                            legendItem.hidden = false;
+                        }
+                    },
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleColor: '#f1f5f9',
+                    bodyColor: '#94a3b8',
+                    borderColor: '#334155',
+                    borderWidth: 1,
+                    padding: 12,
+                    callbacks: {
+                        label: (ctx) => {
+                            const val = ctx.parsed.y;
+                            return ` ${ctx.dataset.label}: ${val.toLocaleString()}`;
+                        },
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#94a3b8', font: { size: 13, weight: 'bold' } },
+                    grid:  { color: 'rgba(255,255,255,0.05)' },
+                },
+                y: {
+                    ticks: {
+                        color: '#94a3b8',
+                        callback: (val) => val.toLocaleString(),
+                    },
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                },
+            },
+        },
+    });
+}
+
+
+  
+    function processData(data) {
+        if (!data || data.length === 0) return;
+        const latest = data[data.length - 1];
+        const rate = latest.total > 0 ? (latest.used / latest.total) * 100 : 0;
+
+        document.querySelectorAll('.target-year').forEach(el => el.innerText = latest.year);
+        document.getElementById('stat-target').innerText = latest.total.toLocaleString();
+        document.getElementById('stat-actual').innerText = latest.used.toLocaleString();
+        const rateEl = document.getElementById('stat-rate');
+        rateEl.innerText = rate.toFixed(2) + '%';
+        
+        const statusColor = rate < 30 ? 'var(--status-critical)' : (rate < 80 ? 'var(--status-warning)' : 'var(--status-healthy)');
+        rateEl.style.color = statusColor;
+
+        document.getElementById('data-table-body').innerHTML = data.slice().reverse().map(row => `
+            <tr><td>${row.year}</td><td class="value">${row.total.toLocaleString()}</td><td class="value" style="color: var(--status-healthy)">${row.used.toLocaleString()}</td></tr>
+        `).join('');
+
+        updateStatusLegend();
+        renderCharts(rate, latest.used, latest.total, data);
+    }
+function renderCharts(rate, used, total, data) {
+        const canvas = document.getElementById('gaugeChart');
+        const gCtx = canvas.getContext('2d');
+        const rootStyles = getComputedStyle(document.documentElement);
+        
+        // ดึงสีจาก CSS Variables มาใช้ใน Chart.js
+        const colorMuted = rootStyles.getPropertyValue('--text-muted').trim();
+        const colorSoft = rootStyles.getPropertyValue('--text-soft').trim();
+        const gridColor = rootStyles.getPropertyValue('--grid-color').trim();
+        const emptyColor = rootStyles.getPropertyValue('--gauge-empty').trim();
+
+        if (gaugeChart) gaugeChart.destroy();
+
+        // --- ส่วนของ Gauge Chart ---
+        let gradient = gCtx.createLinearGradient(0, 0, canvas.width, 0);
+        let displayColor = '';
+        if (rate < 30) {
+            gradient.addColorStop(0, '#DC2626'); gradient.addColorStop(1, '#FB7185');
+            displayColor = rootStyles.getPropertyValue('--status-critical');
+        } else if (rate < 80) {
+            gradient.addColorStop(0, '#EA580C'); gradient.addColorStop(1, '#FBBF24');
+            displayColor = rootStyles.getPropertyValue('--status-warning');
+        } else {
+            gradient.addColorStop(0, '#16A34A'); gradient.addColorStop(1, '#4ADE80');
+            displayColor = rootStyles.getPropertyValue('--status-healthy');
+        }
+
+        document.getElementById('percentText').innerText = rate.toFixed(1) + '%';
+        document.getElementById('percentText').style.color = displayColor;
+        const badge = document.getElementById('gaugeStatus');
+        badge.innerText = rate < 30 ? 'CRITICAL' : (rate < 80 ? 'WARNING' : 'HEALTHY');
+        badge.style.background = displayColor + '22'; badge.style.color = displayColor;
+
+        gaugeChart = new Chart(gCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [used, Math.max(0, total - used)],
+                    backgroundColor: [gradient, emptyColor],
+                    borderWidth: 0, circumference: 180, rotation: 270, borderRadius: 15
+                }]
+            },
+            options: { cutout: '82%', maintainAspectRatio: false, plugins: { tooltip: { enabled: false } } }
+        });
+
+        // --- ส่วนของ Bar Chart (แก้ไขเรื่องสีฟอนต์ตรงนี้) ---
+        const bCtx = document.getElementById('barChart').getContext('2d');
+        if (barChart) barChart.destroy();
+        barChart = new Chart(bCtx, {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.year),
+                datasets: [
+                    { label: 'Target', data: data.map(d => d.total), backgroundColor: 'transparent', borderColor: '#818CF8', borderWidth: 2, borderRadius: 5 },
+                    { label: 'Actual', data: data.map(d => d.used), backgroundColor: rootStyles.getPropertyValue('--status-healthy'), borderRadius: 5 }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        type: 'logarithmic', 
+                        grid: { color: gridColor }, 
+                        ticks: { 
+                            color: colorMuted, // เปลี่ยนเป็นสีสว่างตามธีม
+                            callback: function(value) {
+                                const remain = value / (Math.pow(10, Math.floor(Math.log10(value))));
+                                if (remain === 1 || remain === 2 || remain === 5) {
+                                    if (value >= 1000000) return (value / 1000000) + 'M';
+                                    if (value >= 1000) return (value / 1000) + 'K';
+                                    return value;
+                                }
+                                return null;
+                            }
+                        }
+                    },
+                    x: { 
+                        ticks: { 
+                            color: colorSoft // เปลี่ยนเป็นสีสว่างตามธีม
+                        }, 
+                        grid: { display: false } 
+                    }
+                },
+                plugins: { 
+                    legend: { 
+                        labels: { 
+                            color: colorSoft, // สีตัวหนังสือ Target/Actual ด้านบน
+                            usePointStyle: true, 
+                            font: { weight: '600' } 
+                        } 
+                    } 
+                }
+            }
+        });
+    }
+    function renderChartsOld(rate, used, total, data) {
+        const canvas = document.getElementById('gaugeChart');
+        const gCtx = canvas.getContext('2d');
+        const rootStyles = getComputedStyle(document.documentElement);
+        const emptyColor = rootStyles.getPropertyValue('--gauge-empty').trim();
+
+        if (gaugeChart) gaugeChart.destroy();
+
+        let gradient = gCtx.createLinearGradient(0, 0, canvas.width, 0);
+        let displayColor = '';
+        if (rate < 30) {
+            gradient.addColorStop(0, '#DC2626'); gradient.addColorStop(1, '#FB7185');
+            displayColor = rootStyles.getPropertyValue('--status-critical');
+        } else if (rate < 80) {
+            gradient.addColorStop(0, '#EA580C'); gradient.addColorStop(1, '#FBBF24');
+            displayColor = rootStyles.getPropertyValue('--status-warning');
+        } else {
+            gradient.addColorStop(0, '#16A34A'); gradient.addColorStop(1, '#4ADE80');
+            displayColor = rootStyles.getPropertyValue('--status-healthy');
+        }
+
+        document.getElementById('percentText').innerText = rate.toFixed(1) + '%';
+        document.getElementById('percentText').style.color = displayColor;
+        const badge = document.getElementById('gaugeStatus');
+        badge.innerText = rate < 30 ? 'CRITICAL' : (rate < 80 ? 'WARNING' : 'HEALTHY');
+        badge.style.background = displayColor + '22'; badge.style.color = displayColor;
+
+        gaugeChart = new Chart(gCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [used, Math.max(0, total - used)],
+                    backgroundColor: [gradient, emptyColor],
+                    borderWidth: 0, circumference: 180, rotation: 270, borderRadius: 15
+                }]
+            },
+            options: { cutout: '82%', maintainAspectRatio: false, plugins: { tooltip: { enabled: false } } }
+        });
+
+        const bCtx = document.getElementById('barChart').getContext('2d');
+        if (barChart) barChart.destroy();
+        barChart = new Chart(bCtx, {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.year),
+                datasets: [
+                    { label: 'Target', data: data.map(d => d.total), backgroundColor: 'transparent', borderColor: '#818CF8', borderWidth: 2, borderRadius: 5 },
+                    { label: 'Actual', data: data.map(d => d.used), backgroundColor: rootStyles.getPropertyValue('--status-healthy'), borderRadius: 5 }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        type: 'logarithmic', 
+                        grid: { color: rootStyles.getPropertyValue('--grid-color') }, 
+                        ticks: { 
+                            color: 'var(--text-muted)',
+                            callback: function(value) {
+                                const remain = value / (Math.pow(10, Math.floor(Math.log10(value))));
+                                if (remain === 1 || remain === 2 || remain === 5) {
+                                    if (value >= 1000000) return (value / 1000000) + 'M';
+                                    if (value >= 1000) return (value / 1000) + 'K';
+                                    return value;
+                                }
+                                return null;
+                            }
+                        }
+                    },
+                    x: { ticks: { color: 'var(--text-soft)' }, grid: { display: false } }
+                },
+                plugins: { legend: { labels: { color: 'var(--text-soft)', usePointStyle: true, font: { weight: '600' } } } }
+            }
+        });
+    }
+// gen bar sale man
+function processDataSalesMan(data) {
+    const canvas = document.getElementById('barChartSaleman');
+    if (!canvas) return;
+
+    // เรียงตาม Quotation มากสุด
+    const sorted = [...data].sort((a, b) => (b.quotation + b.po) - (a.quotation + a.po));
+
+    const labels    = sorted.map(d => d.name);
+    const quotation = sorted.map(d => d.quotation);
+    const po        = sorted.map(d => d.po);
+
+    // ทำลาย chart เก่า (ถ้ามี)
+    if (window._chartSaleman) {
+        window._chartSaleman.destroy();
+    }
+
+    window._chartSaleman = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Quotation',
+                    data: quotation,
+                    backgroundColor: 'rgba(99, 179, 237, 0.85)',   // ฟ้า
+                    borderColor:     'rgba(66, 153, 225, 1)',
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                },
+                {
+                    label: 'PO',
+                    data: po,
+                    backgroundColor: 'rgba(104, 211, 145, 0.85)',  // เขียว
+                    borderColor:     'rgba(72, 187, 120, 1)',
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'y',          // แนวนอน
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#e2e8f0',
+                        font: { size: 13, family: 'Inter, sans-serif' },
+                        usePointStyle: true,
+                        pointStyleWidth: 10,
+                        padding: 20,
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleColor: '#94a3b8',
+                    bodyColor: '#f1f5f9',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.x.toLocaleString()}`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(255,255,255,0.06)',
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        color: '#94a3b8',
+                        font: { size: 11 },
+                        precision: 0,
+                    },
+                    border: { display: false }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: {
+                        color: '#e2e8f0',
+                        font: { size: 12, weight: '500' },
+                    },
+                    border: { display: false }
+                }
+            },
+            animation: {
+                duration: 600,
+                easing: 'easeOutQuart',
+            }
+        }
+    });
+}
+
+    function updateStatusLegend() {
+        ['status_c', 'status_w', 'status_h'].forEach((id, i) => {
+            const colorVar = ['--status-critical', '--status-warning', '--status-healthy'][i];
+            const color = getComputedStyle(document.documentElement).getPropertyValue(colorVar);
+            const el = document.getElementById(id);
+            if(el) { el.style.color = color; el.style.background = color + '15'; el.style.borderColor = color + '30'; }
+        });
+    }
+
+    function applyTheme(themeKey) {
+        currentThemeKey = themeKey;
+        const theme = THEMES[themeKey] || THEMES[DEFAULT_THEME];
+        Object.entries(theme.css).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+        localStorage.setItem('dashboard-theme', themeKey);
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.theme === themeKey));
+        if (globalData) processData(globalData);
+    }
+
+    window.onload = () => {
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
+        applyTheme(currentThemeKey);
+        init();
+        initSales();
+        initSalesMan();
+    };
+</script>
+</body>
+=======
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target vs Actual Dashboard - 2026</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            /* Default: Executive (Dark Tone) */
+            --bg1: #0f172a; --bg2: #1e293b; --bg3: #111827;
+            --glass: rgba(255,255,255,0.07);
+            --glass-border: rgba(255,255,255,0.10);
+            --text-main: #ffffff; 
+            --text-soft: rgba(255,255,255,0.85);
+            --text-muted: rgba(255,255,255,0.50);
+            --status-healthy: #4ADE80;
+            --status-warning: #FBBF24;
+            --status-critical: #FB7185;
+            --gauge-empty: rgba(255,255,255,0.08);
+            --grid-color: rgba(255,255,255,0.05);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+            min-height: 100vh; padding: 30px 20px; color: var(--text-main); transition: all 0.3s ease;
+        }
+        .stats-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            gap: 20px; margin-bottom: 30px; max-width: 1400px; margin-left: auto; margin-right: auto; 
+        }
+        .stat-card { padding: 24px; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+        .stat-value { font-size: 2rem; font-weight: 800; display: block; margin-top: 8px; color: var(--text-main); }
+        
+        .dashboardBCK { display: grid; grid-template-columns: 1fr 1.5fr; gap: 24px; max-width: 1400px; margin: auto; }
+        .dashboard { display: flex; align-items: flex-start; grid-template-columns: 1fr 1.5fr; gap: 24px; max-width: 1400px; margin: auto; }
+        
+        @media (max-width: 1024px) { .dashboard { grid-template-columns: 1fr; } }
+
+        .glass { 
+            background: var(--glass); backdrop-filter: blur(20px); 
+            border: 1px solid var(--glass-border); border-radius: 24px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+        }
+        .card-left { 
+                    padding: 30px;
+                    flex: 0 0 380px;   /* ✅ กำหนดความกว้างตายตัว ไม่ยืด */
+                    min-width: 0;
+                }
+        .card-right{  flex: 1;           /* ✅ ขยายเต็มที่เหลือ */
+                        min-width: 0;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 24px; }
+        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .theme-switcher { display: flex; gap: 6px; background: rgba(0,0,0,0.15); padding: 5px; border-radius: 999px; border: 1px solid var(--glass-border); }
+        .theme-btn { border: none; padding: 8px 18px; border-radius: 999px; cursor: pointer; background: transparent; color: var(--text-soft); font-size: 0.8rem; font-weight: 600; }
+        .theme-btn.active { background: #818CF8; color: #fff !important; }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-size: 0.75rem; color: var(--text-muted); padding: 15px 12px; border-bottom: 1px solid var(--glass-border); }
+        td { padding: 16px 12px; border-bottom: 1px solid var(--glass-border); color: var(--text-soft); }
+        .value { font-weight: 700; color: var(--text-main); text-align: right; }
+
+        .footer-date { margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.1); border-radius: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .gauge-statusx { font-size: 0.75rem; font-weight: 700; padding: 10px 16px; border-radius: 999px; display: flex; align-items: center; gap: 8px; }
+        .gauge-statusx::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+        .card-graph { padding: 30px; text-align: center; margin-bottom: 20px; }
+        .card-graph h3 { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 20px; text-align: left; font-weight: 700; }
+        .chart-container { height: 300px; position: relative; }
+        .gauge-wrap #percentText { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); font-size: 2.8rem; font-weight: 900; }
+        .status-badge { display: inline-block; padding: 8px 20px; border-radius: 999px; font-size: 0.8rem; font-weight: 800; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="stats-grid">
+    <div class="stat-card glass"><span class="stat-label">Target <span class="target-year"></span></span><span class="stat-value" id="stat-target">0</span></div>
+    <div class="stat-card glass"><span class="stat-label">Actual Sales <span class="target-year"></span></span><span class="stat-value" id="stat-actual" style="color: var(--status-healthy);">0</span></div>
+    <div class="stat-card glass"><span class="stat-label">Achievement Rate</span><span class="stat-value" id="stat-rate">0%</span></div>
+</div>
+
+<div class="dashboard">
+    <div class="card-left glass">
+            <div class="theme-switcher">
+                <button class="theme-btn" data-theme="executive">Executive</button>
+                <button class="theme-btn" data-theme="neon">Neon</button>
+                <button class="theme-btn" data-theme="apple">Apple</button>
+            </div>        
+        <div class="toolbar">
+            <h2>📊 Overview</h2>
+        </div>
+        <table>
+            <thead><tr><th>Year</th><th style="text-align:right">Target (THB)</th><th style="text-align:right">Actual (Used)</th></tr></thead>
+            <tbody id="data-table-body"></tbody>
+        </table>
+        <div class="footer-date">
+            <div class="gauge-statusx" id="status_c">Critical (< 30%)</div>
+            <div class="gauge-statusx" id="status_w">Warning (30-80%)</div>
+            <div class="gauge-statusx" id="status_h">Healthy (> 80%)</div>
+        </div> 
+    <div style="margin-top: 24px;">
+         <div class="card-graph glass ">
+            <h2> ( 2026 )</h2>
+            <h5>Comparison by Salesman (QT vs PO )</h5>
+            <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSaleman"></canvas></div>
+        </div>
+    </div>
+
+    </div>
+
+ 
+       
+
+    <div class="card-right">
+        <div class="card-graph glass">
+            <h3>Yearly Progress</h3>
+            <div class="chart-container gauge-wrap">
+                <canvas id="gaugeChart"></canvas>
+                <span id="percentText">0%</span>
+            </div>
+            <div id="gaugeStatus" class="status-badge">...</div>
+        </div>
+        <div class="card-graph glass">
+            <h3>Comparison by Team</h3>
+            <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSales"></canvas></div>
+        </div>        
+        <div class="card-graph glass">
+            <h3>Comparison by Year</h3>
+            <div class="chart-container"><canvas id="barChart"></canvas></div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    // target
+    const SHEET_ID = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+    const GID = '0';
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+    const DEFAULT_THEME = 'executive';
+
+    const THEMES = {
+        executive: { css: {
+            '--bg1': '#0f172a', '--bg2': '#1e293b', '--bg3': '#111827',
+            '--glass': 'rgba(255,255,255,0.07)', '--glass-border': 'rgba(255,255,255,0.10)',
+            '--text-main': '#ffffff', '--text-soft': 'rgba(255,255,255,0.85)', '--text-muted': 'rgba(255,255,255,0.50)',
+            '--status-healthy': '#22C55E', '--status-warning': '#F59E0B', '--status-critical': '#EF4444', 
+            '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)'
+        }},
+        neon: { css: {
+            '--bg1': '#050816', '--bg2': '#1a103f', '--bg3': '#09090f',
+            '--glass': 'rgba(255,255,255,0.05)', '--glass-border': 'rgba(168,85,247,0.18)',
+            '--text-main': '#F8FAFC', '--text-soft': 'rgba(248,250,252,0.85)', '--text-muted': 'rgba(248,250,252,0.50)',
+            '--status-healthy': '#22D3EE', '--status-warning': '#FACC15', '--status-critical': '#FB7185', 
+            '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)'
+        }},
+        apple: { css: {
+            '--bg1': '#f3f4f6', '--bg2': '#e5e7eb', '--bg3': '#f8fafc',
+            '--glass': '#ffffff', '--glass-border': 'rgba(0,0,0,0.08)',
+            '--text-main': '#1d1d1f', '--text-soft': '#424245', '--text-muted': '#86868b',
+            '--status-healthy': '#28cd41', '--status-warning': '#ffcc00', '--status-critical': '#ff3b30', 
+            '--gauge-empty': '#e2e8f0', '--grid-color': 'rgba(0,0,0,0.05)'
+        }}
+    };
+
+    let gaugeChart = null, barChart = null, globalData = null;
+    let currentThemeKey = localStorage.getItem('dashboard-theme') || DEFAULT_THEME;
+
+    const cleanNum = (val) => {
+        if (typeof val === 'number') return val;
+        if (!val) return 0;
+        return parseFloat(val.toString().replace(/,/g, '').trim()) || 0;
+    };
+
+    async function init() {
+        try {
+            const resp = await fetch(CSV_URL + '&t=' + Date.now());
+            const csv = await resp.text();
+            Papa.parse(csv, {
+                header: true, skipEmptyLines: true,
+                complete: (results) => {
+                    globalData = results.data.filter(d => d.year).map(d => ({
+                        year: d.year, total: cleanNum(d.total), used: cleanNum(d.used)
+                    })).sort((a, b) => a.year - b.year);
+                    processData(globalData);
+                }
+            });
+        } catch (e) { console.error("Error:", e); }
+    }
+
+    
+    async function initSalesMan() {
+    try {
+        const SHEET_IDsalesMan = '15kuRzp8uSZVKqhA4oeONmZiu73pUjllv';
+        const GIDsalesMan = '2051998916#gid=2051998916';
+        const CSV_URLsalesMan = `https://docs.google.com/spreadsheets/d/${SHEET_IDsalesMan}/export?format=csv&gid=${GIDsalesMan}`;
+        const resp = await fetch(CSV_URLsalesMan + '&t=' + Date.now());
+        const csv = await resp.text();
+
+        Papa.parse(csv, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+            dataSaleMan = results.data
+                .filter(d => d.SaleMan && d.SaleMan.trim() !== '')
+                .map(d => ({
+                    name:      d.SaleMan.trim(),
+                    quotation: cleanNum(d.Quotation),
+                    po:        cleanNum(d.PO),
+                }));
+
+
+                processDataSalesMan(dataSaleMan);
+            }
+        });
+    } catch (e) {
+        console.error('initSalesMan error:', e);
+    }
+}
+
+
+    async function initSales() {
+    try {
+        const SHEET_IDsales = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+        const GIDsales = '2104520398#gid=2104520398';
+        const CSV_URLsales = `https://docs.google.com/spreadsheets/d/${SHEET_IDsales}/export?format=csv&gid=${GIDsales}`;
+        const resp = await fetch(CSV_URLsales + '&t=' + Date.now());
+        const csv = await resp.text();
+
+        Papa.parse(csv, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+                // กรองเฉพาะแถวที่มี Team
+                globalDataSales = results.data
+                    .filter(d =>  d.Team && d.Team.trim() !== '')
+                    .map(d => ({
+                        team:          d.Team.trim(),
+                        call:          cleanNum(d.No),           // No = Call
+                        sentQuotation: cleanNum(d.SentQuotation),
+                        xOrder:        cleanNum(d['X-Order']),
+                    }));
+
+                processDataSalesTeam(globalDataSales);
+            }
+        });
+    } catch (e) {
+        console.error('initSales error:', e);
+    }
+}
+
+function processDataSalesTeam(data) {
+    const labels = data.map(d => d.team);
+
+    const datasets = [
+        {
+            label: 'Call',
+            data: data.map(d => d.call),
+            backgroundColor: 'rgba(99, 102, 241, 0.8)',   // indigo
+            borderColor:     'rgba(99, 102, 241, 1)',
+            borderWidth: 2,
+            borderRadius: 6,
+        },
+        {
+            label: 'Sent Quotation',
+            data: data.map(d => d.sentQuotation),
+            backgroundColor: 'rgba(34, 197, 94, 0.8)',    // green
+            borderColor:     'rgba(34, 197, 94, 1)',
+            borderWidth: 2,
+            borderRadius: 6,
+        },
+        {
+            label: 'X-Order',
+            data: data.map(d => d.xOrder),
+            backgroundColor: 'rgba(251, 146, 60, 0.8)',   // orange
+            borderColor:     'rgba(251, 146, 60, 1)',
+            borderWidth: 2,
+            borderRadius: 6,
+        },
+    ];
+
+    const ctx = document.getElementById('barChartSales').getContext('2d');
+
+    // ถ้ามี chart เดิมอยู่ให้ destroy ก่อน
+    if (window.barChartSalesInstance) {
+        window.barChartSalesInstance.destroy();
+    }
+
+    window.barChartSalesInstance = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',        // hover แสดงทุก series พร้อมกัน
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        color: '#94a3b8',
+                        font: { size: 13, weight: 'bold' },
+                        padding: 20,
+                        usePointStyle: true,
+                        pointStyleWidth: 12,
+                    },
+                    // ✅ คลิก legend เพื่อเปิด/ปิด series ได้เลย (built-in)
+                    onClick: function(e, legendItem, legend) {
+                        const index = legendItem.datasetIndex;
+                        const ci = legend.chart;
+                        if (ci.isDatasetVisible(index)) {
+                            ci.hide(index);
+                            legendItem.hidden = true;
+                        } else {
+                            ci.show(index);
+                            legendItem.hidden = false;
+                        }
+                    },
+                },
+                tooltip: {
+                    backgroundColor: '#1e293b',
+                    titleColor: '#f1f5f9',
+                    bodyColor: '#94a3b8',
+                    borderColor: '#334155',
+                    borderWidth: 1,
+                    padding: 12,
+                    callbacks: {
+                        label: (ctx) => {
+                            const val = ctx.parsed.y;
+                            return ` ${ctx.dataset.label}: ${val.toLocaleString()}`;
+                        },
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#94a3b8', font: { size: 13, weight: 'bold' } },
+                    grid:  { color: 'rgba(255,255,255,0.05)' },
+                },
+                y: {
+                    ticks: {
+                        color: '#94a3b8',
+                        callback: (val) => val.toLocaleString(),
+                    },
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                },
+            },
+        },
+    });
+}
+
+
+  
+    function processData(data) {
+        if (!data || data.length === 0) return;
+        const latest = data[data.length - 1];
+        const rate = latest.total > 0 ? (latest.used / latest.total) * 100 : 0;
+
+        document.querySelectorAll('.target-year').forEach(el => el.innerText = latest.year);
+        document.getElementById('stat-target').innerText = latest.total.toLocaleString();
+        document.getElementById('stat-actual').innerText = latest.used.toLocaleString();
+        const rateEl = document.getElementById('stat-rate');
+        rateEl.innerText = rate.toFixed(2) + '%';
+        
+        const statusColor = rate < 30 ? 'var(--status-critical)' : (rate < 80 ? 'var(--status-warning)' : 'var(--status-healthy)');
+        rateEl.style.color = statusColor;
+
+        document.getElementById('data-table-body').innerHTML = data.slice().reverse().map(row => `
+            <tr><td>${row.year}</td><td class="value">${row.total.toLocaleString()}</td><td class="value" style="color: var(--status-healthy)">${row.used.toLocaleString()}</td></tr>
+        `).join('');
+
+        updateStatusLegend();
+        renderCharts(rate, latest.used, latest.total, data);
+    }
+function renderCharts(rate, used, total, data) {
+        const canvas = document.getElementById('gaugeChart');
+        const gCtx = canvas.getContext('2d');
+        const rootStyles = getComputedStyle(document.documentElement);
+        
+        // ดึงสีจาก CSS Variables มาใช้ใน Chart.js
+        const colorMuted = rootStyles.getPropertyValue('--text-muted').trim();
+        const colorSoft = rootStyles.getPropertyValue('--text-soft').trim();
+        const gridColor = rootStyles.getPropertyValue('--grid-color').trim();
+        const emptyColor = rootStyles.getPropertyValue('--gauge-empty').trim();
+
+        if (gaugeChart) gaugeChart.destroy();
+
+        // --- ส่วนของ Gauge Chart ---
+        let gradient = gCtx.createLinearGradient(0, 0, canvas.width, 0);
+        let displayColor = '';
+        if (rate < 30) {
+            gradient.addColorStop(0, '#DC2626'); gradient.addColorStop(1, '#FB7185');
+            displayColor = rootStyles.getPropertyValue('--status-critical');
+        } else if (rate < 80) {
+            gradient.addColorStop(0, '#EA580C'); gradient.addColorStop(1, '#FBBF24');
+            displayColor = rootStyles.getPropertyValue('--status-warning');
+        } else {
+            gradient.addColorStop(0, '#16A34A'); gradient.addColorStop(1, '#4ADE80');
+            displayColor = rootStyles.getPropertyValue('--status-healthy');
+        }
+
+        document.getElementById('percentText').innerText = rate.toFixed(1) + '%';
+        document.getElementById('percentText').style.color = displayColor;
+        const badge = document.getElementById('gaugeStatus');
+        badge.innerText = rate < 30 ? 'CRITICAL' : (rate < 80 ? 'WARNING' : 'HEALTHY');
+        badge.style.background = displayColor + '22'; badge.style.color = displayColor;
+
+        gaugeChart = new Chart(gCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [used, Math.max(0, total - used)],
+                    backgroundColor: [gradient, emptyColor],
+                    borderWidth: 0, circumference: 180, rotation: 270, borderRadius: 15
+                }]
+            },
+            options: { cutout: '82%', maintainAspectRatio: false, plugins: { tooltip: { enabled: false } } }
+        });
+
+        // --- ส่วนของ Bar Chart (แก้ไขเรื่องสีฟอนต์ตรงนี้) ---
+        const bCtx = document.getElementById('barChart').getContext('2d');
+        if (barChart) barChart.destroy();
+        barChart = new Chart(bCtx, {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.year),
+                datasets: [
+                    { label: 'Target', data: data.map(d => d.total), backgroundColor: 'transparent', borderColor: '#818CF8', borderWidth: 2, borderRadius: 5 },
+                    { label: 'Actual', data: data.map(d => d.used), backgroundColor: rootStyles.getPropertyValue('--status-healthy'), borderRadius: 5 }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        type: 'logarithmic', 
+                        grid: { color: gridColor }, 
+                        ticks: { 
+                            color: colorMuted, // เปลี่ยนเป็นสีสว่างตามธีม
+                            callback: function(value) {
+                                const remain = value / (Math.pow(10, Math.floor(Math.log10(value))));
+                                if (remain === 1 || remain === 2 || remain === 5) {
+                                    if (value >= 1000000) return (value / 1000000) + 'M';
+                                    if (value >= 1000) return (value / 1000) + 'K';
+                                    return value;
+                                }
+                                return null;
+                            }
+                        }
+                    },
+                    x: { 
+                        ticks: { 
+                            color: colorSoft // เปลี่ยนเป็นสีสว่างตามธีม
+                        }, 
+                        grid: { display: false } 
+                    }
+                },
+                plugins: { 
+                    legend: { 
+                        labels: { 
+                            color: colorSoft, // สีตัวหนังสือ Target/Actual ด้านบน
+                            usePointStyle: true, 
+                            font: { weight: '600' } 
+                        } 
+                    } 
+                }
+            }
+        });
+    }
+    function renderChartsOld(rate, used, total, data) {
+        const canvas = document.getElementById('gaugeChart');
+        const gCtx = canvas.getContext('2d');
+        const rootStyles = getComputedStyle(document.documentElement);
+        const emptyColor = rootStyles.getPropertyValue('--gauge-empty').trim();
+
+        if (gaugeChart) gaugeChart.destroy();
+
+        let gradient = gCtx.createLinearGradient(0, 0, canvas.width, 0);
+        let displayColor = '';
+        if (rate < 30) {
+            gradient.addColorStop(0, '#DC2626'); gradient.addColorStop(1, '#FB7185');
+            displayColor = rootStyles.getPropertyValue('--status-critical');
+        } else if (rate < 80) {
+            gradient.addColorStop(0, '#EA580C'); gradient.addColorStop(1, '#FBBF24');
+            displayColor = rootStyles.getPropertyValue('--status-warning');
+        } else {
+            gradient.addColorStop(0, '#16A34A'); gradient.addColorStop(1, '#4ADE80');
+            displayColor = rootStyles.getPropertyValue('--status-healthy');
+        }
+
+        document.getElementById('percentText').innerText = rate.toFixed(1) + '%';
+        document.getElementById('percentText').style.color = displayColor;
+        const badge = document.getElementById('gaugeStatus');
+        badge.innerText = rate < 30 ? 'CRITICAL' : (rate < 80 ? 'WARNING' : 'HEALTHY');
+        badge.style.background = displayColor + '22'; badge.style.color = displayColor;
+
+        gaugeChart = new Chart(gCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [used, Math.max(0, total - used)],
+                    backgroundColor: [gradient, emptyColor],
+                    borderWidth: 0, circumference: 180, rotation: 270, borderRadius: 15
+                }]
+            },
+            options: { cutout: '82%', maintainAspectRatio: false, plugins: { tooltip: { enabled: false } } }
+        });
+
+        const bCtx = document.getElementById('barChart').getContext('2d');
+        if (barChart) barChart.destroy();
+        barChart = new Chart(bCtx, {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.year),
+                datasets: [
+                    { label: 'Target', data: data.map(d => d.total), backgroundColor: 'transparent', borderColor: '#818CF8', borderWidth: 2, borderRadius: 5 },
+                    { label: 'Actual', data: data.map(d => d.used), backgroundColor: rootStyles.getPropertyValue('--status-healthy'), borderRadius: 5 }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: { 
+                        type: 'logarithmic', 
+                        grid: { color: rootStyles.getPropertyValue('--grid-color') }, 
+                        ticks: { 
+                            color: 'var(--text-muted)',
+                            callback: function(value) {
+                                const remain = value / (Math.pow(10, Math.floor(Math.log10(value))));
+                                if (remain === 1 || remain === 2 || remain === 5) {
+                                    if (value >= 1000000) return (value / 1000000) + 'M';
+                                    if (value >= 1000) return (value / 1000) + 'K';
+                                    return value;
+                                }
+                                return null;
+                            }
+                        }
+                    },
+                    x: { ticks: { color: 'var(--text-soft)' }, grid: { display: false } }
+                },
+                plugins: { legend: { labels: { color: 'var(--text-soft)', usePointStyle: true, font: { weight: '600' } } } }
+            }
+        });
+    }
+// gen bar sale man
+function processDataSalesMan(data) {
+    const canvas = document.getElementById('barChartSaleman');
+    if (!canvas) return;
+
+    // เรียงตาม Quotation มากสุด
+    const sorted = [...data].sort((a, b) => (b.quotation + b.po) - (a.quotation + a.po));
+
+    const labels    = sorted.map(d => d.name);
+    const quotation = sorted.map(d => d.quotation);
+    const po        = sorted.map(d => d.po);
+
+    // ทำลาย chart เก่า (ถ้ามี)
+    if (window._chartSaleman) {
+        window._chartSaleman.destroy();
+    }
+
+    window._chartSaleman = new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Quotation',
+                    data: quotation,
+                    backgroundColor: 'rgba(99, 179, 237, 0.85)',   // ฟ้า
+                    borderColor:     'rgba(66, 153, 225, 1)',
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                },
+                {
+                    label: 'PO',
+                    data: po,
+                    backgroundColor: 'rgba(104, 211, 145, 0.85)',  // เขียว
+                    borderColor:     'rgba(72, 187, 120, 1)',
+                    borderWidth: 0,
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }
+            ]
+        },
+        options: {
+            indexAxis: 'y',          // แนวนอน
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#e2e8f0',
+                        font: { size: 13, family: 'Inter, sans-serif' },
+                        usePointStyle: true,
+                        pointStyleWidth: 10,
+                        padding: 20,
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    titleColor: '#94a3b8',
+                    bodyColor: '#f1f5f9',
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderWidth: 1,
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.x.toLocaleString()}`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(255,255,255,0.06)',
+                        drawBorder: false,
+                    },
+                    ticks: {
+                        color: '#94a3b8',
+                        font: { size: 11 },
+                        precision: 0,
+                    },
+                    border: { display: false }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: {
+                        color: '#e2e8f0',
+                        font: { size: 12, weight: '500' },
+                    },
+                    border: { display: false }
+                }
+            },
+            animation: {
+                duration: 600,
+                easing: 'easeOutQuart',
+            }
+        }
+    });
+}
+
+    function updateStatusLegend() {
+        ['status_c', 'status_w', 'status_h'].forEach((id, i) => {
+            const colorVar = ['--status-critical', '--status-warning', '--status-healthy'][i];
+            const color = getComputedStyle(document.documentElement).getPropertyValue(colorVar);
+            const el = document.getElementById(id);
+            if(el) { el.style.color = color; el.style.background = color + '15'; el.style.borderColor = color + '30'; }
+        });
+    }
+
+    function applyTheme(themeKey) {
+        currentThemeKey = themeKey;
+        const theme = THEMES[themeKey] || THEMES[DEFAULT_THEME];
+        Object.entries(theme.css).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+        localStorage.setItem('dashboard-theme', themeKey);
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.theme === themeKey));
+        if (globalData) processData(globalData);
+    }
+
+    window.onload = () => {
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
+        applyTheme(currentThemeKey);
+        init();
+        initSales();
+        initSalesMan();
+    };
+</script>
+</body>
+>>>>>>> 4a27907d102821da2b484b5b294023d8f94407a1
+</html>

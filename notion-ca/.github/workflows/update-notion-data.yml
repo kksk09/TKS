@@ -1,0 +1,37 @@
+name: Update Notion Calendar Data
+
+on:
+  schedule:
+    - cron: '0 1 * * *'   # ทุกวัน 08:00 น. ไทย
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: ./notion-ca
+        run: npm install
+
+      - name: Run fetch script
+        working-directory: ./notion-ca
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: node fetch-notion.js 2026
+
+      - name: Commit and push updated data
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add notion-ca/data.json notion-ca/data-2026.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto update Notion data $(date +'%Y-%m-%d %H:%M')"
+          git push

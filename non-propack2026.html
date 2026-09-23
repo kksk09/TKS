@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProPack 2026 Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  /* LFW Spring 2024 Pantone accents */
+  --blue-h:  #6CA0C8;
+  --blue-s:  #2B5FA5;
+  --peach:   #E8A87C;
+  --orchid:  #C8A2C8;
+  --fennel:  #7FAF8A;
+  --marm:    #E8622A;
+  /* Light theme tokens */
+  --bg:      #EDF4FA;
+  --glass:   rgba(255,255,255,0.72);
+  --glass-b: rgba(43,95,165,0.13);
+  --shadow:  0 4px 20px rgba(43,95,165,0.09);
+  --shadow-h:0 12px 32px rgba(43,95,165,0.16);
+  --txt:     #1A2B3C;
+  --txt-soft:#3D5670;
+  --txt-mute:rgba(26,43,60,0.45);
+  --radius:  16px;
+}
+
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background: linear-gradient(145deg,#DFF0FA 0%,#E8F3F9 40%,#EDF6F3 100%);
+  min-height:100vh;
+  color:var(--txt);
+  padding:28px 20px 48px;
+}
+
+/* ── NAV ── */
+.nav{
+  display:flex; align-items:center; justify-content:space-between;
+  max-width:1500px; margin:0 auto 28px;
+}
+.nav-brand{ display:flex; align-items:center; gap:12px; }
+.nav-logo{
+  width:42px; height:42px; border-radius:12px;
+  background:linear-gradient(135deg,var(--blue-h),var(--blue-s));
+  display:flex; align-items:center; justify-content:center;
+  font-size:1rem; font-weight:900; color:#fff;
+  box-shadow:0 4px 12px rgba(43,95,165,0.30);
+}
+.nav-title{ font-size:1.3rem; font-weight:700; color:var(--txt); }
+.nav-sub{ font-size:0.74rem; color:var(--txt-mute); margin-top:2px; }
+.nav-btn{
+  display:inline-flex; align-items:center; gap:7px;
+  padding:9px 20px; border-radius:999px; font-size:0.8rem;
+  font-weight:700; text-decoration:none; transition:transform .2s,box-shadow .2s;
+}
+.nav-btn:hover{ transform:translateY(-2px); }
+.btn-home{
+  background:linear-gradient(135deg,#6366F1,#818CF8);
+  color:#fff; box-shadow:0 4px 14px rgba(99,102,241,0.30);
+}
+.btn-home:hover{ box-shadow:0 8px 22px rgba(99,102,241,0.45); }
+
+/* ── KPI GRID ── */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:12px; max-width:1500px; margin:0 auto 24px;
+}
+@media(max-width:1200px){ .kpi-grid{ grid-template-columns:repeat(4,1fr); } }
+@media(max-width:700px){  .kpi-grid{ grid-template-columns:repeat(2,1fr); } }
+
+.kpi-card{
+  background:var(--glass); border:1px solid var(--glass-b);
+  border-radius:var(--radius); padding:18px 16px;
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  position:relative; overflow:hidden;
+  box-shadow:var(--shadow);
+  transition:transform .2s,box-shadow .2s;
+}
+.kpi-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow-h); }
+.kpi-card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  border-radius:var(--radius) var(--radius) 0 0;
+  background:var(--accent,var(--blue-h));
+}
+.kpi-card:nth-child(1) {--accent:var(--blue-h)}  .kpi-card:nth-child(2) {--accent:var(--fennel)}
+.kpi-card:nth-child(3) {--accent:var(--peach)}   .kpi-card:nth-child(4) {--accent:var(--orchid)}
+.kpi-card:nth-child(5) {--accent:var(--marm)}    .kpi-card:nth-child(6) {--accent:var(--blue-s)}
+.kpi-card:nth-child(7) {--accent:var(--fennel)}  .kpi-card:nth-child(8) {--accent:var(--peach)}
+.kpi-card:nth-child(9) {--accent:var(--orchid)}  .kpi-card:nth-child(10){--accent:var(--marm)}
+.kpi-card:nth-child(11){--accent:var(--blue-h)}  .kpi-card:nth-child(12){--accent:var(--fennel)}
+.kpi-card:nth-child(13){--accent:var(--peach)}   .kpi-card:nth-child(14){--accent:var(--orchid)}
+
+.kpi-label{
+  font-size:0.66rem; color:var(--txt-mute);
+  text-transform:uppercase; letter-spacing:0.08em;
+  font-weight:600; margin-bottom:8px;
+}
+.kpi-value{ font-size:1.45rem; font-weight:800; color:var(--txt); line-height:1; }
+.kpi-icon{ position:absolute; right:13px; top:13px; font-size:1.3rem; opacity:0.18; }
+
+/* ── CHART SECTION ── */
+.chart-section{
+  max-width:1500px; margin:0 auto 24px;
+  background:var(--glass); border:1px solid var(--glass-b);
+  border-radius:20px; backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  padding:28px; box-shadow:var(--shadow);
+}
+.chart-header{
+  display:flex; align-items:flex-start; justify-content:space-between;
+  flex-wrap:wrap; gap:14px; margin-bottom:20px;
+}
+.chart-title{ font-size:1.05rem; font-weight:700; color:var(--txt); }
+.chart-sub{ font-size:0.76rem; color:var(--txt-mute); margin-top:3px; }
+
+.series-toggles{ display:flex; flex-wrap:wrap; gap:7px; }
+.series-pill{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:5px 13px; border-radius:999px; font-size:0.73rem; font-weight:600;
+  border:1px solid var(--glass-b); cursor:pointer;
+  background:rgba(43,95,165,0.06); color:var(--txt-soft);
+  transition:all .18s; user-select:none;
+}
+.series-pill:hover{ background:rgba(43,95,165,0.11); }
+.series-pill .dot{ width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+.series-pill.off{ opacity:0.32; filter:grayscale(0.5); }
+.chart-wrap{ position:relative; height:460px; }
+
+/* ── TABLE SECTION ── */
+.table-section{
+  max-width:1500px; margin:0 auto;
+  background:var(--glass); border:1px solid var(--glass-b);
+  border-radius:20px; backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  padding:28px; box-shadow:var(--shadow);
+}
+.table-header{
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:12px; margin-bottom:18px;
+}
+.table-title{ font-size:1.05rem; font-weight:700; color:var(--txt); }
+.table-sub{ font-size:0.76rem; color:var(--txt-mute); margin-top:3px; }
+.tbl-search{
+  background:rgba(43,95,165,0.06); border:1px solid var(--glass-b);
+  border-radius:999px; padding:8px 16px; color:var(--txt);
+  font-size:0.8rem; font-family:'Space Grotesk',sans-serif;
+  outline:none; width:220px; transition:border-color .2s;
+}
+.tbl-search::placeholder{ color:var(--txt-mute); }
+.tbl-search:focus{ border-color:var(--blue-h); }
+
+.data-table{ width:100%; border-collapse:collapse; font-size:0.82rem; min-width:900px; }
+.data-table thead tr{ border-bottom:2px solid rgba(43,95,165,0.18); }
+.data-table th{
+  padding:11px 13px; text-align:left;
+  font-size:0.68rem; text-transform:uppercase; letter-spacing:0.07em;
+  font-weight:700; color:var(--blue-s); white-space:nowrap;
+  cursor:pointer; user-select:none; transition:color .15s;
+}
+.data-table th:hover{ color:var(--marm); }
+.data-table th .sort-icon{ margin-left:4px; opacity:0.4; font-size:0.62rem; }
+.data-table th.sort-asc  .sort-icon::after{ content:'▲'; }
+.data-table th.sort-desc .sort-icon::after{ content:'▼'; }
+.data-table th:not(.sort-asc):not(.sort-desc) .sort-icon::after{ content:'⇅'; }
+
+.data-table tbody tr{
+  border-bottom:1px solid rgba(43,95,165,0.07);
+  transition:background .14s;
+}
+.data-table tbody tr:hover{ background:rgba(43,95,165,0.05); }
+.data-table td{ padding:10px 13px; color:var(--txt-soft); white-space:nowrap; }
+.data-table td:first-child{ font-weight:700; color:var(--txt); }
+.data-table td.num{ text-align:right; font-variant-numeric:tabular-nums; color:var(--txt); }
+.data-table td.num-zero{ text-align:right; color:var(--txt-mute); }
+
+.tbl-footer{ margin-top:13px; font-size:0.74rem; color:var(--txt-mute); text-align:right; }
+
+/* ── LOADING ── */
+.loading-msg{ text-align:center; color:var(--txt-mute); padding:50px 20px; font-size:0.88rem; }
+.spinner{
+  display:inline-block; width:22px; height:22px;
+  border:3px solid rgba(43,95,165,0.15);
+  border-top-color:var(--blue-h);
+  border-radius:50%; animation:spin .7s linear infinite; margin-bottom:10px;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo">OH</div>
+    <div>
+      <div class="nav-title">On Hand</div>
+      <div class="nav-sub">Sales Performance Dashboard</div>
+    </div>
+  </div>
+  <div>
+    <a href="index.html" class="nav-btn btn-home">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      HOME
+    </a> 
+
+    
+    <a href="propack2026.html" style="
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 22px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #F59E0B, #FBBF24);
+        color: #1a1a1a;
+        font-weight: 700;
+        font-size: 0.85rem;
+        text-decoration: none;
+        letter-spacing: 0.05em;
+        box-shadow: 0 4px 15px rgba(245,158,11,0.4);
+        transition: transform 0.2s, box-shadow 0.2s;
+    "
+    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(245,158,11,0.55)'"
+    onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(245,158,11,0.4)'"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/>
+        </svg>
+        PROPACK2026
+    </a>
+  </div>
+</nav>
+
+<!--2026 KPI -->
+<div class="kpi-grid" id="kpiGrid">
+  <div class="loading-msg" style="grid-column:1/-1">
+    <div class="spinner"></div><br>Loading DATA…
+  </div>
+</div>
+
+<!--2026 CHART -->
+<div class="chart-section">
+  <div class="chart-header">
+    <div>
+      <div class="chart-title">Performance by Series</div>
+      <div class="chart-sub">คลิก Series เพื่อเปิด / ปิดแต่ละแท่ง</div>
+    </div>
+    <div class="series-toggles" id="seriesToggleBar"></div>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="salesChart"></canvas>
+  </div>
+  <div class="loading-msg" id="chartLoading">
+    <div class="spinner"></div><br>Loading chart…
+  </div>
+</div>
+
+<!--2026 TABLE -->
+<div class="table-section">
+  <div class="table-header">
+    <div>
+      <div class="table-title">📋 รายละเอียดข้อมูล</div>
+      <div class="table-sub">คลิก Header เพื่อ Sort &nbsp;|&nbsp; พิมพ์เพื่อ Filter</div>
+    </div>
+    <input class="tbl-search" id="tblSearch" type="text" placeholder="🔍 ค้นหา...">
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead id="tblHead"></thead>
+      <tbody id="tblBody"></tbody>
+    </table>
+  </div>
+  <div class="tbl-footer" id="tblFooter"></div>
+  <div class="loading-msg" id="tblLoading">
+    <div class="spinner"></div><br>Loading table…
+  </div>
+</div>
+
+<script>
+  // https://docs.google.com/spreadsheets/d/1VXsYKrQaOs0kZy2SC4yO-3CHm4yN5AyR/edit?gid=133679491#gid=133679491
+var SHEET_ID = '1VXsYKrQaOs0kZy2SC4yO-3CHm4yN5AyR';
+var GID      = '133679491';
+var CSV_URL  = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/export?format=csv&gid=' + GID;
+
+var SERIES_COLORS = [
+  '#6CA0C8','#7FAF8A','#E8A87C','#C8A2C8','#E8622A',
+  '#2B5FA5','#A8C5A0','#D4956A','#9B7EA8','#F0A070',
+  '#4A90D9','#6BBF7A','#F0C060'
+];
+// var KPI_ICONS = ['📦','📋','✅','💰','📈','🎯','🔖','🚚','⚙️','📊','🏆','💼','🔔','📌'];
+const KPI_ICONS = ['📦','📋','✅','💰','📈','🎯','🔖','🚚','⚙️','📊','🏆','💼','🔔','📌','💰','💰'];
+
+var chartInstance = null;
+var allDatasets   = [];
+var visibleSeries = new Set();
+var tableAllRows  = [];
+var tableHeaders  = [];
+var sortColIdx    = -1;
+var sortAsc       = true;
+
+function cleanNum(v) {
+  if (v === undefined || v === null || v === '') return 0;
+  var n = parseFloat(String(v).replace(/,/g,''));
+  return isNaN(n) ? 0 : n;
+}
+function fmtNum(n) {
+  if (Math.abs(n) >= 1e6) return (n/1e6).toFixed(1)+'M';
+  if (Math.abs(n) >= 1e3) return (n/1e3).toFixed(1)+'K';
+  return String(n);
+}
+
+async function init() {
+  try {
+    var resp = await fetch(CSV_URL + '&t=' + Date.now());
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    var csv = await resp.text();
+    Papa.parse(csv, {
+      skipEmptyLines: false,
+      complete: function(res) {
+        var rows = res.data;
+        console.log('Rows:', rows.length);
+        buildKPI(rows);
+        buildChart(rows);
+        buildTable(rows);
+      },
+      error: function(e) { showError('Parse error: ' + e.message); }
+    });
+  } catch(e) {
+    showError('โหลดไม่ได้: ' + e.message);
+  }
+}
+
+/* ── KPI ── */
+function buildKPI(rows) {
+  var grid      = document.getElementById('kpiGrid');
+  var headerRow = rows[0] || [];
+  var kpiRow    = rows[1] || [];
+  var html = '';
+  for (var k = 0; k < 14; k++) {
+    var c    = 15 + k;
+    var lbl  = headerRow[c] ? headerRow[c] : ('Col '+(k+1));
+    var val  = kpiRow[c] !== undefined ? kpiRow[c] : '—';
+    var numV = cleanNum(val);
+    var disp = (val===''||val===undefined) ? '—' : (isNaN(numV) ? val : fmtNum(numV));
+    html += '<div class="kpi-card">'
+          + '<div class="kpi-icon">'+KPI_ICONS[k]+'</div>'
+          + '<div class="kpi-label">'+lbl+'</div>'
+          + '<div class="kpi-value">'+disp+'</div>'
+          + '</div>';
+  }
+  grid.innerHTML = html || '<div class="loading-msg">ไม่พบข้อมูล KPI</div>';
+}
+
+/* ── CHART ── */
+function buildChart(rows) {
+  document.getElementById('chartLoading').style.display = 'none';
+  var dataRows = [];
+  for (var i = 2; i < rows.length; i++) {
+    var v = rows[i][0];
+    if (v !== undefined && v !== null && String(v).trim() !== '') dataRows.push(rows[i]);
+  }
+  if (!dataRows.length) {
+    var el = document.getElementById('chartLoading');
+    el.innerHTML = '<span style="color:#E8622A">⚠️ ไม่พบข้อมูลใน Col A (row 3+)</span>';
+    el.style.display = 'block';
+    return;
+  }
+  var names       = dataRows.map(function(r){ return r[0].trim(); });
+  var headerRow   = rows[0] || [];
+  var seriesLabels = [];
+  for (var c = 1; c <= 13; c++)
+    seriesLabels.push(headerRow[c] ? headerRow[c].trim() : 'Series '+c);
+
+  allDatasets = seriesLabels.map(function(lbl,i) {
+    var color = SERIES_COLORS[i]||'#888';
+    return {
+      label: lbl,
+      data: dataRows.map(function(r){ return cleanNum(r[i+1]); }),
+      backgroundColor: color+'CC', borderColor: color,
+      borderWidth:1, borderRadius:5, borderSkipped:false
+    };
+  });
+  allDatasets.forEach(function(_,i){ visibleSeries.add(i); });
+  buildTogglePills(seriesLabels);
+  renderChart(names);
+}
+
+function buildTogglePills(labels) {
+  var bar = document.getElementById('seriesToggleBar');
+  bar.innerHTML = labels.map(function(lbl,i){
+    return '<div class="series-pill" data-idx="'+i+'" onclick="toggleSeries('+i+')">'
+         + '<span class="dot" style="background:'+(SERIES_COLORS[i]||'#888')+'"></span>'
+         + lbl+'</div>';
+  }).join('');
+}
+
+function toggleSeries(idx) {
+  var pill = document.querySelector('.series-pill[data-idx="'+idx+'"]');
+  if (visibleSeries.has(idx)) { visibleSeries.delete(idx); pill.classList.add('off'); }
+  else { visibleSeries.add(idx); pill.classList.remove('off'); }
+  if (!chartInstance) return;
+  chartInstance.data.datasets.forEach(function(ds,i){
+    chartInstance.getDatasetMeta(i).hidden = !visibleSeries.has(i);
+  });
+  chartInstance.update();
+}
+
+function renderChart(names) {
+  var ctx = document.getElementById('salesChart').getContext('2d');
+  if (chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx, {
+    type:'bar',
+    data:{ labels:names, datasets:allDatasets },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          backgroundColor:'rgba(26,43,60,0.93)',
+          titleColor:'#A8C5DE', bodyColor:'#EDF4FA',
+          borderColor:'rgba(43,95,165,0.2)', borderWidth:1,
+          padding:12, cornerRadius:10,
+          callbacks:{ label:function(ctx){ return '  '+ctx.dataset.label+': '+ctx.parsed.y.toLocaleString(); } }
+        }
+      },
+      scales:{
+        x:{ grid:{ color:'rgba(43,95,165,0.07)' }, ticks:{ color:'#5B7A95', font:{size:11} }, border:{display:false} },
+        y:{ grid:{ color:'rgba(43,95,165,0.07)' }, ticks:{ color:'#5B7A95', font:{size:11}, precision:0 }, border:{display:false} }
+      },
+      animation:{ duration:600, easing:'easeOutQuart' },
+      interaction:{ mode:'index', intersect:false }
+    }
+  });
+}
+
+/* ── TABLE ── */
+function buildTable(rows) {
+  document.getElementById('tblLoading').style.display = 'none';
+  tableHeaders = (rows[0]||[]).slice(0,14);
+  tableAllRows = [];
+  for (var i = 2; i < rows.length; i++) {
+    var r = rows[i].slice(0,14);
+    if (r.some(function(v){ return v!==undefined&&v!==null&&String(v).trim()!==''; }))
+      tableAllRows.push(r);
+  }
+  var thead = document.getElementById('tblHead');
+  thead.innerHTML = '<tr>' + tableHeaders.map(function(h,i){
+    var lbl = h ? h : ('Col '+String.fromCharCode(65+i));
+    return '<th onclick="sortTable('+i+')">'+lbl+'<span class="sort-icon"></span></th>';
+  }).join('') + '</tr>';
+
+  renderTable(tableAllRows);
+  updateFooter(tableAllRows.length, tableAllRows.length);
+
+  document.getElementById('tblSearch').addEventListener('input', function(){
+    var q = this.value.toLowerCase().trim();
+    var filtered = q
+      ? tableAllRows.filter(function(r){ return r.some(function(v){ return String(v).toLowerCase().indexOf(q)!==-1; }); })
+      : tableAllRows;
+    renderTable(filtered);
+    updateFooter(filtered.length, tableAllRows.length);
+  });
+}
+
+function renderTable(rows) {
+  var tbody = document.getElementById('tblBody');
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="14" style="text-align:center;color:var(--txt-mute);padding:28px">ไม่พบข้อมูล</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(function(r){
+    return '<tr>' + r.map(function(v,i){
+      if (i===0) return '<td>'+(v||'—')+'</td>';
+      var num = parseFloat(String(v).replace(/,/g,''));
+      if (!isNaN(num) && v!==''&&v!==undefined&&v!==null) {
+        return '<td class="'+(num===0?'num-zero':'num')+'">' + num.toLocaleString() + '</td>';
+      }
+      return '<td>'+(v!==undefined&&v!==null&&v!==''?v:'—')+'</td>';
+    }).join('') + '</tr>';
+  }).join('');
+}
+
+function sortTable(colIdx) {
+  sortAsc = (sortColIdx===colIdx) ? !sortAsc : true;
+  sortColIdx = colIdx;
+  document.querySelectorAll('.data-table th').forEach(function(th,i){
+    th.classList.remove('sort-asc','sort-desc');
+    if (i===colIdx) th.classList.add(sortAsc?'sort-asc':'sort-desc');
+  });
+  var q = document.getElementById('tblSearch').value.toLowerCase().trim();
+  var working = q
+    ? tableAllRows.filter(function(r){ return r.some(function(v){ return String(v).toLowerCase().indexOf(q)!==-1; }); })
+    : tableAllRows.slice();
+  working.sort(function(a,b){
+    var na=parseFloat(String(a[colIdx]).replace(/,/g,'')), nb=parseFloat(String(b[colIdx]).replace(/,/g,''));
+    if (!isNaN(na)&&!isNaN(nb)) return sortAsc?na-nb:nb-na;
+    var sa=String(a[colIdx]||'').toLowerCase(), sb=String(b[colIdx]||'').toLowerCase();
+    return sortAsc?sa.localeCompare(sb):sb.localeCompare(sa);
+  });
+  renderTable(working);
+  updateFooter(working.length, tableAllRows.length);
+}
+
+function updateFooter(shown,total){
+  document.getElementById('tblFooter').textContent = 'แสดง '+shown+' / '+total+' แถว';
+}
+
+function showError(msg){
+  document.getElementById('kpiGrid').innerHTML='<div class="loading-msg" style="grid-column:1/-1;color:#E8622A">⚠️ '+msg+'</div>';
+  var cl=document.getElementById('chartLoading');
+  cl.innerHTML='<div style="color:#E8622A">⚠️ '+msg+'</div>'; cl.style.display='block';
+}
+
+init();
+</script>
+</body>
+</html>

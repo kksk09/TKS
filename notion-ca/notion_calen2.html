@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายงานจาก Notion Calendar</title>
+  <style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; max-width: 1100px; margin: 40px auto; padding: 0 20px; background: #f8fafc; color: #1e293b; }
+    h1 { text-align: center; margin-bottom: 8px; }
+    .subtitle { text-align: center; color: #64748b; margin-bottom: 32px; }
+    .stats { display: flex; gap: 16px; justify-content: center; margin-bottom: 32px; flex-wrap: wrap; }
+    .stat-card { background: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); text-align: center; min-width: 120px; }
+    .stat-card strong { display: block; font-size: 1.8rem; color: #0f172a; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+    th { background: #0f172a; color: white; font-weight: 600; }
+    tr:hover { background: #f1f5f9; }
+    .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 0.85rem; background: #e0f2fe; color: #0369a1; }
+    a { color: #2563eb; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .loading { text-align: center; padding: 60px; color: #64748b; }
+  </style>
+</head>
+<body>
+  <h1>รายงานจาก Notion Calendar</h1>
+  <p class="subtitle">อัปเดตล่าสุดจากฐานข้อมูล Notion</p>
+
+  <div class="stats" id="stats"></div>
+
+  <div id="content">
+    <div class="loading">กำลังโหลดข้อมูล...</div>
+  </div>
+
+  <script>
+    fetch('data.json')
+      .then(res => res.json())
+      .then(data => {
+        // สถิติสรุป
+        const total = data.length;
+        const thisMonth = data.filter(d => {
+          if (!d.date) return false;
+          const dDate = new Date(d.date);
+          const now = new Date();
+          return dDate.getMonth() === now.getMonth() && dDate.getFullYear() === now.getFullYear();
+        }).length;
+
+        document.getElementById('stats').innerHTML = `
+          <div class="stat-card"><strong>${total}</strong>รายการทั้งหมด</div>
+          <div class="stat-card"><strong>${thisMonth}</strong>เดือนนี้</div>
+        `;
+
+        // ตาราง
+        let html = `
+          <table>
+            <thead>
+              <tr>
+                <th>ชื่อ</th>
+                <th>วันที่</th>
+                <th>สถานะ</th>
+                <th>ลิงก์</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        data.forEach(item => {
+          const dateStr = item.date ? new Date(item.date).toLocaleDateString('th-TH', {
+            year: 'numeric', month: 'short', day: 'numeric'
+          }) : '-';
+
+          html += `
+            <tr>
+              <td>${item.title}</td>
+              <td>${dateStr}</td>
+              <td>${item.status ? `<span class="badge">${item.status}</span>` : '-'}</td>
+              <td><a href="${item.url}" target="_blank">เปิดใน Notion</a></td>
+            </tr>
+          `;
+        });
+
+        html += `</tbody></table>`;
+        document.getElementById('content').innerHTML = html;
+      })
+      .catch(err => {
+        document.getElementById('content').innerHTML = `<p style="color:red;text-align:center">โหลดข้อมูลไม่สำเร็จ: ${err.message}</p>`;
+      });
+  </script>
+</body>
+</html>

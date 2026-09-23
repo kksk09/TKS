@@ -1,0 +1,1626 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg1: #0f172a;
+            --bg2: #1e1b4b;
+            --bg3: #111827;
+
+            --glass: rgba(255,255,255,0.07);
+            --glass-border: rgba(255,255,255,0.10);
+            --text-main: #ffffff;
+            --text-soft: rgba(255,255,255,0.72);
+            --text-muted: rgba(255,255,255,0.45);
+
+            --badge-dot: #818CF8;
+            --badge-strong: #c7d2fe;
+
+            --gauge-text: #ffffff;
+            --shadow-main: rgba(0,0,0,0.28);
+
+            --orb1: rgba(99,102,241,0.18);
+            --orb2: rgba(236,72,153,0.10);
+
+            --status-healthy: #4ADE80;
+            --status-warning: #FBBF24;
+            --status-critical: #FB7185;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+            min-height: 100vh;
+            padding: 24px 16px;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -220px; left: -220px;
+            width: 540px; height: 540px;
+            background: radial-gradient(circle, var(--orb1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(10px);
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -240px; right: -240px;
+            width: 580px; height: 580px;
+            background: radial-gradient(circle, var(--orb2) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(10px);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 18px;
+            max-width: 1260px;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 16px 12px; }
+            .dashboard { grid-template-columns: 1fr; }
+            .right-column { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        }
+
+        @media (max-width: 560px) {
+            body { padding: 12px 10px; }
+            .right-column { grid-template-columns: 1fr !important; }
+            .chart-container { height: 220px; }
+        }
+
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid var(--glass-border);
+            border-radius: 26px;
+            box-shadow:
+                0 14px 38px var(--shadow-main),
+                inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .card-left {
+            padding: 30px;
+            animation: fadeUp 0.8s ease;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .card-graph {
+            padding: 22px 18px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.9s ease;
+        }
+
+        .card-graph::before {
+            content: '';
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            top: -56px;
+            right: -56px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 72%);
+            pointer-events: none;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .card-header h2 {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .theme-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            color: var(--text-soft);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.10);
+        }
+
+        .theme-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--badge-dot);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.06);
+        }
+
+        .update-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            padding: 7px 14px;
+            margin-bottom: 18px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .update-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--badge-dot);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.07);
+            flex-shrink: 0;
+        }
+
+        .update-badge span {
+            font-size: 0.78rem;
+            color: var(--text-soft);
+        }
+
+        .update-badge strong {
+            color: var(--badge-strong);
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            text-align: left;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(255,255,255,0.04);
+            transform: translateX(2px);
+        }
+
+        tbody td {
+            padding: 15px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-soft);
+            font-size: 0.93rem;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .value {
+            font-weight: 800;
+            color: var(--text-main) !important;
+            font-size: 1.06rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .footer-date {
+            margin-top: 18px;
+            padding: 11px 14px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card-graph h3 {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .chart-container {
+            height: 245px;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .gauge-wrap {
+            position: relative;
+        }
+
+        #percentText {
+            position: absolute;
+            bottom: 38px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.1rem;
+            font-weight: 900;
+            color: var(--gauge-text);
+            letter-spacing: -0.04em;
+            text-shadow: 0 0 26px rgba(255,255,255,0.08);
+        }
+
+        #percentSubText {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+        }
+
+        .gauge-status {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            font-size: 12px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(8px);
+            z-index: 2;
+        }
+
+        .theme-note {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        canvas {
+            image-rendering: auto;
+        }
+
+/* =========================
+   Theme Switcher
+========================= */
+.theme-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    flex-wrap: wrap;
+}
+
+.theme-btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    background: transparent;
+    color: var(--text-soft);
+    transition: all 0.25s ease;
+}
+
+.theme-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(255,255,255,0.08);
+}
+
+.theme-btn.active {
+    color: white;
+    background: linear-gradient(135deg, rgba(99,102,241,0.95), rgba(168,85,247,0.95));
+    box-shadow:
+        0 8px 18px rgba(99,102,241,0.28),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+body.apple-theme .theme-switcher {
+    background: rgba(15,23,42,0.04);
+    border: 1px solid rgba(15,23,42,0.08);
+}
+
+body.apple-theme .theme-btn {
+    color: rgba(15,23,42,0.75);
+}
+
+body.apple-theme .theme-btn:hover {
+    background: rgba(15,23,42,0.05);
+}
+
+body.apple-theme .theme-btn.active {
+    color: white;
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    box-shadow:
+        0 8px 18px rgba(37,99,235,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+}
+        
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="card-left glass">
+        <div class="toolbar">
+            <div class="card-header">
+                <h2>📊 Overview</h2>
+            </div>
+            <!-- <div class="theme-pill">
+                <span class="theme-dot"></span>
+                <span>Theme: <strong id="themeName">Executive</strong></span>
+            </div> -->
+        <div class="theme-switcher">
+    <button class="theme-btn active" data-theme="executive">Executive</button>
+    <button class="theme-btn" data-theme="neon">Neon</button>
+    <button class="theme-btn" data-theme="apple">Apple</button>
+</div>    
+        </div>
+
+        <div class="update-badge">
+            <span class="dot"></span>
+            <span>New update: <strong id="date-badge"></strong></span>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount (THB)</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <tr><td colspan="2" style="text-align:center; color:rgba(255,255,255,0.4); padding:24px;">Loading data...</td></tr>
+            </tbody>
+        </table>
+
+        <div class="footer-date">
+            Last updated: <span id="current-date"></span>
+        </div>
+
+        <div class="theme-note">
+            เปลี่ยนธีมได้จากตัวแปร <code>THEME</code> ใน JavaScript
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div class="card-graph glass">
+            <div class="gauge-status" id="gaugeStatus">Healthy</div>
+            <h3>Sales Target Progress — <span id="date-gauge"></span></h3>
+            <div class="chart-container gauge-wrap">
+                <canvas id="gaugeChart"></canvas>
+                <span id="percentText">0%</span>
+                <span id="percentSubText">Storage Used</span>
+            </div>
+        </div>
+
+        <div class="card-graph glass">
+            <h3>Up to NOW vs Total Balance — <span id="date-donut"></span></h3>
+            <div class="chart-container">
+                <canvas id="donutChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // =========================================================
+    // 🎨 เปลี่ยนธีมตรงนี้
+    // 'executive' | 'neon' | 'apple'
+    // =========================================================
+    const THEME = 'executive';
+
+    const THEMES = {
+        executive: {
+            name: 'Executive Dashboard',
+            css: {
+                '--bg1': '#0f172a',
+                '--bg2': '#1e293b',
+                '--bg3': '#111827',
+                '--glass': 'rgba(255,255,255,0.07)',
+                '--glass-border': 'rgba(255,255,255,0.10)',
+                '--text-main': '#ffffff',
+                '--text-soft': 'rgba(255,255,255,0.72)',
+                '--text-muted': 'rgba(255,255,255,0.45)',
+                '--badge-dot': '#60A5FA',
+                '--badge-strong': '#BFDBFE',
+                '--gauge-text': '#ffffff',
+                '--shadow-main': 'rgba(0,0,0,0.28)',
+                '--orb1': 'rgba(59,130,246,0.16)',
+                '--orb2': 'rgba(14,165,233,0.10)',
+                '--status-healthy': '#22C55E',
+                '--status-warning': '#F59E0B',
+                '--status-critical': '#EF4444'
+            },
+            gaugeHealthy: ['#38BDF8', '#2563EB'],
+            gaugeWarning: ['#F59E0B', '#EA580C'],
+            gaugeCritical: ['#EF4444', '#DC2626'],
+            donut1: ['#3B82F6', '#06B6D4'],
+            donut2: ['#10B981', '#22C55E']
+        },
+
+        neon: {
+            name: 'Neon Futuristic',
+            css: {
+                '--bg1': '#050816',
+                '--bg2': '#1a103f',
+                '--bg3': '#09090f',
+                '--glass': 'rgba(255,255,255,0.05)',
+                '--glass-border': 'rgba(168,85,247,0.18)',
+                '--text-main': '#F8FAFC',
+                '--text-soft': 'rgba(248,250,252,0.78)',
+                '--text-muted': 'rgba(248,250,252,0.48)',
+                '--badge-dot': '#A855F7',
+                '--badge-strong': '#E9D5FF',
+                '--gauge-text': '#ffffff',
+                '--shadow-main': 'rgba(0,0,0,0.40)',
+                '--orb1': 'rgba(168,85,247,0.24)',
+                '--orb2': 'rgba(34,211,238,0.14)',
+                '--status-healthy': '#22D3EE',
+                '--status-warning': '#FACC15',
+                '--status-critical': '#FB7185'
+            },
+            gaugeHealthy: ['#22D3EE', '#6366F1', '#A855F7'],
+            gaugeWarning: ['#FACC15', '#F97316'],
+            gaugeCritical: ['#FB7185', '#EC4899'],
+            donut1: ['#A855F7', '#EC4899'],
+            donut2: ['#22D3EE', '#06B6D4']
+        },
+
+        apple: {
+            name: 'Apple Clean',
+            css: {
+                '--bg1': '#f3f4f6',
+                '--bg2': '#e5e7eb',
+                '--bg3': '#f8fafc',
+                '--glass': 'rgba(255,255,255,0.72)',
+                '--glass-border': 'rgba(15,23,42,0.06)',
+                '--text-main': '#0f172a',
+                '--text-soft': 'rgba(15,23,42,0.78)',
+                '--text-muted': 'rgba(15,23,42,0.45)',
+                '--badge-dot': '#2563EB',
+                '--badge-strong': '#1D4ED8',
+                '--gauge-text': '#0f172a',
+                '--shadow-main': 'rgba(15,23,42,0.10)',
+                '--orb1': 'rgba(59,130,246,0.10)',
+                '--orb2': 'rgba(14,165,233,0.08)',
+                '--status-healthy': '#16A34A',
+                '--status-warning': '#CA8A04',
+                '--status-critical': '#DC2626'
+            },
+            gaugeHealthy: ['#60A5FA', '#2563EB'],
+            gaugeWarning: ['#FBBF24', '#F59E0B'],
+            gaugeCritical: ['#FB7185', '#EF4444'],
+            donut1: ['#60A5FA', '#2563EB'],
+            donut2: ['#34D399', '#10B981']
+        }
+    };
+
+    const activeTheme = THEMES[THEME] || THEMES.executive;
+
+    function applyTheme(theme) {
+        const root = document.documentElement;
+        Object.entries(theme.css).forEach(([key, value]) => {
+            root.style.setProperty(key, value);
+        });
+        document.getElementById('themeName').textContent = theme.name;
+
+        if (THEME === 'apple') {
+            document.body.style.color = '#0f172a';
+        }
+    }
+
+    applyTheme(activeTheme);
+
+    const formatNum = (num) => new Intl.NumberFormat('th-TH').format(num || 0);
+
+    const SHEET_ID = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+    const GID = '0';
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+    let gaugeChartInstance = null;
+    let donutChartInstance = null;
+
+    async function initDashboard() {
+        try {
+            const url = CSV_URL + '&t=' + new Date().getTime();
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Cannot fetch data from Google Sheets');
+            const csvText = await response.text();
+
+            Papa.parse(csvText, {
+                header: true,
+                dynamicTyping: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    if (results.data.length > 0) {
+                        const csvData = results.data[0];
+                        const data = {
+                            total: parseFloat(csvData.total) || 0,
+                            used: parseFloat(csvData.used) || 0,
+                            balance: parseFloat(csvData.balance) || 0
+                        };
+                        updateUI(data);
+                        renderCharts(data);
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Error:", error);
+            document.getElementById('data-table-body').innerHTML =
+                `<tr><td colspan="2" style="color:#ff6b6b; text-align:center; padding:20px;">Error: ${error.message}</td></tr>`;
+        }
+    }
+
+    function updateUI(data) {
+        const tableBody = document.getElementById('data-table-body');
+        const rows = [
+            ["Total of this year", data.total],
+            ["Up to NOW", data.used],
+            ["Total Balance", data.balance]
+        ];
+
+        tableBody.innerHTML = rows.map(row => `
+            <tr>
+                <td>${row[0]}</td>
+                <td class="value">${formatNum(row[1])}</td>
+            </tr>
+        `).join('');
+
+        const usedPercent = data.total > 0 ? ((data.used / data.total) * 100) : 0;
+        document.getElementById('percentText').innerText = usedPercent.toFixed(1) + '%';
+
+        const statusEl = document.getElementById('gaugeStatus');
+        if (usedPercent < 70) {
+            statusEl.textContent = 'Healthy';
+            statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-healthy');
+            statusEl.style.background = THEME === 'apple' ? 'rgba(34,197,94,0.10)' : 'rgba(34,197,94,0.12)';
+            statusEl.style.borderColor = 'rgba(34,197,94,0.18)';
+        } else if (usedPercent < 90) {
+            statusEl.textContent = 'Warning';
+            statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-warning');
+            statusEl.style.background = THEME === 'apple' ? 'rgba(245,158,11,0.10)' : 'rgba(245,158,11,0.12)';
+            statusEl.style.borderColor = 'rgba(245,158,11,0.18)';
+        } else {
+            statusEl.textContent = 'Critical';
+            statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-critical');
+            statusEl.style.background = THEME === 'apple' ? 'rgba(239,68,68,0.10)' : 'rgba(239,68,68,0.12)';
+            statusEl.style.borderColor = 'rgba(239,68,68,0.18)';
+        }
+
+        const today = new Date();
+        const dateStr = today.toLocaleDateString('th-TH', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        document.getElementById('current-date').innerText = dateStr;
+    }
+
+    function createGradient(ctx, canvas, colors) {
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        const step = 1 / Math.max(colors.length - 1, 1);
+        colors.forEach((color, index) => {
+            gradient.addColorStop(index * step, color);
+        });
+        return gradient;
+    }
+
+    function getGaugeColors(percent) {
+        if (percent < 70) return activeTheme.gaugeHealthy;
+        if (percent < 90) return activeTheme.gaugeWarning;
+        return activeTheme.gaugeCritical;
+    }
+
+    function renderCharts(data) {
+        Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue('--text-soft');
+        Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+
+        const percent = data.total > 0 ? (data.used / data.total) * 100 : 0;
+
+        if (gaugeChartInstance) gaugeChartInstance.destroy();
+        if (donutChartInstance) donutChartInstance.destroy();
+
+        // ---------------- Gauge ----------------
+        const gaugeCanvas = document.getElementById('gaugeChart');
+        const ctx1 = gaugeCanvas.getContext('2d');
+        const gaugeGradient = createGradient(ctx1, gaugeCanvas, getGaugeColors(percent));
+
+        const glowPlugin = {
+            id: 'glowPlugin',
+            beforeDatasetDraw(chart) {
+                const { ctx } = chart;
+                ctx.save();
+                if (THEME === 'apple') {
+                    ctx.shadowColor = 'rgba(59,130,246,0.16)';
+                    ctx.shadowBlur = 12;
+                } else if (THEME === 'neon') {
+                    ctx.shadowColor = percent < 70 ? 'rgba(168,85,247,0.55)' :
+                                      percent < 90 ? 'rgba(250,204,21,0.50)' :
+                                      'rgba(236,72,153,0.55)';
+                    ctx.shadowBlur = 30;
+                } else {
+                    ctx.shadowColor = percent < 70 ? 'rgba(37,99,235,0.35)' :
+                                      percent < 90 ? 'rgba(245,158,11,0.35)' :
+                                      'rgba(239,68,68,0.35)';
+                    ctx.shadowBlur = 20;
+                }
+            },
+            afterDatasetDraw(chart) {
+                chart.ctx.restore();
+            }
+        };
+
+        gaugeChartInstance = new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [data.used, Math.max(0, data.total - data.used)],
+                    backgroundColor: [
+                        gaugeGradient,
+                        THEME === 'apple' ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.06)'
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 22,
+                    circumference: 180,
+                    rotation: 270,
+                    hoverOffset: 0,
+                    spacing: 2
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '78%',
+                layout: { padding: { top: 10, bottom: 0 } },
+                animation: {
+                    animateRotate: true,
+                    duration: 1700,
+                    easing: 'easeOutQuart'
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                }
+            },
+            plugins: [glowPlugin]
+        });
+
+        // ---------------- Donut ----------------
+        const donutCanvas = document.getElementById('donutChart');
+        const ctx2 = donutCanvas.getContext('2d');
+
+        const donutGradient1 = createGradient(ctx2, donutCanvas, activeTheme.donut1);
+        const donutGradient2 = createGradient(ctx2, donutCanvas, activeTheme.donut2);
+
+        donutChartInstance = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['Up to NOW', 'Total Balance'],
+                datasets: [{
+                    data: [data.used, data.balance],
+                    backgroundColor: [donutGradient1, donutGradient2],
+                    borderWidth: 0,
+                    borderRadius: 14,
+                    hoverOffset: 6,
+                    spacing: 3
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '68%',
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart'
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: getComputedStyle(document.documentElement).getPropertyValue('--text-soft'),
+                            padding: 18,
+                            font: { size: 13, weight: '600' },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: THEME === 'apple' ? 'rgba(255,255,255,0.96)' : 'rgba(15,23,42,0.92)',
+                        borderColor: THEME === 'apple' ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.08)',
+                        borderWidth: 1,
+                        titleColor: THEME === 'apple' ? '#0f172a' : '#ffffff',
+                        bodyColor: THEME === 'apple' ? '#334155' : 'rgba(255,255,255,0.88)',
+                        padding: 12,
+                        cornerRadius: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${formatNum(context.raw)} THB`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Month / year labels
+    const today = new Date();
+    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const monthYear = monthNames[today.getMonth()] + ' ' + today.getFullYear();
+
+    ['date-badge', 'date-gauge', 'date-donut'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = monthYear;
+    });
+
+    window.onload = initDashboard;
+</script>
+
+</body>
+=======
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg1: #0f172a;
+            --bg2: #1e1b4b;
+            --bg3: #111827;
+
+            --glass: rgba(255,255,255,0.07);
+            --glass-border: rgba(255,255,255,0.10);
+            --text-main: #ffffff;
+            --text-soft: rgba(255,255,255,0.72);
+            --text-muted: rgba(255,255,255,0.45);
+
+            --badge-dot: #818CF8;
+            --badge-strong: #c7d2fe;
+
+            --gauge-text: #ffffff;
+            --shadow-main: rgba(0,0,0,0.28);
+
+            --orb1: rgba(99,102,241,0.18);
+            --orb2: rgba(236,72,153,0.10);
+
+            --status-healthy: #4ADE80;
+            --status-warning: #FBBF24;
+            --status-critical: #FB7185;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+            min-height: 100vh;
+            padding: 24px 16px;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -220px; left: -220px;
+            width: 540px; height: 540px;
+            background: radial-gradient(circle, var(--orb1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(10px);
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -240px; right: -240px;
+            width: 580px; height: 580px;
+            background: radial-gradient(circle, var(--orb2) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(10px);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 18px;
+            max-width: 1260px;
+            margin: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 16px 12px; }
+            .dashboard { grid-template-columns: 1fr; }
+            .right-column { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        }
+
+        @media (max-width: 560px) {
+            body { padding: 12px 10px; }
+            .right-column { grid-template-columns: 1fr !important; }
+            .chart-container { height: 220px; }
+        }
+
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid var(--glass-border);
+            border-radius: 26px;
+            box-shadow:
+                0 14px 38px var(--shadow-main),
+                inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .card-left {
+            padding: 30px;
+            animation: fadeUp 0.8s ease;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .card-graph {
+            padding: 22px 18px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeUp 0.9s ease;
+        }
+
+        .card-graph::before {
+            content: '';
+            position: absolute;
+            width: 190px;
+            height: 190px;
+            top: -56px;
+            right: -56px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.08), transparent 72%);
+            pointer-events: none;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .card-header h2 {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .theme-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            color: var(--text-soft);
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.10);
+        }
+
+        .theme-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--badge-dot);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.06);
+        }
+
+        .update-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 999px;
+            padding: 7px 14px;
+            margin-bottom: 18px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .update-badge .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--badge-dot);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.07);
+            flex-shrink: 0;
+        }
+
+        .update-badge span {
+            font-size: 0.78rem;
+            color: var(--text-soft);
+        }
+
+        .update-badge strong {
+            color: var(--badge-strong);
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            text-align: left;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(255,255,255,0.04);
+            transform: translateX(2px);
+        }
+
+        tbody td {
+            padding: 15px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-soft);
+            font-size: 0.93rem;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .value {
+            font-weight: 800;
+            color: var(--text-main) !important;
+            font-size: 1.06rem;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .footer-date {
+            margin-top: 18px;
+            padding: 11px 14px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card-graph h3 {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
+        }
+
+        .chart-container {
+            height: 245px;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .gauge-wrap {
+            position: relative;
+        }
+
+        #percentText {
+            position: absolute;
+            bottom: 38px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2.1rem;
+            font-weight: 900;
+            color: var(--gauge-text);
+            letter-spacing: -0.04em;
+            text-shadow: 0 0 26px rgba(255,255,255,0.08);
+        }
+
+        #percentSubText {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+        }
+
+        .gauge-status {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            font-size: 12px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(8px);
+            z-index: 2;
+        }
+
+        .theme-note {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        canvas {
+            image-rendering: auto;
+        }
+
+/* =========================
+   Theme Switcher
+========================= */
+.theme-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    flex-wrap: wrap;
+}
+
+.theme-btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    background: transparent;
+    color: var(--text-soft);
+    transition: all 0.25s ease;
+}
+
+.theme-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(255,255,255,0.08);
+}
+
+.theme-btn.active {
+    color: white;
+    background: linear-gradient(135deg, rgba(99,102,241,0.95), rgba(168,85,247,0.95));
+    box-shadow:
+        0 8px 18px rgba(99,102,241,0.28),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+}
+
+body.apple-theme .theme-switcher {
+    background: rgba(15,23,42,0.04);
+    border: 1px solid rgba(15,23,42,0.08);
+}
+
+body.apple-theme .theme-btn {
+    color: rgba(15,23,42,0.75);
+}
+
+body.apple-theme .theme-btn:hover {
+    background: rgba(15,23,42,0.05);
+}
+
+body.apple-theme .theme-btn.active {
+    color: white;
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    box-shadow:
+        0 8px 18px rgba(37,99,235,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+}
+        
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <div class="card-left glass">
+        <div class="toolbar">
+            <div class="card-header">
+                <h2>📊 Overview</h2>
+            </div>
+            <!-- <div class="theme-pill">
+                <span class="theme-dot"></span>
+                <span>Theme: <strong id="themeName">Executive</strong></span>
+            </div> -->
+        <div class="theme-switcher">
+    <button class="theme-btn active" data-theme="executive">Executive</button>
+    <button class="theme-btn" data-theme="neon">Neon</button>
+    <button class="theme-btn" data-theme="apple">Apple</button>
+</div>    
+        </div>
+
+        <div class="update-badge">
+            <span class="dot"></span>
+            <span>New update: <strong id="date-badge"></strong></span>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount (THB)</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <tr><td colspan="2" style="text-align:center; color:rgba(255,255,255,0.4); padding:24px;">Loading data...</td></tr>
+            </tbody>
+        </table>
+
+        <div class="footer-date">
+            Last updated: <span id="current-date"></span>
+        </div>
+
+        <div class="theme-note">
+            เปลี่ยนธีมได้จากตัวแปร <code>THEME</code> ใน JavaScript
+        </div>
+    </div>
+
+    <div class="right-column">
+        <div class="card-graph glass">
+            <div class="gauge-status" id="gaugeStatus">Healthy</div>
+            <h3>Sales Target Progress — <span id="date-gauge"></span></h3>
+            <div class="chart-container gauge-wrap">
+                <canvas id="gaugeChart"></canvas>
+                <span id="percentText">0%</span>
+                <span id="percentSubText">Storage Used</span>
+            </div>
+        </div>
+
+        <div class="card-graph glass">
+            <h3>Up to NOW vs Total Balance — <span id="date-donut"></span></h3>
+            <div class="chart-container">
+                <canvas id="donutChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // =========================================================
+    // 🎨 เปลี่ยนธีมตรงนี้
+    // 'executive' | 'neon' | 'apple'
+    // =========================================================
+    const THEME = 'executive';
+
+    const THEMES = {
+        executive: {
+            name: 'Executive Dashboard',
+            css: {
+                '--bg1': '#0f172a',
+                '--bg2': '#1e293b',
+                '--bg3': '#111827',
+                '--glass': 'rgba(255,255,255,0.07)',
+                '--glass-border': 'rgba(255,255,255,0.10)',
+                '--text-main': '#ffffff',
+                '--text-soft': 'rgba(255,255,255,0.72)',
+                '--text-muted': 'rgba(255,255,255,0.45)',
+                '--badge-dot': '#60A5FA',
+                '--badge-strong': '#BFDBFE',
+                '--gauge-text': '#ffffff',
+                '--shadow-main': 'rgba(0,0,0,0.28)',
+                '--orb1': 'rgba(59,130,246,0.16)',
+                '--orb2': 'rgba(14,165,233,0.10)',
+                '--status-healthy': '#22C55E',
+                '--status-warning': '#F59E0B',
+                '--status-critical': '#EF4444'
+            },
+            gaugeHealthy: ['#38BDF8', '#2563EB'],
+            gaugeWarning: ['#F59E0B', '#EA580C'],
+            gaugeCritical: ['#EF4444', '#DC2626'],
+            donut1: ['#3B82F6', '#06B6D4'],
+            donut2: ['#10B981', '#22C55E']
+        },
+
+        neon: {
+            name: 'Neon Futuristic',
+            css: {
+                '--bg1': '#050816',
+                '--bg2': '#1a103f',
+                '--bg3': '#09090f',
+                '--glass': 'rgba(255,255,255,0.05)',
+                '--glass-border': 'rgba(168,85,247,0.18)',
+                '--text-main': '#F8FAFC',
+                '--text-soft': 'rgba(248,250,252,0.78)',
+                '--text-muted': 'rgba(248,250,252,0.48)',
+                '--badge-dot': '#A855F7',
+                '--badge-strong': '#E9D5FF',
+                '--gauge-text': '#ffffff',
+                '--shadow-main': 'rgba(0,0,0,0.40)',
+                '--orb1': 'rgba(168,85,247,0.24)',
+                '--orb2': 'rgba(34,211,238,0.14)',
+                '--status-healthy': '#22D3EE',
+                '--status-warning': '#FACC15',
+                '--status-critical': '#FB7185'
+            },
+            gaugeHealthy: ['#22D3EE', '#6366F1', '#A855F7'],
+            gaugeWarning: ['#FACC15', '#F97316'],
+            gaugeCritical: ['#FB7185', '#EC4899'],
+            donut1: ['#A855F7', '#EC4899'],
+            donut2: ['#22D3EE', '#06B6D4']
+        },
+
+        apple: {
+            name: 'Apple Clean',
+            css: {
+                '--bg1': '#f3f4f6',
+                '--bg2': '#e5e7eb',
+                '--bg3': '#f8fafc',
+                '--glass': 'rgba(255,255,255,0.72)',
+                '--glass-border': 'rgba(15,23,42,0.06)',
+                '--text-main': '#0f172a',
+                '--text-soft': 'rgba(15,23,42,0.78)',
+                '--text-muted': 'rgba(15,23,42,0.45)',
+                '--badge-dot': '#2563EB',
+                '--badge-strong': '#1D4ED8',
+                '--gauge-text': '#0f172a',
+                '--shadow-main': 'rgba(15,23,42,0.10)',
+                '--orb1': 'rgba(59,130,246,0.10)',
+                '--orb2': 'rgba(14,165,233,0.08)',
+                '--status-healthy': '#16A34A',
+                '--status-warning': '#CA8A04',
+                '--status-critical': '#DC2626'
+            },
+            gaugeHealthy: ['#60A5FA', '#2563EB'],
+            gaugeWarning: ['#FBBF24', '#F59E0B'],
+            gaugeCritical: ['#FB7185', '#EF4444'],
+            donut1: ['#60A5FA', '#2563EB'],
+            donut2: ['#34D399', '#10B981']
+        }
+    };
+
+    const activeTheme = THEMES[THEME] || THEMES.executive;
+
+    function applyTheme(theme) {
+        const root = document.documentElement;
+        Object.entries(theme.css).forEach(([key, value]) => {
+            root.style.setProperty(key, value);
+        });
+        document.getElementById('themeName').textContent = theme.name;
+
+        if (THEME === 'apple') {
+            document.body.style.color = '#0f172a';
+        }
+    }
+
+    applyTheme(activeTheme);
+
+    const formatNum = (num) => new Intl.NumberFormat('th-TH').format(num || 0);
+
+    const SHEET_ID = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+    const GID = '0';
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+    let gaugeChartInstance = null;
+    let donutChartInstance = null;
+
+    async function initDashboard() {
+        try {
+            const url = CSV_URL + '&t=' + new Date().getTime();
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Cannot fetch data from Google Sheets');
+            const csvText = await response.text();
+
+            Papa.parse(csvText, {
+                header: true,
+                dynamicTyping: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    if (results.data.length > 0) {
+                        const csvData = results.data[0];
+                        const data = {
+                            total: parseFloat(csvData.total) || 0,
+                            used: parseFloat(csvData.used) || 0,
+                            balance: parseFloat(csvData.balance) || 0
+                        };
+                        updateUI(data);
+                        renderCharts(data);
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("Error:", error);
+            document.getElementById('data-table-body').innerHTML =
+                `<tr><td colspan="2" style="color:#ff6b6b; text-align:center; padding:20px;">Error: ${error.message}</td></tr>`;
+        }
+    }
+
+    function updateUI(data) {
+        const tableBody = document.getElementById('data-table-body');
+        const rows = [
+            ["Total of this year", data.total],
+            ["Up to NOW", data.used],
+            ["Total Balance", data.balance]
+        ];
+
+        tableBody.innerHTML = rows.map(row => `
+            <tr>
+                <td>${row[0]}</td>
+                <td class="value">${formatNum(row[1])}</td>
+            </tr>
+        `).join('');
+
+        const usedPercent = data.total > 0 ? ((data.used / data.total) * 100) : 0;
+        document.getElementById('percentText').innerText = usedPercent.toFixed(1) + '%';
+
+        const statusEl = document.getElementById('gaugeStatus');
+        if (usedPercent < 70) {
+            statusEl.textContent = 'Healthy';
+            statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-healthy');
+            statusEl.style.background = THEME === 'apple' ? 'rgba(34,197,94,0.10)' : 'rgba(34,197,94,0.12)';
+            statusEl.style.borderColor = 'rgba(34,197,94,0.18)';
+        } else if (usedPercent < 90) {
+            statusEl.textContent = 'Warning';
+            statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-warning');
+            statusEl.style.background = THEME === 'apple' ? 'rgba(245,158,11,0.10)' : 'rgba(245,158,11,0.12)';
+            statusEl.style.borderColor = 'rgba(245,158,11,0.18)';
+        } else {
+            statusEl.textContent = 'Critical';
+            statusEl.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-critical');
+            statusEl.style.background = THEME === 'apple' ? 'rgba(239,68,68,0.10)' : 'rgba(239,68,68,0.12)';
+            statusEl.style.borderColor = 'rgba(239,68,68,0.18)';
+        }
+
+        const today = new Date();
+        const dateStr = today.toLocaleDateString('th-TH', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        document.getElementById('current-date').innerText = dateStr;
+    }
+
+    function createGradient(ctx, canvas, colors) {
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        const step = 1 / Math.max(colors.length - 1, 1);
+        colors.forEach((color, index) => {
+            gradient.addColorStop(index * step, color);
+        });
+        return gradient;
+    }
+
+    function getGaugeColors(percent) {
+        if (percent < 70) return activeTheme.gaugeHealthy;
+        if (percent < 90) return activeTheme.gaugeWarning;
+        return activeTheme.gaugeCritical;
+    }
+
+    function renderCharts(data) {
+        Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue('--text-soft');
+        Chart.defaults.font.family = "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+
+        const percent = data.total > 0 ? (data.used / data.total) * 100 : 0;
+
+        if (gaugeChartInstance) gaugeChartInstance.destroy();
+        if (donutChartInstance) donutChartInstance.destroy();
+
+        // ---------------- Gauge ----------------
+        const gaugeCanvas = document.getElementById('gaugeChart');
+        const ctx1 = gaugeCanvas.getContext('2d');
+        const gaugeGradient = createGradient(ctx1, gaugeCanvas, getGaugeColors(percent));
+
+        const glowPlugin = {
+            id: 'glowPlugin',
+            beforeDatasetDraw(chart) {
+                const { ctx } = chart;
+                ctx.save();
+                if (THEME === 'apple') {
+                    ctx.shadowColor = 'rgba(59,130,246,0.16)';
+                    ctx.shadowBlur = 12;
+                } else if (THEME === 'neon') {
+                    ctx.shadowColor = percent < 70 ? 'rgba(168,85,247,0.55)' :
+                                      percent < 90 ? 'rgba(250,204,21,0.50)' :
+                                      'rgba(236,72,153,0.55)';
+                    ctx.shadowBlur = 30;
+                } else {
+                    ctx.shadowColor = percent < 70 ? 'rgba(37,99,235,0.35)' :
+                                      percent < 90 ? 'rgba(245,158,11,0.35)' :
+                                      'rgba(239,68,68,0.35)';
+                    ctx.shadowBlur = 20;
+                }
+            },
+            afterDatasetDraw(chart) {
+                chart.ctx.restore();
+            }
+        };
+
+        gaugeChartInstance = new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [data.used, Math.max(0, data.total - data.used)],
+                    backgroundColor: [
+                        gaugeGradient,
+                        THEME === 'apple' ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.06)'
+                    ],
+                    borderWidth: 0,
+                    borderRadius: 22,
+                    circumference: 180,
+                    rotation: 270,
+                    hoverOffset: 0,
+                    spacing: 2
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '78%',
+                layout: { padding: { top: 10, bottom: 0 } },
+                animation: {
+                    animateRotate: true,
+                    duration: 1700,
+                    easing: 'easeOutQuart'
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                }
+            },
+            plugins: [glowPlugin]
+        });
+
+        // ---------------- Donut ----------------
+        const donutCanvas = document.getElementById('donutChart');
+        const ctx2 = donutCanvas.getContext('2d');
+
+        const donutGradient1 = createGradient(ctx2, donutCanvas, activeTheme.donut1);
+        const donutGradient2 = createGradient(ctx2, donutCanvas, activeTheme.donut2);
+
+        donutChartInstance = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['Up to NOW', 'Total Balance'],
+                datasets: [{
+                    data: [data.used, data.balance],
+                    backgroundColor: [donutGradient1, donutGradient2],
+                    borderWidth: 0,
+                    borderRadius: 14,
+                    hoverOffset: 6,
+                    spacing: 3
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '68%',
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart'
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: getComputedStyle(document.documentElement).getPropertyValue('--text-soft'),
+                            padding: 18,
+                            font: { size: 13, weight: '600' },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: THEME === 'apple' ? 'rgba(255,255,255,0.96)' : 'rgba(15,23,42,0.92)',
+                        borderColor: THEME === 'apple' ? 'rgba(15,23,42,0.08)' : 'rgba(255,255,255,0.08)',
+                        borderWidth: 1,
+                        titleColor: THEME === 'apple' ? '#0f172a' : '#ffffff',
+                        bodyColor: THEME === 'apple' ? '#334155' : 'rgba(255,255,255,0.88)',
+                        padding: 12,
+                        cornerRadius: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.label}: ${formatNum(context.raw)} THB`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Month / year labels
+    const today = new Date();
+    const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const monthYear = monthNames[today.getMonth()] + ' ' + today.getFullYear();
+
+    ['date-badge', 'date-gauge', 'date-donut'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = monthYear;
+    });
+
+    window.onload = initDashboard;
+</script>
+
+</body>
+>>>>>>> 4a27907d102821da2b484b5b294023d8f94407a1
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notion Calendar Viewer</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        .event-item { padding: 10px; border-bottom: 1px solid #eee; }
+        .event-title { font-weight: bold; color: #222; }
+        .event-date { color: #666; font-size: 0.9em; }
+        .loading { color: #888; font-style: italic; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>ตารางปฏิทินจาก Notion</h1>
+    <div id="output" class="loading">กำลังโหลดข้อมูลปฏิทิน...</div>
+</div>
+
+<script>
+    // 1. ตั้งค่าข้อมูลการเชื่อมต่อ (เปลี่ยนเป็นข้อมูลของคุณเอง)
+    const NOTION_TOKEN = 'ใส่_INTERNAL_INTEGRATION_TOKEN_ตรงนี้';
+    const DATABASE_ID = 'ใส่_DATABASE_ID_ตรงนี้';
+
+    // เนื่องจาก Notion API ติด CORS บนบราวเซอร์ ในการทดสอบเราจึงใช้ Cors-anywhere proxy ช่วยชั่วคราว
+    // (หากทำระบบจริง แนะนำให้เขียนโค้ดส่วนนี้ไว้ที่ Backend เช่น Node.js/Express)
+    const PROXY_URL = 'https://herokuapp.com'; 
+    const NOTION_API_URL = `${PROXY_URL}https://notion.com{DATABASE_ID}/query`;
+
+    async function fetchNotionCalendar() {
+        try {
+            const response = await fetch(NOTION_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${NOTION_TOKEN}`,
+                    'Notion-Version': '2022-06-28', // ใช้เวอร์ชันล่าสุดของ API [1]
+                    'Content-Type': 'application/json'
+                },
+                // ส่ง Body ว่างๆ ไปเพื่อดึงข้อมูลทั้งหมด หรือจะใส่ Filter เพื่อกรองวันที่ก็ได้
+                body: JSON.stringify({}) 
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            displayEvents(data.results);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            document.getElementById('output').innerHTML = `<p class="error">เกิดข้อผิดพลาด: ${error.message}<br>อย่าลืมเปิดใช้ Proxy หรือตรวจสอบ Token ของคุณ</p>`;
+        }
+    }
+
+    function displayEvents(results) {
+        const outputDiv = document.getElementById('output');
+        
+        if (results.length === 0) {
+            outputDiv.innerHTML = '<p>ไม่มีกิจกรรมในปฏิทิน</p>';
+            return;
+        }
+
+        outputDiv.innerHTML = ''; // ล้างข้อความกำลังโหลด
+
+        results.forEach(page => {
+            // ดึงชื่อหัวข้อ (สมมติว่า Property ชื่อ 'Name' หรือ 'Title')
+            const titleObj = page.properties.Name || page.properties.Title;
+            const title = titleObj && titleObj.title[0] ? titleObj.title[0].plain_text : 'ไม่มีหัวข้อ';
+
+            // ดึงข้อมูลวันที่ (สมมติว่า Property วันที่ใน Notion ของคุณชื่อ 'Date')
+            const dateObj = page.properties.Date; 
+            const dateStart = dateObj && dateObj.date ? dateObj.date.start : 'ไม่ได้ระบุวันที่';
+
+            // สร้าง Element แสดงผล
+            const eventHtml = `
+                <div class="event-item">
+                    <div class="event-title">📌 ${title}</div>
+                    <div class="event-date">📅 วันที่: ${dateStart}</div>
+                </div>
+            `;
+            outputDiv.innerHTML += eventHtml;
+        });
+    }
+
+    // เรียกใช้งานฟังก์ชันเมื่อเปิดหน้าเว็บ
+    fetchNotionCalendar();
+</script>
+
+</body>
+</html>

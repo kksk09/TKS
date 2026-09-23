@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detail - Target vs Actual Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --blue-h:  #6CA0C8;
+  --blue-s:  #2B5FA5;
+  --bg:      #EDF4FA;
+  --glass:   rgba(255,255,255,0.72);
+  --glass-b: rgba(43,95,165,0.13);
+  --shadow:  0 4px 20px rgba(43,95,165,0.09);
+  --txt:     #1A2B3C;
+  --txt-soft:#3D5670;
+  --txt-mute:rgba(26,43,60,0.45);
+}
+
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background: linear-gradient(145deg,#DFF0FA 0%,#E8F3F9 40%,#EDF6F3 100%);
+  min-height:100vh;
+  color:var(--txt);
+  padding:28px 20px 48px;
+}
+
+/* ── NAV ── */
+.nav{
+  display:flex; align-items:center; justify-content:space-between;
+  max-width:100%; margin:0 auto 20px;
+  flex-wrap:wrap; gap:16px;
+}
+.nav-left{ display:flex; align-items:center; gap:14px; }
+.back-btn{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:9px 18px; border-radius:999px; font-size:0.8rem; font-weight:700;
+  background:rgba(43,95,165,0.08); color:var(--blue-s); text-decoration:none;
+  border:1px solid var(--glass-b); transition:background .2s;
+}
+.back-btn:hover{ background:rgba(43,95,165,0.16); }
+.nav-title{ font-size:1.25rem; font-weight:700; }
+.nav-sub{ font-size:0.76rem; color:var(--txt-mute); margin-top:2px; }
+
+.badge{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:6px 14px; border-radius:999px; font-size:0.75rem; font-weight:700;
+}
+.badge-qt{ background:rgba(99,179,237,0.18); color:#2B6CB0; }
+.badge-po{ background:rgba(34,197,94,0.18); color:#15803D; }
+
+/* ── SUMMARY ── */
+.summary-row{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:16px; max-width:100%; margin:0 auto 20px;
+}
+.summary-card{
+  background:var(--glass); border:1px solid var(--glass-b); border-radius:16px;
+  padding:18px 20px; box-shadow:var(--shadow);
+}
+.summary-label{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--txt-mute); font-weight:700; }
+.summary-value{ font-size:1.5rem; font-weight:800; margin-top:6px; color:var(--txt); }
+
+/* ── TABLE SECTION ── */
+.table-section{
+  max-width:100%; margin:0 auto;
+  background:var(--glass); border:1px solid var(--glass-b);
+  border-radius:20px; backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  padding:28px; box-shadow:var(--shadow);
+}
+.table-header{
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:12px; margin-bottom:18px;
+}
+.table-title{ font-size:1.05rem; font-weight:700; }
+.table-sub{ font-size:0.76rem; color:var(--txt-mute); margin-top:3px; }
+
+.tbl-controls{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.tbl-search{
+  background:rgba(43,95,165,0.06); border:1px solid var(--glass-b);
+  border-radius:999px; padding:9px 18px; color:var(--txt);
+  font-size:0.83rem; font-family:inherit; outline:none; width:240px;
+  transition:border-color .2s,box-shadow .2s;
+}
+.tbl-search:focus{ border-color:var(--blue-h); box-shadow:0 0 0 3px rgba(108,160,200,0.18); }
+.tbl-pagesize{
+  background:rgba(43,95,165,0.06); border:1px solid var(--glass-b);
+  border-radius:999px; padding:9px 14px; color:var(--txt-soft);
+  font-size:0.8rem; font-family:inherit; outline:none; cursor:pointer;
+}
+
+.data-table{ width:100%; border-collapse:collapse; font-size:0.82rem; table-layout:fixed; }
+.data-table thead tr{ border-bottom:2px solid rgba(43,95,165,0.18); }
+.data-table th{
+  padding:12px 14px; text-align:left; font-size:0.68rem; text-transform:uppercase;
+  letter-spacing:0.07em; font-weight:700; color:var(--blue-s);
+  white-space:normal; word-wrap:break-word; overflow-wrap:break-word; line-height:1.4;
+  cursor:pointer; user-select:none; position:sticky; top:0;
+  background:rgba(255,255,255,0.92); backdrop-filter:blur(6px);
+}
+.data-table th:hover{ color:#E8622A; }
+.data-table th .sort-icon{ margin-left:4px; opacity:0.4; font-size:0.62rem; }
+.data-table th.sort-asc  .sort-icon::after{ content:'▲'; }
+.data-table th.sort-desc .sort-icon::after{ content:'▼'; }
+.data-table th:not(.sort-asc):not(.sort-desc) .sort-icon::after{ content:'⇅'; }
+.data-table tbody tr{ border-bottom:1px solid rgba(43,95,165,0.07); transition:background .14s; }
+.data-table tbody tr:hover{ background:rgba(43,95,165,0.05); }
+.data-table td{
+  padding:11px 14px; color:var(--txt-soft);
+  white-space:normal; word-wrap:break-word; overflow-wrap:break-word; word-break:break-word; line-height:1.5;
+}
+.data-table td:first-child{ font-weight:700; color:var(--txt); }
+.data-table td.num{ text-align:right; font-variant-numeric:tabular-nums; color:var(--txt); white-space:nowrap; }
+
+.table-scroll{ overflow-x:hidden; max-height:75vh; overflow-y:auto; border-radius:12px; }
+
+/* ✅ กำหนดความกว้างคอลัมน์ตามลำดับคงที่: Year, Customer, Quotation No., Job Name, Staff, Amount THB, Cost THB, Margin, Margin%, PO(Month), Last Update */
+.data-table th:nth-child(1),  .data-table td:nth-child(1)  { width:5%;  }
+.data-table th:nth-child(2),  .data-table td:nth-child(2)  { width:12%; }
+.data-table th:nth-child(3),  .data-table td:nth-child(3)  { width:10%; }
+.data-table th:nth-child(4),  .data-table td:nth-child(4)  { width:22%; }
+.data-table th:nth-child(5),  .data-table td:nth-child(5)  { width:8%;  }
+.data-table th:nth-child(6),  .data-table td:nth-child(6)  { width:9%;  }
+.data-table th:nth-child(7),  .data-table td:nth-child(7)  { width:8%;  }
+.data-table th:nth-child(8),  .data-table td:nth-child(8)  { width:8%;  }
+.data-table th:nth-child(9),  .data-table td:nth-child(9)  { width:6%;  }
+.data-table th:nth-child(10), .data-table td:nth-child(10) { width:5%;  }
+.data-table th:nth-child(11), .data-table td:nth-child(11) { width:7%;  }
+
+.tbl-footer{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:18px; }
+.tbl-count{ font-size:0.78rem; color:var(--txt-mute); }
+.pagination{ display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.page-btn{
+  min-width:34px; height:34px; padding:0 10px; border-radius:10px;
+  border:1px solid var(--glass-b); background:rgba(43,95,165,0.05); color:var(--txt-soft);
+  font-size:0.8rem; font-weight:700; cursor:pointer; font-family:inherit;
+  transition:all .15s; display:flex; align-items:center; justify-content:center;
+}
+.page-btn:hover:not(:disabled){ background:rgba(43,95,165,0.14); color:var(--blue-s); }
+.page-btn.active{ background:linear-gradient(135deg,var(--blue-h),var(--blue-s)); color:#fff; border-color:transparent; }
+.page-btn:disabled{ opacity:0.35; cursor:not-allowed; }
+.page-ellipsis{ color:var(--txt-mute); padding:0 4px; font-size:0.8rem; }
+
+.loading-msg{ text-align:center; color:var(--txt-mute); padding:50px 20px; font-size:0.88rem; }
+.spinner{
+  display:inline-block; width:22px; height:22px; border:3px solid rgba(43,95,165,0.15);
+  border-top-color:var(--blue-h); border-radius:50%; animation:spin .7s linear infinite; margin-bottom:10px;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.note-box{
+  max-width:100%; margin:0 auto 20px; background:rgba(232,98,42,0.08);
+  border:1px solid rgba(232,98,42,0.25); border-radius:14px; padding:12px 18px;
+  font-size:0.78rem; color:#B4491B; display:none;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <a href="javascript:history.back()" class="back-btn">← กลับ</a>
+    <div>
+      <div class="nav-title">รายละเอียด <span id="typeBadgeInline"></span></div>
+      <div class="nav-sub">ข้อมูลจาก sheet: dashBoard</div>
+    </div>
+  </div>
+  <span id="typeBadge" class="badge"></span>
+</nav>
+
+<div id="noteBox" class="note-box">
+  ⚠️ ไม่พบคอลัมน์ที่ชื่อมีคำว่า Amount/มูลค่า ในช่วงข้อมูลนี้ — การ์ด "ยอดรวม" ด้านบนจะไม่แสดงผล (ตารางรายการยังแสดงปกติ)
+</div>
+
+<div class="summary-row">
+  <div class="summary-card">
+    <div class="summary-label">ปีที่เลือก</div>
+    <div class="summary-value" id="sumYear">-</div>
+  </div>
+  <div class="summary-card">
+    <div class="summary-label">ประเภท</div>
+    <div class="summary-value" id="sumType">-</div>
+  </div>
+  <div class="summary-card">
+    <div class="summary-label">จำนวนรายการ</div>
+    <div class="summary-value" id="sumCount">0</div>
+  </div>
+  <div class="summary-card">
+    <div class="summary-label">ยอดรวม (ถ้ามีคอลัมน์มูลค่า)</div>
+    <div class="summary-value" id="sumAmt">-</div>
+  </div>
+</div>
+
+<div class="table-section">
+  <div class="table-header">
+    <div>
+      <div class="table-title">📋 รายการ Detail</div>
+      <div class="table-sub">คลิก Header เพื่อ Sort &nbsp;|&nbsp; พิมพ์เพื่อค้นหา &nbsp;|&nbsp; เลือกจำนวนแถวต่อหน้าได้</div>
+    </div>
+    <div class="tbl-controls">
+      <select class="tbl-pagesize" id="tblPageSize">
+        <option value="10">10 แถว/หน้า</option>
+        <option value="25" selected>25 แถว/หน้า</option>
+        <option value="50">50 แถว/หน้า</option>
+        <option value="100">100 แถว/หน้า</option>
+        <option value="all">แสดงทั้งหมด</option>
+      </select>
+      <input class="tbl-search" id="tblSearch" type="text" placeholder="🔍 ค้นหา...">
+    </div>
+  </div>
+
+  <div class="table-scroll">
+    <table class="data-table">
+      <thead id="tblHead"></thead>
+      <tbody id="tblBody"></tbody>
+    </table>
+  </div>
+
+  <div id="tblLoading" class="loading-msg">
+    <div class="spinner"></div><br>Loading detail data…
+  </div>
+
+  <div class="tbl-footer">
+    <div class="tbl-count" id="tblCount"></div>
+    <div class="pagination" id="tblPagination"></div>
+  </div>
+</div>
+
+<script>
+// ✅ อ่านค่า year / type จาก query string ที่ส่งมาจากการคลิก card Total QT / Total PO
+const params   = new URLSearchParams(window.location.search);
+const YEAR_PARAM = (params.get('year') || '').trim();
+const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase(); // 'qt' หรือ 'po'
+
+// ✅ sheet เดียวกับ dashBoard (target/salesman ใช้ตัวนี้อยู่แล้ว)
+const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
+const GID      = '918753587';
+const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+// ✅ ช่วงคอลัมน์ BD:BN (0-based index) ตามที่ระบุ
+// ✅ ช่วงคอลัมน์ต่างกันตามประเภท (โครงสร้างคอลัมน์เหมือนกันทั้งคู่: Year, Customer, Quotation No., Job Name, Staff, Amount THB, Cost THB, Margin, Margin%, PO(Month), Last Update)
+const COL_START = TYPE_PARAM === 'po' ? 43 : 55; // AR (PO) หรือ BD (QT)
+const COL_END   = TYPE_PARAM === 'po' ? 53 : 65; // BB (PO) หรือ BN (QT)
+const HEADER_ROW_INDEX = 1; // แถว 2 (index 1) — สมมติตามรูปแบบ banner แถว1 / header แถว2 / data แถว3+
+const DATA_START_ROW   = 2; // แถว 3
+
+let tableHeaders  = [];  // header label ของแต่ละคอลัมน์ในช่วง BD:BN
+let tableAllRows  = [];  // แถวข้อมูล (object ตาม header) หลัง filter year+type แล้ว
+let filteredRows  = [];
+let sortColIdx    = -1;
+let sortAsc       = true;
+let currentPage   = 1;
+let pageSize      = 25;
+let amtColIdx     = -1; // คอลัมน์ที่ดูเหมือนเป็นมูลค่าเงิน (ถ้ามี) สำหรับ sum summary
+
+function cleanNumCandidate(v) {
+  if (v === undefined || v === null || v === '') return NaN;
+  const s = String(v).replace(/,/g,'').trim();
+  if (s === '') return NaN;
+  // ✅ ต้องเป็นตัวเลขล้วนทั้งสตริง ไม่ใช่แค่ "ขึ้นต้น" ด้วยตัวเลข
+  // กันปัญหาวันที่แบบ "11-Nov-2025" หรือ "11/05/2026" ถูก parseFloat อ่านเป็นแค่ 11 แล้วข้อความส่วนที่เหลือหายไป
+  if (!/^-?\d+(\.\d+)?$/.test(s)) return NaN;
+  return parseFloat(s);
+}
+
+function updateBadges() {
+  const isQT = TYPE_PARAM === 'qt';
+  const label = isQT ? 'Total QT' : (TYPE_PARAM === 'po' ? 'Total PO' : (TYPE_PARAM || '-'));
+  const rangeLabel = TYPE_PARAM === 'po' ? 'AR:BB' : 'BD:BN';
+  document.getElementById('typeBadgeInline').textContent = label + ' · ' + (YEAR_PARAM || '-');
+  document.querySelector('.nav-sub').textContent = `ข้อมูลจาก sheet: dashBoard (${rangeLabel})`;
+  const badgeEl = document.getElementById('typeBadge');
+  badgeEl.textContent = label;
+  badgeEl.className = 'badge ' + (isQT ? 'badge-qt' : 'badge-po');
+  document.getElementById('sumYear').textContent = YEAR_PARAM || '-';
+  document.getElementById('sumType').textContent = label;
+}
+
+async function init() {
+  updateBadges();
+  try {
+    const resp = await fetch(CSV_URL + '&t=' + Date.now());
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const csv = await resp.text();
+
+    Papa.parse(csv, {
+      header: false,
+      skipEmptyLines: true,
+      complete: function(res) {
+        const rows = res.data;
+        const headerRow = rows[HEADER_ROW_INDEX] || [];
+
+        // ✅ label คอลัมน์ในช่วงที่เลือก (Year, Customer, Quotation No., Job Name, Staff, Amount THB, Cost THB, Margin, Margin%, PO(Month), Last Update)
+        const rangeHeaders = [];
+        for (let c = COL_START; c <= COL_END; c++) {
+          rangeHeaders.push(headerRow[c] ? headerRow[c].toString().trim() : ('Col ' + (c + 1)));
+        }
+        tableHeaders = rangeHeaders;
+
+        // ✅ Year เป็นคอลัมน์แรกของทั้งสองช่วงเสมอ (AR / BD) ไม่ต้องเดาแล้ว
+        const yearLocalIdx = 0;
+
+        // ✅ หาคอลัมน์ที่น่าจะเป็นมูลค่าเงิน (ชื่อมี Amt/Amount/มูลค่า) ไว้โชว์ยอดรวม
+        amtColIdx = rangeHeaders.findIndex(h => /amt|amount|มูลค่า|value/i.test(h));
+        if (amtColIdx === -1) document.getElementById('noteBox').style.display = 'block';
+
+        const dataRows = rows.slice(DATA_START_ROW);
+
+        // ✅ Filter ตาม Year เท่านั้น (ประเภท QT/PO กำหนดโดยช่วงคอลัมน์ที่เลือกไปแล้ว)
+        tableAllRows = dataRows
+          .map(r => r.slice(COL_START, COL_END + 1))
+          .filter(r => {
+            const yVal = r[yearLocalIdx] ? r[yearLocalIdx].toString().trim() : '';
+            if (!yVal) return false;
+            if (YEAR_PARAM && yVal !== YEAR_PARAM) return false;
+            return true;
+          })
+          .map(r => {
+            const obj = {};
+            tableHeaders.forEach((h, i) => { obj[h + '__' + i] = r[i]; });
+            return obj;
+          });
+
+        buildTableHead();
+        applyFilterSortPaginate();
+        computeSummary();
+        document.getElementById('tblLoading').style.display = 'none';
+      },
+      error: function(e) { showError('Parse error: ' + e.message); }
+    });
+  } catch (e) {
+    showError('โหลดข้อมูลไม่ได้: ' + e.message);
+  }
+}
+
+function headerKey(i) { return tableHeaders[i] + '__' + i; }
+
+function buildTableHead() {
+  const thead = document.getElementById('tblHead');
+  thead.innerHTML = '<tr>' + tableHeaders.map((h, i) => {
+    const lbl = h || ('Col ' + (i + 1));
+    return `<th onclick="sortTable(${i})">${lbl}<span class="sort-icon"></span></th>`;
+  }).join('') + '</tr>';
+}
+
+function computeSummary() {
+  document.getElementById('sumCount').textContent = tableAllRows.length.toLocaleString();
+  const amtEl = document.getElementById('sumAmt');
+  if (amtColIdx === -1) { amtEl.textContent = '-'; return; }
+  const key = headerKey(amtColIdx);
+  const total = tableAllRows.reduce((s, row) => {
+    const n = cleanNumCandidate(row[key]);
+    return s + (isNaN(n) ? 0 : n);
+  }, 0);
+  amtEl.textContent = total.toLocaleString();
+}
+
+function applyFilterSortPaginate() {
+  const q = document.getElementById('tblSearch').value.toLowerCase().trim();
+
+  filteredRows = q
+    ? tableAllRows.filter(row => tableHeaders.some((h, i) => {
+        const v = row[headerKey(i)];
+        return v !== undefined && v !== null && String(v).toLowerCase().indexOf(q) !== -1;
+      }))
+    : tableAllRows.slice();
+
+  if (sortColIdx !== -1) {
+    const key = headerKey(sortColIdx);
+    filteredRows.sort((a, b) => {
+      const na = cleanNumCandidate(a[key]), nb = cleanNumCandidate(b[key]);
+      if (!isNaN(na) && !isNaN(nb)) return sortAsc ? na - nb : nb - na;
+      const sa = String(a[key] || '').toLowerCase(), sb = String(b[key] || '').toLowerCase();
+      return sortAsc ? sa.localeCompare(sb) : sb.localeCompare(sa);
+    });
+  }
+
+  currentPage = 1;
+  renderPage();
+}
+
+function renderPage() {
+  const total = filteredRows.length;
+  const size = pageSize === 'all' ? Math.max(total, 1) : pageSize;
+  const totalPages = Math.max(1, Math.ceil(total / size));
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  const start = (currentPage - 1) * size;
+  const pageRows = pageSize === 'all' ? filteredRows : filteredRows.slice(start, start + size);
+
+  renderTableBody(pageRows);
+  renderPagination(totalPages);
+
+  const shownStart = total === 0 ? 0 : start + 1;
+  const shownEnd = pageSize === 'all' ? total : Math.min(start + size, total);
+  document.getElementById('tblCount').textContent =
+    `แสดง ${shownStart}–${shownEnd} จากทั้งหมด ${total} แถว` +
+    (total !== tableAllRows.length ? ` (กรองจาก ${tableAllRows.length} แถว)` : '');
+}
+
+function renderTableBody(rows) {
+  const tbody = document.getElementById('tblBody');
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="${Math.max(tableHeaders.length,1)}" style="text-align:center;color:var(--txt-mute);padding:28px">ไม่พบข้อมูล</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map(row => {
+    return '<tr>' + tableHeaders.map((h, i) => {
+      const v = row[headerKey(i)];
+      const isYearCol = /year|ปี/i.test(h) || i === 0; // ✅ คอลัมน์ Year (คอลัมน์แรกของช่วงเสมอ) ไม่ใส่ comma
+      const num = cleanNumCandidate(v);
+      if (isYearCol && v !== '' && v !== undefined && v !== null) {
+        return `<td>${v}</td>`; // แสดงเลขปีตรงๆ ไม่ format comma
+      }
+      if (!isNaN(num) && v !== '' && v !== undefined && v !== null) {
+        return `<td class="num">${num.toLocaleString()}</td>`;
+      }
+      return `<td>${(v !== undefined && v !== null && v !== '') ? v : '—'}</td>`;
+    }).join('') + '</tr>';
+  }).join('');
+}
+
+function renderPagination(totalPages) {
+  const el = document.getElementById('tblPagination');
+  if (pageSize === 'all' || totalPages <= 1) { el.innerHTML = ''; return; }
+
+  let html = `<button class="page-btn" ${currentPage===1?'disabled':''} onclick="goToPage(${currentPage-1})">‹</button>`;
+  getPageList(currentPage, totalPages).forEach(p => {
+    html += p === '...' ? '<span class="page-ellipsis">…</span>'
+      : `<button class="page-btn ${p===currentPage?'active':''}" onclick="goToPage(${p})">${p}</button>`;
+  });
+  html += `<button class="page-btn" ${currentPage===totalPages?'disabled':''} onclick="goToPage(${currentPage+1})">›</button>`;
+  el.innerHTML = html;
+}
+
+function getPageList(cur, total) {
+  const delta = 1, range = [];
+  for (let i = Math.max(2, cur-delta); i <= Math.min(total-1, cur+delta); i++) range.push(i);
+  let out = [1];
+  if (range.length && range[0] > 2) out.push('...');
+  out = out.concat(range);
+  if (range.length && range[range.length-1] < total-1) out.push('...');
+  if (total > 1) out.push(total);
+  return out;
+}
+
+function goToPage(p) {
+  currentPage = p;
+  renderPage();
+  document.querySelector('.table-scroll').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function sortTable(colIdx) {
+  sortAsc = (sortColIdx === colIdx) ? !sortAsc : true;
+  sortColIdx = colIdx;
+  document.querySelectorAll('.data-table th').forEach((th, i) => {
+    th.classList.remove('sort-asc','sort-desc');
+    if (i === colIdx) th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
+  });
+  applyFilterSortPaginate();
+}
+
+document.getElementById('tblSearch').addEventListener('input', applyFilterSortPaginate);
+document.getElementById('tblPageSize').addEventListener('change', function(){
+  pageSize = this.value === 'all' ? 'all' : parseInt(this.value, 10);
+  currentPage = 1;
+  renderPage();
+});
+
+function showError(msg){
+  document.getElementById('tblLoading').innerHTML = '<span style="color:#E8622A">⚠️ ' + msg + '</span>';
+}
+
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Target vs Actual Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --bg1: #0f172a; --bg2: #1e1b4b; --bg3: #111827;
+            --glass: rgba(255,255,255,0.07);
+            --glass-border: rgba(255,255,255,0.10);
+            --text-main: #ffffff;
+            --text-soft: rgba(255,255,255,0.72);
+            --text-muted: rgba(255,255,255,0.45);
+            --badge-dot: #818CF8;
+            --badge-strong: #c7d2fe;
+            --gauge-text: #ffffff;
+            --shadow-main: rgba(0,0,0,0.28);
+            --orb1: rgba(99,102,241,0.18);
+            --orb2: rgba(236,72,153,0.10);
+            --status-healthy: #4ADE80;
+            --status-warning: #FBBF24;
+            --status-critical: #FB7185;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+            min-height: 100vh; padding: 24px 16px; color: var(--text-main); overflow-x: hidden;
+        }
+
+        .dashboard {
+            display: grid; grid-template-columns: 1fr 1.5fr;
+            gap: 18px; max-width: 1400px; margin: auto; position: relative; z-index: 1;
+        }
+
+        @media (max-width: 1024px) { .dashboard { grid-template-columns: 1fr; } }
+
+        .glass {
+            background: var(--glass); backdrop-filter: blur(22px);
+            border: 1px solid var(--glass-border); border-radius: 26px;
+            box-shadow: 0 14px 38px var(--shadow-main);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px; margin-bottom: 24px; max-width: 1400px; margin-left: auto; margin-right: auto;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px;
+        }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; }
+        .stat-value { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; }
+
+        /* Left Card */
+        .card-left { padding: 30px; }
+        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .theme-switcher { display: flex; gap: 8px; background: rgba(255,255,255,0.06); padding: 5px; border-radius: 999px; }
+        .theme-btn { border: none; padding: 6px 15px; border-radius: 999px; cursor: pointer; background: transparent; color: var(--text-soft); font-weight: 600; font-size: 0.75rem; }
+        .theme-btn.active { background: #818CF8; color: white; }
+
+        /* Table */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; font-size: 0.7rem; color: var(--text-muted); padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-soft); }
+        .value { font-weight: 700; color: #fff; text-align: right; }
+
+        /* Graph Cards */
+        .card-graph { padding: 25px; text-align: center; }
+        .card-graph h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 15px; text-align: left; }
+        .chart-container { height: 280px; position: relative; }
+        
+        .gauge-wrap #percentText {
+            position: absolute; bottom: 45px; left: 50%; transform: translateX(-50%);
+            font-size: 2.2rem; font-weight: 900;
+        }
+
+        .status-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 0.7rem; 
+            font-weight: 700; margin-top: 10px;
+        }
+
+        
+.footer-date {
+    margin-top: 18px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.gauge-statusx {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+/* เพิ่มจุด Dot เล็กๆ หน้าตัวอักษรเพื่อความสวยงาม */
+.gauge-statusx::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-label">Target <span class="target-year"></span></span>
+        <span class="stat-value" id="stat-target">0</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Sales <span class="target-year"></span></span>
+        <span class="stat-value" id="stat-actual" style="color: #4ADE80;">0</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-label">Achievement Rate</span>
+        <span class="stat-value" id="stat-rate">0%</span>
+    </div>
+</div>
+
+<div class="dashboard">
+    <div class="card-left glass">
+        <div class="toolbar">
+            <h2>📊 Overview</h2>
+            <div class="theme-switcher">
+                <button class="theme-btn active" onclick="applyTheme('executive')">Executive</button>
+                <button class="theme-btn" onclick="applyTheme('neon')">Neon</button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th style="text-align:right">Target</th>
+                    <th style="text-align:right">Actual (Used)</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body">
+                <tr><td colspan="3" style="text-align:center">Loading data...</td></tr>
+            </tbody>
+        </table>
+        
+<div class="status-container">
+    <div class="footer-date"> 
+                <div class="gauge-statusx" id="status_c">Critical</div>
+                <div class="gauge-statusx" id="status_w">Warning</div>
+                <div class="gauge-statusx" id="status_h">Healthy</div> 
+        </div>
+
+</div>
+    </div>
+
+    <div class="right-column" style="display: flex; flex-direction: column; gap: 18px;">
+        <!-- Gauge Chart -->
+        <div class="card-graph glass">
+            <h3>Yearly Target Progress</h3>
+            <div class="chart-container gauge-wrap">
+                <canvas id="gaugeChart"></canvas>
+                <span id="percentText">0%</span>
+            </div>
+            <div id="gaugeStatus" class="status-badge">Checking...</div>
+        </div>
+
+        <!-- Multi-Year Bar Chart -->
+        <div class="card-graph glass">
+            <h3>Target vs Actual (2023 - 2026)</h3>
+            <div class="chart-container">
+                <canvas id="barChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SHEET_ID = '1LuwjdyfKvP7VMVR0Ib9Qb9XbzhONNdslINIzFHixbbQ';
+    const GID = '0';
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+
+    let gaugeChart = null;
+    let barChart = null;
+
+    async function init() {
+                                
+
+        try {
+            const resp = await fetch(CSV_URL + '&cache=' + Math.random());
+            const csv = await resp.text();
+            
+            Papa.parse(csv, {
+                header: true,
+                dynamicTyping: true,
+                complete: function(results) {
+                    processData(results.data);
+                }
+            });
+        } catch (e) {
+            console.error("Fetch error", e);
+        }
+    }
+
+    function processData(rawData) {
+        // 1. Clean & Sort Data (เรียงจากปีน้อยไปมาก)
+        const data = rawData
+            .filter(d => d.year) // กรองแถวว่าง
+            .sort((a, b) => a.year - b.year);
+
+        // 2. หาข้อมูลปีล่าสุด (Latest Year)
+        const currentData = data[data.length - 1];
+        const usedPercent = (currentData.used / currentData.total) * 100;
+
+        // 3. Update Stats & Table
+        document.querySelectorAll('.target-year').forEach(el => el.innerText = currentData.year);
+        document.getElementById('stat-target').innerText = currentData.total.toLocaleString();
+        document.getElementById('stat-actual').innerText = currentData.used.toLocaleString();
+        document.getElementById('stat-rate').innerText = usedPercent.toFixed(2) + '%';
+        document.getElementById('stat-rate').style.color = usedPercent < 30 ? '#FB7185' : (usedPercent < 80 ? '#FBBF24' : '#4ADE80');
+
+        const tbody = document.getElementById('data-table-body');
+        tbody.innerHTML = data.slice().reverse().map(row => `
+            <tr>
+                <td>${row.year}</td>
+                <td class="value">${row.total.toLocaleString()}</td>
+                <td class="value" style="color: #4ADE80">${row.used.toLocaleString()}</td>
+            </tr>
+        `).join('');
+
+        // 4. Render Charts
+        renderGauge(usedPercent, currentData.used, currentData.total);
+        renderBarChart(data);
+
+     // Logic เปลี่ยนสีตัวเลข Rate ตามเงื่อนไข
+    if (usedPercent >= 80) {
+        statRate.style.color = 'var(--status-healthy)';
+    } else if (usedPercent >= 30) {
+        statRate.style.color = 'var(--status-warning)';
+    } else {
+        statRate.style.color = 'var(--status-critical)';
+    }       
+        const status_c = document.getElementById('status_c');
+            status_c.textContent = 'Critical (< 30% )';
+            status_c.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-critical');
+            status_c.style.background = currentThemeKey === 'apple' ? 'rgba(239,68,68,0.10)' : 'rgba(239,68,68,0.12)';
+            status_c.style.borderColor = 'rgba(239,68,68,0.18)';
+        const status_w = document.getElementById('status_w');
+            status_w.textContent = 'Warning (30%-80%)';
+            status_w.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-warning');
+            status_w.style.background = currentThemeKey === 'apple' ? 'rgba(245,158,11,0.10)' : 'rgba(245,158,11,0.12)';
+            status_w.style.borderColor = 'rgba(245,158,11,0.18)';
+        const status_h = document.getElementById('status_h');
+            status_h.textContent = 'Healthy (>80%)'; 
+            status_h.style.color = getComputedStyle(document.documentElement).getPropertyValue('--status-healthy');
+            status_h.style.background = currentThemeKey === 'apple' ? 'rgba(34,197,94,0.10)' : 'rgba(34,197,94,0.12)';
+            status_h.style.borderColor = 'rgba(34,197,94,0.18)'; 
+    }
+
+    function renderGauge(percent, used, total) {
+        const ctx = document.getElementById('gaugeChart').getContext('2d');
+        if(gaugeChart) gaugeChart.destroy();
+
+        const color = percent < 30 ? '#FB7185' : (percent < 80 ? '#FBBF24' : '#4ADE80');
+        
+        document.getElementById('percentText').innerText = percent.toFixed(1) + '%';
+        document.getElementById('percentText').style.color = color;
+        
+        const status = document.getElementById('gaugeStatus');
+        status.innerText = percent < 30 ? 'CRITICAL' : (percent < 80 ? 'WARNING' : 'HEALTHY');
+        status.style.background = color + '22';
+        status.style.color = color;
+
+        gaugeChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [used, Math.max(0, total - used)],
+                    backgroundColor: [color, 'rgba(255,255,255,0.05)'],
+                    borderWidth: 0,
+                    circumference: 180,
+                    rotation: 270,
+                    borderRadius: 10
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutout: '80%',
+                plugins: { tooltip: { enabled: false } }
+            }
+        });
+    }
+
+    function renderBarChart(data) {
+        const ctx = document.getElementById('barChart').getContext('2d');
+        if(barChart) barChart.destroy();
+
+        barChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: data.map(d => d.year),
+                datasets: [
+                    {
+                        label: 'Target',
+                        data: data.map(d => d.total),
+                        backgroundColor: 'red',
+                        borderColor: '#818CF8',
+                        borderWidth: 2,
+                        borderRadius: 4,
+                        borderSkipped: false,
+                        barPercentage: 0.6,
+                        categoryPercentage: 0.5
+                    },
+                    {
+                        label: 'Actual',
+                        data: data.map(d => d.used),
+                        backgroundColor: '#10B981',
+                        borderRadius: 4,
+                        barPercentage: 0.6,
+                        categoryPercentage: 0.5
+                    }
+                ]
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        align: 'end',
+                        labels: { color: '#94a3b8', boxWidth: 12, usePointStyle: true }
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'logarithmic', // ใช้ Log Scale ตามรูปตัวอย่าง
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: {
+                            color: '#64748b',
+                            callback: function(value) {
+                                if (value >= 1000000) return (value/1000000) + 'M';
+                                if (value >= 1000) return (value/1000) + 'K';
+                                return value;
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#94a3b8' }
+                    }
+                }
+            }
+        });
+    }
+
+    function applyTheme(theme) {
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        // เพิ่ม Logic เปลี่ยนสีตรงนี้ได้ถ้าต้องการ
+    }
+
+    window.onload = init;
+</script>
+</body>
+</html>

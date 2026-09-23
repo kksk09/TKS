@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Pipeline Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            /* Executive Dark Theme (Default) */
+            --bg1: #0f172a; --bg2: #1e293b; --bg3: #111827;
+            --glass: rgba(255,255,255,0.06);
+            --glass-border: rgba(255,255,255,0.08);
+            --text-main: #ffffff;
+            --text-soft: #cbd5e1;
+            --text-muted: #64748b;
+            --status-healthy: #10B981;
+            --status-warning: #F59E0B;
+            --status-critical: #EF4444;
+            --gauge-empty: rgba(255,255,255,0.05);
+            --grid-color: rgba(255,255,255,0.05);
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 45%, var(--bg3) 100%);
+            min-height: 100vh; padding: 30px 20px; color: var(--text-main); transition: all 0.3s ease;
+        }
+        .stats-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
+            gap: 20px; margin-bottom: 35px; max-width: 1400px; margin-left: auto; margin-right: auto; 
+        }
+        .stat-card { padding: 24px; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; }
+        .stat-value { font-size: 2rem; font-weight: 800; display: block; margin-top: 8px; color: var(--text-main); }
+        
+        .dashboard { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; max-width: 1400px; margin: auto; }
+        @media (max-width: 1024px) { .dashboard { grid-template-columns: 1fr; } }
+
+        .glass { 
+            background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border); border-radius: 24px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25); 
+        }
+        .card-left { padding: 30px; }
+        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .theme-switcher { display: flex; gap: 6px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 999px; border: 1px solid var(--glass-border); }
+        .theme-btn { border: none; padding: 8px 18px; border-radius: 999px; cursor: pointer; background: transparent; color: var(--text-soft); font-size: 0.8rem; font-weight: 600; transition: 0.2s; }
+        .theme-btn.active { background: #818CF8; color: #fff !important; box-shadow: 0 4px 12px rgba(129, 140, 248, 0.4); }
+
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-size: 0.75rem; color: var(--text-muted); padding: 15px 12px; border-bottom: 1px solid var(--glass-border); text-transform: uppercase; letter-spacing: 0.05em; }
+        td { padding: 16px 12px; border-bottom: 1px solid var(--glass-border); color: var(--text-soft); }
+        .value { font-weight: 700; color: var(--text-main); text-align: right; }
+
+        .footer-date { margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.1); border-radius: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .gauge-statusx { font-size: 0.75rem; font-weight: 700; padding: 10px 16px; border-radius: 999px; display: flex; align-items: center; gap: 8px; }
+        .gauge-statusx::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+        .card-graph { padding: 30px; text-align: center; margin-bottom: 20px; }
+        .card-graph h3 { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 20px; text-align: left; font-weight: 700; letter-spacing: 0.05em; }
+        .chart-container { height: 320px; position: relative; }
+        .gauge-wrap #percentText { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); font-size: 2.8rem; font-weight: 900; }
+        .status-badge { display: inline-block; padding: 8px 20px; border-radius: 999px; font-size: 0.8rem; font-weight: 800; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="stats-grid">
+    <div class="stat-card glass"><span class="stat-label">Target <span class="target-year">2026</span></span><span class="stat-value" id="stat-target">400,000,000</span></div>
+    <div class="stat-card glass"><span class="stat-label">Closed Orders (Actual)</span><span class="stat-value" id="stat-actual" style="color: var(--status-healthy);">0</span></div>
+    <div class="stat-card glass"><span class="stat-label">Success Achievement Rate</span><span class="stat-value" id="stat-rate">0%</span></div>
+</div>
+
+<div class="dashboard">
+    <div class="card-left glass">
+        <div class="toolbar">
+            <h2>📊 Pipeline Overview</h2>
+            <div class="theme-switcher">
+                <button class="theme-btn" data-theme="executive">Executive</button>
+                <button class="theme-btn" data-theme="neon">Neon</button>
+                <button class="theme-btn" data-theme="apple">Apple</button>
+            </div>
+        </div>
+        <table>
+            <thead><tr><th>Stage Description</th><th style="text-align:right">Amount (THB)</th></tr></thead>
+            <tbody id="data-table-body"><tr><td colspan="2" style="text-align:center">Loading Pipeline Data...</td></tr></tbody>
+        </table>
+        <div class="footer-date">
+            <div class="gauge-statusx" id="status_h">Healthy (> 80%)</div>
+            <div class="gauge-statusx" id="status_w">Warning (30-80%)</div>
+            <div class="gauge-statusx" id="status_c">Critical (< 30%)</div>
+        </div>
+    </div>
+    <div class="right-column">
+        <div class="card-graph glass">
+            <h3>Target Progress (Based on Won Orders)</h3>
+            <div class="chart-container gauge-wrap">
+                <canvas id="gaugeChart"></canvas>
+                <span id="percentText">0%</span>
+            </div>
+            <div id="gaugeStatus" class="status-badge">...</div>
+        </div>
+        <div class="card-graph glass">
+            <h3>Sales Pipeline Value by Stage</h3>
+            <div class="chart-container"><canvas id="pipelineBarChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // https://docs.google.com/spreadsheets/d/1VXsYKrQaOs0kZy2SC4yO-3CHm4yN5AyR/edit?gid=133679491#gid=133679491
+    const SHEET_ID = '1VXsYKrQaOs0kZy2SC4yO-3CHm4yN5AyR';
+    const GID = '133679491';
+    const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+    const DEFAULT_THEME = 'executive';
+
+    const THEMES = {
+        executive: { css: {
+            '--bg1': '#0f172a', '--bg2': '#1e293b', '--bg3': '#111827',
+            '--glass': 'rgba(255,255,255,0.06)', '--glass-border': 'rgba(255,255,255,0.08)',
+            '--text-main': '#ffffff', '--text-soft': '#cbd5e1', '--text-muted': '#64748b',
+            '--status-healthy': '#10B981', '--status-warning': '#F59E0B', '--status-critical': '#EF4444', 
+            '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)'
+        }},
+        neon: { css: {
+            '--bg1': '#050816', '--bg2': '#1a103f', '--bg3': '#09090f',
+            '--glass': 'rgba(255,255,255,0.04)', '--glass-border': 'rgba(168,85,247,0.15)',
+            '--text-main': '#f8fafc', '--text-soft': '#e2e8f0', '--text-muted': '#94a3b8',
+            '--status-healthy': '#22D3EE', '--status-warning': '#FACC15', '--status-critical': '#FB7185', 
+            '--gauge-empty': 'rgba(255,255,255,0.05)', '--grid-color': 'rgba(255,255,255,0.05)'
+        }},
+        apple: { css: {
+            '--bg1': '#f5f5f7', '--bg2': '#e8e8ed', '--bg3': '#ffffff',
+            '--glass': '#ffffff', '--glass-border': 'rgba(0,0,0,0.08)',
+            '--text-main': '#1d1d1f', '--text-soft': '#515154', '--text-muted': '#86868b',
+            '--status-healthy': '#34c759', '--status-warning': '#ff9500', '--status-critical': '#ff3b30', 
+            '--gauge-empty': '#e5e5ea', '--grid-color': 'rgba(0,0,0,0.06)'
+        }}
+    };
+
+    let gaugeChart = null, pipelineChart = null, globalData = null;
+    let currentThemeKey = localStorage.getItem('dashboard-theme') || DEFAULT_THEME;
+
+    const cleanNum = (val) => {
+        if (!val) return 0;
+        return parseFloat(val.toString().replace(/,/g, '').trim()) || 0;
+    };
+
+    async function init() {
+        try {
+            const resp = await fetch(CSV_URL + '&t=' + Date.now());
+            const csv = await resp.text();
+            Papa.parse(csv, {
+                header: true, skipEmptyLines: true,
+                complete: (results) => {
+                    globalData = results.data;
+                    processPipelineData(globalData);
+                }
+            });
+        } catch (e) { console.error("Data Load Error:", e); }
+    }
+
+    function processPipelineData(rawData) {
+        // กรองข้อมูลเฉพาะปี 2026 ตามภาพตัวอย่างล่าสุดของคุณ
+        const currentYearData = rawData.filter(d => d.Year == 2026 || d.year == 2026);
+        
+        if(currentYearData.length === 0) {
+            document.getElementById('data-table-body').innerHTML = `<tr><td colspan="2" style="text-align:center">No 2026 Data Found</td></tr>`;
+            return;
+        }
+
+        // คลีนและแมปข้อมูล Pipeline Stages
+        const stages = currentYearData.map(d => ({
+            stage: d.Status2 || d.status2 || 'Unknown',
+            amount: cleanNum(d['sum Amount THB'] || d['amount'])
+        })).filter(s => s.amount > 0); // แสดงเฉพาะสเตจที่มีเงินรันอยู่
+
+        // ดึงยอด "13-Order" มาใช้เป็นยอดที่ปิดได้จริง (Actual Won)
+        const orderStage = stages.find(s => s.stage.includes('13-Order'));
+        const actualWon = orderStage ? orderStage.amount : 0;
+        const targetTotal = 400000000; // ตั้งตามภาพ Target 2026 ของคุณ
+        const rate = (actualWon / targetTotal) * 100;
+
+        // อัปเดต UI Counter ด้านบน
+        document.getElementById('stat-target').innerText = targetTotal.toLocaleString();
+        document.getElementById('stat-actual').innerText = actualWon.toLocaleString();
+        
+        const rateEl = document.getElementById('stat-rate');
+        rateEl.innerText = rate.toFixed(2) + '%';
+        const statusColor = rate < 30 ? 'var(--status-critical)' : (rate < 80 ? 'var(--status-warning)' : 'var(--status-healthy)');
+        rateEl.style.color = statusColor;
+
+        // อัปเดตตารางสรุปผลข้อมูลฝั่งซ้าย
+        const tbody = document.getElementById('data-table-body');
+        tbody.innerHTML = stages.map(s => `
+            <tr>
+                <td>${s.stage}</td>
+                <td class="value">${s.amount.toLocaleString()}</td>
+            </tr>
+        `).join('');
+
+        updateStatusLegend();
+        renderChartsEngine(rate, actualWon, targetTotal, stages);
+    }
+
+    function renderChartsEngine(rate, used, total, stages) {
+        const rootStyles = getComputedStyle(document.documentElement);
+        
+        // บังคับเปลี่ยนสีฟอนต์ตัวกราฟตามสไตล์ธีมแบบไดนามิก ป้องกันฟอนต์ดำในธีมมืด
+        const textMainColor = rootStyles.getPropertyValue('--text-main').trim();
+        const textMutedColor = rootStyles.getPropertyValue('--text-muted').trim();
+        const gridLineColor = rootStyles.getPropertyValue('--grid-color').trim();
+        const emptyGaugeColor = rootStyles.getPropertyValue('--gauge-empty').trim();
+        const healthyColor = rootStyles.getPropertyValue('--status-healthy').trim();
+
+        // 1. Render Gauge Progress
+        const gCanvas = document.getElementById('gaugeChart');
+        const gCtx = gCanvas.getContext('2d');
+        if (gaugeChart) gaugeChart.destroy();
+
+        let gradient = gCtx.createLinearGradient(0, 0, gCanvas.width, 0);
+        let currentStatusColor = '';
+        if (rate < 30) {
+            gradient.addColorStop(0, '#DC2626'); gradient.addColorStop(1, '#FB7185');
+            currentStatusColor = rootStyles.getPropertyValue('--status-critical');
+        } else if (rate < 80) {
+            gradient.addColorStop(0, '#EA580C'); gradient.addColorStop(1, '#FBBF24');
+            currentStatusColor = rootStyles.getPropertyValue('--status-warning');
+        } else {
+            gradient.addColorStop(0, '#16A34A'); gradient.addColorStop(1, '#4ADE80');
+            currentStatusColor = healthyColor;
+        }
+
+        const percentText = document.getElementById('percentText');
+        percentText.innerText = rate.toFixed(2) + '%';
+        percentText.style.color = currentStatusColor;
+
+        const badge = document.getElementById('gaugeStatus');
+        badge.innerText = rate < 30 ? 'CRITICAL PROGRESS' : (rate < 80 ? 'WARNING PROGRESS' : 'HEALTHY TARGET');
+        badge.style.background = currentStatusColor + '22'; badge.style.color = currentStatusColor;
+
+        gaugeChart = new Chart(gCtx, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [used, Math.max(0, total - used)],
+                    backgroundColor: [gradient, emptyGaugeColor],
+                    borderWidth: 0, circumference: 180, rotation: 270, borderRadius: 12
+                }]
+            },
+            options: { cutout: '84%', maintainAspectRatio: false, plugins: { tooltip: { enabled: false } } }
+        });
+
+        // 2. Render Pipeline Horizontal Bar Chart (กราฟแท่งแนวนอนเพื่อติดตามเป้ายอดขายสำหรับผู้บริหาร)
+        const pCanvas = document.getElementById('pipelineBarChart');
+        const pCtx = pCanvas.getContext('2d');
+        if (pipelineChart) pipelineChart.destroy();
+
+        // สลับสีไฮไลต์เฉพาะสเตจที่ปิดดีลสำเร็จแล้ว (13-Order) ให้เด่นชัด
+        const barColors = stages.map(s => s.stage.includes('13-Order') ? healthyColor : '#818CF8');
+
+        pipelineChart = new Chart(pCtx, {
+            type: 'bar',
+            data: {
+                labels: stages.map(s => s.stage),
+                datasets: [{
+                    label: 'Pipeline Value (THB)',
+                    data: stages.map(s => s.amount),
+                    backgroundColor: barColors,
+                    borderRadius: 6,
+                    barThickness: 18
+                }]
+            },
+            options: {
+                indexAxis: 'y', // เปลี่ยนเป็นแนวแนวนอนเพื่อให้ผู้บริหารดู Flow ง่ายขึ้นและตัวเลขไม่ซ้อน
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: { color: gridLineColor },
+                        ticks: { 
+                            color: textMutedColor,
+                            font: { size: 10 },
+                            callback: v => v >= 1000000 ? (v/1000000)+'M' : v.toLocaleString()
+                        }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { 
+                            color: textMainColor, // บังคับเปลี่ยนสีฟอนต์ตามธีม สว่างเมื่อมืด มืดเมื่อสว่าง
+                            font: { size: 11, weight: '600' }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: { label: (ctx) => ` Value: ${ctx.raw.toLocaleString()} THB` }
+                    }
+                }
+            }
+        });
+    }
+
+    function updateStatusLegend() {
+        ['status_c', 'status_w', 'status_h'].forEach((id, i) => {
+            const colorVar = ['--status-critical', '--status-warning', '--status-healthy'][i];
+            const color = getComputedStyle(document.documentElement).getPropertyValue(colorVar);
+            const el = document.getElementById(id);
+            if(el) { el.style.color = color; el.style.background = color + '12'; el.style.borderColor = color + '25'; }
+        });
+    }
+
+    function applyTheme(themeKey) {
+        currentThemeKey = themeKey;
+        const theme = THEMES[themeKey] || THEMES[DEFAULT_THEME];
+        Object.entries(theme.css).forEach(([k, v]) => document.documentElement.style.setProperty(k, v));
+        localStorage.setItem('dashboard-theme', themeKey);
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.theme === themeKey));
+        if (globalData) processPipelineData(globalData);
+    }
+
+    window.onload = () => {
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.addEventListener('click', () => applyTheme(btn.dataset.theme)));
+        applyTheme(currentThemeKey);
+        init();
+    };
+</script>
+</body>
+</html>
