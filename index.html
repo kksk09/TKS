@@ -563,7 +563,7 @@
                         // ✅ ตำแหน่งคอลัมน์ใน sheet on_hand (0-based)
                         const COL_YEAR      = 1;  // B
                         const COL_SALE      = 13; // N
-                        const COL_SUPPORT   = 14; // O
+                        const COL_QUOTATION_DATE = 18; // I
                         const COL_STATUS2   = 17; // R
                         const COL_LASTUPDATE = 19; // T PO(Month) — ใช้ดึงเดือนสำหรับกราฟรายเดือน  
                         const COL_AMT       = 26; // AA
@@ -571,7 +571,7 @@
                         const START_ROW = 2;
                         const ALLOWED_STATUS = ['13-Order', '07-Sent Quotation'];
                         const FILTER_YEAR = CURRENT_YEAR; // ✅ อ้างอิงปีจาก query string
-
+                        // Quotation DATE col I 18
                         const rawRows = rows.slice(START_ROW);
 
                         // ✅ 1) statusSummaryRows: group ตาม Status2 (สำหรับ Funnel/Pipeline/WinRate/Total QT-PO)
@@ -645,7 +645,8 @@
                             const year = r[COL_YEAR] ? r[COL_YEAR].toString().trim() : '';
                             if (!year || year !== FILTER_YEAR) return; // ✅ ใช้ปีจาก col B ตรงๆ
 
-                            const dm = parseThaiDMY(r[COL_LASTUPDATE]);
+                            // const dm = parseThaiDMY(r[COL_LASTUPDATE]);
+                            const dm = parseThaiDMY(r[COL_QUOTATION_DATE]); // ✅ ใช้ col I (Quotation Date) แทน Last Update เพราะ Last Update บางแถวเป็นค่าว่าง
                             if (!dm) return; // ไม่มี Last Update หรือ parse ไม่ได้ -> ข้าม
                             const monthIdx = dm.month;
 
