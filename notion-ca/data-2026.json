@@ -234,6 +234,19 @@
     "url": "https://app.notion.com/p/PR-FOOD-LAND-SERVICE-3RD-3e4770a5c90b80f58a09f2510ad086a7"
   },
   {
+    "id": "3e6770a5-c90b-80bd-8eb5-db4a4a614403",
+    "title": "Office",
+    "date": "2026-10-02",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-09-25T02:49:00.000Z",
+    "url": "https://app.notion.com/p/Office-3e6770a5c90b80bd8eb5db4a4a614403"
+  },
+  {
     "id": "3c9770a5-c90b-80e6-b58c-c4e1afe1b2bd",
     "title": "ฝ่ายบัญชี",
     "date": "2026-10-02",
@@ -245,6 +258,62 @@
     "employeesText": "Nack",
     "last_edited": "2026-08-27T02:46:00.000Z",
     "url": "https://app.notion.com/p/3c9770a5c90b80e6b58cc4e1afe1b2bd"
+  },
+  {
+    "id": "3e6770a5-c90b-8039-9678-cc5067bfb7a0",
+    "title": "Office",
+    "date": "2026-10-01",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-09-25T02:48:00.000Z",
+    "url": "https://app.notion.com/p/Office-3e6770a5c90b80399678cc5067bfb7a0"
+  },
+  {
+    "id": "3e6770a5-c90b-80b6-9b08-ca9cfffe72ae",
+    "title": "Office",
+    "date": "2026-09-30",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-09-25T02:48:00.000Z",
+    "url": "https://app.notion.com/p/Office-3e6770a5c90b80b69b08ca9cfffe72ae"
+  },
+  {
+    "id": "3e6770a5-c90b-80dd-8ca5-cad6865ca7c1",
+    "title": "Office",
+    "date": "2026-09-29",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-09-25T02:47:00.000Z",
+    "url": "https://app.notion.com/p/Office-3e6770a5c90b80dd8ca5cad6865ca7c1"
+  },
+  {
+    "id": "3e6770a5-c90b-8016-a771-eaf3c1890c30",
+    "title": "Office",
+    "date": "2026-09-28",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-09-25T02:46:00.000Z",
+    "url": "https://app.notion.com/p/Office-3e6770a5c90b8016a771eaf3c1890c30"
   },
   {
     "id": "3e4770a5-c90b-80e9-99d7-fac417f0bad2",
@@ -273,10 +342,11 @@
       "Nok",
       "Sky",
       "Moo",
-      "AA"
+      "AA",
+      "Game"
     ],
-    "employeesText": "Daw, Nok, Sky, Moo, AA",
-    "last_edited": "2026-09-23T10:31:00.000Z",
+    "employeesText": "Daw, Nok, Sky, Moo, AA, Game",
+    "last_edited": "2026-09-24T06:38:00.000Z",
     "url": "https://app.notion.com/p/F-PLUS-PRESENTATION-Rotary-Valve-discussion-3e1770a5c90b8096938cfe5f7902c5d2"
   },
   {
@@ -286,10 +356,11 @@
     "end": null,
     "note": "",
     "employees": [
-      "Muk"
+      "Muk",
+      "Nack"
     ],
-    "employeesText": "Muk",
-    "last_edited": "2026-09-18T12:04:00.000Z",
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-09-24T14:18:00.000Z",
     "url": "https://app.notion.com/p/Office-3df770a5c90b80edb481de99ec2b2b86"
   },
   {
@@ -304,19 +375,6 @@
     "employeesText": "KO",
     "last_edited": "2026-09-18T07:16:00.000Z",
     "url": "https://app.notion.com/p/3df770a5c90b804497c3ecf7b71a5d5c"
-  },
-  {
-    "id": "3c9770a5-c90b-80a7-95f4-da55717a164a",
-    "title": "ฝ่ายบัญชี",
-    "date": "2026-09-25",
-    "end": null,
-    "note": "ช่วยฝ่ายบัญชีตรวจสอบเอกสาร",
-    "employees": [
-      "Nack"
-    ],
-    "employeesText": "Nack",
-    "last_edited": "2026-08-27T02:45:00.000Z",
-    "url": "https://app.notion.com/p/3c9770a5c90b80a795f4da55717a164a"
   },
   {
     "id": "3e4770a5-c90b-8005-98f1-c2f472472422",
@@ -412,7 +470,7 @@
     "title": "โรงเบียร์ นนทบุรี",
     "date": "2026-09-23",
     "end": null,
-    "note": "แจ้งเรื่องขอ รายละเอียด เพิ่มเติม CAD +3D เพื่อเปลี่ยน Layout และตีราคา",
+    "note": "แจ้งเรื่องขอ รายละเอียด เพิ่มเติม CAD +3D เพื่อเปลี่ยน Layout และตีราคา เสนอราคาให้คุณบิ๊กรีวิว ก่อนสิ้นเดือน",
     "employees": [
       "Moo",
       "LOVE",
@@ -421,7 +479,7 @@
       "MOO"
     ],
     "employeesText": "Moo, LOVE, EAK, pub, MOO",
-    "last_edited": "2026-09-23T07:49:00.000Z",
+    "last_edited": "2026-09-24T09:20:00.000Z",
     "url": "https://app.notion.com/p/3e3770a5c90b80c0979be49431282e72"
   },
   {
