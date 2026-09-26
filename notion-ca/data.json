@@ -260,6 +260,20 @@
     "url": "https://app.notion.com/p/3c9770a5c90b80e6b58cc4e1afe1b2bd"
   },
   {
+    "id": "3e6770a5-c90b-80e6-be95-d6ea88a0c32d",
+    "title": "Ajinomoto 10:00",
+    "date": "2026-10-01",
+    "end": null,
+    "note": "",
+    "employees": [
+      "AA",
+      "Sky"
+    ],
+    "employeesText": "AA, Sky",
+    "last_edited": "2026-09-25T09:07:00.000Z",
+    "url": "https://app.notion.com/p/Ajinomoto-10-00-3e6770a5c90b80e6be95d6ea88a0c32d"
+  },
+  {
     "id": "3e6770a5-c90b-8039-9678-cc5067bfb7a0",
     "title": "Office",
     "date": "2026-10-01",
@@ -272,6 +286,21 @@
     "employeesText": "Muk, Nack",
     "last_edited": "2026-09-25T02:48:00.000Z",
     "url": "https://app.notion.com/p/Office-3e6770a5c90b80399678cc5067bfb7a0"
+  },
+  {
+    "id": "3e6770a5-c90b-80a5-b1c7-d4cd9eee7696",
+    "title": "Meeting Better pharma 10:00 น.",
+    "date": "2026-09-30",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Ice",
+      "Moo",
+      "Game"
+    ],
+    "employeesText": "Ice, Moo, Game",
+    "last_edited": "2026-09-25T08:09:00.000Z",
+    "url": "https://app.notion.com/p/Meeting-Better-pharma-10-00-3e6770a5c90b80a5b1c7d4cd9eee7696"
   },
   {
     "id": "3e6770a5-c90b-80b6-9b08-ca9cfffe72ae",
@@ -300,6 +329,39 @@
     "employeesText": "Muk, Nack",
     "last_edited": "2026-09-25T02:47:00.000Z",
     "url": "https://app.notion.com/p/Office-3e6770a5c90b80dd8ca5cad6865ca7c1"
+  },
+  {
+    "id": "3e6770a5-c90b-80b4-a13a-e6a5454bb1e6",
+    "title": "Meeting Team",
+    "date": "2026-09-28",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Sky",
+      "AA",
+      "Moo",
+      "Ice",
+      "Benz",
+      "Nok",
+      "Daw"
+    ],
+    "employeesText": "Sky, AA, Moo, Ice, Benz, Nok, Daw",
+    "last_edited": "2026-09-25T10:08:00.000Z",
+    "url": "https://app.notion.com/p/Meeting-Team-3e6770a5c90b80b4a13ae6a5454bb1e6"
+  },
+  {
+    "id": "3e6770a5-c90b-8072-8f9a-c7d02936227b",
+    "title": "BJC 13:00",
+    "date": "2026-09-28",
+    "end": null,
+    "note": "",
+    "employees": [
+      "AA",
+      "Daw"
+    ],
+    "employeesText": "AA, Daw",
+    "last_edited": "2026-09-25T06:44:00.000Z",
+    "url": "https://app.notion.com/p/BJC-13-00-3e6770a5c90b80728f9ac7d02936227b"
   },
   {
     "id": "3e6770a5-c90b-8016-a771-eaf3c1890c30",
@@ -332,6 +394,17 @@
     "url": "https://app.notion.com/p/Carabao-online-meeting-3-3e4770a5c90b80e999d7fac417f0bad2"
   },
   {
+    "id": "3e6770a5-c90b-80ab-a145-c552f5d8e99a",
+    "title": "F Plus สายพานขาดครั้งที่ 3 และ sieve 316 ขาด เร่งหาคนเชื่อม",
+    "date": "2026-09-25",
+    "end": null,
+    "note": "",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-09-25T15:59:00.000Z",
+    "url": "https://app.notion.com/p/F-Plus-3-sieve-316-3e6770a5c90b80aba145c552f5d8e99a"
+  },
+  {
     "id": "3e1770a5-c90b-8096-938c-fe5f7902c5d2",
     "title": "F PLUS PRESENTATION// Rotary Valve discussion",
     "date": "2026-09-25",
@@ -343,10 +416,10 @@
       "Sky",
       "Moo",
       "AA",
-      "Game"
+      "Ice"
     ],
-    "employeesText": "Daw, Nok, Sky, Moo, AA, Game",
-    "last_edited": "2026-09-24T06:38:00.000Z",
+    "employeesText": "Daw, Nok, Sky, Moo, AA, Ice",
+    "last_edited": "2026-09-25T06:41:00.000Z",
     "url": "https://app.notion.com/p/F-PLUS-PRESENTATION-Rotary-Valve-discussion-3e1770a5c90b8096938cfe5f7902c5d2"
   },
   {
@@ -479,7 +552,7 @@
       "MOO"
     ],
     "employeesText": "Moo, LOVE, EAK, pub, MOO",
-    "last_edited": "2026-09-24T09:20:00.000Z",
+    "last_edited": "2026-09-25T16:47:00.000Z",
     "url": "https://app.notion.com/p/3e3770a5c90b80c0979be49431282e72"
   },
   {
@@ -1580,13 +1653,13 @@
   },
   {
     "id": "3cb770a5-c90b-80af-9ba9-d1eafd7cdd29",
-    "title": "มาม่า ระยอง",
+    "title": "มาม่า ระยอง ช่างนาย ขัด",
     "date": "2026-08-28",
     "end": null,
-    "note": "backup และได้ password PLC เรียบร้อย แก้ปัญหาหน้างานเรื่องติดมี 3 วิธีเบื้องต้นที่คิดได้ตัดเรื่องเพิ่มเวลามิกซ์ออก  \nปรับได้ประมาณ 3 ขั้นนะครับ\n1.เปลี่ยนลำดับใบชอปเปอร์เพื่อให้ฟันสับหว่างมากขึ้น\n\n2เดินสายกราวด์เพื่อลดไฟฟ้าสถิตที่ทำให้จับกันเป็นก้อนนะครับ\n\n3. ขัดพื้นผิวให้เรียบขึ้นครับ\n1 และ 2 อาจจะทำให้เห็นผลชัดเจนที่สุดนะครับ\n\n\n\n",
+    "note": "backup และได้ password PLC== 2015 เรียบร้อย แก้ปัญหาหน้างานเรื่องติดมี 3 วิธีเบื้องต้นที่คิดได้ตัดเรื่องเพิ่มเวลามิกซ์ออก  \nปรับได้ประมาณ 3 ขั้นนะครับ\n1.เปลี่ยนลำดับใบชอปเปอร์เพื่อให้ฟันสับหว่างมากขึ้น\n\n2เดินสายกราวด์เพื่อลดไฟฟ้าสถิตที่ทำให้จับกันเป็นก้อนนะครับ\n\n3. ขัดพื้นผิวให้เรียบขึ้นครับ\n1 และ 2 อาจจะทำให้เห็นผลชัดเจนที่สุดนะครับ\n\n\n\n",
     "employees": [],
     "employeesText": "",
-    "last_edited": "2026-08-29T01:18:00.000Z",
+    "last_edited": "2026-09-25T16:45:00.000Z",
     "url": "https://app.notion.com/p/3cb770a5c90b80af9ba9d1eafd7cdd29"
   },
   {
