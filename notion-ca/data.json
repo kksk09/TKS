@@ -185,6 +185,24 @@
     "url": "https://app.notion.com/p/3c9770a5c90b800f9d8af53fc98310f8"
   },
   {
+    "id": "3ea770a5-c90b-8067-9849-eec5340c7ca6",
+    "title": "Its Thailand มาเสนอเครื่องปั้น+เครื่องเกี่ยวยาผง + ยาเม็ด",
+    "date": "2026-10-14",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Ice",
+      "Nok",
+      "AA",
+      "Sky",
+      "Game",
+      "Title"
+    ],
+    "employeesText": "Ice, Nok, AA, Sky, Game, Title",
+    "last_edited": "2026-09-29T07:36:00.000Z",
+    "url": "https://app.notion.com/p/Its-Thailand-3ea770a5c90b80679849eec5340c7ca6"
+  },
+  {
     "id": "317770a5-c90b-80b1-a0d8-f0be0835557c",
     "title": "วันหยุดThe Passing of King",
     "date": "2026-10-13",
@@ -194,6 +212,19 @@
     "employeesText": "",
     "last_edited": "2026-03-02T04:29:00.000Z",
     "url": "https://app.notion.com/p/The-Passing-of-King-317770a5c90b80b1a0d8f0be0835557c"
+  },
+  {
+    "id": "3eb770a5-c90b-80dc-a16d-c4a358520c23",
+    "title": "ลา",
+    "date": "2026-10-12",
+    "end": null,
+    "note": "",
+    "employees": [
+      "LOVE"
+    ],
+    "employeesText": "LOVE",
+    "last_edited": "2026-09-30T04:33:00.000Z",
+    "url": "https://app.notion.com/p/3eb770a5c90b80dca16dc4a358520c23"
   },
   {
     "id": "3e4770a5-c90b-809a-a1db-fe4335247dd4",
@@ -216,11 +247,11 @@
     "note": "ขัด Mixer",
     "employees": [
       "pub",
-      "LOVE",
-      "Moo"
+      "Moo",
+      "EAK"
     ],
-    "employeesText": "pub, LOVE, Moo",
-    "last_edited": "2026-09-21T10:39:00.000Z",
+    "employeesText": "pub, Moo, EAK",
+    "last_edited": "2026-09-30T04:32:00.000Z",
     "url": "https://app.notion.com/p/3e2770a5c90b802e8e42ef2871b7ee1d"
   },
   {
@@ -239,14 +270,18 @@
   {
     "id": "3e4770a5-c90b-80f5-8a09-f2510ad086a7",
     "title": "PR FOOD LAND SERVICE 3RD",
-    "date": "2026-10-05",
-    "end": "2026-10-07",
+    "date": "2026-10-06",
+    "end": "2026-10-09",
     "note": "",
     "employees": [
+      "Moo",
+      "EAK",
+      "LOVE",
+      "pub",
       "PUP"
     ],
-    "employeesText": "PUP",
-    "last_edited": "2026-09-23T07:51:00.000Z",
+    "employeesText": "Moo, EAK, LOVE, pub, PUP",
+    "last_edited": "2026-09-30T02:09:00.000Z",
     "url": "https://app.notion.com/p/PR-FOOD-LAND-SERVICE-3RD-3e4770a5c90b80f58a09f2510ad086a7"
   },
   {
@@ -324,6 +359,34 @@
     "url": "https://app.notion.com/p/Office-3e6770a5c90b80399678cc5067bfb7a0"
   },
   {
+    "id": "3eb770a5-c90b-805f-866a-f8d1cdea3ddd",
+    "title": "ลาป่วย",
+    "date": "2026-09-30",
+    "end": null,
+    "note": "ลาป่วย",
+    "employees": [
+      "Benz"
+    ],
+    "employeesText": "Benz",
+    "last_edited": "2026-09-30T02:43:00.000Z",
+    "url": "https://app.notion.com/p/3eb770a5c90b805f866af8d1cdea3ddd"
+  },
+  {
+    "id": "3ea770a5-c90b-802f-8307-f056c6c7464d",
+    "title": "P’A meeting URC 01.00 P.M.",
+    "date": "2026-09-30",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Sky",
+      "AA",
+      "THEP"
+    ],
+    "employeesText": "Sky, AA, THEP",
+    "last_edited": "2026-09-29T07:45:00.000Z",
+    "url": "https://app.notion.com/p/P-A-meeting-URC-01-00-P-M-3ea770a5c90b802f8307f056c6c7464d"
+  },
+  {
     "id": "3e6770a5-c90b-80a5-b1c7-d4cd9eee7696",
     "title": "Meeting Better pharma 10:00 น.",
     "date": "2026-09-30",
@@ -332,12 +395,10 @@
     "employees": [
       "Ice",
       "Moo",
-      "Game",
-      "Sky",
-      "Nok"
+      "Game"
     ],
-    "employeesText": "Ice, Moo, Game, Sky, Nok",
-    "last_edited": "2026-09-29T06:30:00.000Z",
+    "employeesText": "Ice, Moo, Game",
+    "last_edited": "2026-09-30T03:50:00.000Z",
     "url": "https://app.notion.com/p/Meeting-Better-pharma-10-00-3e6770a5c90b80a5b1c7d4cd9eee7696"
   },
   {
@@ -353,6 +414,22 @@
     "employeesText": "Muk, Nack",
     "last_edited": "2026-09-25T02:48:00.000Z",
     "url": "https://app.notion.com/p/Office-3e6770a5c90b80b69b08ca9cfffe72ae"
+  },
+  {
+    "id": "3ea770a5-c90b-802e-9345-fc19cf0890c0",
+    "title": "Mama rayong ไปเก็บข้อมูลปัญหามิกเซอร์ พาพี่แมนไปดูและดูโปรเจคเรียงก้อนบะหมี่ของพี่เกม ไอซ์",
+    "date": "2026-09-29",
+    "end": null,
+    "note": "",
+    "employees": [
+      "LOVE",
+      "Moo",
+      "EAK",
+      "pub"
+    ],
+    "employeesText": "LOVE, Moo, EAK, pub",
+    "last_edited": "2026-09-30T04:27:00.000Z",
+    "url": "https://app.notion.com/p/Mama-rayong-3ea770a5c90b802e9345fc19cf0890c0"
   },
   {
     "id": "3e9770a5-c90b-80e5-bb72-f269f9090c3e",
