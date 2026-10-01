@@ -63,73 +63,81 @@
   },
   {
     "id": "3d5770a5-c90b-8037-9b28-dafa2c60a79c",
-    "title": "ดาวลา รับปริญญา🌟",
+    "title": "ลากิจ",
     "date": "2026-11-27",
     "end": null,
-    "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-09-08T07:39:00.000Z",
+    "note": "ดาวลา รับปริญญา🌟",
+    "employees": [
+      "Daw"
+    ],
+    "employeesText": "Daw",
+    "last_edited": "2026-10-01T03:41:00.000Z",
     "url": "https://app.notion.com/p/3d5770a5c90b80379b28dafa2c60a79c"
   },
   {
     "id": "3d5770a5-c90b-80e3-a0f3-d3a20770636f",
-    "title": "ดาวลา รับปริญญา🌟",
+    "title": "ลากิจ",
     "date": "2026-11-25",
     "end": "2026-11-26",
-    "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-09-09T08:41:00.000Z",
+    "note": "ดาวลา รับปริญญา🌟",
+    "employees": [
+      "Daw"
+    ],
+    "employeesText": "Daw",
+    "last_edited": "2026-10-01T03:30:00.000Z",
     "url": "https://app.notion.com/p/3d5770a5c90b80e3a0f3d3a20770636f"
   },
   {
     "id": "3bf770a5-c90b-80cb-8729-dfc2cbe0364d",
-    "title": "ไอซ์ลา",
+    "title": "ลากิจ",
     "date": "2026-11-18",
     "end": "2026-11-20",
     "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-09-15T10:17:00.000Z",
+    "employees": [
+      "Ice"
+    ],
+    "employeesText": "Ice",
+    "last_edited": "2026-10-01T03:30:00.000Z",
     "url": "https://app.notion.com/p/3bf770a5c90b80cb8729dfc2cbe0364d"
   },
   {
     "id": "3d2770a5-c90b-806d-8ba0-c3d32e45566a",
-    "title": "Sky ลา (นกรับเรื่อง)",
+    "title": "ลากิจ",
     "date": "2026-11-13",
     "end": null,
-    "note": "",
+    "note": "Sky ลา (นกรับเรื่อง)",
     "employees": [
       "Sky"
     ],
     "employeesText": "Sky",
-    "last_edited": "2026-09-15T10:16:00.000Z",
-    "url": "https://app.notion.com/p/Sky-3d2770a5c90b806d8ba0c3d32e45566a"
+    "last_edited": "2026-10-01T03:29:00.000Z",
+    "url": "https://app.notion.com/p/3d2770a5c90b806d8ba0c3d32e45566a"
   },
   {
     "id": "3c9770a5-c90b-8093-b7f0-f15bc78055d4",
-    "title": "Sky ลา (นกรับเรื่อง",
+    "title": "ลากิจ",
     "date": "2026-11-12",
     "end": null,
-    "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-09-15T10:16:00.000Z",
-    "url": "https://app.notion.com/p/Sky-3c9770a5c90b8093b7f0f15bc78055d4"
-  },
-  {
-    "id": "3c9770a5-c90b-8059-bbc9-f2bb474cbb3b",
-    "title": "Sky ลา (นกรับเรื่อง)",
-    "date": "2026-11-02",
-    "end": null,
-    "note": "",
+    "note": "Sky ลา นกรับเรื่อง",
     "employees": [
       "Sky"
     ],
     "employeesText": "Sky",
-    "last_edited": "2026-09-15T10:16:00.000Z",
-    "url": "https://app.notion.com/p/Sky-3c9770a5c90b8059bbc9f2bb474cbb3b"
+    "last_edited": "2026-10-01T03:28:00.000Z",
+    "url": "https://app.notion.com/p/3c9770a5c90b8093b7f0f15bc78055d4"
+  },
+  {
+    "id": "3c9770a5-c90b-8059-bbc9-f2bb474cbb3b",
+    "title": "ลากิจ",
+    "date": "2026-11-02",
+    "end": null,
+    "note": "Sky ลา (นกรับเรื่อง)",
+    "employees": [
+      "Sky"
+    ],
+    "employeesText": "Sky",
+    "last_edited": "2026-10-01T03:28:00.000Z",
+    "url": "https://app.notion.com/p/3c9770a5c90b8059bbc9f2bb474cbb3b"
   },
   {
     "id": "3c9770a5-c90b-80c4-b346-ee7707fc4d4d",
@@ -203,6 +211,20 @@
     "url": "https://app.notion.com/p/Its-Thailand-3ea770a5c90b80679849eec5340c7ca6"
   },
   {
+    "id": "3ec770a5-c90b-8066-ad27-c1b36e2387ee",
+    "title": "Overhaul Yamato - Multihead Weigher and Kawashima - Packing Machine 12 sets",
+    "date": "2026-10-13",
+    "end": null,
+    "note": "",
+    "employees": [
+      "EAK",
+      "AA"
+    ],
+    "employeesText": "EAK, AA",
+    "last_edited": "2026-10-01T01:51:00.000Z",
+    "url": "https://app.notion.com/p/Overhaul-Yamato-Multihead-Weigher-and-Kawashima-Packing-Machine-12-sets-3ec770a5c90b8066ad27c1b36e2387ee"
+  },
+  {
     "id": "317770a5-c90b-80b1-a0d8-f0be0835557c",
     "title": "วันหยุดThe Passing of King",
     "date": "2026-10-13",
@@ -215,7 +237,7 @@
   },
   {
     "id": "3eb770a5-c90b-80dc-a16d-c4a358520c23",
-    "title": "ลา",
+    "title": "ลากิจ",
     "date": "2026-10-12",
     "end": null,
     "note": "",
@@ -223,7 +245,7 @@
       "LOVE"
     ],
     "employeesText": "LOVE",
-    "last_edited": "2026-09-30T04:33:00.000Z",
+    "last_edited": "2026-10-01T03:27:00.000Z",
     "url": "https://app.notion.com/p/3eb770a5c90b80dca16dc4a358520c23"
   },
   {
@@ -268,6 +290,20 @@
     "url": "https://app.notion.com/p/3c9770a5c90b804eaccdd5cfd16bcd57"
   },
   {
+    "id": "3ec770a5-c90b-807d-82bb-f3c541320d7e",
+    "title": "PRF เข้าดูหน้างาน 2 โรง",
+    "date": "2026-10-07",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Nok",
+      "Sky"
+    ],
+    "employeesText": "Nok, Sky",
+    "last_edited": "2026-10-01T03:38:00.000Z",
+    "url": "https://app.notion.com/p/PRF-2-3ec770a5c90b807d82bbf3c541320d7e"
+  },
+  {
     "id": "3e4770a5-c90b-80f5-8a09-f2510ad086a7",
     "title": "PR FOOD LAND SERVICE 3RD",
     "date": "2026-10-06",
@@ -283,6 +319,35 @@
     "employeesText": "Moo, EAK, LOVE, pub, PUP",
     "last_edited": "2026-09-30T02:09:00.000Z",
     "url": "https://app.notion.com/p/PR-FOOD-LAND-SERVICE-3RD-3e4770a5c90b80f58a09f2510ad086a7"
+  },
+  {
+    "id": "3eb770a5-c90b-804f-b2b9-fc5016f506aa",
+    "title": "Krungthai Food Group ลำลูกกา 14.00 น.",
+    "date": "2026-10-05",
+    "end": null,
+    "note": "Present & Survey งานซ่อมและ Overhaul",
+    "employees": [
+      "Sky",
+      "LOVE",
+      "Nok",
+      "EAK"
+    ],
+    "employeesText": "Sky, LOVE, Nok, EAK",
+    "last_edited": "2026-09-30T09:08:00.000Z",
+    "url": "https://app.notion.com/p/Krungthai-Food-Group-14-00-3eb770a5c90b804fb2b9fc5016f506aa"
+  },
+  {
+    "id": "3eb770a5-c90b-8051-96f7-f05e36a92de7",
+    "title": "ลากิจ ",
+    "date": "2026-10-05",
+    "end": null,
+    "note": "Mukky ลากิจ พาคุณแม่พบแพทย์ค่ะ",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-10-01T02:57:00.000Z",
+    "url": "https://app.notion.com/p/3eb770a5c90b805196f7f05e36a92de7"
   },
   {
     "id": "3e6770a5-c90b-80b4-a13a-e6a5454bb1e6",
@@ -328,6 +393,19 @@
     "employeesText": "Nack",
     "last_edited": "2026-08-27T02:46:00.000Z",
     "url": "https://app.notion.com/p/3c9770a5c90b80e6b58cc4e1afe1b2bd"
+  },
+  {
+    "id": "3eb770a5-c90b-8046-ad01-e1e12a06d36a",
+    "title": "Mae-ruay /w TPSS 9:00",
+    "date": "2026-10-01",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Title"
+    ],
+    "employeesText": "Title",
+    "last_edited": "2026-09-30T08:57:00.000Z",
+    "url": "https://app.notion.com/p/Mae-ruay-w-TPSS-9-00-3eb770a5c90b8046ad01e1e12a06d36a"
   },
   {
     "id": "3e6770a5-c90b-80e6-be95-d6ea88a0c32d",
@@ -433,16 +511,16 @@
   },
   {
     "id": "3e9770a5-c90b-80e5-bb72-f269f9090c3e",
-    "title": "Benz ลา มีนัดหมอ (นก รับเรื่อง)",
+    "title": "ลาป่วย",
     "date": "2026-09-29",
     "end": null,
-    "note": "",
+    "note": "Benz ลา มีนัดหมอ (นก รับเรื่อง)",
     "employees": [
       "Benz"
     ],
     "employeesText": "Benz",
-    "last_edited": "2026-09-28T10:04:00.000Z",
-    "url": "https://app.notion.com/p/Benz-3e9770a5c90b80e5bb72f269f9090c3e"
+    "last_edited": "2026-10-01T02:47:00.000Z",
+    "url": "https://app.notion.com/p/3e9770a5c90b80e5bb72f269f9090c3e"
   },
   {
     "id": "3e6770a5-c90b-80dd-8ca5-cad6865ca7c1",
@@ -581,7 +659,7 @@
   },
   {
     "id": "3df770a5-c90b-8044-97c3-ecf7b71a5d5c",
-    "title": "พี่โก้ ลา",
+    "title": "ลาพักร้อน",
     "date": "2026-09-25",
     "end": null,
     "note": "",
@@ -589,7 +667,7 @@
       "KO"
     ],
     "employeesText": "KO",
-    "last_edited": "2026-09-18T07:16:00.000Z",
+    "last_edited": "2026-10-01T03:26:00.000Z",
     "url": "https://app.notion.com/p/3df770a5c90b804497c3ecf7b71a5d5c"
   },
   {
@@ -755,7 +833,7 @@
   },
   {
     "id": "3e2770a5-c90b-80c9-ad95-ff8e79009d0b",
-    "title": "ลา",
+    "title": "ลากิจ",
     "date": "2026-09-22",
     "end": null,
     "note": "",
@@ -763,7 +841,7 @@
       "Nack"
     ],
     "employeesText": "Nack",
-    "last_edited": "2026-09-21T14:33:00.000Z",
+    "last_edited": "2026-10-01T03:27:00.000Z",
     "url": "https://app.notion.com/p/3e2770a5c90b80c9ad95ff8e79009d0b"
   },
   {
@@ -808,7 +886,7 @@
   },
   {
     "id": "3e2770a5-c90b-80a4-968d-ee64473f2300",
-    "title": "Benze ลาป่วย",
+    "title": "ลาป่วย",
     "date": "2026-09-21",
     "end": null,
     "note": "",
@@ -816,8 +894,8 @@
       "Benz"
     ],
     "employeesText": "Benz",
-    "last_edited": "2026-09-21T02:37:00.000Z",
-    "url": "https://app.notion.com/p/Benze-3e2770a5c90b80a4968dee64473f2300"
+    "last_edited": "2026-10-01T03:27:00.000Z",
+    "url": "https://app.notion.com/p/3e2770a5c90b80a4968dee64473f2300"
   },
   {
     "id": "3e1770a5-c90b-80cf-9e63-e1ea96ff91cd",
@@ -933,15 +1011,15 @@
   },
   {
     "id": "3db770a5-c90b-806f-a735-dc3bc0612f5b",
-    "title": "เติ้ลลา พบแพทย์",
+    "title": "ลาป่วย",
     "date": "2026-09-18",
     "end": null,
-    "note": "",
+    "note": "เติ้ลลา พบแพทย์",
     "employees": [
       "Title"
     ],
     "employeesText": "Title",
-    "last_edited": "2026-09-18T07:32:00.000Z",
+    "last_edited": "2026-10-01T03:42:00.000Z",
     "url": "https://app.notion.com/p/3db770a5c90b806fa735dc3bc0612f5b"
   },
   {
@@ -1506,16 +1584,16 @@
   },
   {
     "id": "3d1770a5-c90b-8092-8477-fdee3fe38451",
-    "title": "PuP  ลา จ้า (์Nok)",
+    "title": "ลากิจ",
     "date": "2026-09-07",
     "end": null,
-    "note": "",
+    "note": "PuP  ลา จ้า (์Nok)",
     "employees": [
       "pub"
     ],
     "employeesText": "pub",
-    "last_edited": "2026-09-04T03:31:00.000Z",
-    "url": "https://app.notion.com/p/PuP-Nok-3d1770a5c90b80928477fdee3fe38451"
+    "last_edited": "2026-10-01T03:26:00.000Z",
+    "url": "https://app.notion.com/p/3d1770a5c90b80928477fdee3fe38451"
   },
   {
     "id": "3d1770a5-c90b-809f-afec-f8bf664fe3e5",
@@ -1584,7 +1662,7 @@
       "Ice"
     ],
     "employeesText": "AA, Ice",
-    "last_edited": "2026-08-31T09:32:00.000Z",
+    "last_edited": "2026-10-01T03:07:00.000Z",
     "url": "https://app.notion.com/p/PERFECT-PACKAGING-3cd770a5c90b8022b9c6d5d2e9859318"
   },
   {
@@ -1768,15 +1846,15 @@
   },
   {
     "id": "3c8770a5-c90b-800b-aec4-cf0908072f04",
-    "title": "ลากิจ (แน็ค)  คุณพี่นกรับทราบ",
+    "title": "ลากิจ",
     "date": "2026-08-31",
     "end": null,
-    "note": "",
+    "note": "ลากิจ (แน็ค)  คุณพี่นกรับทราบ",
     "employees": [
       "Nack"
     ],
     "employeesText": "Nack",
-    "last_edited": "2026-08-26T08:45:00.000Z",
+    "last_edited": "2026-10-01T03:02:00.000Z",
     "url": "https://app.notion.com/p/3c8770a5c90b800baec4cf0908072f04"
   },
   {
