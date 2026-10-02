@@ -84,7 +84,7 @@
       "Daw"
     ],
     "employeesText": "Daw",
-    "last_edited": "2026-10-01T03:30:00.000Z",
+    "last_edited": "2026-10-01T10:25:00.000Z",
     "url": "https://app.notion.com/p/3d5770a5c90b80e3a0f3d3a20770636f"
   },
   {
@@ -266,15 +266,28 @@
     "title": "มาม่า บ่อวิน",
     "date": "2026-10-11",
     "end": "2026-10-13",
-    "note": "ขัด Mixer",
+    "note": "ขัด Mixer  ฝากรับ บะหมี่ตัวอย่างที่เป็นทรงสี่เหลี่ยมมาด้วยเด้อ",
     "employees": [
       "pub",
       "Moo",
       "EAK"
     ],
     "employeesText": "pub, Moo, EAK",
-    "last_edited": "2026-09-30T04:32:00.000Z",
+    "last_edited": "2026-10-02T04:36:00.000Z",
     "url": "https://app.notion.com/p/3e2770a5c90b802e8e42ef2871b7ee1d"
+  },
+  {
+    "id": "3ed770a5-c90b-8032-ae40-eb87fa64354a",
+    "title": "Office",
+    "date": "2026-10-09",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-10-02T02:36:00.000Z",
+    "url": "https://app.notion.com/p/Office-3ed770a5c90b8032ae40eb87fa64354a"
   },
   {
     "id": "3c9770a5-c90b-804e-accd-d5cfd16bcd57",
@@ -290,6 +303,34 @@
     "url": "https://app.notion.com/p/3c9770a5c90b804eaccdd5cfd16bcd57"
   },
   {
+    "id": "3ed770a5-c90b-8044-9861-f6c0fbea615a",
+    "title": "Office",
+    "date": "2026-10-08",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-02T02:36:00.000Z",
+    "url": "https://app.notion.com/p/Office-3ed770a5c90b80449861f6c0fbea615a"
+  },
+  {
+    "id": "3ed770a5-c90b-80c4-bb7d-ce7276f6d36d",
+    "title": "Office",
+    "date": "2026-10-07",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-02T02:35:00.000Z",
+    "url": "https://app.notion.com/p/Office-3ed770a5c90b80c4bb7dce7276f6d36d"
+  },
+  {
     "id": "3ec770a5-c90b-807d-82bb-f3c541320d7e",
     "title": "PRF เข้าดูหน้างาน 2 โรง",
     "date": "2026-10-07",
@@ -302,6 +343,20 @@
     "employeesText": "Nok, Sky",
     "last_edited": "2026-10-01T03:38:00.000Z",
     "url": "https://app.notion.com/p/PRF-2-3ec770a5c90b807d82bbf3c541320d7e"
+  },
+  {
+    "id": "3ed770a5-c90b-80ee-98dc-d0a0bf4fa7b4",
+    "title": "Office",
+    "date": "2026-10-06",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-02T02:35:00.000Z",
+    "url": "https://app.notion.com/p/Office-3ed770a5c90b80ee98dcd0a0bf4fa7b4"
   },
   {
     "id": "3e4770a5-c90b-80f5-8a09-f2510ad086a7",
@@ -319,6 +374,19 @@
     "employeesText": "Moo, EAK, LOVE, pub, PUP",
     "last_edited": "2026-09-30T02:09:00.000Z",
     "url": "https://app.notion.com/p/PR-FOOD-LAND-SERVICE-3RD-3e4770a5c90b80f58a09f2510ad086a7"
+  },
+  {
+    "id": "3ed770a5-c90b-80f2-8f9b-f985e7716b40",
+    "title": "office ",
+    "date": "2026-10-05",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Nack"
+    ],
+    "employeesText": "Nack",
+    "last_edited": "2026-10-02T03:22:00.000Z",
+    "url": "https://app.notion.com/p/office-3ed770a5c90b80f28f9bf985e7716b40"
   },
   {
     "id": "3eb770a5-c90b-804f-b2b9-fc5016f506aa",
@@ -375,24 +443,12 @@
     "end": null,
     "note": "",
     "employees": [
-      "Muk"
-    ],
-    "employeesText": "Muk",
-    "last_edited": "2026-09-25T02:49:00.000Z",
-    "url": "https://app.notion.com/p/Office-3e6770a5c90b80bd8eb5db4a4a614403"
-  },
-  {
-    "id": "3c9770a5-c90b-80e6-b58c-c4e1afe1b2bd",
-    "title": "ฝ่ายบัญชี",
-    "date": "2026-10-02",
-    "end": null,
-    "note": "ช่วยฝ่ายบัญชีตรวจสอบเอกสาร",
-    "employees": [
+      "Muk",
       "Nack"
     ],
-    "employeesText": "Nack",
-    "last_edited": "2026-08-27T02:46:00.000Z",
-    "url": "https://app.notion.com/p/3c9770a5c90b80e6b58cc4e1afe1b2bd"
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-02T03:21:00.000Z",
+    "url": "https://app.notion.com/p/Office-3e6770a5c90b80bd8eb5db4a4a614403"
   },
   {
     "id": "3eb770a5-c90b-8046-ad01-e1e12a06d36a",
