@@ -236,6 +236,19 @@
     "url": "https://app.notion.com/p/The-Passing-of-King-317770a5c90b80b1a0d8f0be0835557c"
   },
   {
+    "id": "3ed770a5-c90b-806a-b820-e3989c33b161",
+    "title": "ดาวลา",
+    "date": "2026-10-12",
+    "end": null,
+    "note": "ไปต่อใบขับขี่",
+    "employees": [
+      "Daw"
+    ],
+    "employeesText": "Daw",
+    "last_edited": "2026-10-02T12:12:00.000Z",
+    "url": "https://app.notion.com/p/3ed770a5c90b806ab820e3989c33b161"
+  },
+  {
     "id": "3eb770a5-c90b-80dc-a16d-c4a358520c23",
     "title": "ลากิจ",
     "date": "2026-10-12",
@@ -249,19 +262,6 @@
     "url": "https://app.notion.com/p/3eb770a5c90b80dca16dc4a358520c23"
   },
   {
-    "id": "3e4770a5-c90b-809a-a1db-fe4335247dd4",
-    "title": "MAMA Rayong ",
-    "date": "2026-10-11",
-    "end": "2026-10-13",
-    "note": "",
-    "employees": [
-      "PUP"
-    ],
-    "employeesText": "PUP",
-    "last_edited": "2026-09-23T07:50:00.000Z",
-    "url": "https://app.notion.com/p/MAMA-Rayong-3e4770a5c90b809aa1dbfe4335247dd4"
-  },
-  {
     "id": "3e2770a5-c90b-802e-8e42-ef2871b7ee1d",
     "title": "มาม่า บ่อวิน",
     "date": "2026-10-11",
@@ -273,7 +273,7 @@
       "EAK"
     ],
     "employeesText": "pub, Moo, EAK",
-    "last_edited": "2026-10-02T04:36:00.000Z",
+    "last_edited": "2026-10-02T11:00:00.000Z",
     "url": "https://app.notion.com/p/3e2770a5c90b802e8e42ef2871b7ee1d"
   },
   {
@@ -416,6 +416,19 @@
     "employeesText": "Muk",
     "last_edited": "2026-10-01T02:57:00.000Z",
     "url": "https://app.notion.com/p/3eb770a5c90b805196f7f05e36a92de7"
+  },
+  {
+    "id": "3ed770a5-c90b-80da-a0cb-f77c132e43a9",
+    "title": "ลาป่วย",
+    "date": "2026-10-02",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Game"
+    ],
+    "employeesText": "Game",
+    "last_edited": "2026-10-02T07:27:00.000Z",
+    "url": "https://app.notion.com/p/3ed770a5c90b80daa0cbf77c132e43a9"
   },
   {
     "id": "3e6770a5-c90b-80b4-a13a-e6a5454bb1e6",
