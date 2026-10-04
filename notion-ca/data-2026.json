@@ -317,6 +317,21 @@
     "url": "https://app.notion.com/p/Office-3ed770a5c90b80449861f6c0fbea615a"
   },
   {
+    "id": "3ee770a5-c90b-80c2-bb3f-cfad7d351440",
+    "title": "505 โภคภัณฑ์",
+    "date": "2026-10-07",
+    "end": null,
+    "note": "เข้าหน้างานคุยกับ ลค. ช่วงบ่าย",
+    "employees": [
+      "Nok",
+      "Sky",
+      "Moo"
+    ],
+    "employeesText": "Nok, Sky, Moo",
+    "last_edited": "2026-10-03T13:59:00.000Z",
+    "url": "https://app.notion.com/p/505-3ee770a5c90b80c2bb3fcfad7d351440"
+  },
+  {
     "id": "3ed770a5-c90b-80c4-bb7d-ce7276f6d36d",
     "title": "Office",
     "date": "2026-10-07",
@@ -335,13 +350,13 @@
     "title": "PRF เข้าดูหน้างาน 2 โรง",
     "date": "2026-10-07",
     "end": null,
-    "note": "",
+    "note": "พาเซอร์เวย์ ระบบ TKS ทั้ง 2 โรง ช่วงครึ่งวันเช้า",
     "employees": [
       "Nok",
       "Sky"
     ],
     "employeesText": "Nok, Sky",
-    "last_edited": "2026-10-01T03:38:00.000Z",
+    "last_edited": "2026-10-03T14:00:00.000Z",
     "url": "https://app.notion.com/p/PRF-2-3ec770a5c90b807d82bbf3c541320d7e"
   },
   {
@@ -374,6 +389,23 @@
     "employeesText": "Moo, EAK, LOVE, pub, PUP",
     "last_edited": "2026-09-30T02:09:00.000Z",
     "url": "https://app.notion.com/p/PR-FOOD-LAND-SERVICE-3RD-3e4770a5c90b80f58a09f2510ad086a7"
+  },
+  {
+    "id": "3ee770a5-c90b-8027-a307-ca4aae6936b1",
+    "title": "CPF ฉะเชิงเทรา FAT",
+    "date": "2026-10-05",
+    "end": null,
+    "note": "เข้าตรวจงาน ไซโล ",
+    "employees": [
+      "Nok",
+      "Sky",
+      "LOVE",
+      "Moo",
+      "EAK"
+    ],
+    "employeesText": "Nok, Sky, LOVE, Moo, EAK",
+    "last_edited": "2026-10-03T13:58:00.000Z",
+    "url": "https://app.notion.com/p/CPF-FAT-3ee770a5c90b8027a307ca4aae6936b1"
   },
   {
     "id": "3ed770a5-c90b-80f2-8f9b-f985e7716b40",
