@@ -17,10 +17,10 @@
     "end": null,
     "note": "",
     "employees": [
+      "Title",
       "Nok",
       "Ice",
       "KO",
-      "Title",
       "AA",
       "Game",
       "Sky",
@@ -35,8 +35,8 @@
       "TK",
       "Moo"
     ],
-    "employeesText": "Nok, Ice, KO, Title, AA, Game, Sky, Tip, pub, Daw, Nack, LOVE, Benz, EAK, Muk, TK, Moo",
-    "last_edited": "2026-09-05T04:31:00.000Z",
+    "employeesText": "Title, Nok, Ice, KO, AA, Game, Sky, Tip, pub, Daw, Nack, LOVE, Benz, EAK, Muk, TK, Moo",
+    "last_edited": "2026-10-04T17:31:00.000Z",
     "url": "https://app.notion.com/p/Christmas-All-3ce770a5c90b80b59018f2daeeb71d98"
   },
   {
@@ -194,10 +194,10 @@
   },
   {
     "id": "3ea770a5-c90b-8067-9849-eec5340c7ca6",
-    "title": "Its Thailand มาเสนอเครื่องปั้น+เครื่องเกี่ยวยาผง + ยาเม็ด",
+    "title": "Its Thailand ",
     "date": "2026-10-14",
     "end": null,
-    "note": "",
+    "note": "มาเสนอเครื่องปั้น+เครื่องเกี่ยวยาผง + ยาเม็ด",
     "employees": [
       "Ice",
       "Nok",
@@ -207,7 +207,7 @@
       "Title"
     ],
     "employeesText": "Ice, Nok, AA, Sky, Game, Title",
-    "last_edited": "2026-09-29T07:36:00.000Z",
+    "last_edited": "2026-10-04T12:09:00.000Z",
     "url": "https://app.notion.com/p/Its-Thailand-3ea770a5c90b80679849eec5340c7ca6"
   },
   {
@@ -237,7 +237,7 @@
   },
   {
     "id": "3ed770a5-c90b-806a-b820-e3989c33b161",
-    "title": "ดาวลา",
+    "title": "ลากิจ",
     "date": "2026-10-12",
     "end": null,
     "note": "ไปต่อใบขับขี่",
@@ -245,7 +245,7 @@
       "Daw"
     ],
     "employeesText": "Daw",
-    "last_edited": "2026-10-02T12:12:00.000Z",
+    "last_edited": "2026-10-04T12:08:00.000Z",
     "url": "https://app.notion.com/p/3ed770a5c90b806ab820e3989c33b161"
   },
   {
@@ -255,10 +255,11 @@
     "end": null,
     "note": "",
     "employees": [
-      "LOVE"
+      "LOVE",
+      "Benz"
     ],
-    "employeesText": "LOVE",
-    "last_edited": "2026-10-01T03:27:00.000Z",
+    "employeesText": "LOVE, Benz",
+    "last_edited": "2026-10-04T17:28:00.000Z",
     "url": "https://app.notion.com/p/3eb770a5c90b80dca16dc4a358520c23"
   },
   {
@@ -317,6 +318,20 @@
     "url": "https://app.notion.com/p/Office-3ed770a5c90b80449861f6c0fbea615a"
   },
   {
+    "id": "3f0770a5-c90b-80f3-858c-cd35e5a522a8",
+    "title": "SPR ",
+    "date": "2026-10-07",
+    "end": null,
+    "note": "ดูหน้า ติดตั้ง Vibration conveyor",
+    "employees": [
+      "Ice",
+      "Tip"
+    ],
+    "employeesText": "Ice, Tip",
+    "last_edited": "2026-10-05T06:16:00.000Z",
+    "url": "https://app.notion.com/p/SPR-3f0770a5c90b80f3858ccd35e5a522a8"
+  },
+  {
     "id": "3ee770a5-c90b-80c2-bb3f-cfad7d351440",
     "title": "505 โภคภัณฑ์",
     "date": "2026-10-07",
@@ -360,6 +375,38 @@
     "url": "https://app.notion.com/p/PRF-2-3ec770a5c90b807d82bbf3c541320d7e"
   },
   {
+    "id": "3f0770a5-c90b-808b-9636-f6d25ceebaa9",
+    "title": "หนองจอก",
+    "date": "2026-10-06",
+    "end": null,
+    "note": "ดูโรงงาน คูณตระกูล ที่หนองจอก",
+    "employees": [
+      "KO",
+      "Ice",
+      "Title",
+      "Tip"
+    ],
+    "employeesText": "KO, Ice, Title, Tip",
+    "last_edited": "2026-10-05T06:19:00.000Z",
+    "url": "https://app.notion.com/p/3f0770a5c90b808b9636f6d25ceebaa9"
+  },
+  {
+    "id": "3f0770a5-c90b-8020-8c43-e2fc1bd7b2e5",
+    "title": "บริษัท เวลตี้ฟู้ด แมนูแฟคเจอริ่ง จํากัด ",
+    "date": "2026-10-06",
+    "end": null,
+    "note": "10:00 น. วัดหน้างาน Project : Belt scale ",
+    "employees": [
+      "Ice",
+      "Tip",
+      "Title",
+      "KO"
+    ],
+    "employeesText": "Ice, Tip, Title, KO",
+    "last_edited": "2026-10-05T06:17:00.000Z",
+    "url": "https://app.notion.com/p/3f0770a5c90b80208c43e2fc1bd7b2e5"
+  },
+  {
     "id": "3ed770a5-c90b-80ee-98dc-d0a0bf4fa7b4",
     "title": "Office",
     "date": "2026-10-06",
@@ -389,6 +436,21 @@
     "employeesText": "Moo, EAK, LOVE, pub, PUP",
     "last_edited": "2026-09-30T02:09:00.000Z",
     "url": "https://app.notion.com/p/PR-FOOD-LAND-SERVICE-3RD-3e4770a5c90b80f58a09f2510ad086a7"
+  },
+  {
+    "id": "3f0770a5-c90b-80e9-8264-fe65157cdabf",
+    "title": "City Medical Supply Co.,Ltd 13:00",
+    "date": "2026-10-05",
+    "end": null,
+    "note": "พาซัพเจ้าใหม่ คุณนัท เข้าดูหน้างาน",
+    "employees": [
+      "AA",
+      "Ice",
+      "THEP"
+    ],
+    "employeesText": "AA, Ice, THEP",
+    "last_edited": "2026-10-05T03:04:00.000Z",
+    "url": "https://app.notion.com/p/City-Medical-Supply-Co-Ltd-13-00-3f0770a5c90b80e98264fe65157cdabf"
   },
   {
     "id": "3ee770a5-c90b-8027-a307-ca4aae6936b1",
@@ -443,10 +505,11 @@
     "end": null,
     "note": "Mukky ลากิจ พาคุณแม่พบแพทย์ค่ะ",
     "employees": [
-      "Muk"
+      "Muk",
+      "Benz"
     ],
-    "employeesText": "Muk",
-    "last_edited": "2026-10-01T02:57:00.000Z",
+    "employeesText": "Muk, Benz",
+    "last_edited": "2026-10-05T00:13:00.000Z",
     "url": "https://app.notion.com/p/3eb770a5c90b805196f7f05e36a92de7"
   },
   {
@@ -1831,7 +1894,7 @@
       "Title"
     ],
     "employeesText": "Ice, Game, Title",
-    "last_edited": "2026-09-11T02:34:00.000Z",
+    "last_edited": "2026-10-05T03:28:00.000Z",
     "url": "https://app.notion.com/p/10-00-3ca770a5c90b80cc8035ea3779126f65"
   },
   {
@@ -4567,7 +4630,7 @@
       "Muk"
     ],
     "employeesText": "AA, Title, Muk",
-    "last_edited": "2026-06-26T08:57:00.000Z",
+    "last_edited": "2026-10-05T02:33:00.000Z",
     "url": "https://app.notion.com/p/AMT-Food-10-00-AM-387770a5c90b80b99c19ddb71a26998d"
   },
   {
@@ -6597,18 +6660,18 @@
   },
   {
     "id": "35e770a5-c90b-80f1-99f1-f18cdb1ec79a",
-    "title": "เจ้าสัว โคราช 13.30,ซัพฯเจ้าอื่น",
+    "title": "เจ้าสัว โคราช",
     "date": "2026-05-15",
     "end": null,
-    "note": "",
+    "note": "เจ้าสัว โคราช 13.30,ซัพฯเจ้าอื่น",
     "employees": [
       "Nok",
       "Game",
       "Nack"
     ],
     "employeesText": "Nok, Game, Nack",
-    "last_edited": "2026-05-12T09:44:00.000Z",
-    "url": "https://app.notion.com/p/13-30-35e770a5c90b80f199f1f18cdb1ec79a"
+    "last_edited": "2026-10-05T03:09:00.000Z",
+    "url": "https://app.notion.com/p/35e770a5c90b80f199f1f18cdb1ec79a"
   },
   {
     "id": "35a770a5-c90b-80be-87f3-c28c13be719a",
@@ -6871,16 +6934,16 @@
   },
   {
     "id": "35b770a5-c90b-8003-8946-e92c448f2416",
-    "title": "online meeting Ingenium 11.00",
+    "title": "Ingenium",
     "date": "2026-05-11",
     "end": null,
-    "note": "",
+    "note": "online meeting Ingenium 11.00",
     "employees": [
       "Nok"
     ],
     "employeesText": "Nok",
-    "last_edited": "2026-05-09T12:49:00.000Z",
-    "url": "https://app.notion.com/p/online-meeting-Ingenium-11-00-35b770a5c90b80038946e92c448f2416"
+    "last_edited": "2026-10-05T03:10:00.000Z",
+    "url": "https://app.notion.com/p/Ingenium-35b770a5c90b80038946e92c448f2416"
   },
   {
     "id": "35a770a5-c90b-8077-a793-e75c1946228a",
@@ -6968,48 +7031,48 @@
   },
   {
     "id": "350770a5-c90b-80fb-8f5a-f9d8d0132065",
-    "title": "Siam Harvest เข้าไลน์ เพื่อออกแบบ เสนอราคา",
+    "title": "Siam Harvest",
     "date": "2026-05-08",
     "end": null,
-    "note": "",
+    "note": "Siam Harvest เข้าไลน์ เพื่อออกแบบ เสนอราคา",
     "employees": [
       "Nok",
       "Game",
       "LOVE"
     ],
     "employeesText": "Nok, Game, LOVE",
-    "last_edited": "2026-04-30T10:41:00.000Z",
+    "last_edited": "2026-10-05T03:03:00.000Z",
     "url": "https://app.notion.com/p/Siam-Harvest-350770a5c90b80fb8f5af9d8d0132065"
   },
   {
     "id": "356770a5-c90b-8016-986d-e989f81aae2c",
-    "title": "10.00 a.m.Visit at Healthy Pet Food ",
+    "title": "Healthy Pet Food ",
     "date": "2026-05-07",
     "end": null,
-    "note": "",
+    "note": "10.00 a.m.Visit at Healthy Pet Food ",
     "employees": [
       "Game",
       "Benz",
       "Daw"
     ],
     "employeesText": "Game, Benz, Daw",
-    "last_edited": "2026-05-04T08:57:00.000Z",
-    "url": "https://app.notion.com/p/10-00-a-m-Visit-at-Healthy-Pet-Food-356770a5c90b8016986de989f81aae2c"
+    "last_edited": "2026-10-05T03:09:00.000Z",
+    "url": "https://app.notion.com/p/Healthy-Pet-Food-356770a5c90b8016986de989f81aae2c"
   },
   {
     "id": "356770a5-c90b-80c7-8520-d2d4d34e1ada",
-    "title": "10.00 a.m Visit at Healthy Pet Food ",
+    "title": "Healthy Pet Food ",
     "date": "2026-05-07",
     "end": null,
-    "note": "",
+    "note": "10.00 a.m Visit at Healthy Pet Food ",
     "employees": [
       "Benz",
       "Daw",
       "Game"
     ],
     "employeesText": "Benz, Daw, Game",
-    "last_edited": "2026-05-04T08:54:00.000Z",
-    "url": "https://app.notion.com/p/10-00-a-m-Visit-at-Healthy-Pet-Food-356770a5c90b80c78520d2d4d34e1ada"
+    "last_edited": "2026-10-05T03:06:00.000Z",
+    "url": "https://app.notion.com/p/Healthy-Pet-Food-356770a5c90b80c78520d2d4d34e1ada"
   },
   {
     "id": "352770a5-c90b-80ce-a59f-dce767fd82cd",
@@ -7044,16 +7107,16 @@
   },
   {
     "id": "358770a5-c90b-80cf-a106-d0b3d97d35fa",
-    "title": "F plus online support",
+    "title": "F plus ",
     "date": "2026-05-06",
     "end": null,
-    "note": "",
+    "note": "F plus online support",
     "employees": [
       "Moo"
     ],
     "employeesText": "Moo",
-    "last_edited": "2026-05-06T11:14:00.000Z",
-    "url": "https://app.notion.com/p/F-plus-online-support-358770a5c90b80cfa106d0b3d97d35fa"
+    "last_edited": "2026-10-05T03:04:00.000Z",
+    "url": "https://app.notion.com/p/F-plus-358770a5c90b80cfa106d0b3d97d35fa"
   },
   {
     "id": "356770a5-c90b-80ea-bf77-c15ed2f31a9a",
@@ -7068,10 +7131,10 @@
   },
   {
     "id": "352770a5-c90b-806c-80d3-fc1ec132cbab",
-    "title": "TPSS นัดประชุมรายชื่อ ลค.",
+    "title": "TPSS",
     "date": "2026-05-06",
     "end": null,
-    "note": "",
+    "note": "TPSS นัดประชุมรายชื่อ ลค.",
     "employees": [
       "Nok",
       "KO",
@@ -7079,7 +7142,7 @@
       "Daw"
     ],
     "employeesText": "Nok, KO, Title, Daw",
-    "last_edited": "2026-05-05T15:04:00.000Z",
+    "last_edited": "2026-10-05T03:04:00.000Z",
     "url": "https://app.notion.com/p/TPSS-352770a5c90b806c80d3fc1ec132cbab"
   },
   {
@@ -7098,18 +7161,18 @@
   },
   {
     "id": "356770a5-c90b-80cf-b805-d7c4f4d99f3d",
-    "title": "13.00 p.m. Visit at Siam Food",
+    "title": "Siam Food",
     "date": "2026-05-05",
     "end": null,
-    "note": "",
+    "note": "13.00 p.m. Visit at Siam Food",
     "employees": [
       "Benz",
       "Game",
       "Daw"
     ],
     "employeesText": "Benz, Game, Daw",
-    "last_edited": "2026-05-04T08:46:00.000Z",
-    "url": "https://app.notion.com/p/13-00-p-m-Visit-at-Siam-Food-356770a5c90b80cfb805d7c4f4d99f3d"
+    "last_edited": "2026-10-05T03:04:00.000Z",
+    "url": "https://app.notion.com/p/Siam-Food-356770a5c90b80cfb805d7c4f4d99f3d"
   },
   {
     "id": "356770a5-c90b-808b-a9bb-c20b57d529e8",
@@ -7127,10 +7190,10 @@
   },
   {
     "id": "352770a5-c90b-8067-a13c-d9960c5ddab4",
-    "title": "Seapac ดูเครื่อง terminal scale 13.00",
+    "title": "Seapac",
     "date": "2026-05-05",
     "end": null,
-    "note": "",
+    "note": "Seapac ดูเครื่อง terminal scale 13.00",
     "employees": [
       "Nok",
       "AA",
@@ -7139,8 +7202,8 @@
       "Game"
     ],
     "employeesText": "Nok, AA, TK, LOVE, Game",
-    "last_edited": "2026-05-04T02:39:00.000Z",
-    "url": "https://app.notion.com/p/Seapac-terminal-scale-13-00-352770a5c90b8067a13cd9960c5ddab4"
+    "last_edited": "2026-10-05T03:04:00.000Z",
+    "url": "https://app.notion.com/p/Seapac-352770a5c90b8067a13cd9960c5ddab4"
   },
   {
     "id": "352770a5-c90b-80f8-a150-ef4ae9d3958a",
@@ -7173,17 +7236,17 @@
   },
   {
     "id": "356770a5-c90b-8050-875d-f020b63cb7c4",
-    "title": "10.00 a.m Visit at United Kyoei Foods Co., Ltd.",
+    "title": "United Kyoei Foods Co., Ltd.",
     "date": "2026-05-04",
     "end": null,
-    "note": "",
+    "note": "10.00 a.m Visit at United Kyoei Foods Co., Ltd.",
     "employees": [
       "Benz",
       "AA"
     ],
     "employeesText": "Benz, AA",
-    "last_edited": "2026-05-04T08:49:00.000Z",
-    "url": "https://app.notion.com/p/10-00-a-m-Visit-at-United-Kyoei-Foods-Co-Ltd-356770a5c90b8050875df020b63cb7c4"
+    "last_edited": "2026-10-05T03:05:00.000Z",
+    "url": "https://app.notion.com/p/United-Kyoei-Foods-Co-Ltd-356770a5c90b8050875df020b63cb7c4"
   },
   {
     "id": "352770a5-c90b-8049-afb3-f538c7ad18c0",
@@ -7317,29 +7380,18 @@
   },
   {
     "id": "335770a5-c90b-80c6-aee6-ca24a40ab108",
-    "title": "Visit at V.Food",
+    "title": "V.Food",
     "date": "2026-04-29",
     "end": null,
-    "note": "",
+    "note": "Visit at V.Food",
     "employees": [
       "Benz",
       "TK",
       "Game"
     ],
     "employeesText": "Benz, TK, Game",
-    "last_edited": "2026-04-21T04:29:00.000Z",
-    "url": "https://app.notion.com/p/Visit-at-V-Food-335770a5c90b80c6aee6ca24a40ab108"
-  },
-  {
-    "id": "350770a5-c90b-80b7-b8b3-c447fb018a0a",
-    "title": "ไม่มีชื่อ",
-    "date": "2026-04-28",
-    "end": null,
-    "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-05-20T04:46:00.000Z",
-    "url": "https://app.notion.com/p/350770a5c90b80b7b8b3c447fb018a0a"
+    "last_edited": "2026-10-05T03:03:00.000Z",
+    "url": "https://app.notion.com/p/V-Food-335770a5c90b80c6aee6ca24a40ab108"
   },
   {
     "id": "349770a5-c90b-8052-bfe4-deeac944aa29",
@@ -7371,18 +7423,18 @@
   },
   {
     "id": "351770a5-c90b-8060-af8d-da4de52b8f48",
-    "title": "13.30 น. เข้าหน้างานโก๋แก่ ดูหน้างาน",
+    "title": "โก๋แก่",
     "date": "2026-04-27",
     "end": null,
-    "note": "",
+    "note": "13.30 น. เข้าหน้างานโก๋แก่ ดูหน้างาน",
     "employees": [
       "Benz",
       "KO",
       "Game"
     ],
     "employeesText": "Benz, KO, Game",
-    "last_edited": "2026-04-29T11:03:00.000Z",
-    "url": "https://app.notion.com/p/13-30-351770a5c90b8060af8dda4de52b8f48"
+    "last_edited": "2026-10-05T03:02:00.000Z",
+    "url": "https://app.notion.com/p/351770a5c90b8060af8dda4de52b8f48"
   },
   {
     "id": "34c770a5-c90b-80ff-825b-f8a25d936f3d",
@@ -7428,16 +7480,16 @@
   },
   {
     "id": "34d770a5-c90b-804a-b694-d55fee429a08",
-    "title": "PRF PM งานโปรแกรมร่วมกับ Dtech",
+    "title": "PRF PM",
     "date": "2026-04-26",
     "end": null,
-    "note": "",
+    "note": "PRF PM งานโปรแกรมร่วมกับ Dtech",
     "employees": [
       "Nok"
     ],
     "employeesText": "Nok",
-    "last_edited": "2026-04-25T07:05:00.000Z",
-    "url": "https://app.notion.com/p/PRF-PM-Dtech-34d770a5c90b804ab694d55fee429a08"
+    "last_edited": "2026-10-05T03:02:00.000Z",
+    "url": "https://app.notion.com/p/PRF-PM-34d770a5c90b804ab694d55fee429a08"
   },
   {
     "id": "336770a5-c90b-809e-b459-eef1b872be72",
@@ -7518,10 +7570,10 @@
   },
   {
     "id": "349770a5-c90b-8016-8ee7-f604fac7275a",
-    "title": "10.00 น. เข้าหน้างานเอฟ-พลัส เพื่อเก็บ Punch List",
+    "title": "F-Plus",
     "date": "2026-04-23",
     "end": "2026-04-24",
-    "note": "",
+    "note": "10.00 น. เข้าหน้างานเอฟ-พลัส เพื่อเก็บ Punch List",
     "employees": [
       "Benz",
       "Moo",
@@ -7533,8 +7585,8 @@
       "KO"
     ],
     "employeesText": "Benz, Moo, Title, EAK, LOVE, Daw, Game, KO",
-    "last_edited": "2026-04-27T03:38:00.000Z",
-    "url": "https://app.notion.com/p/10-00-Punch-List-349770a5c90b80168ee7f604fac7275a"
+    "last_edited": "2026-10-05T03:01:00.000Z",
+    "url": "https://app.notion.com/p/F-Plus-349770a5c90b80168ee7f604fac7275a"
   },
   {
     "id": "348770a5-c90b-80e4-ada3-efe7465b018d",
@@ -7553,17 +7605,17 @@
   },
   {
     "id": "348770a5-c90b-804b-abfe-d2c4d14e6748",
-    "title": "11.00 AM Visit At WGCL",
+    "title": "WGCL",
     "date": "2026-04-23",
     "end": null,
-    "note": "",
+    "note": "11.00 AM Visit At WGCL",
     "employees": [
       "Title",
       "Game"
     ],
     "employeesText": "Title, Game",
-    "last_edited": "2026-04-21T02:14:00.000Z",
-    "url": "https://app.notion.com/p/11-00-AM-Visit-At-WGCL-348770a5c90b804babfed2c4d14e6748"
+    "last_edited": "2026-10-05T03:00:00.000Z",
+    "url": "https://app.notion.com/p/WGCL-348770a5c90b804babfed2c4d14e6748"
   },
   {
     "id": "346770a5-c90b-80c3-990a-cb2a411909c3",
@@ -7691,16 +7743,16 @@
   },
   {
     "id": "346770a5-c90b-808e-b6d5-e9a0d3d03619",
-    "title": "Glico on site visit",
+    "title": "Glico ",
     "date": "2026-04-20",
     "end": null,
-    "note": "ท่อหลุด รอประชุมญี่ปุ่น",
+    "note": "on site visit ท่อหลุด รอประชุมญี่ปุ่น",
     "employees": [
       "Moo"
     ],
     "employeesText": "Moo",
-    "last_edited": "2026-04-20T13:03:00.000Z",
-    "url": "https://app.notion.com/p/Glico-on-site-visit-346770a5c90b808eb6d5e9a0d3d03619"
+    "last_edited": "2026-10-05T03:01:00.000Z",
+    "url": "https://app.notion.com/p/Glico-346770a5c90b808eb6d5e9a0d3d03619"
   },
   {
     "id": "345770a5-c90b-80e1-bc32-db612a338e0e",
@@ -7815,18 +7867,18 @@
   },
   {
     "id": "330770a5-c90b-802c-9fdd-f09d5186060b",
-    "title": "10.00 Thai Flour (Sam Phran) K’Pisit",
+    "title": "Thai Flour (Sam Phran)",
     "date": "2026-04-17",
     "end": null,
-    "note": "",
+    "note": "10.00 Thai Flour (Sam Phran) K’Pisit",
     "employees": [
       "Benz",
       "AA",
       "Title"
     ],
     "employeesText": "Benz, AA, Title",
-    "last_edited": "2026-04-16T02:59:00.000Z",
-    "url": "https://app.notion.com/p/10-00-Thai-Flour-Sam-Phran-K-Pisit-330770a5c90b802c9fddf09d5186060b"
+    "last_edited": "2026-10-05T03:00:00.000Z",
+    "url": "https://app.notion.com/p/Thai-Flour-Sam-Phran-330770a5c90b802c9fddf09d5186060b"
   },
   {
     "id": "317770a5-c90b-80d9-90c8-ce9b884c73ca",
@@ -8342,31 +8394,31 @@
   },
   {
     "id": "335770a5-c90b-809c-bf44-d5f374ab2d38",
-    "title": "Carabao 13.30 Meeting Online update progress",
+    "title": "Carabao ",
     "date": "2026-04-03",
     "end": null,
-    "note": "",
+    "note": "13.30 Meeting Online update progress",
     "employees": [
       "Nok"
     ],
     "employeesText": "Nok",
-    "last_edited": "2026-04-01T10:21:00.000Z",
-    "url": "https://app.notion.com/p/Carabao-13-30-Meeting-Online-update-progress-335770a5c90b809cbf44d5f374ab2d38"
+    "last_edited": "2026-10-05T02:58:00.000Z",
+    "url": "https://app.notion.com/p/Carabao-335770a5c90b809cbf44d5f374ab2d38"
   },
   {
     "id": "335770a5-c90b-8086-9e71-d2b5336bc667",
-    "title": "CPF ฉะเชิงเทรา 10.00 ดูพื้นที่ติดตั้ง",
+    "title": "CPF ฉะเชิงเทรา ",
     "date": "2026-04-03",
     "end": null,
-    "note": "",
+    "note": "10.00 ดูพื้นที่ติดตั้ง",
     "employees": [
       "Nok",
       "LOVE",
       "Game"
     ],
     "employeesText": "Nok, LOVE, Game",
-    "last_edited": "2026-04-02T09:53:00.000Z",
-    "url": "https://app.notion.com/p/CPF-10-00-335770a5c90b80869e71d2b5336bc667"
+    "last_edited": "2026-10-05T02:58:00.000Z",
+    "url": "https://app.notion.com/p/CPF-335770a5c90b80869e71d2b5336bc667"
   },
   {
     "id": "330770a5-c90b-8069-8a92-eccb89d3f02e",
@@ -9103,16 +9155,16 @@
   },
   {
     "id": "324770a5-c90b-8095-9e7a-c0b25cdb64a9",
-    "title": "ลา ไปสัมมนา Danfoss plate heat",
+    "title": "ลาสัมมนา",
     "date": "2026-03-19",
     "end": "2026-03-20",
-    "note": "",
+    "note": "ลา ไปสัมมนา Danfoss plate heat",
     "employees": [
       "Moo"
     ],
     "employeesText": "Moo",
-    "last_edited": "2026-03-18T03:15:00.000Z",
-    "url": "https://app.notion.com/p/Danfoss-plate-heat-324770a5c90b80959e7ac0b25cdb64a9"
+    "last_edited": "2026-10-05T02:57:00.000Z",
+    "url": "https://app.notion.com/p/324770a5c90b80959e7ac0b25cdb64a9"
   },
   {
     "id": "322770a5-c90b-80c9-8d5a-df7608591bc7",
@@ -9334,10 +9386,10 @@
   },
   {
     "id": "322770a5-c90b-8040-a54e-fdaf979f3188",
-    "title": "IMC จับขโมย",
+    "title": "IMC ",
     "date": "2026-03-13",
     "end": null,
-    "note": "",
+    "note": "IMC จับขโมย",
     "employees": [
       "KO",
       "Moo",
@@ -9347,7 +9399,7 @@
       "TK"
     ],
     "employeesText": "KO, Moo, Tip, Title, Benz, TK",
-    "last_edited": "2026-03-18T03:01:00.000Z",
+    "last_edited": "2026-10-05T02:56:00.000Z",
     "url": "https://app.notion.com/p/IMC-322770a5c90b8040a54efdaf979f3188"
   },
   {
@@ -9766,15 +9818,15 @@
   },
   {
     "id": "317770a5-c90b-806c-8a89-cefbcb04b36c",
-    "title": "มีนัดพบแพทย์ ",
+    "title": "ลาป่วย",
     "date": "2026-03-02",
     "end": null,
-    "note": "",
+    "note": "มีนัดพบแพทย์ ",
     "employees": [
       "Nack"
     ],
     "employeesText": "Nack",
-    "last_edited": "2026-03-02T01:15:00.000Z",
+    "last_edited": "2026-10-05T02:55:00.000Z",
     "url": "https://app.notion.com/p/317770a5c90b806c8a89cefbcb04b36c"
   },
   {
@@ -9934,15 +9986,15 @@
   },
   {
     "id": "30c770a5-c90b-8034-bdf9-dec5ea8d9cb6",
-    "title": "แพทย์นัดตรวจ",
+    "title": "ลาป่วย",
     "date": "2026-02-25",
     "end": null,
-    "note": "",
+    "note": "แพทย์นัดตรวจ",
     "employees": [
       "Muk"
     ],
     "employeesText": "Muk",
-    "last_edited": "2026-02-19T05:30:00.000Z",
+    "last_edited": "2026-10-05T02:55:00.000Z",
     "url": "https://app.notion.com/p/30c770a5c90b8034bdf9dec5ea8d9cb6"
   },
   {
