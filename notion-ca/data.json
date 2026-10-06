@@ -255,11 +255,10 @@
     "end": null,
     "note": "",
     "employees": [
-      "LOVE",
-      "Benz"
+      "LOVE"
     ],
-    "employeesText": "LOVE, Benz",
-    "last_edited": "2026-10-04T17:28:00.000Z",
+    "employeesText": "LOVE",
+    "last_edited": "2026-10-05T08:34:00.000Z",
     "url": "https://app.notion.com/p/3eb770a5c90b80dca16dc4a358520c23"
   },
   {
@@ -362,7 +361,7 @@
   },
   {
     "id": "3ec770a5-c90b-807d-82bb-f3c541320d7e",
-    "title": "PRF เข้าดูหน้างาน 2 โรง",
+    "title": "PRF",
     "date": "2026-10-07",
     "end": null,
     "note": "พาเซอร์เวย์ ระบบ TKS ทั้ง 2 โรง ช่วงครึ่งวันเช้า",
@@ -371,15 +370,15 @@
       "Sky"
     ],
     "employeesText": "Nok, Sky",
-    "last_edited": "2026-10-03T14:00:00.000Z",
-    "url": "https://app.notion.com/p/PRF-2-3ec770a5c90b807d82bbf3c541320d7e"
+    "last_edited": "2026-10-05T10:30:00.000Z",
+    "url": "https://app.notion.com/p/PRF-3ec770a5c90b807d82bbf3c541320d7e"
   },
   {
     "id": "3f0770a5-c90b-808b-9636-f6d25ceebaa9",
     "title": "หนองจอก",
     "date": "2026-10-06",
     "end": null,
-    "note": "ดูโรงงาน คูณตระกูล ที่หนองจอก",
+    "note": "14:00 ดูโรงงาน k.ตระกูล ที่หนองจอก",
     "employees": [
       "KO",
       "Ice",
@@ -387,7 +386,7 @@
       "Tip"
     ],
     "employeesText": "KO, Ice, Title, Tip",
-    "last_edited": "2026-10-05T06:19:00.000Z",
+    "last_edited": "2026-10-05T10:29:00.000Z",
     "url": "https://app.notion.com/p/3f0770a5c90b808b9636f6d25ceebaa9"
   },
   {
@@ -457,7 +456,7 @@
     "title": "CPF ฉะเชิงเทรา FAT",
     "date": "2026-10-05",
     "end": null,
-    "note": "เข้าตรวจงาน ไซโล ",
+    "note": "เข้าตรวจงาน ไซโล แนะเรื่อง 1.หมวกจีน มีสะสมแป้งใต้หมวกจีน-give แจ้งไม่น่าจะมีปัญหา       2. Level ตำแหน่ง-giveแจ้งว่าตำแหน่งไม่สำคัญเพราะ ใช้ Scada 3.เรื่องถังminor-giveแจ้งว่าไม่ต้องมีโหลดแซล compenstae เอา 4. ถังน้ำ850/Lไม่มีบัฟเฟอร์หัวถัง giveแจ้ง floor scale อันเดียวปั้ม เข้ามิกได้อยู่",
     "employees": [
       "Nok",
       "Sky",
@@ -466,7 +465,7 @@
       "EAK"
     ],
     "employeesText": "Nok, Sky, LOVE, Moo, EAK",
-    "last_edited": "2026-10-03T13:58:00.000Z",
+    "last_edited": "2026-10-05T10:57:00.000Z",
     "url": "https://app.notion.com/p/CPF-FAT-3ee770a5c90b8027a307ca4aae6936b1"
   },
   {
@@ -487,15 +486,16 @@
     "title": "Krungthai Food Group ลำลูกกา 14.00 น.",
     "date": "2026-10-05",
     "end": null,
-    "note": "Present & Survey งานซ่อมและ Overhaul",
+    "note": "Present & Survey งานซ่อมและ Overhaul รับ amplifier มา 1 ตัวลองซ่อม และรับงาน ลดอุณหภูมิ ไส้กรอก 78c to 0c in 30min 2200kg/h ",
     "employees": [
       "Sky",
       "LOVE",
       "Nok",
-      "EAK"
+      "EAK",
+      "Moo"
     ],
-    "employeesText": "Sky, LOVE, Nok, EAK",
-    "last_edited": "2026-09-30T09:08:00.000Z",
+    "employeesText": "Sky, LOVE, Nok, EAK, Moo",
+    "last_edited": "2026-10-05T11:00:00.000Z",
     "url": "https://app.notion.com/p/Krungthai-Food-Group-14-00-3eb770a5c90b804fb2b9fc5016f506aa"
   },
   {
