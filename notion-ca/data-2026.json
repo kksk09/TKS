@@ -282,13 +282,15 @@
     "title": "ไม่มีชื่อ",
     "date": "2026-10-09",
     "end": null,
-    "note": "10:30 น.พบคุณพงศกร",
+    "note": "14:00 น.พบคุณพงศกร",
     "employees": [
       "Daw",
-      "Game"
+      "Game",
+      "Ice",
+      "Tip"
     ],
-    "employeesText": "Daw, Game",
-    "last_edited": "2026-10-07T03:43:00.000Z",
+    "employeesText": "Daw, Game, Ice, Tip",
+    "last_edited": "2026-10-08T02:14:00.000Z",
     "url": "https://app.notion.com/p/Nutrix-3f2770a5c90b8000907bed7c3c013717"
   },
   {
@@ -316,17 +318,6 @@
     "employeesText": "Nack",
     "last_edited": "2026-08-27T02:47:00.000Z",
     "url": "https://app.notion.com/p/3c9770a5c90b804eaccdd5cfd16bcd57"
-  },
-  {
-    "id": "3f2770a5-c90b-80a7-80d1-c8e6a54b41bb",
-    "title": "ไม่มีชื่อ",
-    "date": "2026-10-08",
-    "end": null,
-    "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-10-07T03:42:00.000Z",
-    "url": "https://app.notion.com/p/3f2770a5c90b80a780d1c8e6a54b41bb"
   },
   {
     "id": "3ed770a5-c90b-8044-9861-f6c0fbea615a",
@@ -365,10 +356,11 @@
     "note": "ดูหน้า ติดตั้ง Vibration conveyor",
     "employees": [
       "Ice",
-      "Tip"
+      "Benz",
+      "Nack"
     ],
-    "employeesText": "Ice, Tip",
-    "last_edited": "2026-10-05T06:16:00.000Z",
+    "employeesText": "Ice, Benz, Nack",
+    "last_edited": "2026-10-08T02:23:00.000Z",
     "url": "https://app.notion.com/p/SPR-3f0770a5c90b80f3858ccd35e5a522a8"
   },
   {
@@ -376,15 +368,14 @@
     "title": "ไม่มีชื่อ",
     "date": "2026-10-07",
     "end": null,
-    "note": "เข้าหน้างานคุยกับ ลค. ช่วงบ่าย",
+    "note": "คุยเรื่องโปรเจ็คงานแป้งของภาคอิสาน ให้แนะนำเข้าลูกค้า",
     "employees": [
       "Nok",
-      "Sky",
-      "Moo"
+      "Sky"
     ],
-    "employeesText": "Nok, Sky, Moo",
-    "last_edited": "2026-10-03T13:59:00.000Z",
-    "url": "https://app.notion.com/p/505-3ee770a5c90b80c2bb3fcfad7d351440"
+    "employeesText": "Nok, Sky",
+    "last_edited": "2026-10-08T03:01:00.000Z",
+    "url": "https://app.notion.com/p/3ee770a5c90b80c2bb3fcfad7d351440"
   },
   {
     "id": "3ed770a5-c90b-80c4-bb7d-ce7276f6d36d",
@@ -560,13 +551,13 @@
     "title": "ไม่มีชื่อ",
     "date": "2026-10-05",
     "end": null,
-    "note": "Mukky ลากิจ พาคุณแม่พบแพทย์ค่ะ",
+    "note": "Mukky ลากิจ พาคุณแม่พบแพทย์ค่ะ/Benz ลากิจฉุกเฉิน พาย่าไปโรงพยาบาลค่ะ",
     "employees": [
       "Muk",
       "Benz"
     ],
     "employeesText": "Muk, Benz",
-    "last_edited": "2026-10-05T00:13:00.000Z",
+    "last_edited": "2026-10-08T03:29:00.000Z",
     "url": "https://app.notion.com/p/3eb770a5c90b805196f7f05e36a92de7"
   },
   {
