@@ -193,6 +193,17 @@
     "url": "https://app.notion.com/p/3c9770a5c90b800f9d8af53fc98310f8"
   },
   {
+    "id": "3f4770a5-c90b-8000-8417-e43587b07a8a",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-10-15",
+    "end": null,
+    "note": "",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-10-09T06:37:00.000Z",
+    "url": "https://app.notion.com/p/3f4770a5c90b80008417e43587b07a8a"
+  },
+  {
     "id": "3ea770a5-c90b-8067-9849-eec5340c7ca6",
     "title": "ไม่มีชื่อ",
     "date": "2026-10-14",
@@ -429,12 +440,11 @@
     "note": "14:00 ดูโรงงาน k.ตระกูล ที่หนองจอก",
     "employees": [
       "KO",
-      "Ice",
       "Title",
       "Tip"
     ],
-    "employeesText": "KO, Ice, Title, Tip",
-    "last_edited": "2026-10-05T10:29:00.000Z",
+    "employeesText": "KO, Title, Tip",
+    "last_edited": "2026-10-08T07:47:00.000Z",
     "url": "https://app.notion.com/p/3f0770a5c90b808b9636f6d25ceebaa9"
   },
   {
@@ -471,17 +481,18 @@
     "id": "3e4770a5-c90b-80f5-8a09-f2510ad086a7",
     "title": "ไม่มีชื่อ",
     "date": "2026-10-06",
-    "end": "2026-10-09",
+    "end": "2026-10-08",
     "note": "",
     "employees": [
       "Moo",
       "EAK",
       "LOVE",
       "pub",
+      "Vin",
       "PUP"
     ],
-    "employeesText": "Moo, EAK, LOVE, pub, PUP",
-    "last_edited": "2026-10-07T00:47:00.000Z",
+    "employeesText": "Moo, EAK, LOVE, pub, Vin, PUP",
+    "last_edited": "2026-10-09T05:52:00.000Z",
     "url": "https://app.notion.com/p/PR-FOOD-LAND-SERVICE-3RD-3e4770a5c90b80f58a09f2510ad086a7"
   },
   {
