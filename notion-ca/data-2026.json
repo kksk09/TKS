@@ -97,7 +97,7 @@
       "Ice"
     ],
     "employeesText": "Ice",
-    "last_edited": "2026-10-06T12:37:00.000Z",
+    "last_edited": "2026-10-09T13:27:00.000Z",
     "url": "https://app.notion.com/p/3bf770a5c90b80cb8729dfc2cbe0364d"
   },
   {
@@ -153,6 +153,20 @@
     "url": "https://app.notion.com/p/3c9770a5c90b80c4b346ee7707fc4d4d"
   },
   {
+    "id": "3f4770a5-c90b-8077-a9c2-ef26f0dd80cf",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-10-26",
+    "end": null,
+    "note": "",
+    "employees": [
+      "AA",
+      "Sky"
+    ],
+    "employeesText": "AA, Sky",
+    "last_edited": "2026-10-09T10:32:00.000Z",
+    "url": "https://app.notion.com/p/Meeting-Osotspa-3f4770a5c90b8077a9c2ef26f0dd80cf"
+  },
+  {
     "id": "3e9770a5-c90b-805e-bf09-eaf0362c41a6",
     "title": "ไม่มีชื่อ",
     "date": "2026-10-25",
@@ -180,6 +194,47 @@
     "url": "https://app.notion.com/p/Chulalongkorn-Day-317770a5c90b80359cebd4ae123f6602"
   },
   {
+    "id": "3f4770a5-c90b-80be-851a-f4bb71f3270e",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-10-20",
+    "end": null,
+    "note": "",
+    "employees": [
+      "AA",
+      "THEP",
+      "Ice"
+    ],
+    "employeesText": "AA, THEP, Ice",
+    "last_edited": "2026-10-09T07:28:00.000Z",
+    "url": "https://app.notion.com/p/City-Medical-Supply-3f4770a5c90b80be851af4bb71f3270e"
+  },
+  {
+    "id": "3f4770a5-c90b-80d9-8b91-d5933f3c0188",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-10-19",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Moo"
+    ],
+    "employeesText": "Moo",
+    "last_edited": "2026-10-09T07:24:00.000Z",
+    "url": "https://app.notion.com/p/Glico-Training-3f4770a5c90b80d98b91d5933f3c0188"
+  },
+  {
+    "id": "3f4770a5-c90b-800c-a660-c586749c6203",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-10-16",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-10-09T11:03:00.000Z",
+    "url": "https://app.notion.com/p/Office-3f4770a5c90b800ca660c586749c6203"
+  },
+  {
     "id": "3c9770a5-c90b-800f-9d8a-f53fc98310f8",
     "title": "ไม่มีชื่อ",
     "date": "2026-10-16",
@@ -193,15 +248,76 @@
     "url": "https://app.notion.com/p/3c9770a5c90b800f9d8af53fc98310f8"
   },
   {
-    "id": "3f4770a5-c90b-8000-8417-e43587b07a8a",
+    "id": "3f4770a5-c90b-8089-bbb7-df171a8aff91",
     "title": "ไม่มีชื่อ",
     "date": "2026-10-15",
     "end": null,
     "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-10-09T06:37:00.000Z",
-    "url": "https://app.notion.com/p/3f4770a5c90b80008417e43587b07a8a"
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-09T11:03:00.000Z",
+    "url": "https://app.notion.com/p/Office-3f4770a5c90b8089bbb7df171a8aff91"
+  },
+  {
+    "id": "3f4770a5-c90b-80b0-91a3-e7fa079c259e",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-10-15",
+    "end": null,
+    "note": "ลาไปงานขาวดำ คนในครอบครัว",
+    "employees": [
+      "Sky"
+    ],
+    "employeesText": "Sky",
+    "last_edited": "2026-10-09T09:02:00.000Z",
+    "url": "https://app.notion.com/p/3f4770a5c90b80b091a3e7fa079c259e"
+  },
+  {
+    "id": "3f4770a5-c90b-8047-97ce-d0141e88216c",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-10-14",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-10-09T11:01:00.000Z",
+    "url": "https://app.notion.com/p/Office-3f4770a5c90b804797ced0141e88216c"
+  },
+  {
+    "id": "3f4770a5-c90b-80af-bc6b-ec2673dab5c6",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-10-14",
+    "end": null,
+    "note": "Online meeting เรื่องเก็บเงิน Installation กับทีมผู้บริหาร",
+    "employees": [
+      "Nok",
+      "Sky",
+      "Moo",
+      "LOVE",
+      "Tip",
+      "AA"
+    ],
+    "employeesText": "Nok, Sky, Moo, LOVE, Tip, AA",
+    "last_edited": "2026-10-09T09:03:00.000Z",
+    "url": "https://app.notion.com/p/Carabao-Meeting-Online-10-00-3f4770a5c90b80afbc6bec2673dab5c6"
+  },
+  {
+    "id": "3f4770a5-c90b-8078-9b17-d3f5e175fccb",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-10-14",
+    "end": "2026-10-15",
+    "note": "",
+    "employees": [
+      "EAK",
+      "Sky"
+    ],
+    "employeesText": "EAK, Sky",
+    "last_edited": "2026-10-10T04:33:00.000Z",
+    "url": "https://app.notion.com/p/URC-3f4770a5c90b80789b17d3f5e175fccb"
   },
   {
     "id": "3ea770a5-c90b-8067-9849-eec5340c7ca6",
@@ -245,6 +361,20 @@
     "employeesText": "",
     "last_edited": "2026-03-02T04:29:00.000Z",
     "url": "https://app.notion.com/p/The-Passing-of-King-317770a5c90b80b1a0d8f0be0835557c"
+  },
+  {
+    "id": "3f4770a5-c90b-8001-bcd4-e557aae11fbd",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-10-12",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-09T11:01:00.000Z",
+    "url": "https://app.notion.com/p/Office-3f4770a5c90b8001bcd4e557aae11fbd"
   },
   {
     "id": "3ed770a5-c90b-806a-b820-e3989c33b161",
