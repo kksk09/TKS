@@ -92,11 +92,9 @@ async function fetchDataByYear(year) {
     const cleanData = allResults.map(page => {
       const props = page.properties;
 
-      // Title
-      let title = "ไม่มีชื่อ";
-      if (props.Task?.title?.length > 0) {
-        title = props.Task.title.map(t => t.plain_text).join("");
-      }
+      // Title 
+     const titleProp = Object.values(props).find(p => p.type === "title");
+    const title = titleProp?.title?.map(t => t.plain_text).join("") || "ไม่มีชื่อ";  
 
       // Date
       const date = props.Date?.date?.start || null;
