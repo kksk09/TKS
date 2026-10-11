@@ -106,6 +106,30 @@ body{
 .data-table th.sort-asc  .sort-icon::after{ content:'▲'; }
 .data-table th.sort-desc .sort-icon::after{ content:'▼'; }
 .data-table th:not(.sort-asc):not(.sort-desc) .sort-icon::after{ content:'⇅'; }
+.data-table thead tr.sort-row{ border-bottom:0; }
+.data-table thead tr.sort-row th{ cursor:default; padding-bottom:6px; }
+.data-table thead tr.filter-row{ border-bottom:2px solid rgba(43,95,165,0.18); }
+.data-table thead tr.filter-row th{ cursor:default; padding-top:0; }
+.data-table thead tr.filter-row th:hover{ color:var(--blue-s); }
+.sort-btn{ all:unset; cursor:pointer; display:inline-flex; align-items:center; gap:4px; }
+.sort-btn:focus-visible{ outline:2px solid var(--blue-s); outline-offset:3px; border-radius:4px; }
+.data-table th .sort-icon{ margin-left:0; }
+.data-table th.sort-asc .sort-icon,.data-table th.sort-desc .sort-icon{ opacity:1; color:var(--blue-s); }
+.col-filter{
+  width:100%; font:inherit; font-size:0.78rem; font-weight:400; text-transform:none; letter-spacing:0;
+  padding:6px 10px; border-radius:8px; border:1px solid var(--glass-b);
+  background:#fff; color:var(--txt); outline:none;
+}
+.col-filter:focus{ border-color:var(--blue-s); box-shadow:0 0 0 3px rgba(74,222,128,0.22); }
+.tags{ display:flex; flex-wrap:wrap; gap:6px; }
+.tag{
+  font:inherit; font-size:0.76rem; border:1px solid transparent; cursor:pointer;
+  background:rgba(21,128,61,0.12); color:var(--blue-s); padding:2px 10px; border-radius:999px;
+  transition:border-color .15s; word-break:break-word; text-align:left;
+}
+.tag:hover{ border-color:var(--blue-s); }
+.tag:focus-visible{ outline:2px solid var(--blue-s); outline-offset:2px; }
+.tag.active{ background:var(--blue-s); color:#fff; }
 .data-table tbody tr{ border-bottom:1px solid rgba(43,95,165,0.07); transition:background .14s; }
 .data-table tbody tr:hover{ background:rgba(43,95,165,0.05); }
 .data-table td{
@@ -407,12 +431,33 @@ async function init() {
 
 function headerKey(i) { return tableHeaders[i] + '__' + i; }
 
+let colFilters = {}; // ตัวกรองรายคอลัมน์ { index: text }
+
+function isTagColumn(header) {
+  return /^(Sale|Support|Status2)$/i.test(String(header).trim());
+}
+
 function buildTableHead() {
   const thead = document.getElementById('tblHead');
-  thead.innerHTML = '<tr>' + tableHeaders.map((h, i) => {
-    const lbl = h || ('Col ' + (i + 1));
-    return `<th onclick="sortTable(${i})">${lbl}<span class="sort-icon"></span></th>`;
-  }).join('') + '</tr>';
+  const lbls = tableHeaders.map((h, i) => h || ('Col ' + (i + 1)));
+  thead.innerHTML =
+    '<tr class="sort-row">' + lbls.map((l, i) =>
+      `<th data-idx="${i}" aria-sort="none"><button type="button" class="sort-btn" onclick="sortTable(${i})">${escapeHtml(l)}<span class="sort-icon"></span></button></th>`
+    ).join('') + '</tr>' +
+    '<tr class="filter-row">' + lbls.map((l, i) =>
+      `<th><input type="search" class="col-filter" data-col="${i}" placeholder="ค้นหา ${escapeHtml(l)}" aria-label="ค้นหา ${escapeHtml(l)}"></th>`
+    ).join('') + '</tr>';
+
+  thead.querySelectorAll('.col-filter').forEach(el => {
+    el.addEventListener('input', () => {
+      colFilters[el.dataset.col] = el.value;
+      applyFilterSortPaginate();
+    });
+  });
+
+  // ให้แถว filter ติดใต้แถว sort เวลา scroll
+  const h = thead.querySelector('.sort-row').offsetHeight;
+  thead.querySelectorAll('.filter-row th').forEach(th => { th.style.top = h + 'px'; });
 }
 
 function computeSummary(rows) {
@@ -431,12 +476,19 @@ function computeSummary(rows) {
 function applyFilterSortPaginate() {
   const q = document.getElementById('tblSearch').value.toLowerCase().trim();
 
-  filteredRows = q
-    ? tableAllRows.filter(row => tableHeaders.some((h, i) => {
-        const v = row[headerKey(i)];
-        return v !== undefined && v !== null && String(v).toLowerCase().indexOf(q) !== -1;
-      }))
-    : tableAllRows.slice();
+  const activeCols = Object.keys(colFilters)
+    .filter(k => String(colFilters[k]).trim() !== '')
+    .map(k => [parseInt(k, 10), String(colFilters[k]).trim().toLowerCase()]);
+
+  const cellText = (row, i) => {
+    const v = row[headerKey(i)];
+    return v === undefined || v === null ? '' : String(v).toLowerCase();
+  };
+
+  filteredRows = tableAllRows.filter(row => {
+    if (q && !tableHeaders.some((h, i) => cellText(row, i).indexOf(q) !== -1)) return false;
+    return activeCols.every(([i, f]) => cellText(row, i).indexOf(f) !== -1);
+  });
 
   if (sortColIdx !== -1) {
     const key = headerKey(sortColIdx);
@@ -506,6 +558,14 @@ function renderTableBody(rows) {
         }
       }
 
+      if (isTagColumn(h) && text !== '') {
+        const cur = String(colFilters[i] || '').trim().toLowerCase();
+        const tags = text.split(/\s*,\s*/).filter(Boolean).map(n =>
+          `<button type="button" class="tag${n.toLowerCase() === cur ? ' active' : ''}" data-col="${i}" data-val="${escapeHtml(n)}" title="กรองตามชื่อนี้">${escapeHtml(n)}</button>`
+        ).join('');
+        return `<td><div class="tags">${tags}</div></td>`;
+      }
+
       return `<td>${text === '' ? '—' : escapeHtml(text)}</td>`;
     }).join('') + '</tr>';
   }).join('');
@@ -545,14 +605,28 @@ function goToPage(p) {
 function sortTable(colIdx) {
   sortAsc = (sortColIdx === colIdx) ? !sortAsc : true;
   sortColIdx = colIdx;
-  document.querySelectorAll('.data-table th').forEach((th, i) => {
+  document.querySelectorAll('.data-table .sort-row th').forEach((th, i) => {
     th.classList.remove('sort-asc','sort-desc');
-    if (i === colIdx) th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
+    th.setAttribute('aria-sort', 'none');
+    if (i === colIdx) {
+      th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
+      th.setAttribute('aria-sort', sortAsc ? 'ascending' : 'descending');
+    }
   });
   applyFilterSortPaginate();
 }
 
 document.getElementById('tblSearch').addEventListener('input', applyFilterSortPaginate);
+document.getElementById('tblBody').addEventListener('click', e => {
+  const tag = e.target.closest('.tag');
+  if (!tag) return;
+  const i = tag.dataset.col, name = tag.dataset.val;
+  const same = String(colFilters[i] || '').trim().toLowerCase() === name.toLowerCase();
+  colFilters[i] = same ? '' : name;
+  const input = document.querySelector('.col-filter[data-col="' + i + '"]');
+  if (input) input.value = colFilters[i];
+  applyFilterSortPaginate();
+});
 document.getElementById('tblPageSize').addEventListener('change', function(){
   pageSize = this.value === 'all' ? 'all' : parseInt(this.value, 10);
   currentPage = 1;
