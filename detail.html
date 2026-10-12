@@ -299,7 +299,7 @@ const DISPLAY_COLUMNS = [
 const colIndexMap = DISPLAY_COLUMNS.map(c => colLetterToIndex(c.col));
 const subIndexMap = DISPLAY_COLUMNS.map(c => c.sub ? colLetterToIndex(c.sub) : -1);
 const TYPE_COL_INDEX = colLetterToIndex(STATUS2_COL); // ยังใช้กรองด้วยคอลัมน์นี้เหมือนเดิม
-const LAST_UPDATE_COL_INDEX = colLetterToIndex('S'); // ใช้คำนวณเดือนสำหรับ filter mth
+const QUOTATION_DATE_COL_INDEX = colLetterToIndex('I'); // ✅ ใช้ Quotation DATE (col I) คำนวณเดือนสำหรับ filter mth ให้ตรงกับกราฟใน index.html (Last Update col S ใช้แสดงผลเท่านั้น)
 
 let tableHeaders  = DISPLAY_COLUMNS.map(c => c.label); // header label คงที่ตามลำดับที่กำหนด
 let tableAllRows  = [];  // แถวข้อมูล (object ตาม header) หลัง filter year+type แล้ว
@@ -324,11 +324,16 @@ function cleanNumCandidate(v) {
   return parseFloat(s);
 }
 
-// ✅ คอนเซปการหาเดือน: ดึงเลขเดือน (01-12) จากคอลัมน์ Last Update มาเทียบกับ mth ที่ส่งมา
-// รองรับ Last Update ในรูปแบบ D/M/YYYY, DD/MM/YYYY, D.M.YYYY (ตัวคั่นเป็น / หรือ .) — เดือนคือกลุ่มที่ 2
-function parseMonthFromLastUpdate(v) {
+// ✅ คอนเซปการหาเดือน: ดึงเลขเดือน (01-12) จากคอลัมน์ Quotation DATE (col I) มาเทียบกับ mth ที่ส่งมา
+// รองรับ D-Mon-YY(YY), D/M/YYYY, DD/MM/YYYY, D.M.YYYY, YYYY-MM-DD
+function parseMonthFromQuotationDate(v) {
   if (!v) return '';
   const s = String(v).trim();
+
+  // D-Mon-YY / D-Mon-YYYY เช่น "8-Sep-26", "22-Sep-2026" (รูปแบบที่ชีทแสดงจริงในคอลัมน์ I)
+  const MON = { jan:1, feb:2, mar:3, apr:4, may:5, jun:6, jul:7, aug:8, sep:9, oct:10, nov:11, dec:12 };
+  let mm = s.match(/^(\d{1,2})[-\/.\s]+([A-Za-z]{3,9})[-\/.,\s]+(\d{2,4})$/);
+  if (mm && MON[mm[2].substring(0, 3).toLowerCase()]) return String(MON[mm[2].substring(0, 3).toLowerCase()]).padStart(2, '0');
 
   // D/M/YYYY หรือ DD/MM/YYYY หรือ D.M.YYYY
   let m = s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})/);
@@ -349,7 +354,7 @@ function updateBadges(statusLabel) {
   const label = statusLabel || (TYPE_PARAM || '-');
   const labelWithMonth = label + (MTH_PARAM ? ` · เดือน ${MTH_PARAM}` : '');
   document.getElementById('typeBadgeInline').textContent = labelWithMonth + ' · ' + (YEAR_PARAM || '-');
-  document.querySelector('.nav-sub').textContent = `ข้อมูลจาก sheet gid: ${GID} (กรอง B=ปี, R=ประเภท` + (MTH_PARAM ? ', S=เดือน' : '') + ')';
+  document.querySelector('.nav-sub').textContent = `ข้อมูลจาก sheet gid: ${GID} (กรอง B=ปี, R=ประเภท` + (MTH_PARAM ? ', I=เดือน' : '') + ')';
   const badgeEl = document.getElementById('typeBadge');
   badgeEl.textContent = labelWithMonth;
   badgeEl.className = 'badge badge-generic';
@@ -375,7 +380,7 @@ async function init() {
         const dataRows = rows.slice(DATA_START_ROW);
 
         // ✅ Filter: คอลัมน์ CB (ปี) ต้องตรงกับ year param, คอลัมน์ CG (Status2) สองหลักแรกต้องตรงกับ type param
-        // และถ้ามี mth ให้เทียบเลขเดือนที่คำนวณได้จาก Last Update ด้วย
+        // และถ้ามี mth ให้เทียบเลขเดือนที่คำนวณได้จาก Quotation DATE (col I) ด้วย
         let firstMatchStatus = '';
         tableAllRows = dataRows
           .filter(r => {
@@ -385,9 +390,9 @@ async function init() {
             if (YEAR_PARAM && yVal !== YEAR_PARAM) return false;
             if (TYPE_PARAM && typeVal.substring(0, 2).toLowerCase() !== TYPE_PARAM) return false;
 
-            // ✅ mth: คำนวณเลขเดือนจาก Last Update แล้วใช้เป็นเงื่อนไขเทียบ
+            // ✅ mth: คำนวณเลขเดือนจาก Quotation DATE (col I) แล้วใช้เป็นเงื่อนไขเทียบ
             if (MTH_PARAM) {
-              const rowMonth = parseMonthFromLastUpdate(r[LAST_UPDATE_COL_INDEX]);
+              const rowMonth = parseMonthFromQuotationDate(r[QUOTATION_DATE_COL_INDEX]);
               if (rowMonth !== MTH_PARAM) return false;
             }
 

@@ -563,15 +563,13 @@
                         // ✅ ตำแหน่งคอลัมน์ใน sheet on_hand (0-based)
                         const COL_YEAR      = 1;  // B
                         const COL_SALE      = 13; // N
-                        const COL_QUOTATION_DATE = 18; // I
+                        const COL_QUOTATION_DATE = 8;  // ✅ I (A=0 ... I=8) — เดิมใส่ 18 ซึ่งคือคอลัมน์ S (Last Update) ทำให้กราฟอ่านผิดคอลัมน์
                         const COL_STATUS2   = 17; // R
-                        const COL_LASTUPDATE = 19; // T PO(Month) — ใช้ดึงเดือนสำหรับกราฟรายเดือน  
                         const COL_AMT       = 26; // AA
                         const COL_COST      = 28; // AC
                         const START_ROW = 2;
                         const ALLOWED_STATUS = ['13-Order', '07-Sent Quotation'];
                         const FILTER_YEAR = CURRENT_YEAR; // ✅ อ้างอิงปีจาก query string
-                        // Quotation DATE col I 18
                         const rawRows = rows.slice(START_ROW);
 
                         // ✅ 1) statusSummaryRows: group ตาม Status2 (สำหรับ Funnel/Pipeline/WinRate/Total QT-PO)
@@ -619,20 +617,44 @@
                         processDataSalesMan(window.dataSaleMan);
 
                         // ✅ 3) กราฟรายเดือน QT/PO — อ้างอิงสูตรเดิมจาก Apps Script (getQuotationChartDataV3):
-                        //    - ปีที่ใช้ group = col B (Year) โดยตรง ไม่ใช่ปีที่ parse จาก Last Update
-                        //    - เดือน = parse จาก Last Update (col S) เท่านั้น
-                        //    - format จริงของ Last Update คือ "D/M/YYYY" (วัน/เดือน/ปี แบบไทย เช่น "23/6/2026") ไม่ใช่ MM/DD/YYYY
+                        //    - ปีที่ใช้ group = col B (Year) โดยตรง ไม่ใช่ปีที่ parse จากวันที่
+                        //    - เดือน = parse จาก Quotation DATE (col I) เท่านั้น — Last Update (col S) ไม่ใช้เป็นเงื่อนไขใดๆ
+                        // ✅ รองรับรูปแบบวันที่ที่ชีทแสดงจริง: "8-Sep-26", "22-Sep-2026", "9 Sep 2026"
+                        //    และรูปแบบเดิม "D/M/YYYY" (วัน/เดือน/ปี) กับ "YYYY-MM-DD"
+                        const MONTH_ABBR = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11 };
                         function parseThaiDMY(v) {
                             if (!v) return null;
                             const s = v.toString().trim();
-                            const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/); // D/M/YYYY
-                            if (!m) return null;
-                            const day = parseInt(m[1], 10);
-                            const month = parseInt(m[2], 10) - 1; // 0-based
-                            if (month < 0 || month > 11) return null;
-                            return { day, month };
+                            let m;
+
+                            // D-Mon-YY / D-Mon-YYYY / D Mon YYYY (ชื่อเดือนอังกฤษ ตัวเต็มหรือตัวย่อ)
+                            m = s.match(/^(\d{1,2})[-\/.\s]+([A-Za-z]{3,9})[-\/.,\s]+(\d{2,4})$/);
+                            if (m) {
+                                const month = MONTH_ABBR[m[2].substring(0, 3).toLowerCase()];
+                                if (month === undefined) return null;
+                                return { day: parseInt(m[1], 10), month };
+                            }
+
+                            // D/M/YYYY (หรือ D.M.YYYY)
+                            m = s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})$/);
+                            if (m) {
+                                const month = parseInt(m[2], 10) - 1; // 0-based
+                                if (month < 0 || month > 11) return null;
+                                return { day: parseInt(m[1], 10), month };
+                            }
+
+                            // YYYY-MM-DD
+                            m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+                            if (m) {
+                                const month = parseInt(m[2], 10) - 1;
+                                if (month < 0 || month > 11) return null;
+                                return { day: parseInt(m[3], 10), month };
+                            }
+
+                            return null;
                         }
 
+                        const skippedNoDate = [];
                         const monthlyCountQT  = new Array(12).fill(0);
                         const monthlyAmountQT = new Array(12).fill(0);
                         const monthlyCountPO  = new Array(12).fill(0);
@@ -645,9 +667,8 @@
                             const year = r[COL_YEAR] ? r[COL_YEAR].toString().trim() : '';
                             if (!year || year !== FILTER_YEAR) return; // ✅ ใช้ปีจาก col B ตรงๆ
 
-                            // const dm = parseThaiDMY(r[COL_LASTUPDATE]);
-                            const dm = parseThaiDMY(r[COL_QUOTATION_DATE]); // ✅ ใช้ col I (Quotation Date) แทน Last Update เพราะ Last Update บางแถวเป็นค่าว่าง
-                            if (!dm) return; // ไม่มี Last Update หรือ parse ไม่ได้ -> ข้าม
+                            const dm = parseThaiDMY(r[COL_QUOTATION_DATE]); // ✅ เดือนมาจาก col I (Quotation DATE) เท่านั้น
+                            if (!dm) { skippedNoDate.push(r[COL_QUOTATION_DATE]); return; } // ไม่มีวันที่ หรือ parse ไม่ได้ -> ข้าม (log ไว้ตรวจสอบ)
                             const monthIdx = dm.month;
 
                             const amt = cleanNum(r[COL_AMT]);
@@ -659,6 +680,9 @@
                                 monthlyAmountPO[monthIdx] += amt;
                             }
                         });
+
+                        if (skippedNoDate.length) console.warn('QT/PO monthly chart: ข้าม', skippedNoDate.length, 'แถวเพราะอ่านวันที่ (col I) ไม่ได้:', skippedNoDate);
+                        console.log('Monthly QT count:', monthlyCountQT, 'amount:', monthlyAmountQT);
 
                         renderQtComboChart(monthlyCountQT, monthlyAmountQT);
                         renderPoComboChart(monthlyCountPO, monthlyAmountPO);

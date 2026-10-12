@@ -130,6 +130,7 @@ body{
 .tag:hover{ border-color:var(--blue-s); }
 .tag:focus-visible{ outline:2px solid var(--blue-s); outline-offset:2px; }
 .tag.active{ background:var(--blue-s); color:#fff; }
+.cell-sub{ display:block; margin-top:2px; font-size:0.74rem; font-weight:400; color:var(--txt-mute); }
 .data-table tbody tr{ border-bottom:1px solid rgba(43,95,165,0.07); transition:background .14s; }
 .data-table tbody tr:hover{ background:rgba(43,95,165,0.05); }
 .data-table td{
@@ -311,14 +312,20 @@ async function fetchSheetRowsAsJSON(url) {
     throw new Error(msg);
   }
 
-  return json.table.rows.map(row => (row.c || []).map(gvizCellToRaw));
+  // ✅ เก็บข้อความที่ชีทฟอร์แมตไว้ด้วย (cell.f เช่น "8-Sep-26") ใช้แสดง Quotation DATE ให้เหมือนที่เห็นในชีท
+  return json.table.rows.map(row => {
+    const cells = row.c || [];
+    const arr = cells.map(gvizCellToRaw);
+    arr.__f = cells.map(c => (c && c.f !== null && c.f !== undefined) ? String(c.f) : '');
+    return arr;
+  });
 }
 
 // ✅ คอลัมน์ที่ต้องแสดง — ตรงกับ sheet gid=48822130
 //    Year(B) Customer(C) QuotationNo(H) JobName(M) Sale(N) Support(O) Status2(R) PO(Month)(T) Requirement(U) AmountTHB(Y) CostTHB(AA)
 const DISPLAY_COLUMNS = [
   { label: 'Customer',       col: 'C' },
-  { label: 'Quotation No.',  col: 'H' },
+  { label: 'Quotation No.',  col: 'H', sub: 'I' }, // sub = Quotation DATE (col I) แสดงต่อท้ายในช่องเดียวกัน ขึ้นบรรทัดใหม่
   { label: 'Job Name',       col: 'M' },
   { label: 'Sale',           col: 'N' },
   { label: 'Support',        col: 'O' },
@@ -329,6 +336,7 @@ const DISPLAY_COLUMNS = [
   { label: 'Last Update',    col: 'S' },
 ];
 const colIndexMap = DISPLAY_COLUMNS.map(c => colLetterToIndex(c.col));
+const subIndexMap = DISPLAY_COLUMNS.map(c => c.sub ? colLetterToIndex(c.sub) : -1);
 
 let tableHeaders  = DISPLAY_COLUMNS.map(c => c.label); // header label คงที่ตามลำดับที่กำหนด
 let tableAllRows  = [];  // แถวข้อมูลทั้งหมด (ไม่กรอง)
@@ -417,6 +425,11 @@ async function init() {
         DISPLAY_COLUMNS.forEach((c, i) => {
           const srcIdx = colIndexMap[i];
           obj[c.label + '__' + i] = srcIdx === -1 ? '' : r[srcIdx];
+          if (subIndexMap[i] !== -1) {
+            const si = subIndexMap[i];
+            const shown = (r.__f && r.__f[si]) ? r.__f[si] : r[si]; // ใช้ข้อความที่ชีทแสดง ถ้ามี (JSON) ไม่งั้นใช้ค่าจาก CSV
+            obj[c.label + '__' + i + '__sub'] = shown || '';
+          }
         });
         return obj;
       });
@@ -480,9 +493,11 @@ function applyFilterSortPaginate() {
     .filter(k => String(colFilters[k]).trim() !== '')
     .map(k => [parseInt(k, 10), String(colFilters[k]).trim().toLowerCase()]);
 
+  // รวมวันที่ใบเสนอราคา (sub) เข้าไปในข้อความที่ค้นหาของคอลัมน์ Quotation No. ด้วย
   const cellText = (row, i) => {
     const v = row[headerKey(i)];
-    return v === undefined || v === null ? '' : String(v).toLowerCase();
+    const sub = row[headerKey(i) + '__sub'];
+    return ((v === undefined || v === null ? '' : String(v)) + ' ' + (sub ? String(sub) : '')).toLowerCase();
   };
 
   filteredRows = tableAllRows.filter(row => {
@@ -564,6 +579,12 @@ function renderTableBody(rows) {
           `<button type="button" class="tag${n.toLowerCase() === cur ? ' active' : ''}" data-col="${i}" data-val="${escapeHtml(n)}" title="กรองตามชื่อนี้">${escapeHtml(n)}</button>`
         ).join('');
         return `<td><div class="tags">${tags}</div></td>`;
+      }
+
+      // Quotation No. + Quotation DATE (ขึ้นบรรทัดใหม่ในช่องเดียวกัน)
+      const subVal = row[headerKey(i) + '__sub'];
+      if (subVal !== undefined && String(subVal).trim() !== '') {
+        return `<td>${text === '' ? '—' : escapeHtml(text)}<span class="cell-sub">${escapeHtml(String(subVal).trim())}</span></td>`;
       }
 
       return `<td>${text === '' ? '—' : escapeHtml(text)}</td>`;
