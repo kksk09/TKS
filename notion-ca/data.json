@@ -215,10 +215,11 @@
     "end": null,
     "note": "",
     "employees": [
-      "Moo"
+      "Moo",
+      "Title"
     ],
-    "employeesText": "Moo",
-    "last_edited": "2026-10-09T07:24:00.000Z",
+    "employeesText": "Moo, Title",
+    "last_edited": "2026-10-12T02:51:00.000Z",
     "url": "https://app.notion.com/p/Glico-Training-3f4770a5c90b80d98b91d5933f3c0188"
   },
   {
@@ -248,17 +249,61 @@
     "url": "https://app.notion.com/p/3c9770a5c90b800f9d8af53fc98310f8"
   },
   {
+    "id": "3f7770a5-c90b-80f1-ad0a-e70b2959b36a",
+    "title": "บริษัท วาย วี พี อินเตอร์เทรด จำกัด (โรงงานลาดหลุมแก้ว) (เวลา 10.00 น.)",
+    "date": "2026-10-15",
+    "end": null,
+    "note": "คุณเอก สนใจเครื่อง Mixing ",
+    "employees": [
+      "Nok",
+      "Game",
+      "Nack"
+    ],
+    "employeesText": "Nok, Game, Nack",
+    "last_edited": "2026-10-12T04:39:00.000Z",
+    "url": "https://app.notion.com/p/10-00-3f7770a5c90b80f1ad0ae70b2959b36a"
+  },
+  {
+    "id": "3f7770a5-c90b-80bc-905d-dfa027ef6155",
+    "title": "SengHuad ",
+    "date": "2026-10-15",
+    "end": null,
+    "note": "Afternoon Meeting",
+    "employees": [
+      "AA",
+      "THEP",
+      "Daw"
+    ],
+    "employeesText": "AA, THEP, Daw",
+    "last_edited": "2026-10-12T03:10:00.000Z",
+    "url": "https://app.notion.com/p/SengHuad-3f7770a5c90b80bc905ddfa027ef6155"
+  },
+  {
+    "id": "3f7770a5-c90b-80cf-8679-ec4e473bc4c5",
+    "title": "AROMA",
+    "date": "2026-10-15",
+    "end": null,
+    "note": "Morning Meeting",
+    "employees": [
+      "AA",
+      "THEP",
+      "Daw"
+    ],
+    "employeesText": "AA, THEP, Daw",
+    "last_edited": "2026-10-12T03:08:00.000Z",
+    "url": "https://app.notion.com/p/AROMA-3f7770a5c90b80cf8679ec4e473bc4c5"
+  },
+  {
     "id": "3f4770a5-c90b-8089-bbb7-df171a8aff91",
     "title": "Office",
     "date": "2026-10-15",
     "end": null,
     "note": "",
     "employees": [
-      "Muk",
-      "Nack"
+      "Muk"
     ],
-    "employeesText": "Muk, Nack",
-    "last_edited": "2026-10-09T11:03:00.000Z",
+    "employeesText": "Muk",
+    "last_edited": "2026-10-12T04:34:00.000Z",
     "url": "https://app.notion.com/p/Office-3f4770a5c90b8089bbb7df171a8aff91"
   },
   {
@@ -275,16 +320,33 @@
     "url": "https://app.notion.com/p/3f4770a5c90b80b091a3e7fa079c259e"
   },
   {
+    "id": "3f7770a5-c90b-80f8-8cef-d20b0678470a",
+    "title": "CPF ฉะเชิงเทรา online meeting 15.30",
+    "date": "2026-10-14",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Nok",
+      "Moo",
+      "LOVE",
+      "Daw"
+    ],
+    "employeesText": "Nok, Moo, LOVE, Daw",
+    "last_edited": "2026-10-12T02:52:00.000Z",
+    "url": "https://app.notion.com/p/CPF-online-meeting-15-30-3f7770a5c90b80f88cefd20b0678470a"
+  },
+  {
     "id": "3f4770a5-c90b-8047-97ce-d0141e88216c",
     "title": "Office",
     "date": "2026-10-14",
     "end": null,
     "note": "",
     "employees": [
-      "Muk"
+      "Muk",
+      "Nack"
     ],
-    "employeesText": "Muk",
-    "last_edited": "2026-10-09T11:01:00.000Z",
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-12T04:34:00.000Z",
     "url": "https://app.notion.com/p/Office-3f4770a5c90b804797ced0141e88216c"
   },
   {
@@ -363,6 +425,19 @@
     "url": "https://app.notion.com/p/The-Passing-of-King-317770a5c90b80b1a0d8f0be0835557c"
   },
   {
+    "id": "3f7770a5-c90b-80fe-a59d-f18cdc085d32",
+    "title": "WFH",
+    "date": "2026-10-12",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Game"
+    ],
+    "employeesText": "Game",
+    "last_edited": "2026-10-12T02:46:00.000Z",
+    "url": "https://app.notion.com/p/WFH-3f7770a5c90b80fea59df18cdc085d32"
+  },
+  {
     "id": "3f4770a5-c90b-8001-bcd4-e557aae11fbd",
     "title": "Office",
     "date": "2026-10-12",
@@ -407,7 +482,7 @@
     "title": "มาม่า บ่อวิน",
     "date": "2026-10-11",
     "end": "2026-10-13",
-    "note": "ขัด Mixer  ฝากรับ บะหมี่ตัวอย่างที่เป็นทรงสี่เหลี่ยมมาด้วยเด้อ",
+    "note": "ขัด Mixer  ฝากรับ บะหมี่ตัวอย่างที่เป็นทรงสี่เหลี่ยมมาด้วยเด้อ/ไม่รู้ลูกค้ามาเปล่านะ",
     "employees": [
       "pub",
       "Moo",
@@ -415,7 +490,7 @@
       "PUP"
     ],
     "employeesText": "pub, Moo, EAK, PUP",
-    "last_edited": "2026-10-07T00:40:00.000Z",
+    "last_edited": "2026-10-11T09:32:00.000Z",
     "url": "https://app.notion.com/p/3e2770a5c90b802e8e42ef2871b7ee1d"
   },
   {
