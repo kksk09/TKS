@@ -153,6 +153,19 @@
     "url": "https://app.notion.com/p/3c9770a5c90b80c4b346ee7707fc4d4d"
   },
   {
+    "id": "3f8770a5-c90b-8023-b893-e8e739fc14b7",
+    "title": "ลาพาปู่ไปหาหมอ",
+    "date": "2026-10-26",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Benz"
+    ],
+    "employeesText": "Benz",
+    "last_edited": "2026-10-13T06:07:00.000Z",
+    "url": "https://app.notion.com/p/3f8770a5c90b8023b893e8e739fc14b7"
+  },
+  {
     "id": "3f4770a5-c90b-8077-a9c2-ef26f0dd80cf",
     "title": "Meeting @ Osotspa ",
     "date": "2026-10-26",
@@ -194,6 +207,19 @@
     "url": "https://app.notion.com/p/Chulalongkorn-Day-317770a5c90b80359cebd4ae123f6602"
   },
   {
+    "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
+    "title": "Meeting Mama 09:00",
+    "date": "2026-10-20",
+    "end": null,
+    "note": "โครงการสายพานรวมเลน",
+    "employees": [
+      "Game"
+    ],
+    "employeesText": "Game",
+    "last_edited": "2026-10-12T08:16:00.000Z",
+    "url": "https://app.notion.com/p/Meeting-Mama-09-00-3f7770a5c90b800794f1cf8d966d51e2"
+  },
+  {
     "id": "3f4770a5-c90b-80be-851a-f4bb71f3270e",
     "title": "City Medical Supply",
     "date": "2026-10-20",
@@ -223,6 +249,22 @@
     "url": "https://app.notion.com/p/Glico-Training-3f4770a5c90b80d98b91d5933f3c0188"
   },
   {
+    "id": "3ea770a5-c90b-8067-9849-eec5340c7ca6",
+    "title": "Its Thailand 13:00",
+    "date": "2026-10-19",
+    "end": null,
+    "note": "มาเสนอเครื่องปั้น+เครื่องเกี่ยวยาผง + ยาเม็ด",
+    "employees": [
+      "Ice",
+      "AA",
+      "Game",
+      "Title"
+    ],
+    "employeesText": "Ice, AA, Game, Title",
+    "last_edited": "2026-10-12T08:12:00.000Z",
+    "url": "https://app.notion.com/p/Its-Thailand-13-00-3ea770a5c90b80679849eec5340c7ca6"
+  },
+  {
     "id": "3f4770a5-c90b-800c-a660-c586749c6203",
     "title": "Office",
     "date": "2026-10-16",
@@ -249,6 +291,20 @@
     "url": "https://app.notion.com/p/3c9770a5c90b800f9d8af53fc98310f8"
   },
   {
+    "id": "3f8770a5-c90b-80b7-b5d9-c53ee1c74ae2",
+    "title": "เตรียม เครื่องลูกค้าเข้า",
+    "date": "2026-10-15",
+    "end": null,
+    "note": "Diveder /terminal  scale",
+    "employees": [
+      "EAK",
+      "pub"
+    ],
+    "employeesText": "EAK, pub",
+    "last_edited": "2026-10-13T04:42:00.000Z",
+    "url": "https://app.notion.com/p/3f8770a5c90b80b7b5d9c53ee1c74ae2"
+  },
+  {
     "id": "3f7770a5-c90b-80f1-ad0a-e70b2959b36a",
     "title": "บริษัท วาย วี พี อินเตอร์เทรด จำกัด (โรงงานลาดหลุมแก้ว) (เวลา 10.00 น.)",
     "date": "2026-10-15",
@@ -265,7 +321,7 @@
   },
   {
     "id": "3f7770a5-c90b-80bc-905d-dfa027ef6155",
-    "title": "SengHuad ",
+    "title": "14:00 SengHuad ",
     "date": "2026-10-15",
     "end": null,
     "note": "Afternoon Meeting",
@@ -275,12 +331,12 @@
       "Daw"
     ],
     "employeesText": "AA, THEP, Daw",
-    "last_edited": "2026-10-12T03:10:00.000Z",
-    "url": "https://app.notion.com/p/SengHuad-3f7770a5c90b80bc905ddfa027ef6155"
+    "last_edited": "2026-10-12T09:55:00.000Z",
+    "url": "https://app.notion.com/p/14-00-SengHuad-3f7770a5c90b80bc905ddfa027ef6155"
   },
   {
     "id": "3f7770a5-c90b-80cf-8679-ec4e473bc4c5",
-    "title": "AROMA",
+    "title": "08:30 AROMA",
     "date": "2026-10-15",
     "end": null,
     "note": "Morning Meeting",
@@ -290,8 +346,8 @@
       "Daw"
     ],
     "employeesText": "AA, THEP, Daw",
-    "last_edited": "2026-10-12T03:08:00.000Z",
-    "url": "https://app.notion.com/p/AROMA-3f7770a5c90b80cf8679ec4e473bc4c5"
+    "last_edited": "2026-10-12T09:55:00.000Z",
+    "url": "https://app.notion.com/p/08-30-AROMA-3f7770a5c90b80cf8679ec4e473bc4c5"
   },
   {
     "id": "3f4770a5-c90b-8089-bbb7-df171a8aff91",
@@ -369,35 +425,19 @@
   },
   {
     "id": "3f4770a5-c90b-8078-9b17-d3f5e175fccb",
-    "title": "URC งง มาก คุณเอช่วยลงตารางด้วย",
+    "title": "08:30 น.URC เข้าตรวจเช็คเครื่อง ยามาโต้ คาวา เพื่อเสนองาน Overhaul",
     "date": "2026-10-14",
-    "end": "2026-10-15",
-    "note": "",
+    "end": "2026-10-14",
+    "note": "https://maps.app.goo.gl/gqKnqyeYfizVoGAF6",
     "employees": [
       "EAK",
-      "Sky"
-    ],
-    "employeesText": "EAK, Sky",
-    "last_edited": "2026-10-10T04:33:00.000Z",
-    "url": "https://app.notion.com/p/URC-3f4770a5c90b80789b17d3f5e175fccb"
-  },
-  {
-    "id": "3ea770a5-c90b-8067-9849-eec5340c7ca6",
-    "title": "Its Thailand ",
-    "date": "2026-10-14",
-    "end": null,
-    "note": "มาเสนอเครื่องปั้น+เครื่องเกี่ยวยาผง + ยาเม็ด",
-    "employees": [
-      "Ice",
-      "Nok",
       "AA",
-      "Sky",
-      "Game",
-      "Title"
+      "Ice",
+      "pub"
     ],
-    "employeesText": "Ice, Nok, AA, Sky, Game, Title",
-    "last_edited": "2026-10-04T12:09:00.000Z",
-    "url": "https://app.notion.com/p/Its-Thailand-3ea770a5c90b80679849eec5340c7ca6"
+    "employeesText": "EAK, AA, Ice, pub",
+    "last_edited": "2026-10-13T04:40:00.000Z",
+    "url": "https://app.notion.com/p/08-30-URC-Overhaul-3f4770a5c90b80789b17d3f5e175fccb"
   },
   {
     "id": "3ec770a5-c90b-8066-ad27-c1b36e2387ee",
@@ -423,6 +463,36 @@
     "employeesText": "",
     "last_edited": "2026-03-02T04:29:00.000Z",
     "url": "https://app.notion.com/p/The-Passing-of-King-317770a5c90b80b1a0d8f0be0835557c"
+  },
+  {
+    "id": "3f7770a5-c90b-8068-b6c1-d3eada78aaf5",
+    "title": "มาม่า บ่อวิน จบงานสวยๆ รับงานโดย parinya.c@mama.co.th ",
+    "date": "2026-10-12",
+    "end": null,
+    "note": "ส่งใบวางบิล ออนไลน์ parinya.c@mama.co.th เหลือ qt motor chopperx2 motor shaft x 1",
+    "employees": [
+      "pub",
+      "Moo",
+      "EAK"
+    ],
+    "employeesText": "pub, Moo, EAK",
+    "last_edited": "2026-10-12T10:34:00.000Z",
+    "url": "https://app.notion.com/p/parinya-c-mama-co-th-3f7770a5c90b8068b6c1d3eada78aaf5"
+  },
+  {
+    "id": "3f7770a5-c90b-800a-b90d-f28096f685a3",
+    "title": "TPSS",
+    "date": "2026-10-12",
+    "end": null,
+    "note": "ปรึกษางานผลิตสายพาน 1.Mama 2.Hachibang(MD) 3.2.Hachibang(Pack) 4.Wellty food",
+    "employees": [
+      "Tip",
+      "Title",
+      "Ice"
+    ],
+    "employeesText": "Tip, Title, Ice",
+    "last_edited": "2026-10-12T07:45:00.000Z",
+    "url": "https://app.notion.com/p/TPSS-3f7770a5c90b800ab90df28096f685a3"
   },
   {
     "id": "3f7770a5-c90b-80fe-a59d-f18cdc085d32",
@@ -481,7 +551,7 @@
     "id": "3e2770a5-c90b-802e-8e42-ef2871b7ee1d",
     "title": "มาม่า บ่อวิน",
     "date": "2026-10-11",
-    "end": "2026-10-13",
+    "end": "2026-10-11",
     "note": "ขัด Mixer  ฝากรับ บะหมี่ตัวอย่างที่เป็นทรงสี่เหลี่ยมมาด้วยเด้อ/ไม่รู้ลูกค้ามาเปล่านะ",
     "employees": [
       "pub",
@@ -490,7 +560,7 @@
       "PUP"
     ],
     "employeesText": "pub, Moo, EAK, PUP",
-    "last_edited": "2026-10-11T09:32:00.000Z",
+    "last_edited": "2026-10-12T10:25:00.000Z",
     "url": "https://app.notion.com/p/3e2770a5c90b802e8e42ef2871b7ee1d"
   },
   {
