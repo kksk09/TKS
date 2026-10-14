@@ -140,6 +140,22 @@
     "url": "https://app.notion.com/p/3c9770a5c90b8059bbc9f2bb474cbb3b"
   },
   {
+    "id": "3f8770a5-c90b-807b-a389-c20bcf814e3f",
+    "title": "Carabao Cambodia",
+    "date": "2026-11-01",
+    "end": null,
+    "note": "เดินทางกลับ",
+    "employees": [
+      "LOVE",
+      "Moo",
+      "Nok",
+      "EAK"
+    ],
+    "employeesText": "LOVE, Moo, Nok, EAK",
+    "last_edited": "2026-10-13T14:56:00.000Z",
+    "url": "https://app.notion.com/p/Carabao-Cambodia-3f8770a5c90b807ba389c20bcf814e3f"
+  },
+  {
     "id": "3c9770a5-c90b-80c4-b346-ee7707fc4d4d",
     "title": "ฝ่ายบัญชี",
     "date": "2026-10-30",
@@ -178,6 +194,22 @@
     "employeesText": "AA, Sky",
     "last_edited": "2026-10-09T10:32:00.000Z",
     "url": "https://app.notion.com/p/Meeting-Osotspa-3f4770a5c90b8077a9c2ef26f0dd80cf"
+  },
+  {
+    "id": "3f8770a5-c90b-80b9-bfb2-e5dbd4341e37",
+    "title": "Carabao Cambodia",
+    "date": "2026-10-25",
+    "end": "2026-10-31",
+    "note": "Commissioning ต้องจบงานให้ได้",
+    "employees": [
+      "EAK",
+      "Nok",
+      "Moo",
+      "LOVE"
+    ],
+    "employeesText": "EAK, Nok, Moo, LOVE",
+    "last_edited": "2026-10-13T14:53:00.000Z",
+    "url": "https://app.notion.com/p/Carabao-Cambodia-3f8770a5c90b80b9bfb2e5dbd4341e37"
   },
   {
     "id": "3e9770a5-c90b-805e-bf09-eaf0362c41a6",
@@ -236,17 +268,17 @@
   },
   {
     "id": "3f4770a5-c90b-80d9-8b91-d5933f3c0188",
-    "title": "Glico Training",
+    "title": "Glico Training at Glico",
     "date": "2026-10-19",
-    "end": null,
+    "end": "2026-10-23",
     "note": "",
     "employees": [
       "Moo",
       "Title"
     ],
     "employeesText": "Moo, Title",
-    "last_edited": "2026-10-12T02:51:00.000Z",
-    "url": "https://app.notion.com/p/Glico-Training-3f4770a5c90b80d98b91d5933f3c0188"
+    "last_edited": "2026-10-14T02:36:00.000Z",
+    "url": "https://app.notion.com/p/Glico-Training-at-Glico-3f4770a5c90b80d98b91d5933f3c0188"
   },
   {
     "id": "3ea770a5-c90b-8067-9849-eec5340c7ca6",
@@ -263,6 +295,22 @@
     "employeesText": "Ice, AA, Game, Title",
     "last_edited": "2026-10-12T08:12:00.000Z",
     "url": "https://app.notion.com/p/Its-Thailand-13-00-3ea770a5c90b80679849eec5340c7ca6"
+  },
+  {
+    "id": "3f8770a5-c90b-80fc-9b33-facc5fb00352",
+    "title": "Carabao Cambodia",
+    "date": "2026-10-18",
+    "end": "2026-10-24",
+    "note": "Commissioning ต้องจบงานให้ได้",
+    "employees": [
+      "LOVE",
+      "Moo",
+      "Nok",
+      "EAK"
+    ],
+    "employeesText": "LOVE, Moo, Nok, EAK",
+    "last_edited": "2026-10-13T14:53:00.000Z",
+    "url": "https://app.notion.com/p/Carabao-Cambodia-3f8770a5c90b80fc9b33facc5fb00352"
   },
   {
     "id": "3f4770a5-c90b-800c-a660-c586749c6203",
@@ -374,6 +422,19 @@
     "employeesText": "Sky",
     "last_edited": "2026-10-09T09:02:00.000Z",
     "url": "https://app.notion.com/p/3f4770a5c90b80b091a3e7fa079c259e"
+  },
+  {
+    "id": "3f9770a5-c90b-80fc-8951-cef2bd71e6cd",
+    "title": "Mae-ruay",
+    "date": "2026-10-14",
+    "end": null,
+    "note": "rotary with mr.dance, mr.M",
+    "employees": [
+      "Title"
+    ],
+    "employeesText": "Title",
+    "last_edited": "2026-10-14T05:26:00.000Z",
+    "url": "https://app.notion.com/p/Mae-ruay-3f9770a5c90b80fc8951cef2bd71e6cd"
   },
   {
     "id": "3f7770a5-c90b-80f8-8cef-d20b0678470a",
