@@ -240,16 +240,16 @@
   },
   {
     "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
-    "title": "Meeting Mama 09:00",
+    "title": "Meeting Mama ",
     "date": "2026-10-20",
     "end": null,
-    "note": "โครงการสายพานรวมเลน",
+    "note": "09:00 โครงการสายพานรวมเลน",
     "employees": [
       "Game"
     ],
     "employeesText": "Game",
-    "last_edited": "2026-10-12T08:16:00.000Z",
-    "url": "https://app.notion.com/p/Meeting-Mama-09-00-3f7770a5c90b800794f1cf8d966d51e2"
+    "last_edited": "2026-10-14T09:15:00.000Z",
+    "url": "https://app.notion.com/p/Meeting-Mama-3f7770a5c90b800794f1cf8d966d51e2"
   },
   {
     "id": "3f4770a5-c90b-80be-851a-f4bb71f3270e",
@@ -267,6 +267,20 @@
     "url": "https://app.notion.com/p/City-Medical-Supply-3f4770a5c90b80be851af4bb71f3270e"
   },
   {
+    "id": "3f9770a5-c90b-8020-92da-e4e99ed829cf",
+    "title": "Nutrix",
+    "date": "2026-10-19",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Daw",
+      "Game"
+    ],
+    "employeesText": "Daw, Game",
+    "last_edited": "2026-10-14T10:03:00.000Z",
+    "url": "https://app.notion.com/p/Nutrix-3f9770a5c90b802092dae4e99ed829cf"
+  },
+  {
     "id": "3f4770a5-c90b-80d9-8b91-d5933f3c0188",
     "title": "Glico Training at Glico",
     "date": "2026-10-19",
@@ -282,10 +296,10 @@
   },
   {
     "id": "3ea770a5-c90b-8067-9849-eec5340c7ca6",
-    "title": "Its Thailand 13:00",
+    "title": "Its Thailand ",
     "date": "2026-10-19",
     "end": null,
-    "note": "มาเสนอเครื่องปั้น+เครื่องเกี่ยวยาผง + ยาเม็ด",
+    "note": "13:00 มาเสนอเครื่องปั้น+เครื่องเกี่ยวยาผง + ยาเม็ด",
     "employees": [
       "Ice",
       "AA",
@@ -293,8 +307,8 @@
       "Title"
     ],
     "employeesText": "Ice, AA, Game, Title",
-    "last_edited": "2026-10-12T08:12:00.000Z",
-    "url": "https://app.notion.com/p/Its-Thailand-13-00-3ea770a5c90b80679849eec5340c7ca6"
+    "last_edited": "2026-10-14T09:15:00.000Z",
+    "url": "https://app.notion.com/p/Its-Thailand-3ea770a5c90b80679849eec5340c7ca6"
   },
   {
     "id": "3f8770a5-c90b-80fc-9b33-facc5fb00352",
@@ -313,6 +327,30 @@
     "url": "https://app.notion.com/p/Carabao-Cambodia-3f8770a5c90b80fc9b33facc5fb00352"
   },
   {
+    "id": "3fa770a5-c90b-8050-991c-c8232f4cee5b",
+    "title": "ลากิจ",
+    "date": "2026-10-16",
+    "end": null,
+    "note": "กรมที่ดิน ตจว",
+    "employees": [
+      "KO"
+    ],
+    "employeesText": "KO",
+    "last_edited": "2026-10-15T03:46:00.000Z",
+    "url": "https://app.notion.com/p/3fa770a5c90b8050991cc8232f4cee5b"
+  },
+  {
+    "id": "3f9770a5-c90b-80a3-8c70-ef066ee007c4",
+    "title": "Asian Alliance",
+    "date": "2026-10-16",
+    "end": null,
+    "note": "เทสเครื่องชั่ง 10:30 ที่ออฟฟิศTKS",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-10-15T02:06:00.000Z",
+    "url": "https://app.notion.com/p/Asian-Alliance-3f9770a5c90b80a38c70ef066ee007c4"
+  },
+  {
     "id": "3f4770a5-c90b-800c-a660-c586749c6203",
     "title": "Office",
     "date": "2026-10-16",
@@ -326,17 +364,30 @@
     "url": "https://app.notion.com/p/Office-3f4770a5c90b800ca660c586749c6203"
   },
   {
-    "id": "3c9770a5-c90b-800f-9d8a-f53fc98310f8",
-    "title": "ฝ่ายบัญชี",
-    "date": "2026-10-16",
+    "id": "3f9770a5-c90b-80a8-990a-f42f1bc81e7a",
+    "title": "บ.บุญประเสริฐ",
+    "date": "2026-10-15",
     "end": null,
-    "note": "ช่วยบัญชีตรวจสอบเอกสาร",
+    "note": "ส่งบอร์ด address คืน",
     "employees": [
-      "Nack"
+      "EAK"
     ],
-    "employeesText": "Nack",
-    "last_edited": "2026-08-27T02:47:00.000Z",
-    "url": "https://app.notion.com/p/3c9770a5c90b800f9d8af53fc98310f8"
+    "employeesText": "EAK",
+    "last_edited": "2026-10-14T13:23:00.000Z",
+    "url": "https://app.notion.com/p/3f9770a5c90b80a8990af42f1bc81e7a"
+  },
+  {
+    "id": "3f9770a5-c90b-80d8-ba19-d9623f58f867",
+    "title": "เทคนิคแคร์",
+    "date": "2026-10-15",
+    "end": null,
+    "note": "รับบอร์ดaddress คืนบ.บุญประเสริฐ",
+    "employees": [
+      "EAK"
+    ],
+    "employeesText": "EAK",
+    "last_edited": "2026-10-14T13:22:00.000Z",
+    "url": "https://app.notion.com/p/3f9770a5c90b80d8ba19d9623f58f867"
   },
   {
     "id": "3f8770a5-c90b-80b7-b5d9-c53ee1c74ae2",
@@ -361,41 +412,46 @@
     "employees": [
       "Nok",
       "Game",
-      "Nack"
+      "Nack",
+      "Ice"
     ],
-    "employeesText": "Nok, Game, Nack",
-    "last_edited": "2026-10-12T04:39:00.000Z",
+    "employeesText": "Nok, Game, Nack, Ice",
+    "last_edited": "2026-10-14T08:02:00.000Z",
     "url": "https://app.notion.com/p/10-00-3f7770a5c90b80f1ad0ae70b2959b36a"
   },
   {
     "id": "3f7770a5-c90b-80bc-905d-dfa027ef6155",
-    "title": "14:00 SengHuad ",
+    "title": "SengHuad ",
     "date": "2026-10-15",
     "end": null,
-    "note": "Afternoon Meeting",
+    "note": "Afternoon Meeting 14:00",
     "employees": [
       "AA",
       "THEP",
-      "Daw"
+      "Daw",
+      "Title",
+      "LOVE"
     ],
-    "employeesText": "AA, THEP, Daw",
-    "last_edited": "2026-10-12T09:55:00.000Z",
-    "url": "https://app.notion.com/p/14-00-SengHuad-3f7770a5c90b80bc905ddfa027ef6155"
+    "employeesText": "AA, THEP, Daw, Title, LOVE",
+    "last_edited": "2026-10-14T14:32:00.000Z",
+    "url": "https://app.notion.com/p/SengHuad-3f7770a5c90b80bc905ddfa027ef6155"
   },
   {
     "id": "3f7770a5-c90b-80cf-8679-ec4e473bc4c5",
-    "title": "08:30 AROMA",
+    "title": "AROMA",
     "date": "2026-10-15",
     "end": null,
-    "note": "Morning Meeting",
+    "note": "Morning Meeting 08:30",
     "employees": [
       "AA",
       "THEP",
-      "Daw"
+      "Daw",
+      "LOVE",
+      "Title"
     ],
-    "employeesText": "AA, THEP, Daw",
-    "last_edited": "2026-10-12T09:55:00.000Z",
-    "url": "https://app.notion.com/p/08-30-AROMA-3f7770a5c90b80cf8679ec4e473bc4c5"
+    "employeesText": "AA, THEP, Daw, LOVE, Title",
+    "last_edited": "2026-10-14T14:32:00.000Z",
+    "url": "https://app.notion.com/p/AROMA-3f7770a5c90b80cf8679ec4e473bc4c5"
   },
   {
     "id": "3f4770a5-c90b-8089-bbb7-df171a8aff91",
@@ -497,7 +553,7 @@
       "pub"
     ],
     "employeesText": "EAK, AA, Ice, pub",
-    "last_edited": "2026-10-13T04:40:00.000Z",
+    "last_edited": "2026-10-14T14:22:00.000Z",
     "url": "https://app.notion.com/p/08-30-URC-Overhaul-3f4770a5c90b80789b17d3f5e175fccb"
   },
   {
@@ -707,7 +763,7 @@
       "Nack"
     ],
     "employeesText": "Ice, Benz, Nack",
-    "last_edited": "2026-10-08T02:23:00.000Z",
+    "last_edited": "2026-10-15T02:55:00.000Z",
     "url": "https://app.notion.com/p/SPR-3f0770a5c90b80f3858ccd35e5a522a8"
   },
   {
@@ -1097,10 +1153,10 @@
   },
   {
     "id": "3e8770a5-c90b-8004-9f5d-d74712cb8249",
-    "title": "wfh น้ำท่วม",
+    "title": "WFH",
     "date": "2026-09-28",
     "end": null,
-    "note": "",
+    "note": " น้ำท่วม",
     "employees": [
       "Nack",
       "KO",
@@ -1108,8 +1164,8 @@
       "Title"
     ],
     "employeesText": "Nack, KO, Game, Title",
-    "last_edited": "2026-09-28T10:04:00.000Z",
-    "url": "https://app.notion.com/p/wfh-3e8770a5c90b80049f5dd74712cb8249"
+    "last_edited": "2026-10-14T09:13:00.000Z",
+    "url": "https://app.notion.com/p/WFH-3e8770a5c90b80049f5dd74712cb8249"
   },
   {
     "id": "3e8770a5-c90b-807f-8333-f3b93c185b0c",
