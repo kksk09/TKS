@@ -239,6 +239,20 @@
     "url": "https://app.notion.com/p/Chulalongkorn-Day-317770a5c90b80359cebd4ae123f6602"
   },
   {
+    "id": "3fb770a5-c90b-807c-bba7-d267e9c3f5fb",
+    "title": "10-11 A.M. Online meeting with Ajinomoto ( discuss design of powder supply system and solution to improve weighing system )",
+    "date": "2026-10-21",
+    "end": null,
+    "note": "MS Team ",
+    "employees": [
+      "Sky",
+      "Game"
+    ],
+    "employeesText": "Sky, Game",
+    "last_edited": "2026-10-16T04:18:00.000Z",
+    "url": "https://app.notion.com/p/10-11-A-M-Online-meeting-with-Ajinomoto-discuss-design-of-powder-supply-system-and-solution-to-im-3fb770a5c90b807cbba7d267e9c3f5fb"
+  },
+  {
     "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
     "title": "Meeting Mama ",
     "date": "2026-10-20",
@@ -287,11 +301,10 @@
     "end": "2026-10-23",
     "note": "",
     "employees": [
-      "Moo",
       "Title"
     ],
-    "employeesText": "Moo, Title",
-    "last_edited": "2026-10-14T02:36:00.000Z",
+    "employeesText": "Title",
+    "last_edited": "2026-10-15T12:19:00.000Z",
     "url": "https://app.notion.com/p/Glico-Training-at-Glico-3f4770a5c90b80d98b91d5933f3c0188"
   },
   {
@@ -323,7 +336,7 @@
       "EAK"
     ],
     "employeesText": "LOVE, Moo, Nok, EAK",
-    "last_edited": "2026-10-13T14:53:00.000Z",
+    "last_edited": "2026-10-15T12:05:00.000Z",
     "url": "https://app.notion.com/p/Carabao-Cambodia-3f8770a5c90b80fc9b33facc5fb00352"
   },
   {
@@ -364,6 +377,34 @@
     "url": "https://app.notion.com/p/Office-3f4770a5c90b800ca660c586749c6203"
   },
   {
+    "id": "3fa770a5-c90b-80c1-8ea0-ce779e71018d",
+    "title": "คุณหญิงบริษัท 505 โทรมาถามว่าจะเข้าไปเช็กเครื่องตู้อบได้วันไหนครับ",
+    "date": "2026-10-15",
+    "end": null,
+    "note": "รอคุย และ สรุป กับคนดูแลเครื่อง",
+    "employees": [
+      "EAK",
+      "Moo"
+    ],
+    "employeesText": "EAK, Moo",
+    "last_edited": "2026-10-16T03:18:00.000Z",
+    "url": "https://app.notion.com/p/505-3fa770a5c90b80c18ea0ce779e71018d"
+  },
+  {
+    "id": "3fa770a5-c90b-802f-996e-c869c5fdc460",
+    "title": "F PLus เข้าไปเปลี่ยน Seive ที่ซ่อม/ โดน รีเจค →ไปซ่อมใหม่",
+    "date": "2026-10-15",
+    "end": null,
+    "note": "โดน รีเจค เพราะรูที่ลูกค้าเชื่อมทะลุ → ไปโรงงานซ่อมใหม่  ปั๊บเลยทำความสะอาดของใหม่เราไปก่อน สภาพ ไม่ค่อยสะอาดเท่าไหร่นัก รอซ่อมรอบ2",
+    "employees": [
+      "pub",
+      "PUP"
+    ],
+    "employeesText": "pub, PUP",
+    "last_edited": "2026-10-16T03:18:00.000Z",
+    "url": "https://app.notion.com/p/F-PLus-Seive-3fa770a5c90b802f996ec869c5fdc460"
+  },
+  {
     "id": "3f9770a5-c90b-80a8-990a-f42f1bc81e7a",
     "title": "บ.บุญประเสริฐ",
     "date": "2026-10-15",
@@ -373,7 +414,7 @@
       "EAK"
     ],
     "employeesText": "EAK",
-    "last_edited": "2026-10-14T13:23:00.000Z",
+    "last_edited": "2026-10-15T11:40:00.000Z",
     "url": "https://app.notion.com/p/3f9770a5c90b80a8990af42f1bc81e7a"
   },
   {
@@ -386,7 +427,7 @@
       "EAK"
     ],
     "employeesText": "EAK",
-    "last_edited": "2026-10-14T13:22:00.000Z",
+    "last_edited": "2026-10-15T11:37:00.000Z",
     "url": "https://app.notion.com/p/3f9770a5c90b80d8ba19d9623f58f867"
   },
   {
@@ -424,7 +465,7 @@
     "title": "SengHuad ",
     "date": "2026-10-15",
     "end": null,
-    "note": "Afternoon Meeting 14:00",
+    "note": "Afternoon Meeting 14:00 รอสรุปงาน support/Report",
     "employees": [
       "AA",
       "THEP",
@@ -433,7 +474,7 @@
       "LOVE"
     ],
     "employeesText": "AA, THEP, Daw, Title, LOVE",
-    "last_edited": "2026-10-14T14:32:00.000Z",
+    "last_edited": "2026-10-16T03:19:00.000Z",
     "url": "https://app.notion.com/p/SengHuad-3f7770a5c90b80bc905ddfa027ef6155"
   },
   {
@@ -590,10 +631,11 @@
     "employees": [
       "pub",
       "Moo",
-      "EAK"
+      "EAK",
+      "MOO"
     ],
-    "employeesText": "pub, Moo, EAK",
-    "last_edited": "2026-10-12T10:34:00.000Z",
+    "employeesText": "pub, Moo, EAK, MOO",
+    "last_edited": "2026-10-16T03:19:00.000Z",
     "url": "https://app.notion.com/p/parinya-c-mama-co-th-3f7770a5c90b8068b6c1d3eada78aaf5"
   },
   {
@@ -874,7 +916,7 @@
     "title": "PR FOOD LAND SERVICE 3RD",
     "date": "2026-10-06",
     "end": "2026-10-08",
-    "note": "",
+    "note": "รอส่งรายงาน /QT หลายใบ/ ช่วยพี่นก",
     "employees": [
       "Moo",
       "EAK",
@@ -884,7 +926,7 @@
       "PUP"
     ],
     "employeesText": "Moo, EAK, LOVE, pub, Vin, PUP",
-    "last_edited": "2026-10-09T05:52:00.000Z",
+    "last_edited": "2026-10-16T03:22:00.000Z",
     "url": "https://app.notion.com/p/PR-FOOD-LAND-SERVICE-3RD-3e4770a5c90b80f58a09f2510ad086a7"
   },
   {
