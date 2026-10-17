@@ -239,6 +239,65 @@
     "url": "https://app.notion.com/p/Chulalongkorn-Day-317770a5c90b80359cebd4ae123f6602"
   },
   {
+    "id": "3fb770a5-c90b-80a4-8b8a-f5979c151efd",
+    "title": "Office",
+    "date": "2026-10-22",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-16T09:44:00.000Z",
+    "url": "https://app.notion.com/p/Office-3fb770a5c90b80a48b8af5979c151efd"
+  },
+  {
+    "id": "3fb770a5-c90b-80e3-b3c9-dccad9b7810c",
+    "title": "URC TESTING TERMINAL SCALE",
+    "date": "2026-10-21",
+    "end": null,
+    "note": "",
+    "employees": [
+      "pub",
+      "Benz"
+    ],
+    "employeesText": "pub, Benz",
+    "last_edited": "2026-10-16T10:33:00.000Z",
+    "url": "https://app.notion.com/p/URC-TESTING-TERMINAL-SCALE-3fb770a5c90b80e3b3c9dccad9b7810c"
+  },
+  {
+    "id": "3fb770a5-c90b-8078-9855-cae709e97271",
+    "title": "Office",
+    "date": "2026-10-21",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-16T09:43:00.000Z",
+    "url": "https://app.notion.com/p/Office-3fb770a5c90b80789855cae709e97271"
+  },
+  {
+    "id": "3fb770a5-c90b-8037-a31d-d931db8d2b67",
+    "title": "13:00 น. URC ของเข้าเทสเครื่อง Terminal Scale ที่ออฟฟิศ",
+    "date": "2026-10-21",
+    "end": null,
+    "note": "",
+    "employees": [
+      "AA",
+      "Benz",
+      "Game",
+      "Sky",
+      "pub"
+    ],
+    "employeesText": "AA, Benz, Game, Sky, pub",
+    "last_edited": "2026-10-16T09:44:00.000Z",
+    "url": "https://app.notion.com/p/13-00-URC-Terminal-Scale-3fb770a5c90b8037a31dd931db8d2b67"
+  },
+  {
     "id": "3fb770a5-c90b-807c-bba7-d267e9c3f5fb",
     "title": "10-11 A.M. Online meeting with Ajinomoto ( discuss design of powder supply system and solution to improve weighing system )",
     "date": "2026-10-21",
@@ -251,6 +310,34 @@
     "employeesText": "Sky, Game",
     "last_edited": "2026-10-16T04:18:00.000Z",
     "url": "https://app.notion.com/p/10-11-A-M-Online-meeting-with-Ajinomoto-discuss-design-of-powder-supply-system-and-solution-to-im-3fb770a5c90b807cbba7d267e9c3f5fb"
+  },
+  {
+    "id": "3fb770a5-c90b-8084-980e-c122a9b28784",
+    "title": "Office",
+    "date": "2026-10-20",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-16T09:43:00.000Z",
+    "url": "https://app.notion.com/p/Office-3fb770a5c90b8084980ec122a9b28784"
+  },
+  {
+    "id": "3fb770a5-c90b-80f5-988e-ff3d0b756bb7",
+    "title": "Nutrix ",
+    "date": "2026-10-20",
+    "end": null,
+    "note": "14:00",
+    "employees": [
+      "Daw",
+      "Game"
+    ],
+    "employeesText": "Daw, Game",
+    "last_edited": "2026-10-16T09:20:00.000Z",
+    "url": "https://app.notion.com/p/Nutrix-3fb770a5c90b80f5988eff3d0b756bb7"
   },
   {
     "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
@@ -281,18 +368,18 @@
     "url": "https://app.notion.com/p/City-Medical-Supply-3f4770a5c90b80be851af4bb71f3270e"
   },
   {
-    "id": "3f9770a5-c90b-8020-92da-e4e99ed829cf",
-    "title": "Nutrix",
+    "id": "3fb770a5-c90b-803f-b711-ec6a3db90372",
+    "title": "Office",
     "date": "2026-10-19",
     "end": null,
     "note": "",
     "employees": [
-      "Daw",
-      "Game"
+      "Muk",
+      "Nack"
     ],
-    "employeesText": "Daw, Game",
-    "last_edited": "2026-10-14T10:03:00.000Z",
-    "url": "https://app.notion.com/p/Nutrix-3f9770a5c90b802092dae4e99ed829cf"
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-16T09:42:00.000Z",
+    "url": "https://app.notion.com/p/Office-3fb770a5c90b803fb711ec6a3db90372"
   },
   {
     "id": "3f4770a5-c90b-80d9-8b91-d5933f3c0188",
