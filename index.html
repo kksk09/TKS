@@ -564,6 +564,7 @@
                         const COL_YEAR      = 1;  // B
                         const COL_SALE      = 13; // N
                         const COL_QUOTATION_DATE = 8;  // ✅ I (A=0 ... I=8) — เดิมใส่ 18 ซึ่งคือคอลัมน์ S (Last Update) ทำให้กราฟอ่านผิดคอลัมน์
+                        const COL_PO_MONTH  = 19; // ✅ T (A=0 ... T=19) — PO(Month) ใช้จัดกลุ่มเดือนของกราฟ PO (type=13) ให้ตรงกับ detail.html
                         const COL_STATUS2   = 17; // R
                         const COL_AMT       = 26; // AA
                         const COL_COST      = 28; // AC
@@ -635,6 +636,16 @@
                                 return { day: parseInt(m[1], 10), month };
                             }
 
+                            // ✅ รูปแบบไม่มีวัน (พบใน PO(Month) col T): "Sep-26", "Sep 2026", "September", "09/2026", "2026-09", "9"
+                            m = s.match(/^([A-Za-z]{3,9})[-\/.,\s]*(\d{2,4})?$/);
+                            if (m && MONTH_ABBR[m[1].substring(0, 3).toLowerCase()] !== undefined) return { day: 1, month: MONTH_ABBR[m[1].substring(0, 3).toLowerCase()] };
+                            m = s.match(/^(\d{1,2})[\/.-](\d{4})$/);            // MM/YYYY
+                            if (m && +m[1] >= 1 && +m[1] <= 12) return { day: 1, month: +m[1] - 1 };
+                            m = s.match(/^(\d{4})[\/.-](\d{1,2})$/);            // YYYY-MM
+                            if (m && +m[2] >= 1 && +m[2] <= 12) return { day: 1, month: +m[2] - 1 };
+                            m = s.match(/^(\d{1,2})$/);                          // เลขเดือนล้วน
+                            if (m && +m[1] >= 1 && +m[1] <= 12) return { day: 1, month: +m[1] - 1 };
+
                             // D/M/YYYY (หรือ D.M.YYYY)
                             m = s.match(/^(\d{1,2})[\/.](\d{1,2})[\/.](\d{2,4})$/);
                             if (m) {
@@ -654,6 +665,46 @@
                             return null;
                         }
 
+                        // ✅ อ่านเลขเดือน (1-12) จากค่าใน col T (PO(Month)) แบบยืดหยุ่น — คืน 0 ถ้าอ่านไม่ได้
+                        // รองรับ: ชื่อเดือนไทย/อังกฤษ (เต็ม/ย่อ), "Sep-26", "8-Sep-26 0:00", "4/15/2026 0:00:00", "2026-09-08", "09/2026", เลขเดือนล้วน
+                        function monthFromAny(v) {
+                          if (v === undefined || v === null) return 0;
+                          const s = String(v).trim();
+                          if (!s) return 0;
+
+                          const TH_FULL = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+                          const TH_ABBR = [['ม.ค.','มค'],['ก.พ.','กพ'],['มี.ค.','มีค'],['เม.ย.','เมย'],['พ.ค.','พค'],['มิ.ย.','มิย'],['ก.ค.','กค'],['ส.ค.','สค'],['ก.ย.','กย'],['ต.ค.','ตค'],['พ.ย.','พย'],['ธ.ค.','ธค']];
+                          const EN = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+
+                          // 1) ชื่อเดือนไทย/อังกฤษ ที่อยู่ตรงไหนของข้อความก็ได้
+                          for (let i = 0; i < 12; i++) if (s.includes(TH_FULL[i])) return i + 1;
+                          for (let i = 0; i < 12; i++) if (TH_ABBR[i].some(a => s.includes(a))) return i + 1;
+                          const en = s.toLowerCase().match(/(?:^|[^a-z])(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*/);
+                          if (en) return EN.indexOf(en[1]) + 1;
+
+                          // 2) ปีนำหน้า: YYYY-MM(-DD), YYYY/MM
+                          let m = s.match(/^(\d{4})[-\/.](\d{1,2})(?:[-\/.]\d{1,2})?/);
+                          if (m && +m[2] >= 1 && +m[2] <= 12) return +m[2];
+
+                          // 3) D/M/YYYY (ตามรูปแบบเดิมของไฟล์: วัน/เดือน/ปี) ตัดเวลาท้ายออกได้
+                          m = s.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})/);
+                          if (m && +m[2] >= 1 && +m[2] <= 12) return +m[2];
+
+                          // 4) M/YYYY หรือ M-YY (เดือน/ปี)
+                          m = s.match(/^(\d{1,2})[-\/.](\d{2,4})$/);
+                          if (m && +m[1] >= 1 && +m[1] <= 12 && (m[2].length === 4 || +m[2] > 12)) return +m[1];
+
+                          // 5) เลขเดือนล้วน
+                          m = s.match(/^(\d{1,2})$/);
+                          if (m && +m[1] >= 1 && +m[1] <= 12) return +m[1];
+
+                          // 6) ให้ browser parse
+                          const dt = new Date(s);
+                          if (!isNaN(dt.getTime())) return dt.getMonth() + 1;
+                          return 0;
+                        }
+
+                        const poSkipped = []; // ค่า col T ของแถว PO ที่อ่านเดือนไม่ได้
                         const skippedNoDate = [];
                         const monthlyCountQT  = new Array(12).fill(0);
                         const monthlyAmountQT = new Array(12).fill(0);
@@ -667,9 +718,17 @@
                             const year = r[COL_YEAR] ? r[COL_YEAR].toString().trim() : '';
                             if (!year || year !== FILTER_YEAR) return; // ✅ ใช้ปีจาก col B ตรงๆ
 
-                            const dm = parseThaiDMY(r[COL_QUOTATION_DATE]); // ✅ เดือนมาจาก col I (Quotation DATE) เท่านั้น
-                            if (!dm) { skippedNoDate.push(r[COL_QUOTATION_DATE]); return; } // ไม่มีวันที่ หรือ parse ไม่ได้ -> ข้าม (log ไว้ตรวจสอบ)
-                            const monthIdx = dm.month;
+                            // ✅ QT (07) → เดือนจาก col I (Quotation DATE) | PO (13) → เดือนจาก col T (PO(Month)) — ตรงกับเงื่อนไขใน detail.html
+                            let monthIdx;
+                            if (status2 === '13-Order') {
+                                const mm = monthFromAny(r[COL_PO_MONTH]);
+                                if (!mm) { poSkipped.push(String(r[COL_PO_MONTH] === undefined ? '' : r[COL_PO_MONTH]).trim()); return; }
+                                monthIdx = mm - 1;
+                            } else {
+                                const dm = parseThaiDMY(r[COL_QUOTATION_DATE]);
+                                if (!dm) { skippedNoDate.push(r[COL_QUOTATION_DATE]); return; } // ไม่มีวันที่ หรือ parse ไม่ได้ -> ข้าม (log ไว้ตรวจสอบ)
+                                monthIdx = dm.month;
+                            }
 
                             const amt = cleanNum(r[COL_AMT]);
                             if (status2 === '07-Sent Quotation') {
@@ -681,11 +740,22 @@
                             }
                         });
 
-                        if (skippedNoDate.length) console.warn('QT/PO monthly chart: ข้าม', skippedNoDate.length, 'แถวเพราะอ่านวันที่ (col I) ไม่ได้:', skippedNoDate);
+                        if (skippedNoDate.length) console.warn('QT/PO monthly chart: ข้าม', skippedNoDate.length, 'แถวเพราะอ่านวันที่/เดือน (col I สำหรับ QT, col T สำหรับ PO) ไม่ได้:', skippedNoDate);
                         console.log('Monthly QT count:', monthlyCountQT, 'amount:', monthlyAmountQT);
 
                         renderQtComboChart(monthlyCountQT, monthlyAmountQT);
                         renderPoComboChart(monthlyCountPO, monthlyAmountPO);
+
+                        // ✅ แจ้งใต้กราฟ PO ถ้ามีแถวที่อ่านเดือนจาก col T ไม่ได้ (จะได้รู้ว่าค่าอะไรที่ทำให้กราฟขาด)
+                        if (poSkipped.length) {
+                            const cnt = {};
+                            poSkipped.forEach(v => { const k = v === '' ? '(ว่าง)' : v; cnt[k] = (cnt[k] || 0) + 1; });
+                            const top = Object.entries(cnt).sort((a, b) => b[1] - a[1]).slice(0, 6)
+                                .map(([k, n]) => `"${k.replace(/</g, '&lt;')}" × ${n}`).join(', ');
+                            const el = document.getElementById('poComboInsight');
+                            if (el) el.innerHTML += `<div style="margin-top:8px;color:#FDBA74;">⚠️ ข้าม ${poSkipped.length} แถว PO เพราะอ่านเดือนจาก col T ไม่ได้: ${top}</div>`;
+                            console.warn('PO monthly chart: อ่าน col T ไม่ได้', cnt);
+                        }
 
                         renderOverviewStatusTable(); 
                         markLoaded(); 
