@@ -335,10 +335,12 @@
     "end": null,
     "note": "Meeting  09:00  โครงการสายพานรวมเลน",
     "employees": [
-      "Game"
+      "Game",
+      "Ice",
+      "Moo"
     ],
-    "employeesText": "Game",
-    "last_edited": "2026-10-19T03:18:00.000Z",
+    "employeesText": "Game, Ice, Moo",
+    "last_edited": "2026-10-19T03:48:00.000Z",
     "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
   },
   {
@@ -346,14 +348,14 @@
     "title": "City Medical Supply",
     "date": "2026-10-20",
     "end": null,
-    "note": "",
+    "note": "13:00 ",
     "employees": [
       "AA",
       "THEP",
       "Ice"
     ],
     "employeesText": "AA, THEP, Ice",
-    "last_edited": "2026-10-09T07:28:00.000Z",
+    "last_edited": "2026-10-19T03:48:00.000Z",
     "url": "https://app.notion.com/p/City-Medical-Supply-3f4770a5c90b80be851af4bb71f3270e"
   },
   {
@@ -374,10 +376,10 @@
     "title": "City Medical Supply Co.,Ltd ",
     "date": "2026-10-19",
     "end": null,
-    "note": "14:00 Meeting I AM",
+    "note": "14:00 Meeting (I AM)",
     "employees": [],
     "employeesText": "",
-    "last_edited": "2026-10-19T03:14:00.000Z",
+    "last_edited": "2026-10-19T03:53:00.000Z",
     "url": "https://app.notion.com/p/City-Medical-Supply-Co-Ltd-3fd770a5c90b800bad6bd564f8827d38"
   },
   {
@@ -734,7 +736,7 @@
       "MOO"
     ],
     "employeesText": "pub, Moo, EAK, MOO",
-    "last_edited": "2026-10-16T03:19:00.000Z",
+    "last_edited": "2026-10-19T05:02:00.000Z",
     "url": "https://app.notion.com/p/parinya-c-mama-co-th-3f7770a5c90b8068b6c1d3eada78aaf5"
   },
   {
