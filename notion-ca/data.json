@@ -62,29 +62,16 @@
     "url": "https://app.notion.com/p/Father-s-Day-317770a5c90b8045b5f3ef0e44259a6f"
   },
   {
-    "id": "3d5770a5-c90b-8037-9b28-dafa2c60a79c",
-    "title": "ลากิจ",
-    "date": "2026-11-27",
-    "end": null,
-    "note": "ดาวลา รับปริญญา🌟",
-    "employees": [
-      "Daw"
-    ],
-    "employeesText": "Daw",
-    "last_edited": "2026-10-01T03:41:00.000Z",
-    "url": "https://app.notion.com/p/3d5770a5c90b80379b28dafa2c60a79c"
-  },
-  {
     "id": "3d5770a5-c90b-80e3-a0f3-d3a20770636f",
     "title": "ลากิจ",
     "date": "2026-11-25",
-    "end": "2026-11-26",
+    "end": "2026-11-27",
     "note": "ดาวลา รับปริญญา🌟",
     "employees": [
       "Daw"
     ],
     "employeesText": "Daw",
-    "last_edited": "2026-10-01T10:25:00.000Z",
+    "last_edited": "2026-10-19T02:26:00.000Z",
     "url": "https://app.notion.com/p/3d5770a5c90b80e3a0f3d3a20770636f"
   },
   {
@@ -170,30 +157,30 @@
   },
   {
     "id": "3f8770a5-c90b-8023-b893-e8e739fc14b7",
-    "title": "ลาพาปู่ไปหาหมอ",
+    "title": "ลากิจ",
     "date": "2026-10-26",
     "end": null,
-    "note": "",
+    "note": "พาปู่ไปหาหมอ",
     "employees": [
       "Benz"
     ],
     "employeesText": "Benz",
-    "last_edited": "2026-10-13T06:07:00.000Z",
+    "last_edited": "2026-10-19T02:26:00.000Z",
     "url": "https://app.notion.com/p/3f8770a5c90b8023b893e8e739fc14b7"
   },
   {
     "id": "3f4770a5-c90b-8077-a9c2-ef26f0dd80cf",
-    "title": "Meeting @ Osotspa ",
+    "title": "Osotspa ",
     "date": "2026-10-26",
     "end": null,
-    "note": "",
+    "note": "Meeting @ Osotspa ",
     "employees": [
       "AA",
       "Sky"
     ],
     "employeesText": "AA, Sky",
-    "last_edited": "2026-10-09T10:32:00.000Z",
-    "url": "https://app.notion.com/p/Meeting-Osotspa-3f4770a5c90b8077a9c2ef26f0dd80cf"
+    "last_edited": "2026-10-19T03:15:00.000Z",
+    "url": "https://app.notion.com/p/Osotspa-3f4770a5c90b8077a9c2ef26f0dd80cf"
   },
   {
     "id": "3f8770a5-c90b-80b9-bfb2-e5dbd4341e37",
@@ -253,20 +240,6 @@
     "url": "https://app.notion.com/p/Office-3fb770a5c90b80a48b8af5979c151efd"
   },
   {
-    "id": "3fb770a5-c90b-80e3-b3c9-dccad9b7810c",
-    "title": "URC TESTING TERMINAL SCALE",
-    "date": "2026-10-21",
-    "end": null,
-    "note": "",
-    "employees": [
-      "pub",
-      "Benz"
-    ],
-    "employeesText": "pub, Benz",
-    "last_edited": "2026-10-16T10:33:00.000Z",
-    "url": "https://app.notion.com/p/URC-TESTING-TERMINAL-SCALE-3fb770a5c90b80e3b3c9dccad9b7810c"
-  },
-  {
     "id": "3fb770a5-c90b-8078-9855-cae709e97271",
     "title": "Office",
     "date": "2026-10-21",
@@ -282,10 +255,10 @@
   },
   {
     "id": "3fb770a5-c90b-8037-a31d-d931db8d2b67",
-    "title": "13:00 น. URC ของเข้าเทสเครื่อง Terminal Scale ที่ออฟฟิศ",
+    "title": "URC",
     "date": "2026-10-21",
     "end": null,
-    "note": "",
+    "note": "13:00 น. URC ของเข้าเทสเครื่อง Terminal Scale ที่ออฟฟิศ",
     "employees": [
       "AA",
       "Benz",
@@ -294,22 +267,37 @@
       "pub"
     ],
     "employeesText": "AA, Benz, Game, Sky, pub",
-    "last_edited": "2026-10-16T09:44:00.000Z",
-    "url": "https://app.notion.com/p/13-00-URC-Terminal-Scale-3fb770a5c90b8037a31dd931db8d2b67"
+    "last_edited": "2026-10-19T03:19:00.000Z",
+    "url": "https://app.notion.com/p/URC-3fb770a5c90b8037a31dd931db8d2b67"
   },
   {
     "id": "3fb770a5-c90b-807c-bba7-d267e9c3f5fb",
-    "title": "10-11 A.M. Online meeting with Ajinomoto ( discuss design of powder supply system and solution to improve weighing system )",
+    "title": "Ajinomoto",
     "date": "2026-10-21",
     "end": null,
-    "note": "MS Team ",
+    "note": "MS Team 10-11 A.M. Online meeting with Ajinomoto ( discuss design of powder supply system and solution to improve weighing system )",
     "employees": [
       "Sky",
       "Game"
     ],
     "employeesText": "Sky, Game",
-    "last_edited": "2026-10-16T04:18:00.000Z",
-    "url": "https://app.notion.com/p/10-11-A-M-Online-meeting-with-Ajinomoto-discuss-design-of-powder-supply-system-and-solution-to-im-3fb770a5c90b807cbba7d267e9c3f5fb"
+    "last_edited": "2026-10-19T03:18:00.000Z",
+    "url": "https://app.notion.com/p/Ajinomoto-3fb770a5c90b807cbba7d267e9c3f5fb"
+  },
+  {
+    "id": "3fd770a5-c90b-806a-943b-ceafff3b5b63",
+    "title": "CPF",
+    "date": "2026-10-20",
+    "end": null,
+    "note": "10:30 FAT SILO CPF",
+    "employees": [
+      "Daw",
+      "Game",
+      "Sky"
+    ],
+    "employeesText": "Daw, Game, Sky",
+    "last_edited": "2026-10-19T03:16:00.000Z",
+    "url": "https://app.notion.com/p/CPF-3fd770a5c90b806a943bceafff3b5b63"
   },
   {
     "id": "3fb770a5-c90b-8084-980e-c122a9b28784",
@@ -333,24 +321,25 @@
     "note": "14:00",
     "employees": [
       "Daw",
-      "Game"
+      "Game",
+      "Sky"
     ],
-    "employeesText": "Daw, Game",
-    "last_edited": "2026-10-16T09:20:00.000Z",
+    "employeesText": "Daw, Game, Sky",
+    "last_edited": "2026-10-18T16:41:00.000Z",
     "url": "https://app.notion.com/p/Nutrix-3fb770a5c90b80f5988eff3d0b756bb7"
   },
   {
     "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
-    "title": "Meeting Mama ",
+    "title": "Mama ",
     "date": "2026-10-20",
     "end": null,
-    "note": "09:00 โครงการสายพานรวมเลน",
+    "note": "Meeting  09:00  โครงการสายพานรวมเลน",
     "employees": [
       "Game"
     ],
     "employeesText": "Game",
-    "last_edited": "2026-10-14T09:15:00.000Z",
-    "url": "https://app.notion.com/p/Meeting-Mama-3f7770a5c90b800794f1cf8d966d51e2"
+    "last_edited": "2026-10-19T03:18:00.000Z",
+    "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
   },
   {
     "id": "3f4770a5-c90b-80be-851a-f4bb71f3270e",
@@ -368,31 +357,54 @@
     "url": "https://app.notion.com/p/City-Medical-Supply-3f4770a5c90b80be851af4bb71f3270e"
   },
   {
+    "id": "3fe770a5-c90b-8000-981a-dfa0e3bd1c4f",
+    "title": "ลาป่วย",
+    "date": "2026-10-19",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Nack"
+    ],
+    "employeesText": "Nack",
+    "last_edited": "2026-10-19T02:22:00.000Z",
+    "url": "https://app.notion.com/p/3fe770a5c90b8000981adfa0e3bd1c4f"
+  },
+  {
+    "id": "3fd770a5-c90b-800b-ad6b-d564f8827d38",
+    "title": "City Medical Supply Co.,Ltd ",
+    "date": "2026-10-19",
+    "end": null,
+    "note": "14:00 Meeting I AM",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-10-19T03:14:00.000Z",
+    "url": "https://app.notion.com/p/City-Medical-Supply-Co-Ltd-3fd770a5c90b800bad6bd564f8827d38"
+  },
+  {
     "id": "3fb770a5-c90b-803f-b711-ec6a3db90372",
     "title": "Office",
     "date": "2026-10-19",
     "end": null,
     "note": "",
     "employees": [
-      "Muk",
-      "Nack"
+      "Muk"
     ],
-    "employeesText": "Muk, Nack",
-    "last_edited": "2026-10-16T09:42:00.000Z",
+    "employeesText": "Muk",
+    "last_edited": "2026-10-19T01:57:00.000Z",
     "url": "https://app.notion.com/p/Office-3fb770a5c90b803fb711ec6a3db90372"
   },
   {
     "id": "3f4770a5-c90b-80d9-8b91-d5933f3c0188",
-    "title": "Glico Training at Glico",
+    "title": "Glico ",
     "date": "2026-10-19",
     "end": "2026-10-23",
-    "note": "",
+    "note": "Training at Glico",
     "employees": [
       "Title"
     ],
     "employeesText": "Title",
-    "last_edited": "2026-10-15T12:19:00.000Z",
-    "url": "https://app.notion.com/p/Glico-Training-at-Glico-3f4770a5c90b80d98b91d5933f3c0188"
+    "last_edited": "2026-10-19T03:14:00.000Z",
+    "url": "https://app.notion.com/p/Glico-3f4770a5c90b80d98b91d5933f3c0188"
   },
   {
     "id": "3ea770a5-c90b-8067-9849-eec5340c7ca6",
@@ -1028,7 +1040,7 @@
       "THEP"
     ],
     "employeesText": "AA, Ice, THEP",
-    "last_edited": "2026-10-05T03:04:00.000Z",
+    "last_edited": "2026-10-18T13:57:00.000Z",
     "url": "https://app.notion.com/p/City-Medical-Supply-Co-Ltd-13-00-3f0770a5c90b80e98264fe65157cdabf"
   },
   {
