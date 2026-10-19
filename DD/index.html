@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brewery Business | Executive Dashboard Mockup</title>
+<style>
+:root{
+  --bg:#0b1117;--panel:#131d26;--panel2:#182530;--line:#283743;
+  --text:#eef4f7;--muted:#91a3af;--green:#65d6a0;--green2:#2fa875;
+  --gold:#f0c36d;--red:#ff8585;--blue:#7fb7ff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,"Segoe UI",Tahoma,sans-serif}
+button,select{font:inherit}
+.app{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:100vh}
+.sidebar{background:#0e171e;border-right:1px solid var(--line);padding:24px 16px;display:flex;flex-direction:column;gap:26px}
+.brand{display:flex;gap:12px;align-items:center;padding:0 8px}
+.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#9be9bf,#24875d);display:grid;place-items:center;color:#092217;font-size:24px}
+.brand strong{display:block;letter-spacing:1.5px;font-size:13px}
+.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:1.6px;margin-top:4px}
+.nav-label{color:#637784;font-size:10px;letter-spacing:1.5px;padding:0 12px;margin-bottom:8px}
+.nav{display:grid;gap:6px}
+.nav a{color:#9dafba;text-decoration:none;padding:12px;border-radius:10px;font-size:13px;display:flex;gap:12px;align-items:center}
+.nav a.active{background:#1c392e;color:#91edbb;border:1px solid #2a5a43}
+.nav a span{width:20px;text-align:center;font-size:16px}
+.side-note{margin-top:auto;border:1px solid var(--line);background:#121e26;padding:14px;border-radius:12px}
+.side-note b{font-size:12px}.side-note p{font-size:11px;line-height:1.5;color:var(--muted);margin:8px 0 0}
+main{padding:28px 32px 34px;min-width:0;max-width:1600px;width:100%;margin:0 auto}
+.topbar{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:28px}
+.eyebrow{font-size:10px;color:var(--green);letter-spacing:2px;font-weight:700}
+h1{font-size:27px;margin:7px 0 5px;letter-spacing:-.5px}
+.subtitle{font-size:12px;color:var(--muted)}
+.actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+select,.btn{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:12px}
+.btn{cursor:pointer}.btn.primary{background:var(--green);color:#092117;border-color:var(--green);font-weight:700}
+.updated{font-size:11px;color:var(--muted);text-align:right;margin-top:8px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:18px;min-width:0}
+.kpi-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.kpi-label{font-size:12px;color:#a9bac4}
+.kpi-icon{width:33px;height:33px;border-radius:10px;background:#1d342c;color:var(--green);display:grid;place-items:center;font-size:17px}
+.kpi-value{font-size:27px;font-weight:750;letter-spacing:-.8px;margin:17px 0 8px;white-space:nowrap}
+.kpi-foot{display:flex;justify-content:space-between;gap:6px;align-items:center;font-size:11px;color:var(--muted)}
+.positive{color:var(--green)}.warning{color:var(--gold)}.negative{color:var(--red)}
+.pill{font-size:10px;border-radius:20px;padding:5px 8px;background:#1b3a2e;color:var(--green);white-space:nowrap}
+.pill.warn{background:#3b3020;color:var(--gold)}.pill.bad{background:#402729;color:var(--red)}
+.middle{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);gap:14px;margin-bottom:14px}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:700}.card-sub{font-size:11px;color:var(--muted);margin-top:5px}
+.legend{display:flex;gap:12px;align-items:center;font-size:10px;color:var(--muted);flex-wrap:wrap}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart text{fill:#8497a4;font-size:10px;font-family:inherit}
+.chart .gridline{stroke:#263642;stroke-width:1;stroke-dasharray:3 5}
+.chart .line{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.chart .area{fill:url(#areaFill)}
+.chart .target{fill:none;stroke:#7fb7ff;stroke-width:1.5;stroke-dasharray:5 5}
+.chart .bar{fill:#3b9b72}
+.category-list{display:grid;gap:17px}
+.category-row{display:grid;grid-template-columns:1fr auto;gap:8px;font-size:12px}
+.category-row .name{color:#c4d0d7}.category-row .amount{font-weight:650}
+.track{height:7px;background:#263641;border-radius:8px;overflow:hidden;grid-column:1/3;margin-top:-1px}
+.fill{height:100%;border-radius:8px;background:var(--green)}
+.bottom{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,1fr);gap:14px}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{text-align:left;color:#8497a4;font-weight:500;padding:10px 8px;border-bottom:1px solid var(--line)}
+td{padding:13px 8px;border-bottom:1px solid #202e38;color:#d6e0e5}
+tr:last-child td{border-bottom:0}
+.status{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:5px 8px;font-size:10px;white-space:nowrap}
+.status:before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}
+.status.ok{background:#1c392e;color:var(--green)}.status.watch{background:#3a3020;color:var(--gold)}.status.alert{background:#402729;color:var(--red)}
+.alert-list{display:grid;gap:12px}
+.alert-item{display:flex;gap:11px;padding:12px;border:1px solid var(--line);border-radius:11px;background:#151f28}
+.alert-symbol{width:30px;height:30px;flex-shrink:0;border-radius:9px;display:grid;place-items:center;background:#3a3020;color:var(--gold)}
+.alert-symbol.red{background:#402729;color:var(--red)}
+.alert-copy{min-width:0;flex:1}.alert-copy b{font-size:12px;display:block;margin:1px 0 5px}.alert-copy p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
+.alert-item .pill{align-self:flex-start}
+.footer{display:flex;justify-content:space-between;gap:10px;color:#647986;font-size:10px;margin-top:22px;flex-wrap:wrap}
+.mobile-menu{display:none}
+@media(max-width:1050px){.app{grid-template-columns:190px minmax(0,1fr)}main{padding:24px 20px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.middle,.bottom{grid-template-columns:1fr}}
+@media(max-width:650px){.app{display:block}.sidebar{display:none}main{padding:20px 14px}.topbar{align-items:flex-start;flex-direction:column}h1{font-size:23px}.actions{width:100%}.kpis{gap:9px}.card{padding:14px}.kpi-value{font-size:22px}.kpi-label{font-size:11px}.kpi-foot{font-size:10px}.middle,.bottom{gap:10px}.hide-mobile{display:none}table{min-width:490px}.table-wrap{overflow-x:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">♜</div><div><strong>BREW & CO.</strong><small>BUSINESS INTELLIGENCE</small></div></div>
+    <div>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="nav">
+        <a class="active" href="#"><span>▦</span>Executive Overview</a>
+        <a href="#"><span>↗</span>Sales & Customers</a>
+        <a href="#"><span>♨</span>Production</a>
+        <a href="#"><span>▤</span>Inventory</a>
+        <a href="#"><span>◈</span>Finance</a>
+      </nav>
+    </div>
+    <div class="side-note"><b>Executive Snapshot</b><p>ตัวอย่างหน้าจอสำหรับนำเสนอผู้บริหาร<br>ข้อมูลทั้งหมดเป็นข้อมูลจำลอง</p></div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">BREWERY PERFORMANCE / 2026</div>
+        <h1>Executive Overview</h1>
+        <div class="subtitle">ภาพรวมผลประกอบการ • ยอดขาย • กำไร • การดำเนินงาน</div>
+      </div>
+      <div>
+        <div class="actions">
+          <select id="period" aria-label="เลือกช่วงเวลา"><option value="month">เดือนนี้</option><option value="week">7 วันล่าสุด</option><option value="year">ปีนี้</option></select>
+          <button class="btn" onclick="window.print()">⤓ Export / Print</button>
+          <button class="btn primary" onclick="refreshMock()">↻ Refresh</button>
+        </div>
+        <div class="updated" id="updated">อัปเดตล่าสุด: ตัวอย่างข้อมูล Mockup</div>
+      </div>
+    </header>
+
+    <section class="kpis">
+      <div class="card">
+        <div class="kpi-top"><div class="kpi-label">ยอดขายสุทธิ (NET SALES)</div><div class="kpi-icon">฿</div></div>
+        <div class="kpi-value" id="sales">฿1.25M</div>
+        <div class="kpi-foot"><span class="positive">↑ 8.4% จากงวดก่อน</span><span class="pill">On track</span></div>
+      </div>
+      <div class="card">
+        <div class="kpi-top"><div class="kpi-label">กำไรขั้นต้น (GROSS MARGIN)</div><div class="kpi-icon">％</div></div>
+        <div class="kpi-value" id="margin">58.2%</div>
+        <div class="kpi-foot"><span class="positive">↑ 2.1 จุดเปอร์เซ็นต์</span><span class="pill">Good</span></div>
+      </div>
+      <div class="card">
+        <div class="kpi-top"><div class="kpi-label">จำนวนบิล (ORDERS)</div><div class="kpi-icon">▤</div></div>
+        <div class="kpi-value" id="orders">3,480</div>
+        <div class="kpi-foot"><span class="positive">↑ 5.6% จากงวดก่อน</span><span class="pill">Growing</span></div>
+      </div>
+      <div class="card">
+        <div class="kpi-top"><div class="kpi-label">ยอดเฉลี่ยต่อบิล (AVG. CHECK)</div><div class="kpi-icon">↗</div></div>
+        <div class="kpi-value" id="avg">฿359</div>
+        <div class="kpi-foot"><span class="warning">↓ 1.2% จากงวดก่อน</span><span class="pill warn">Monitor</span></div>
+      </div>
+    </section>
+
+    <section class="middle">
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Sales Performance</div><div class="card-sub">แนวโน้มยอดขายเทียบเป้าหมาย (บาท)</div></div><div class="legend"><span><i class="dot" style="background:var(--green)"></i>ยอดขายจริง</span><span><i class="dot" style="background:var(--blue)"></i>เป้าหมาย</span></div></div>
+        <svg class="chart" viewBox="0 0 650 260" role="img" aria-label="กราฟแนวโน้มยอดขายตัวอย่าง">
+          <defs><linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#65d6a0" stop-opacity=".24"/><stop offset="100%" stop-color="#65d6a0" stop-opacity="0"/></linearGradient></defs>
+          <line class="gridline" x1="48" y1="30" x2="625" y2="30"/><line class="gridline" x1="48" y1="80" x2="625" y2="80"/><line class="gridline" x1="48" y1="130" x2="625" y2="130"/><line class="gridline" x1="48" y1="180" x2="625" y2="180"/><line class="gridline" x1="48" y1="220" x2="625" y2="220"/>
+          <text x="5" y="34">80k</text><text x="5" y="84">60k</text><text x="5" y="134">40k</text><text x="5" y="184">20k</text><text x="20" y="224">0</text>
+          <path class="area" d="M48 158 L110 135 L172 146 L234 105 L296 119 L358 86 L420 97 L482 63 L544 76 L606 39 L606 220 L48 220 Z"/>
+          <path class="target" d="M48 145 L110 140 L172 135 L234 130 L296 125 L358 120 L420 115 L482 110 L544 105 L606 100"/>
+          <path class="line" d="M48 158 L110 135 L172 146 L234 105 L296 119 L358 86 L420 97 L482 63 L544 76 L606 39"/>
+          <g fill="#65d6a0"><circle cx="48" cy="158" r="3.5"/><circle cx="110" cy="135" r="3.5"/><circle cx="172" cy="146" r="3.5"/><circle cx="234" cy="105" r="3.5"/><circle cx="296" cy="119" r="3.5"/><circle cx="358" cy="86" r="3.5"/><circle cx="420" cy="97" r="3.5"/><circle cx="482" cy="63" r="3.5"/><circle cx="544" cy="76" r="3.5"/><circle cx="606" cy="39" r="3.5"/></g>
+          <text x="43" y="245">01</text><text x="105" y="245">04</text><text x="167" y="245">07</text><text x="229" y="245">10</text><text x="291" y="245">13</text><text x="353" y="245">16</text><text x="415" y="245">19</text><text x="477" y="245">22</text><text x="539" y="245">25</text><text x="600" y="245">30</text>
+        </svg>
+        <div class="card-sub">* กราฟนี้ใช้ข้อมูลจำลองเพื่อแสดงรูปแบบการนำเสนอ</div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Revenue Mix</div><div class="card-sub">สัดส่วนยอดขายแยกหมวดสินค้า</div></div><span class="pill">This month</span></div>
+        <div class="category-list">
+          <div class="category-row"><span class="name">เบียร์สด (Draft Beer)</span><span class="amount">48% · ฿600k</span><div class="track"><div class="fill" style="width:48%"></div></div></div>
+          <div class="category-row"><span class="name">เบียร์ขวด / กระป๋อง</span><span class="amount">22% · ฿275k</span><div class="track"><div class="fill" style="width:22%;background:#7fb7ff"></div></div></div>
+          <div class="category-row"><span class="name">อาหาร (Food)</span><span class="amount">25% · ฿312k</span><div class="track"><div class="fill" style="width:25%;background:#f0c36d"></div></div></div>
+          <div class="category-row"><span class="name">อื่น ๆ (Other)</span><span class="amount">5% · ฿63k</span><div class="track"><div class="fill" style="width:5%;background:#a7b3bc"></div></div></div>
+        </div>
+        <div style="border-top:1px solid var(--line);margin-top:23px;padding-top:16px;display:flex;justify-content:space-between;align-items:center"><span class="card-sub">ยอดขายรวมตามหมวด</span><strong>฿1,250,000</strong></div>
+      </div>
+    </section>
+
+    <section class="bottom">
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Operational Snapshot</div><div class="card-sub">สถานะการดำเนินงานที่ควรติดตาม</div></div><span class="pill">4 KPIs</span></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>ตัวชี้วัด</th><th>ผลจริง</th><th>เป้าหมาย</th><th>สถานะ</th></tr></thead>
+          <tbody>
+            <tr><td>กำไรขั้นต้น</td><td>58.2%</td><td>55.0%</td><td><span class="status ok">ตามเป้า</span></td></tr>
+            <tr><td>ต้นทุนวัตถุดิบ / ยอดขาย</td><td>31.8%</td><td>ไม่เกิน 30%</td><td><span class="status watch">เฝ้าระวัง</span></td></tr>
+            <tr><td>ของเสีย / สูญเสียการผลิต</td><td>4.6%</td><td>ไม่เกิน 3%</td><td><span class="status alert">เกินเป้า</span></td></tr>
+            <tr><td>ความพร้อมของสต็อกขายดี</td><td>96%</td><td>≥ 95%</td><td><span class="status ok">ตามเป้า</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><div class="card-title">Management Alerts</div><div class="card-sub">ประเด็นที่ควรพิจารณา</div></div><span class="pill warn">2 รายการ</span></div>
+        <div class="alert-list">
+          <div class="alert-item"><div class="alert-symbol red">!</div><div class="alert-copy"><b>ต้นทุนวัตถุดิบสูงกว่าเป้าหมาย</b><p>ต้นทุนอยู่ที่ 31.8% ของยอดขาย ควรตรวจสอบราคาซื้อและอัตราการใช้วัตถุดิบ</p></div><span class="pill bad">High</span></div>
+          <div class="alert-item"><div class="alert-symbol">↘</div><div class="alert-copy"><b>การสูญเสียในกระบวนการผลิต</b><p>อัตราสูญเสีย 4.6% สูงกว่าเป้าหมาย 3% ควรตรวจสอบรายงานแต่ละ Batch</p></div><span class="pill warn">Review</span></div>
+        </div>
+      </div>
+    </section>
+    <div class="footer"><span>BREW & CO. · EXECUTIVE DASHBOARD MOCKUP</span><span>ข้อมูลจำลองเพื่อเสนอแนวทางเท่านั้น · ยังไม่ได้เชื่อม Google Sheets</span></div>
+  </main>
+</div>
+<script>
+const mock = {
+  month:{sales:"฿1.25M",margin:"58.2%",orders:"3,480",avg:"฿359",label:"เดือนนี้"},
+  week:{sales:"฿318K",margin:"57.6%",orders:"892",avg:"฿356",label:"7 วันล่าสุด"},
+  year:{sales:"฿9.84M",margin:"56.9%",orders:"27,620",avg:"฿356",label:"ปีนี้"}
+};
+document.getElementById("period").addEventListener("change",e=>{
+  const d=mock[e.target.value];
+  document.getElementById("sales").textContent=d.sales;
+  document.getElementById("margin").textContent=d.margin;
+  document.getElementById("orders").textContent=d.orders;
+  document.getElementById("avg").textContent=d.avg;
+  document.getElementById("updated").textContent="แสดงช่วงเวลา: "+d.label+" · ข้อมูล Mockup";
+});
+function refreshMock(){
+  document.getElementById("updated").textContent="รีเฟรชตัวอย่างแล้ว: "+new Date().toLocaleString("th-TH");
+}
+</script>
+</body>
+</html>
