@@ -22,7 +22,8 @@
 }
 
 body{
-  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  /* font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; */
+  font-family: 'IBM Plex Sans Thai', 'Noto Sans Thai', system-ui, -apple-system, 'Segoe UI', sans-serif;
   background: linear-gradient(145deg,#DFF0FA 0%,#E8F3F9 40%,#EDF6F3 100%);
   min-height:100vh;
   color:var(--txt);
@@ -181,6 +182,53 @@ body{
   border:1px solid rgba(232,98,42,0.25); border-radius:14px; padding:12px 18px;
   font-size:0.78rem; color:#B4491B; display:none;
 }
+
+/* ── Beautiful Month Dropdown ── */
+.month-select-wrap{
+  display:inline-flex;
+  align-items:center;
+  position:relative;
+}
+.month-select{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  background:
+    linear-gradient(135deg, #6CA0C8 0%, #2B5FA5 100%);
+  border:none;
+  border-radius:999px;
+  padding:10px 40px 10px 18px;
+  color:#fff;
+  font-size:0.82rem;
+  font-weight:700;
+  font-family:inherit;
+  letter-spacing:0.02em;
+  outline:none;
+  cursor:pointer;
+  min-width:170px;
+  box-shadow:0 4px 14px rgba(43,95,165,0.35);
+  transition:all .22s ease;
+  background-image:
+    linear-gradient(135deg, #6CA0C8 0%, #2B5FA5 100%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat, no-repeat;
+  background-position:0 0, right 14px center;
+  background-size:100% 100%, 12px;
+}
+.month-select:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 22px rgba(43,95,165,0.45);
+  filter:brightness(1.06);
+}
+.month-select:focus{
+  box-shadow:0 0 0 3px rgba(108,160,200,0.4), 0 8px 22px rgba(43,95,165,0.4);
+}
+.month-select option{
+  background:#fff;
+  color:#1A2B3C;
+  font-weight:500;
+  padding:10px;
+}
 </style>
 </head>
 <body>
@@ -188,7 +236,33 @@ body{
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-left">
-    <a href="javascript:history.back()" class="back-btn">← กลับ</a>
+    <a href="index.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px; background: linear-gradient(135deg, #6366F1, #818CF8); color: #fff; font-weight: 700; font-size: 0.85rem; text-decoration: none; letter-spacing: 0.05em; box-shadow: 0 4px 15px rgba(99,102,241,0.4); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(99,102,241,0.55)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(99,102,241,0.4)'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg> HOME
+    </a>
+    <!-- <a href="javascript:history.back()" class="back-btn">← กลับ</a> -->
+    <a href="javascript:history.back()" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 999px; background: linear-gradient(135deg, #e3d5c3, #e18905); color: #fff; font-weight: 700; font-size: 0.85rem; text-decoration: none; letter-spacing: 0.05em; box-shadow: 0 4px 15px rgba(99,102,241,0.4); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 25px rgba(99,102,241,0.55)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 4px 15px rgba(99,102,241,0.4)'">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg> BACK
+    </a>
+
+    <!-- ✅ Beautiful Month Dropdown -->
+    <div class="month-select-wrap">
+      <select id="monthSelect" class="month-select" title="เลือกเดือนเพื่อกรองข้อมูล">
+        <option value="">📅 ทุกเดือน</option>
+        <option value="01">01 · มกราคม</option>
+        <option value="02">02 · กุมภาพันธ์</option>
+        <option value="03">03 · มีนาคม</option>
+        <option value="04">04 · เมษายน</option>
+        <option value="05">05 · พฤษภาคม</option>
+        <option value="06">06 · มิถุนายน</option>
+        <option value="07">07 · กรกฎาคม</option>
+        <option value="08">08 · สิงหาคม</option>
+        <option value="09">09 · กันยายน</option>
+        <option value="10">10 · ตุลาคม</option>
+        <option value="11">11 · พฤศจิกายน</option>
+        <option value="12">12 · ธันวาคม</option>
+      </select>
+    </div>
+
     <div>
       <div class="nav-title">รายละเอียด <span id="typeBadgeInline"></span></div>
       <div class="nav-sub">ข้อมูลจาก sheet: dashBoard</div>
@@ -263,6 +337,22 @@ const YEAR_PARAM = yearRaw !== '' ? yearRaw : String(new Date().getFullYear()); 
 const TYPE_PARAM = (params.get('type') || '').trim().toLowerCase().substring(0, 2); // เช่น '07', '13' (สองหลักแรกของ Status2) — index.html ส่งรหัสตัวเลขมาตรงๆ อยู่แล้ว
 const mthRaw = (params.get('mth') || '').trim();
 const MTH_PARAM = mthRaw !== '' ? mthRaw.padStart(2, '0') : ''; // เดือน 01-12 — ถ้าไม่ส่ง mth มาเลยต้องเป็นค่าว่างจริงๆ ไม่ใช่ "00" (padStart ของสตริงว่างจะได้ "00" ถ้าไม่เช็คก่อน)
+
+// ✅ Month dropdown: ตั้งค่าเริ่มต้น + เมื่อเปลี่ยน → ไปหน้าเดิมด้วย mth ใหม่
+(function initMonthSelect() {
+  const sel = document.getElementById('monthSelect');
+  if (!sel) return;
+  sel.value = MTH_PARAM; // ตรงกับ mth ใน URL (ว่าง = ทุกเดือน)
+
+  sel.addEventListener('change', function () {
+    const mth = this.value; // '' | '01'..'12'
+    const q = new URLSearchParams();
+    if (YEAR_PARAM) q.set('year', YEAR_PARAM);
+    if (TYPE_PARAM) q.set('type', TYPE_PARAM);
+    if (mth) q.set('mth', mth);
+    window.location.href = 'detail.html?' + q.toString();
+  });
+})();
 
 // ✅ sheet ใหม่ (gid=48822130) — คนละตารางกับ dashBoard เดิม แต่เป็นตัวที่มีข้อมูล Amount ถูกต้อง
 const SHEET_ID = '1bq7r6zK10rC1PVKC4eVl1eDiDllVBDaKXewFajRgOA0';
