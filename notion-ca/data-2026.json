@@ -156,6 +156,53 @@
     "url": "https://app.notion.com/p/3c9770a5c90b80c4b346ee7707fc4d4d"
   },
   {
+    "id": "3fe770a5-c90b-8075-a34a-c833dd35c715",
+    "title": "City Medical Supply",
+    "date": "2026-10-29",
+    "end": null,
+    "note": "Onsite Meet MGT 13:00",
+    "employees": [
+      "Ice",
+      "THEP",
+      "AA"
+    ],
+    "employeesText": "Ice, THEP, AA",
+    "last_edited": "2026-10-19T11:42:00.000Z",
+    "url": "https://app.notion.com/p/City-Medical-Supply-3fe770a5c90b8075a34ac833dd35c715"
+  },
+  {
+    "id": "3fe770a5-c90b-80a3-ac25-c40634e7d670",
+    "title": "Vibracon",
+    "date": "2026-10-28",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Ice",
+      "THEP",
+      "AA",
+      "Tip",
+      "Benz"
+    ],
+    "employeesText": "Ice, THEP, AA, Tip, Benz",
+    "last_edited": "2026-10-19T11:43:00.000Z",
+    "url": "https://app.notion.com/p/Vibracon-3fe770a5c90b80a3ac25c40634e7d670"
+  },
+  {
+    "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
+    "title": "Mama ",
+    "date": "2026-10-27",
+    "end": null,
+    "note": "Meeting  09:00  โครงการสายพานรวมเลน",
+    "employees": [
+      "Game",
+      "Ice",
+      "Moo"
+    ],
+    "employeesText": "Game, Ice, Moo",
+    "last_edited": "2026-10-19T10:48:00.000Z",
+    "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
+  },
+  {
     "id": "3f8770a5-c90b-8023-b893-e8e739fc14b7",
     "title": "ลากิจ",
     "date": "2026-10-26",
@@ -200,10 +247,10 @@
   },
   {
     "id": "3e9770a5-c90b-805e-bf09-eaf0362c41a6",
-    "title": "Training 2nd Packaging",
+    "title": "Training OLION",
     "date": "2026-10-25",
     "end": null,
-    "note": "",
+    "note": "2nd Packaging 08:00",
     "employees": [
       "AA",
       "Tip",
@@ -211,8 +258,8 @@
       "THEP"
     ],
     "employeesText": "AA, Tip, Ice, THEP",
-    "last_edited": "2026-09-29T02:49:00.000Z",
-    "url": "https://app.notion.com/p/Training-2nd-Packaging-3e9770a5c90b805ebf09eaf0362c41a6"
+    "last_edited": "2026-10-19T11:40:00.000Z",
+    "url": "https://app.notion.com/p/Training-OLION-3e9770a5c90b805ebf09eaf0362c41a6"
   },
   {
     "id": "317770a5-c90b-8035-9ceb-d4ae123f6602",
@@ -224,6 +271,19 @@
     "employeesText": "",
     "last_edited": "2026-03-02T04:30:00.000Z",
     "url": "https://app.notion.com/p/Chulalongkorn-Day-317770a5c90b80359cebd4ae123f6602"
+  },
+  {
+    "id": "3fe770a5-c90b-80f2-8dd9-dc202d9408f5",
+    "title": "Glico",
+    "date": "2026-10-22",
+    "end": null,
+    "note": "Training at Glico",
+    "employees": [
+      "Title"
+    ],
+    "employeesText": "Title",
+    "last_edited": "2026-10-19T09:25:00.000Z",
+    "url": "https://app.notion.com/p/Glico-3fe770a5c90b80f28dd9dc202d9408f5"
   },
   {
     "id": "3fb770a5-c90b-80a4-8b8a-f5979c151efd",
@@ -264,10 +324,11 @@
       "Benz",
       "Game",
       "Sky",
-      "pub"
+      "pub",
+      "Title"
     ],
-    "employeesText": "AA, Benz, Game, Sky, pub",
-    "last_edited": "2026-10-19T03:19:00.000Z",
+    "employeesText": "AA, Benz, Game, Sky, pub, Title",
+    "last_edited": "2026-10-19T09:34:00.000Z",
     "url": "https://app.notion.com/p/URC-3fb770a5c90b8037a31dd931db8d2b67"
   },
   {
@@ -329,33 +390,31 @@
     "url": "https://app.notion.com/p/Nutrix-3fb770a5c90b80f5988eff3d0b756bb7"
   },
   {
-    "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
-    "title": "Mama ",
+    "id": "3f4770a5-c90b-80d9-8b91-d5933f3c0188",
+    "title": "Glico ",
     "date": "2026-10-20",
     "end": null,
-    "note": "Meeting  09:00  โครงการสายพานรวมเลน",
+    "note": "Training at Glico",
     "employees": [
-      "Game",
-      "Ice",
-      "Moo"
+      "Title"
     ],
-    "employeesText": "Game, Ice, Moo",
-    "last_edited": "2026-10-19T03:48:00.000Z",
-    "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
+    "employeesText": "Title",
+    "last_edited": "2026-10-19T09:24:00.000Z",
+    "url": "https://app.notion.com/p/Glico-3f4770a5c90b80d98b91d5933f3c0188"
   },
   {
     "id": "3f4770a5-c90b-80be-851a-f4bb71f3270e",
     "title": "City Medical Supply",
     "date": "2026-10-20",
     "end": null,
-    "note": "13:00 ",
+    "note": "Meeting online 15:00 ",
     "employees": [
       "AA",
       "THEP",
       "Ice"
     ],
     "employeesText": "AA, THEP, Ice",
-    "last_edited": "2026-10-19T03:48:00.000Z",
+    "last_edited": "2026-10-19T10:49:00.000Z",
     "url": "https://app.notion.com/p/City-Medical-Supply-3f4770a5c90b80be851af4bb71f3270e"
   },
   {
@@ -394,19 +453,6 @@
     "employeesText": "Muk",
     "last_edited": "2026-10-19T01:57:00.000Z",
     "url": "https://app.notion.com/p/Office-3fb770a5c90b803fb711ec6a3db90372"
-  },
-  {
-    "id": "3f4770a5-c90b-80d9-8b91-d5933f3c0188",
-    "title": "Glico ",
-    "date": "2026-10-19",
-    "end": "2026-10-23",
-    "note": "Training at Glico",
-    "employees": [
-      "Title"
-    ],
-    "employeesText": "Title",
-    "last_edited": "2026-10-19T03:14:00.000Z",
-    "url": "https://app.notion.com/p/Glico-3f4770a5c90b80d98b91d5933f3c0188"
   },
   {
     "id": "3ea770a5-c90b-8067-9849-eec5340c7ca6",
