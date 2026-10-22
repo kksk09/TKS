@@ -75,16 +75,29 @@
     "url": "https://app.notion.com/p/3d5770a5c90b80e3a0f3d3a20770636f"
   },
   {
-    "id": "3bf770a5-c90b-80cb-8729-dfc2cbe0364d",
-    "title": "ลากิจ",
-    "date": "2026-11-16",
+    "id": "401770a5-c90b-8046-bab7-d45c69de9e82",
+    "title": "ลากิจ ",
+    "date": "2026-11-19",
     "end": "2026-11-20",
     "note": "",
     "employees": [
       "Ice"
     ],
     "employeesText": "Ice",
-    "last_edited": "2026-10-09T13:27:00.000Z",
+    "last_edited": "2026-10-22T04:51:00.000Z",
+    "url": "https://app.notion.com/p/401770a5c90b8046bab7d45c69de9e82"
+  },
+  {
+    "id": "3bf770a5-c90b-80cb-8729-dfc2cbe0364d",
+    "title": "ลากิจ",
+    "date": "2026-11-16",
+    "end": "2026-11-17",
+    "note": "",
+    "employees": [
+      "Ice"
+    ],
+    "employeesText": "Ice",
+    "last_edited": "2026-10-22T04:51:00.000Z",
     "url": "https://app.notion.com/p/3bf770a5c90b80cb8729dfc2cbe0364d"
   },
   {
@@ -154,6 +167,19 @@
     "url": "https://app.notion.com/p/Carabao-Cambodia-3f8770a5c90b807ba389c20bcf814e3f"
   },
   {
+    "id": "401770a5-c90b-806f-86f1-d078a9596c22",
+    "title": "Office",
+    "date": "2026-10-30",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-10-22T02:09:00.000Z",
+    "url": "https://app.notion.com/p/Office-401770a5c90b806f86f1d078a9596c22"
+  },
+  {
     "id": "400770a5-c90b-80b8-8416-c04938c119c7",
     "title": "BJC",
     "date": "2026-10-30",
@@ -183,6 +209,20 @@
     "url": "https://app.notion.com/p/3c9770a5c90b80c4b346ee7707fc4d4d"
   },
   {
+    "id": "401770a5-c90b-80f3-a995-f67515a3ff56",
+    "title": "Office",
+    "date": "2026-10-29",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-22T02:09:00.000Z",
+    "url": "https://app.notion.com/p/Office-401770a5c90b80f3a995f67515a3ff56"
+  },
+  {
     "id": "3fe770a5-c90b-8075-a34a-c833dd35c715",
     "title": "City Medical Supply",
     "date": "2026-10-29",
@@ -196,6 +236,20 @@
     "employeesText": "Ice, THEP, AA",
     "last_edited": "2026-10-19T11:42:00.000Z",
     "url": "https://app.notion.com/p/City-Medical-Supply-3fe770a5c90b8075a34ac833dd35c715"
+  },
+  {
+    "id": "401770a5-c90b-8014-9ee2-fbaace371b36",
+    "title": "Office",
+    "date": "2026-10-28",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-22T02:09:00.000Z",
+    "url": "https://app.notion.com/p/Office-401770a5c90b80149ee2fbaace371b36"
   },
   {
     "id": "400770a5-c90b-80ce-91c3-fea42fce00ff",
@@ -238,7 +292,7 @@
   },
   {
     "id": "3fe770a5-c90b-80a3-ac25-c40634e7d670",
-    "title": "Vibracon",
+    "title": "Vibration",
     "date": "2026-10-28",
     "end": null,
     "note": "",
@@ -250,8 +304,22 @@
       "Benz"
     ],
     "employeesText": "Ice, THEP, AA, Tip, Benz",
-    "last_edited": "2026-10-19T11:43:00.000Z",
-    "url": "https://app.notion.com/p/Vibracon-3fe770a5c90b80a3ac25c40634e7d670"
+    "last_edited": "2026-10-22T04:51:00.000Z",
+    "url": "https://app.notion.com/p/Vibration-3fe770a5c90b80a3ac25c40634e7d670"
+  },
+  {
+    "id": "401770a5-c90b-807b-b041-c4427d7e1fe1",
+    "title": "Office",
+    "date": "2026-10-27",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-22T02:08:00.000Z",
+    "url": "https://app.notion.com/p/Office-401770a5c90b807bb041c4427d7e1fe1"
   },
   {
     "id": "400770a5-c90b-8085-b496-cf74d7706fc8",
@@ -286,33 +354,47 @@
     "url": "https://app.notion.com/p/BJC-400770a5c90b80638c2de3075cbdc627"
   },
   {
-    "id": "3ff770a5-c90b-80da-a744-ff09462d9cf4",
-    "title": "Nutrix",
-    "date": "2026-10-27",
-    "end": null,
-    "note": "ประชุมออนไลน์ คุณอ้น",
-    "employees": [
-      "Title",
-      "Daw"
-    ],
-    "employeesText": "Title, Daw",
-    "last_edited": "2026-10-20T08:36:00.000Z",
-    "url": "https://app.notion.com/p/Nutrix-3ff770a5c90b80daa744ff09462d9cf4"
-  },
-  {
     "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
     "title": "Mama ",
     "date": "2026-10-27",
     "end": null,
-    "note": "Meeting  09:00  โครงการสายพานรวมเลน",
+    "note": "Meeting  09:30  โครงการสายพานรวมเลน",
     "employees": [
       "Game",
       "Ice",
       "Moo"
     ],
     "employeesText": "Game, Ice, Moo",
-    "last_edited": "2026-10-19T10:48:00.000Z",
+    "last_edited": "2026-10-21T08:50:00.000Z",
     "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
+  },
+  {
+    "id": "401770a5-c90b-80cc-9714-dc60a01eb2a5",
+    "title": "Office",
+    "date": "2026-10-26",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-10-22T02:07:00.000Z",
+    "url": "https://app.notion.com/p/Office-401770a5c90b80cc9714dc60a01eb2a5"
+  },
+  {
+    "id": "400770a5-c90b-80e3-9570-ed2936fd046f",
+    "title": "Nutrix",
+    "date": "2026-10-26",
+    "end": null,
+    "note": "ประชุมออนไลน์ 15:00น. คุณอ้น",
+    "employees": [
+      "Daw",
+      "Title"
+    ],
+    "employeesText": "Daw, Title",
+    "last_edited": "2026-10-21T13:12:00.000Z",
+    "url": "https://app.notion.com/p/Nutrix-400770a5c90b80e39570ed2936fd046f"
   },
   {
     "id": "400770a5-c90b-807b-8b3c-e4740557d223",
@@ -416,6 +498,20 @@
     "url": "https://app.notion.com/p/Chulalongkorn-Day-317770a5c90b80359cebd4ae123f6602"
   },
   {
+    "id": "400770a5-c90b-8007-a22c-f5427051b2da",
+    "title": "Seng Huad",
+    "date": "2026-10-22",
+    "end": null,
+    "note": "วางบิล",
+    "employees": [
+      "AA",
+      "Daw"
+    ],
+    "employeesText": "AA, Daw",
+    "last_edited": "2026-10-21T15:29:00.000Z",
+    "url": "https://app.notion.com/p/Seng-Huad-400770a5c90b8007a22cf5427051b2da"
+  },
+  {
     "id": "3ff770a5-c90b-80e3-be50-e74fbf401f96",
     "title": "CP-Meiji",
     "date": "2026-10-22",
@@ -431,30 +527,16 @@
     "url": "https://app.notion.com/p/CP-Meiji-3ff770a5c90b80e3be50e74fbf401f96"
   },
   {
-    "id": "3fe770a5-c90b-80f2-8dd9-dc202d9408f5",
-    "title": "Glico",
-    "date": "2026-10-22",
-    "end": null,
-    "note": "Training at Glico",
-    "employees": [
-      "Title"
-    ],
-    "employeesText": "Title",
-    "last_edited": "2026-10-19T09:25:00.000Z",
-    "url": "https://app.notion.com/p/Glico-3fe770a5c90b80f28dd9dc202d9408f5"
-  },
-  {
     "id": "3fb770a5-c90b-80a4-8b8a-f5979c151efd",
     "title": "Office",
     "date": "2026-10-22",
     "end": null,
     "note": "",
     "employees": [
-      "Muk",
-      "Nack"
+      "Muk"
     ],
-    "employeesText": "Muk, Nack",
-    "last_edited": "2026-10-16T09:44:00.000Z",
+    "employeesText": "Muk",
+    "last_edited": "2026-10-21T12:42:00.000Z",
     "url": "https://app.notion.com/p/Office-3fb770a5c90b80a48b8af5979c151efd"
   },
   {
