@@ -800,7 +800,7 @@ function renderSalesQtPoChart(year) {
                 if (!sale) return;
 
                 if (!salesMap[sale]) {
-                    salesMap[sale] = { qtCount: 0, poCount: 0, qtAmount: 0 };
+                    salesMap[sale] = { qtCount: 0, poCount: 0, qtAmount: 0, poAmount: 0 };
                 }
 
                 const status = (r.Status2 || '').trim();
@@ -811,7 +811,9 @@ function renderSalesQtPoChart(year) {
                     salesMap[sale].qtAmount += amount;
                 }
                 if (status === '13-Order') {
+                    const poAmt = parseFloat(String(r['ยอดเงินที่ได้รับ'] || '0').replace(/[^0-9.-]/g, '')) || 0;
                     salesMap[sale].poCount += 1;
+                    salesMap[sale].poAmount += poAmt;
                 }
             });
 
@@ -820,6 +822,7 @@ function renderSalesQtPoChart(year) {
             const qtCounts = labels.map(s => salesMap[s].qtCount);
             const poCounts = labels.map(s => salesMap[s].poCount);
             const qtAmounts = labels.map(s => salesMap[s].qtAmount);
+            const poAmounts = labels.map(s => salesMap[s].poAmount);
 
             const canvas = document.getElementById('salesQtPoChart');
             if (!canvas) return;
@@ -889,6 +892,20 @@ function renderSalesQtPoChart(year) {
                                         return ctx.dataset.label + ': ' + ctx.raw.toLocaleString() + ' บาท';
                                     }
                                     return ctx.dataset.label + ': ' + ctx.raw;
+                                },
+                                afterBody: function(items) {
+                                    const i = items[0].dataIndex;
+                                    const qt = qtCounts[i], po = poCounts[i];
+                                    const total = qt + po;
+                                    const win = total > 0 ? ((po / total) * 100).toFixed(1) + '%' : '-';
+                                    const qa = qtAmounts[i], pa = poAmounts[i];
+                                    const winAmt = (qa + pa) > 0 ? ((pa / (qa + pa)) * 100).toFixed(1) + '%' : '-';
+                                    return [
+                                        '',
+                                        'PO Amount: ' + pa.toLocaleString() + ' บาท',
+                                        'Win Rate ตามจำนวน: ' + win + '  (' + po.toLocaleString() + ' / ' + total.toLocaleString() + ' ใบ)',
+                                        'Win Rate ตามมูลค่า: ' + winAmt
+                                    ];
                                 }
                             }
                         }
