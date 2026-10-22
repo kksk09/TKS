@@ -352,6 +352,13 @@
         <div id="poComboInsight" class="chart-insight"></div>
     </div>
 
+    <div class="card-graph glass" style="text-align:left; margin-bottom:24px;">
+        <h3>QT &amp; PO by Department (<span class="dyn-year">2026</span>)</h3>
+        <p class="chart-desc">กราฟแท่งจัดกลุ่มตามแผนก (Department) — QT Count / PO Count = จำนวนใบเสนอราคา (07-Sent Quotation) / ใบสั่งซื้อ (13-Order) บนแกนซ้าย เทียบกับ QT Amount / PO Amount (บาท) บนแกนขวา แยกแกนเพราะหน่วยต่างกัน<br>Win % ใต้ชื่อแผนก = PO ÷ (QT + PO) ตามจำนวนใบ (QT ที่ปิดเป็น Order แล้วจะย้ายไปอยู่ฝั่ง PO) — เอาเมาส์ชี้ดู % ตามมูลค่าได้</p>
+        <div class="chart-container" style="height:380px;"><canvas id="qtpoDepartChart"></canvas></div>
+        <div id="qtpoDepartInsight" class="chart-insight"></div>
+    </div>
+
     <div class="card-graph glass">
         <h3>Monthly Sales &amp; Growth (<span class="dyn-year">2026</span>)</h3>
         <div class="chart-container" style="position:relative; height:400px;"><canvas id="barChartSales"></canvas></div>
@@ -909,6 +916,127 @@ function renderSalesQtPoChart(year) {
         }
     });
 }   
+
+    // ==================== QT & PO by Department ====================
+    // year = col B (year) | Department = col J | Status2 = col R
+    // QT: count(Quotation No. / col H) + sum(Amount THB / col AA) เมื่อ Status2 = '07-Sent Quotation'
+    // PO: count(Order No / col V) + sum(ยอดเงินที่ได้รับ / col AM) เมื่อ Status2 = '13-Order'
+    function renderDepartChart(year) {
+        Papa.parse(SHEET_CSV_URL, {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            complete: function(results) {
+                // อ่านค่าจากคอลัมน์แบบไม่สนตัวพิมพ์เล็ก/ใหญ่ และช่องว่างหัว-ท้ายชื่อคอลัมน์
+                const getCol = (row, name) => {
+                    const target = name.trim().toLowerCase();
+                    for (const k in row) { if (k.trim().toLowerCase() === target) return row[k]; }
+                    return '';
+                };
+
+                const rows = results.data.filter(r => String(getCol(r, 'year')).trim() === String(year));
+
+                const deptMap = {};
+                rows.forEach(r => {
+                    const dept   = String(getCol(r, 'Department') || '').trim() || '(ไม่ระบุ)';
+                    const status = String(getCol(r, 'Status2') || '').trim();
+                    if (status !== '07-Sent Quotation' && status !== '13-Order') return;
+
+                    if (!deptMap[dept]) deptMap[dept] = { qtCount: 0, qtAmount: 0, poCount: 0, poAmount: 0 };
+
+                    if (status === '07-Sent Quotation') {
+                        const amt = parseFloat(String(getCol(r, 'Amount THB') || '0').replace(/[^0-9.-]/g, '')) || 0;
+                        deptMap[dept].qtCount  += 1;
+                        deptMap[dept].qtAmount += amt;
+                    } else {
+                        const poAmt = parseFloat(String(getCol(r, 'ยอดเงินที่ได้รับ') || '0').replace(/[^0-9.-]/g, '')) || 0;
+                        deptMap[dept].poCount  += 1;
+                        deptMap[dept].poAmount += poAmt;
+                    }
+                });
+
+                // เรียงตามมูลค่า QT มาก → น้อย
+                const labels    = Object.keys(deptMap).sort((a, b) => deptMap[b].qtAmount - deptMap[a].qtAmount);
+                const qtCounts  = labels.map(d => deptMap[d].qtCount);
+                const poCounts  = labels.map(d => deptMap[d].poCount);
+                const qtAmounts = labels.map(d => deptMap[d].qtAmount);
+                const poAmounts = labels.map(d => deptMap[d].poAmount);
+
+                // % Conversion QT > PO = PO / (QT ที่ยังค้าง + PO)  (เพราะ QT ที่ปิดแล้วจะย้ายสถานะเป็น 13-Order)
+                const pct = (po, qt) => (po + qt) > 0 ? (po / (po + qt)) * 100 : null;
+                const convCount  = labels.map((d, i) => pct(poCounts[i],  qtCounts[i]));
+                const convAmount = labels.map((d, i) => pct(poAmounts[i], qtAmounts[i]));
+                const fmtPct = v => v === null ? '-' : v.toFixed(1) + '%';
+                // ชื่อแผนก + % ปิดการขาย แสดงเป็น 2 บรรทัดบนแกน X
+                const axisLabels = labels.map((d, i) => [d, 'Win ' + fmtPct(convCount[i])]);
+
+                const canvas = document.getElementById('qtpoDepartChart');
+                if (!canvas) return;
+                if (window._qtpoDepartChart) window._qtpoDepartChart.destroy();
+
+                window._qtpoDepartChart = new Chart(canvas, {
+                    type: 'bar',
+                    data: {
+                        labels: axisLabels,
+                        datasets: [
+                            { label: 'QT Count',         data: qtCounts,  backgroundColor: '#A0C4DF', borderRadius: 6, yAxisID: 'y'  },
+                            { label: 'QT Amount',         data: qtAmounts, backgroundColor: '#2E5B88', borderRadius: 6, yAxisID: 'y1' },
+                            { label: 'PO Count',         data: poCounts,  backgroundColor: '#A2D7C5', borderRadius: 6, yAxisID: 'y'  },
+                            { label: 'PO Amount',         data: poAmounts, backgroundColor: '#1E5E4E', borderRadius: 6, yAxisID: 'y1' }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: {
+                            legend: { position: 'top', labels: { color: '#94a3b8', font: { size: 13, weight: 'bold' }, usePointStyle: true, padding: 16 } },
+                            tooltip: {
+                                callbacks: {
+                                    title: function(items) { return labels[items[0].dataIndex]; },
+                                    label: function(ctx) {
+                                        if (ctx.dataset.label.includes('Amount')) {
+                                            return ctx.dataset.label + ': ' + Number(ctx.raw).toLocaleString() + ' บาท';
+                                        }
+                                        return ctx.dataset.label + ': ' + Number(ctx.raw).toLocaleString();
+                                    },
+                                    afterBody: function(items) {
+                                        const i = items[0].dataIndex;
+                                        return [
+                                            '',
+                                            '% Conversion QT → PO',
+                                            'ตามจำนวน: ' + fmtPct(convCount[i]) + '  (' + poCounts[i].toLocaleString() + ' / ' + (poCounts[i] + qtCounts[i]).toLocaleString() + ' ใบ)',
+                                            'ตามมูลค่า: ' + fmtPct(convAmount[i])
+                                        ];
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { ticks: { color: '#94a3b8', maxRotation: 45, minRotation: 0, font: { size: 12, weight: 'bold' } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                            y: { position: 'left', beginAtZero: true, title: { display: true, text: 'จำนวน (Count)', color: '#94a3b8' }, ticks: { color: '#94a3b8', precision: 0 }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                            y1: { position: 'right', beginAtZero: true, title: { display: true, text: 'Amount (บาท)', color: '#94a3b8' }, ticks: { color: '#94a3b8', callback: (v) => v >= 1e6 ? (v/1e6)+'M' : v.toLocaleString() }, grid: { drawOnChartArea: false } }
+                        }
+                    }
+                });
+
+                const insightEl = document.getElementById('qtpoDepartInsight');
+                if (insightEl) {
+                    if (!labels.length) {
+                        insightEl.innerHTML = `ไม่พบข้อมูลปี ${year} ที่ Status2 = 07-Sent Quotation หรือ 13-Order`;
+                    } else {
+                        const iQtC = qtCounts.indexOf(Math.max(...qtCounts));
+                        const iQtA = qtAmounts.indexOf(Math.max(...qtAmounts));
+                        const iPoC = poCounts.indexOf(Math.max(...poCounts));
+                        const iPoA = poAmounts.indexOf(Math.max(...poAmounts));
+                        const cc = convCount.map(v => v === null ? -1 : v);
+                        const iCv = cc.indexOf(Math.max(...cc));
+                        insightEl.innerHTML = `แผนกที่ส่ง QT เยอะสุด: <b>${labels[iQtC]}</b> (${qtCounts[iQtC].toLocaleString()} ใบ) — มูลค่า QT สูงสุด: <b>${labels[iQtA]}</b> (${qtAmounts[iQtA].toLocaleString()} บาท) — PO เยอะสุด: <b>${labels[iPoC]}</b> (${poCounts[iPoC].toLocaleString()} ใบ) — มูลค่า PO สูงสุด: <b>${labels[iPoA]}</b> (${poAmounts[iPoA].toLocaleString()} บาท)<br>ปิดการขายได้สัดส่วนสูงสุด: <b>${labels[iCv]}</b> (${fmtPct(convCount[iCv])})`;
+                    }
+                }
+            }
+        });
+    }
 
     function renderQtComboChart(monthlyCount, monthlyAmount) {
         const canvas = document.getElementById('barChart');
@@ -1537,6 +1665,7 @@ function renderSalesQtPoChart(year) {
         // เรียกกราฟใหม่ QT by salesman และ PO by salesman หลังจากโหลดข้อมูลเสร็จ
         const year = new URLSearchParams(window.location.search).get('year') || '2026';
         renderSalesQtPoChart(year);
+        renderDepartChart(year);
         setTimeout(() => { if (loadingRemaining > 0) hideLoadingOverlay(); }, 15000);
 
 
