@@ -308,6 +308,22 @@
     "url": "https://app.notion.com/p/Vibration-3fe770a5c90b80a3ac25c40634e7d670"
   },
   {
+    "id": "402770a5-c90b-8021-a229-cb6178387193",
+    "title": "โรงปุ๋ย YVP Present",
+    "date": "2026-10-27",
+    "end": null,
+    "note": "นัด Present ข้อมูลบริษัท กับผู้บริหาร",
+    "employees": [
+      "Nack",
+      "Sky",
+      "Game",
+      "Ice"
+    ],
+    "employeesText": "Nack, Sky, Game, Ice",
+    "last_edited": "2026-10-23T05:04:00.000Z",
+    "url": "https://app.notion.com/p/YVP-Present-402770a5c90b8021a229cb6178387193"
+  },
+  {
     "id": "401770a5-c90b-807b-b041-c4427d7e1fe1",
     "title": "Office",
     "date": "2026-10-27",
@@ -326,7 +342,7 @@
     "title": "Calbee",
     "date": "2026-10-27",
     "end": null,
-    "note": "01.30 P.M.",
+    "note": "11.00 A.M.",
     "employees": [
       "AA",
       "Tip",
@@ -334,7 +350,7 @@
       "Daw"
     ],
     "employeesText": "AA, Tip, THEP, Daw",
-    "last_edited": "2026-10-21T04:18:00.000Z",
+    "last_edited": "2026-10-22T09:50:00.000Z",
     "url": "https://app.notion.com/p/Calbee-400770a5c90b8085b496cf74d7706fc8"
   },
   {
@@ -342,7 +358,7 @@
     "title": "BJC ",
     "date": "2026-10-27",
     "end": null,
-    "note": "with ORION",
+    "note": "with ORION 01.00 P.M.",
     "employees": [
       "AA",
       "Tip",
@@ -350,7 +366,7 @@
       "Daw"
     ],
     "employeesText": "AA, Tip, THEP, Daw",
-    "last_edited": "2026-10-21T04:52:00.000Z",
+    "last_edited": "2026-10-22T09:51:00.000Z",
     "url": "https://app.notion.com/p/BJC-400770a5c90b80638c2de3075cbdc627"
   },
   {
@@ -367,6 +383,20 @@
     "employeesText": "Game, Ice, Moo",
     "last_edited": "2026-10-21T08:50:00.000Z",
     "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
+  },
+  {
+    "id": "401770a5-c90b-8076-9cc8-e75b6f9843fc",
+    "title": "เข้าประชุมงานและสำรวจหน้างานที่ Benjaphanpong ปทุมธานี",
+    "date": "2026-10-26",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Game",
+      "Title"
+    ],
+    "employeesText": "Game, Title",
+    "last_edited": "2026-10-22T09:36:00.000Z",
+    "url": "https://app.notion.com/p/Benjaphanpong-401770a5c90b80769cc8e75b6f9843fc"
   },
   {
     "id": "401770a5-c90b-80cc-9714-dc60a01eb2a5",
