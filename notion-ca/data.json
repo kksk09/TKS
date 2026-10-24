@@ -127,6 +127,21 @@
     "url": "https://app.notion.com/p/3c9770a5c90b8093b7f0f15bc78055d4"
   },
   {
+    "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
+    "title": "Mama ",
+    "date": "2026-11-11",
+    "end": null,
+    "note": "Meeting  09:30  โครงการสายพานรวมเลน",
+    "employees": [
+      "Game",
+      "Ice",
+      "Moo"
+    ],
+    "employeesText": "Game, Ice, Moo",
+    "last_edited": "2026-10-23T07:57:00.000Z",
+    "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
+  },
+  {
     "id": "3ff770a5-c90b-8087-84ce-f852fe0be6f7",
     "title": "Moutain Mist Motor & Invertor",
     "date": "2026-11-05",
@@ -330,11 +345,10 @@
     "end": null,
     "note": "",
     "employees": [
-      "Muk",
-      "Nack"
+      "Muk"
     ],
-    "employeesText": "Muk, Nack",
-    "last_edited": "2026-10-22T02:08:00.000Z",
+    "employeesText": "Muk",
+    "last_edited": "2026-10-23T08:40:00.000Z",
     "url": "https://app.notion.com/p/Office-401770a5c90b807bb041c4427d7e1fe1"
   },
   {
@@ -370,19 +384,18 @@
     "url": "https://app.notion.com/p/BJC-400770a5c90b80638c2de3075cbdc627"
   },
   {
-    "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
-    "title": "Mama ",
-    "date": "2026-10-27",
+    "id": "402770a5-c90b-804f-8077-dd172c0bf752",
+    "title": "Asian Alliance ",
+    "date": "2026-10-26",
     "end": null,
-    "note": "Meeting  09:30  โครงการสายพานรวมเลน",
+    "note": "14.00 P.M. Supplier งาน Boiler เข้าดูหน้างาน Alternative supplier เพื่อประเมินราคางานตรวจสภาพ Boiler & อุปกรณ์ Boiler ",
     "employees": [
-      "Game",
-      "Ice",
-      "Moo"
+      "Sky",
+      "Daw"
     ],
-    "employeesText": "Game, Ice, Moo",
-    "last_edited": "2026-10-21T08:50:00.000Z",
-    "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
+    "employeesText": "Sky, Daw",
+    "last_edited": "2026-10-23T13:54:00.000Z",
+    "url": "https://app.notion.com/p/Asian-Alliance-402770a5c90b804f8077dd172c0bf752"
   },
   {
     "id": "401770a5-c90b-8076-9cc8-e75b6f9843fc",
@@ -417,13 +430,13 @@
     "title": "Nutrix",
     "date": "2026-10-26",
     "end": null,
-    "note": "ประชุมออนไลน์ 15:00น. คุณอ้น",
+    "note": "ประชุมออนไลน์ 14:00น. คุณอ้น",
     "employees": [
       "Daw",
       "Title"
     ],
     "employeesText": "Daw, Title",
-    "last_edited": "2026-10-21T13:12:00.000Z",
+    "last_edited": "2026-10-24T04:39:00.000Z",
     "url": "https://app.notion.com/p/Nutrix-400770a5c90b80e39570ed2936fd046f"
   },
   {
@@ -502,7 +515,7 @@
   },
   {
     "id": "3e9770a5-c90b-805e-bf09-eaf0362c41a6",
-    "title": "Training OLION",
+    "title": "Training ORION",
     "date": "2026-10-25",
     "end": null,
     "note": "2nd Packaging 08:00",
@@ -513,8 +526,8 @@
       "THEP"
     ],
     "employeesText": "AA, Tip, Ice, THEP",
-    "last_edited": "2026-10-19T11:40:00.000Z",
-    "url": "https://app.notion.com/p/Training-OLION-3e9770a5c90b805ebf09eaf0362c41a6"
+    "last_edited": "2026-10-23T07:56:00.000Z",
+    "url": "https://app.notion.com/p/Training-ORION-3e9770a5c90b805ebf09eaf0362c41a6"
   },
   {
     "id": "317770a5-c90b-8035-9ceb-d4ae123f6602",
@@ -543,7 +556,7 @@
   },
   {
     "id": "3ff770a5-c90b-80e3-be50-e74fbf401f96",
-    "title": "CP-Meiji",
+    "title": "CP-Meiji  PR Foodland",
     "date": "2026-10-22",
     "end": null,
     "note": "เซนบิล วางบิล รับใบมีด ",
@@ -553,8 +566,8 @@
       "Benz"
     ],
     "employeesText": "pub, Nack, Benz",
-    "last_edited": "2026-10-20T06:32:00.000Z",
-    "url": "https://app.notion.com/p/CP-Meiji-3ff770a5c90b80e3be50e74fbf401f96"
+    "last_edited": "2026-10-23T08:40:00.000Z",
+    "url": "https://app.notion.com/p/CP-Meiji-PR-Foodland-3ff770a5c90b80e3be50e74fbf401f96"
   },
   {
     "id": "3fb770a5-c90b-80a4-8b8a-f5979c151efd",
