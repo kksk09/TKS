@@ -273,10 +273,11 @@
     "end": null,
     "note": "04.00 P.M. with K.Somchai",
     "employees": [
-      "AA"
+      "AA",
+      "Sky"
     ],
-    "employeesText": "AA",
-    "last_edited": "2026-10-21T04:30:00.000Z",
+    "employeesText": "AA, Sky",
+    "last_edited": "2026-10-26T03:02:00.000Z",
     "url": "https://app.notion.com/p/Friendship-400770a5c90b80ce91c3fea42fce00ff"
   },
   {
@@ -286,10 +287,11 @@
     "end": null,
     "note": "03.00 P.M. with K.Anake",
     "employees": [
-      "AA"
+      "AA",
+      "Sky"
     ],
-    "employeesText": "AA",
-    "last_edited": "2026-10-21T04:27:00.000Z",
+    "employeesText": "AA, Sky",
+    "last_edited": "2026-10-26T03:02:00.000Z",
     "url": "https://app.notion.com/p/Hanami-400770a5c90b80338623c32bb44f4a36"
   },
   {
@@ -299,10 +301,11 @@
     "end": null,
     "note": "",
     "employees": [
-      "AA"
+      "AA",
+      "Sky"
     ],
-    "employeesText": "AA",
-    "last_edited": "2026-10-21T04:15:00.000Z",
+    "employeesText": "AA, Sky",
+    "last_edited": "2026-10-26T03:02:00.000Z",
     "url": "https://app.notion.com/p/Bio-Cotton-400770a5c90b8000adb3f67f2a3bdf05"
   },
   {
@@ -335,7 +338,7 @@
       "Ice"
     ],
     "employeesText": "Nack, Sky, Game, Ice",
-    "last_edited": "2026-10-23T05:04:00.000Z",
+    "last_edited": "2026-10-26T03:44:00.000Z",
     "url": "https://app.notion.com/p/YVP-Present-402770a5c90b8021a229cb6178387193"
   },
   {
@@ -361,10 +364,11 @@
       "AA",
       "Tip",
       "THEP",
-      "Daw"
+      "Daw",
+      "Benz"
     ],
-    "employeesText": "AA, Tip, THEP, Daw",
-    "last_edited": "2026-10-22T09:50:00.000Z",
+    "employeesText": "AA, Tip, THEP, Daw, Benz",
+    "last_edited": "2026-10-26T03:03:00.000Z",
     "url": "https://app.notion.com/p/Calbee-400770a5c90b8085b496cf74d7706fc8"
   },
   {
@@ -399,16 +403,16 @@
   },
   {
     "id": "401770a5-c90b-8076-9cc8-e75b6f9843fc",
-    "title": "เข้าประชุมงานและสำรวจหน้างานที่ Benjaphanpong ปทุมธานี",
+    "title": "Benjaphanpong ",
     "date": "2026-10-26",
     "end": null,
-    "note": "",
+    "note": "เข้าประชุมงานและสำรวจหน้างานที่ Benjaphanpong ปทุมธานี",
     "employees": [
       "Game",
       "Title"
     ],
     "employeesText": "Game, Title",
-    "last_edited": "2026-10-22T09:36:00.000Z",
+    "last_edited": "2026-10-25T08:08:00.000Z",
     "url": "https://app.notion.com/p/Benjaphanpong-401770a5c90b80769cc8e75b6f9843fc"
   },
   {
@@ -887,7 +891,7 @@
       "Ice"
     ],
     "employeesText": "Nok, Game, Nack, Ice",
-    "last_edited": "2026-10-14T08:02:00.000Z",
+    "last_edited": "2026-10-26T03:47:00.000Z",
     "url": "https://app.notion.com/p/10-00-3f7770a5c90b80f1ad0ae70b2959b36a"
   },
   {
