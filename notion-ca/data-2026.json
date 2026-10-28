@@ -182,6 +182,19 @@
     "url": "https://app.notion.com/p/Carabao-Cambodia-3f8770a5c90b807ba389c20bcf814e3f"
   },
   {
+    "id": "407770a5-c90b-8003-b1a1-d03f3ccf292a",
+    "title": "F-Plus ",
+    "date": "2026-10-30",
+    "end": null,
+    "note": "with ERAWAN Team 10.00 A.M.-12.00 P.M.",
+    "employees": [
+      "AA"
+    ],
+    "employeesText": "AA",
+    "last_edited": "2026-10-28T01:55:00.000Z",
+    "url": "https://app.notion.com/p/F-Plus-407770a5c90b8003b1a1d03f3ccf292a"
+  },
+  {
     "id": "406770a5-c90b-800f-9f27-f9371c9f2aef",
     "title": "ลาป่วย",
     "date": "2026-10-30",
@@ -237,6 +250,36 @@
     "url": "https://app.notion.com/p/3c9770a5c90b80c4b346ee7707fc4d4d"
   },
   {
+    "id": "407770a5-c90b-80a3-8031-f238fb6034a9",
+    "title": "Nutrix",
+    "date": "2026-10-29",
+    "end": null,
+    "note": "13:30น. พบคุณอ้น ดูหน้างาน",
+    "employees": [
+      "Daw",
+      "Title",
+      "Game"
+    ],
+    "employeesText": "Daw, Title, Game",
+    "last_edited": "2026-10-28T04:44:00.000Z",
+    "url": "https://app.notion.com/p/Nutrix-407770a5c90b80a38031f238fb6034a9"
+  },
+  {
+    "id": "407770a5-c90b-8061-85dc-dece64b1d235",
+    "title": "CPF ฉะเชิงเทรา",
+    "date": "2026-10-29",
+    "end": null,
+    "note": "10:00 น.พา Sup ดูหน้างาน",
+    "employees": [
+      "Daw",
+      "Title",
+      "Game"
+    ],
+    "employeesText": "Daw, Title, Game",
+    "last_edited": "2026-10-28T04:44:00.000Z",
+    "url": "https://app.notion.com/p/CPF-407770a5c90b806185dcdece64b1d235"
+  },
+  {
     "id": "401770a5-c90b-80f3-a995-f67515a3ff56",
     "title": "Office",
     "date": "2026-10-29",
@@ -255,15 +298,28 @@
     "title": "City Medical Supply",
     "date": "2026-10-29",
     "end": null,
-    "note": "Onsite Meet MGT 13:00",
+    "note": "Onsite Meet MGT 14:00",
     "employees": [
       "Ice",
       "THEP",
       "AA"
     ],
     "employeesText": "Ice, THEP, AA",
-    "last_edited": "2026-10-19T11:42:00.000Z",
+    "last_edited": "2026-10-28T02:33:00.000Z",
     "url": "https://app.notion.com/p/City-Medical-Supply-3fe770a5c90b8075a34ac833dd35c715"
+  },
+  {
+    "id": "407770a5-c90b-80f4-a809-c9199af5ddc9",
+    "title": "ลาป่วย",
+    "date": "2026-10-28",
+    "end": null,
+    "note": "เป็นหวัด ไอเจ็บคอ กลัวคนอื่นติดจ้า",
+    "employees": [
+      "Ice"
+    ],
+    "employeesText": "Ice",
+    "last_edited": "2026-10-28T02:27:00.000Z",
+    "url": "https://app.notion.com/p/407770a5c90b80f4a809c9199af5ddc9"
   },
   {
     "id": "401770a5-c90b-8014-9ee2-fbaace371b36",
@@ -328,14 +384,13 @@
     "end": null,
     "note": "",
     "employees": [
-      "Ice",
       "THEP",
       "AA",
       "Tip",
       "Benz"
     ],
-    "employeesText": "Ice, THEP, AA, Tip, Benz",
-    "last_edited": "2026-10-22T04:51:00.000Z",
+    "employeesText": "THEP, AA, Tip, Benz",
+    "last_edited": "2026-10-28T02:27:00.000Z",
     "url": "https://app.notion.com/p/Vibration-3fe770a5c90b80a3ac25c40634e7d670"
   },
   {
@@ -394,10 +449,11 @@
       "AA",
       "Tip",
       "THEP",
-      "Daw"
+      "Daw",
+      "Benz"
     ],
-    "employeesText": "AA, Tip, THEP, Daw",
-    "last_edited": "2026-10-22T09:51:00.000Z",
+    "employeesText": "AA, Tip, THEP, Daw, Benz",
+    "last_edited": "2026-10-27T06:49:00.000Z",
     "url": "https://app.notion.com/p/BJC-400770a5c90b80638c2de3075cbdc627"
   },
   {
