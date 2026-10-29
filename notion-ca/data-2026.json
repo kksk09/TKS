@@ -12,10 +12,10 @@
   },
   {
     "id": "3ce770a5-c90b-80b5-9018-f2daeeb71d98",
-    "title": "Christmas แลกของขวัญ @ All",
+    "title": "Christmas ",
     "date": "2026-12-25",
     "end": null,
-    "note": "",
+    "note": "แลกของขวัญ @ All หาก ได้ยอดใหญ่ จะย้ายไป outing ",
     "employees": [
       "Title",
       "Nok",
@@ -36,8 +36,8 @@
       "Moo"
     ],
     "employeesText": "Title, Nok, Ice, KO, AA, Game, Sky, Tip, pub, Daw, Nack, LOVE, Benz, EAK, Muk, TK, Moo",
-    "last_edited": "2026-10-04T17:31:00.000Z",
-    "url": "https://app.notion.com/p/Christmas-All-3ce770a5c90b80b59018f2daeeb71d98"
+    "last_edited": "2026-10-28T14:29:00.000Z",
+    "url": "https://app.notion.com/p/Christmas-3ce770a5c90b80b59018f2daeeb71d98"
   },
   {
     "id": "317770a5-c90b-803d-a72c-f1c850dac5c1",
@@ -153,6 +153,36 @@
     "url": "https://app.notion.com/p/Moutain-Mist-Motor-Invertor-3ff770a5c90b808784cef852fe0be6f7"
   },
   {
+    "id": "408770a5-c90b-8088-b8a2-f16e626f45b1",
+    "title": "Mr.Watanuki / General Packer",
+    "date": "2026-11-03",
+    "end": null,
+    "note": "04.00 P.M. at TSUKASA Office",
+    "employees": [
+      "AA",
+      "THEP",
+      "Tip"
+    ],
+    "employeesText": "AA, THEP, Tip",
+    "last_edited": "2026-10-29T06:35:00.000Z",
+    "url": "https://app.notion.com/p/Mr-Watanuki-General-Packer-408770a5c90b8088b8a2f16e626f45b1"
+  },
+  {
+    "id": "408770a5-c90b-80de-801f-fd5a9d87cea5",
+    "title": "Thai Hachiban",
+    "date": "2026-11-02",
+    "end": null,
+    "note": "Present งาน และ รับโจทย์เพิ่ม",
+    "employees": [
+      "Ice",
+      "Nok",
+      "Game"
+    ],
+    "employeesText": "Ice, Nok, Game",
+    "last_edited": "2026-10-29T04:36:00.000Z",
+    "url": "https://app.notion.com/p/Thai-Hachiban-408770a5c90b80de801ffd5a9d87cea5"
+  },
+  {
     "id": "3c9770a5-c90b-8059-bbc9-f2bb474cbb3b",
     "title": "ลากิจ",
     "date": "2026-11-02",
@@ -180,6 +210,21 @@
     "employeesText": "LOVE, Moo, Nok, EAK",
     "last_edited": "2026-10-20T08:23:00.000Z",
     "url": "https://app.notion.com/p/Carabao-Cambodia-3f8770a5c90b807ba389c20bcf814e3f"
+  },
+  {
+    "id": "407770a5-c90b-805e-bfad-e48b21f1fbee",
+    "title": "F-PLUS",
+    "date": "2026-10-30",
+    "end": null,
+    "note": "",
+    "employees": [
+      "AA",
+      "Daw",
+      "KO"
+    ],
+    "employeesText": "AA, Daw, KO",
+    "last_edited": "2026-10-28T13:51:00.000Z",
+    "url": "https://app.notion.com/p/F-PLUS-407770a5c90b805ebfade48b21f1fbee"
   },
   {
     "id": "407770a5-c90b-8003-b1a1-d03f3ccf292a",
@@ -250,6 +295,32 @@
     "url": "https://app.notion.com/p/3c9770a5c90b80c4b346ee7707fc4d4d"
   },
   {
+    "id": "407770a5-c90b-80c5-a48d-f8dd8e49b9ce",
+    "title": "เทคนิคแคร์ จำกัด",
+    "date": "2026-10-29",
+    "end": null,
+    "note": "รับบอร์ดไปส่งคืน ลค  และ รับจาก ลค มาเช็คใหม่เพิ่มอีก 2 ตัว",
+    "employees": [
+      "Sky"
+    ],
+    "employeesText": "Sky",
+    "last_edited": "2026-10-28T10:58:00.000Z",
+    "url": "https://app.notion.com/p/407770a5c90b80c5a48df8dd8e49b9ce"
+  },
+  {
+    "id": "407770a5-c90b-804a-a95a-fa1b59ba8821",
+    "title": "Krungthai Food",
+    "date": "2026-10-29",
+    "end": null,
+    "note": "รับบอร์ดที่เสียมาส่งเช็ค",
+    "employees": [
+      "Sky"
+    ],
+    "employeesText": "Sky",
+    "last_edited": "2026-10-28T10:56:00.000Z",
+    "url": "https://app.notion.com/p/Krungthai-Food-407770a5c90b804aa95afa1b59ba8821"
+  },
+  {
     "id": "407770a5-c90b-80a3-8031-f238fb6034a9",
     "title": "Nutrix",
     "date": "2026-10-29",
@@ -269,14 +340,14 @@
     "title": "CPF ฉะเชิงเทรา",
     "date": "2026-10-29",
     "end": null,
-    "note": "10:00 น.พา Sup ดูหน้างาน",
+    "note": "15:00 น.พา Sup ดูหน้างานติดตั้ง",
     "employees": [
       "Daw",
       "Title",
       "Game"
     ],
     "employeesText": "Daw, Title, Game",
-    "last_edited": "2026-10-28T04:44:00.000Z",
+    "last_edited": "2026-10-29T04:35:00.000Z",
     "url": "https://app.notion.com/p/CPF-407770a5c90b806185dcdece64b1d235"
   },
   {
@@ -376,22 +447,6 @@
     "employeesText": "AA, Sky",
     "last_edited": "2026-10-26T03:02:00.000Z",
     "url": "https://app.notion.com/p/Bio-Cotton-400770a5c90b8000adb3f67f2a3bdf05"
-  },
-  {
-    "id": "3fe770a5-c90b-80a3-ac25-c40634e7d670",
-    "title": "Vibration",
-    "date": "2026-10-28",
-    "end": null,
-    "note": "",
-    "employees": [
-      "THEP",
-      "AA",
-      "Tip",
-      "Benz"
-    ],
-    "employeesText": "THEP, AA, Tip, Benz",
-    "last_edited": "2026-10-28T02:27:00.000Z",
-    "url": "https://app.notion.com/p/Vibration-3fe770a5c90b80a3ac25c40634e7d670"
   },
   {
     "id": "402770a5-c90b-8021-a229-cb6178387193",
