@@ -142,6 +142,46 @@
     "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
   },
   {
+    "id": "409770a5-c90b-80bb-9407-ca5f34ac9da6",
+    "title": "Office",
+    "date": "2026-11-06",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-10-30T02:01:00.000Z",
+    "url": "https://app.notion.com/p/Office-409770a5c90b80bb9407ca5f34ac9da6"
+  },
+  {
+    "id": "409770a5-c90b-8002-b22e-c27e6bc56907",
+    "title": "CPF วังน้อย",
+    "date": "2026-11-05",
+    "end": null,
+    "note": "ประมูล บิทราคา ออนไลน์",
+    "employees": [
+      "Ice",
+      "Nok"
+    ],
+    "employeesText": "Ice, Nok",
+    "last_edited": "2026-10-30T03:45:00.000Z",
+    "url": "https://app.notion.com/p/CPF-409770a5c90b8002b22ec27e6bc56907"
+  },
+  {
+    "id": "409770a5-c90b-80cb-bd99-d2a7771a8b34",
+    "title": "Office",
+    "date": "2026-11-05",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-10-30T02:00:00.000Z",
+    "url": "https://app.notion.com/p/Office-409770a5c90b80cbbd99d2a7771a8b34"
+  },
+  {
     "id": "3ff770a5-c90b-8087-84ce-f852fe0be6f7",
     "title": "Moutain Mist Motor & Invertor",
     "date": "2026-11-05",
@@ -153,19 +193,69 @@
     "url": "https://app.notion.com/p/Moutain-Mist-Motor-Invertor-3ff770a5c90b808784cef852fe0be6f7"
   },
   {
-    "id": "408770a5-c90b-8088-b8a2-f16e626f45b1",
-    "title": "Mr.Watanuki / General Packer",
+    "id": "409770a5-c90b-8071-a499-c73a4b04a103",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-11-04",
+    "end": null,
+    "note": "",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-10-30T06:41:00.000Z",
+    "url": "https://app.notion.com/p/409770a5c90b8071a499c73a4b04a103"
+  },
+  {
+    "id": "409770a5-c90b-80ea-8898-eab531aee8a2",
+    "title": "Office",
+    "date": "2026-11-04",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-10-30T02:00:00.000Z",
+    "url": "https://app.notion.com/p/Office-409770a5c90b80ea8898eab531aee8a2"
+  },
+  {
+    "id": "409770a5-c90b-80b9-b701-e11b4e0378e7",
+    "title": "Office",
     "date": "2026-11-03",
     "end": null,
-    "note": "04.00 P.M. at TSUKASA Office",
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-10-30T01:59:00.000Z",
+    "url": "https://app.notion.com/p/Office-409770a5c90b80b9b701e11b4e0378e7"
+  },
+  {
+    "id": "409770a5-c90b-8071-a167-fe2f2431e343",
+    "title": "Mr.Watanuki / General Packer",
+    "date": "2026-11-02",
+    "end": null,
+    "note": "04.00 P.M. @ Tsukasa office",
     "employees": [
       "AA",
-      "THEP",
-      "Tip"
+      "Tip",
+      "THEP"
     ],
-    "employeesText": "AA, THEP, Tip",
-    "last_edited": "2026-10-29T06:35:00.000Z",
-    "url": "https://app.notion.com/p/Mr-Watanuki-General-Packer-408770a5c90b8088b8a2f16e626f45b1"
+    "employeesText": "AA, Tip, THEP",
+    "last_edited": "2026-10-30T02:51:00.000Z",
+    "url": "https://app.notion.com/p/Mr-Watanuki-General-Packer-409770a5c90b8071a167fe2f2431e343"
+  },
+  {
+    "id": "409770a5-c90b-80b3-b73f-f7ef45c91b38",
+    "title": "Office",
+    "date": "2026-11-02",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-10-30T01:58:00.000Z",
+    "url": "https://app.notion.com/p/Office-409770a5c90b80b3b73ff7ef45c91b38"
   },
   {
     "id": "408770a5-c90b-80de-801f-fd5a9d87cea5",
@@ -208,23 +298,8 @@
       "EAK"
     ],
     "employeesText": "LOVE, Moo, Nok, EAK",
-    "last_edited": "2026-10-20T08:23:00.000Z",
+    "last_edited": "2026-10-30T06:35:00.000Z",
     "url": "https://app.notion.com/p/Carabao-Cambodia-3f8770a5c90b807ba389c20bcf814e3f"
-  },
-  {
-    "id": "407770a5-c90b-805e-bfad-e48b21f1fbee",
-    "title": "F-PLUS",
-    "date": "2026-10-30",
-    "end": null,
-    "note": "",
-    "employees": [
-      "AA",
-      "Daw",
-      "KO"
-    ],
-    "employeesText": "AA, Daw, KO",
-    "last_edited": "2026-10-28T13:51:00.000Z",
-    "url": "https://app.notion.com/p/F-PLUS-407770a5c90b805ebfade48b21f1fbee"
   },
   {
     "id": "407770a5-c90b-8003-b1a1-d03f3ccf292a",
@@ -233,10 +308,11 @@
     "end": null,
     "note": "with ERAWAN Team 10.00 A.M.-12.00 P.M.",
     "employees": [
-      "AA"
+      "AA",
+      "Daw"
     ],
-    "employeesText": "AA",
-    "last_edited": "2026-10-28T01:55:00.000Z",
+    "employeesText": "AA, Daw",
+    "last_edited": "2026-10-29T09:31:00.000Z",
     "url": "https://app.notion.com/p/F-Plus-407770a5c90b8003b1a1d03f3ccf292a"
   },
   {
@@ -293,6 +369,19 @@
     "employeesText": "Nack",
     "last_edited": "2026-08-27T02:47:00.000Z",
     "url": "https://app.notion.com/p/3c9770a5c90b80c4b346ee7707fc4d4d"
+  },
+  {
+    "id": "409770a5-c90b-8086-af5a-edd4ef81e775",
+    "title": "ลาป่วย",
+    "date": "2026-10-29",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Ice"
+    ],
+    "employeesText": "Ice",
+    "last_edited": "2026-10-30T06:38:00.000Z",
+    "url": "https://app.notion.com/p/409770a5c90b8086af5aedd4ef81e775"
   },
   {
     "id": "407770a5-c90b-80c5-a48d-f8dd8e49b9ce",
@@ -371,12 +460,11 @@
     "end": null,
     "note": "Onsite Meet MGT 14:00",
     "employees": [
-      "Ice",
       "THEP",
       "AA"
     ],
-    "employeesText": "Ice, THEP, AA",
-    "last_edited": "2026-10-28T02:33:00.000Z",
+    "employeesText": "THEP, AA",
+    "last_edited": "2026-10-30T03:42:00.000Z",
     "url": "https://app.notion.com/p/City-Medical-Supply-3fe770a5c90b8075a34ac833dd35c715"
   },
   {
