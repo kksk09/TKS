@@ -63,7 +63,7 @@
   },
   {
     "id": "3d5770a5-c90b-80e3-a0f3-d3a20770636f",
-    "title": "ลากิจ",
+    "title": "ลาพักร้อน",
     "date": "2026-11-25",
     "end": "2026-11-27",
     "note": "ดาวลา รับปริญญา🌟",
@@ -71,7 +71,7 @@
       "Daw"
     ],
     "employeesText": "Daw",
-    "last_edited": "2026-10-19T02:26:00.000Z",
+    "last_edited": "2026-11-01T14:10:00.000Z",
     "url": "https://app.notion.com/p/3d5770a5c90b80e3a0f3d3a20770636f"
   },
   {
@@ -193,6 +193,21 @@
     "url": "https://app.notion.com/p/Moutain-Mist-Motor-Invertor-3ff770a5c90b808784cef852fe0be6f7"
   },
   {
+    "id": "40c770a5-c90b-80b6-9f18-ed83e38c345a",
+    "title": "I Am",
+    "date": "2026-11-04",
+    "end": null,
+    "note": "in the afternoon",
+    "employees": [
+      "AA",
+      "Tip",
+      "THEP"
+    ],
+    "employeesText": "AA, Tip, THEP",
+    "last_edited": "2026-11-02T02:14:00.000Z",
+    "url": "https://app.notion.com/p/I-Am-40c770a5c90b80b69f18ed83e38c345a"
+  },
+  {
     "id": "409770a5-c90b-80ea-8898-eab531aee8a2",
     "title": "Office",
     "date": "2026-11-04",
@@ -234,14 +249,14 @@
     "title": "Mr.Watanuki / General Packer",
     "date": "2026-11-02",
     "end": null,
-    "note": "04.00 P.M. @ Tsukasa office",
+    "note": "03.00 P.M. @ Tsukasa office",
     "employees": [
       "AA",
       "Tip",
       "THEP"
     ],
     "employeesText": "AA, Tip, THEP",
-    "last_edited": "2026-10-30T02:51:00.000Z",
+    "last_edited": "2026-11-02T02:10:00.000Z",
     "url": "https://app.notion.com/p/Mr-Watanuki-General-Packer-409770a5c90b8071a167fe2f2431e343"
   },
   {
