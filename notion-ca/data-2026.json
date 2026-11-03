@@ -62,6 +62,21 @@
     "url": "https://app.notion.com/p/Father-s-Day-317770a5c90b8045b5f3ef0e44259a6f"
   },
   {
+    "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
+    "title": "Mama ",
+    "date": "2026-12-03",
+    "end": null,
+    "note": "Meeting  09:30  โครงการสายพานรวมเลน",
+    "employees": [
+      "Game",
+      "Ice",
+      "Moo"
+    ],
+    "employeesText": "Game, Ice, Moo",
+    "last_edited": "2026-11-03T04:18:00.000Z",
+    "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
+  },
+  {
     "id": "3d5770a5-c90b-80e3-a0f3-d3a20770636f",
     "title": "ลาพักร้อน",
     "date": "2026-11-25",
@@ -127,19 +142,31 @@
     "url": "https://app.notion.com/p/3c9770a5c90b8093b7f0f15bc78055d4"
   },
   {
-    "id": "3f7770a5-c90b-8007-94f1-cf8d966d51e2",
-    "title": "Mama ",
+    "id": "40d770a5-c90b-808e-89e0-dea62e73734c",
+    "title": "10:00 PROPAK K.Game",
     "date": "2026-11-11",
     "end": null,
-    "note": "Meeting  09:30  โครงการสายพานรวมเลน",
+    "note": "",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-11-03T04:59:00.000Z",
+    "url": "https://app.notion.com/p/10-00-PROPAK-K-Game-40d770a5c90b808e89e0dea62e73734c"
+  },
+  {
+    "id": "40c770a5-c90b-80a1-9716-e201e5517a3c",
+    "title": "Seng Huad",
+    "date": "2026-11-06",
+    "end": null,
+    "note": "ดูหน้างาน 10.00 น.",
     "employees": [
-      "Game",
-      "Ice",
-      "Moo"
+      "Daw",
+      "LOVE",
+      "EAK",
+      "Game"
     ],
-    "employeesText": "Game, Ice, Moo",
-    "last_edited": "2026-10-23T07:57:00.000Z",
-    "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
+    "employeesText": "Daw, LOVE, EAK, Game",
+    "last_edited": "2026-11-02T07:43:00.000Z",
+    "url": "https://app.notion.com/p/Seng-Huad-40c770a5c90b80a19716e201e5517a3c"
   },
   {
     "id": "409770a5-c90b-80bb-9407-ca5f34ac9da6",
@@ -153,6 +180,21 @@
     "employeesText": "Muk",
     "last_edited": "2026-10-30T02:01:00.000Z",
     "url": "https://app.notion.com/p/Office-409770a5c90b80bb9407ca5f34ac9da6"
+  },
+  {
+    "id": "40d770a5-c90b-804c-93aa-ef1fc8945fce",
+    "title": "บริษัท ภาเบญ ฟู้ดส์ จํากัด",
+    "date": "2026-11-05",
+    "end": null,
+    "note": "Meeting 13:00",
+    "employees": [
+      "AA",
+      "THEP",
+      "Ice"
+    ],
+    "employeesText": "AA, THEP, Ice",
+    "last_edited": "2026-11-03T03:28:00.000Z",
+    "url": "https://app.notion.com/p/40d770a5c90b804c93aaef1fc8945fce"
   },
   {
     "id": "409770a5-c90b-8002-b22e-c27e6bc56907",
@@ -193,6 +235,21 @@
     "url": "https://app.notion.com/p/Moutain-Mist-Motor-Invertor-3ff770a5c90b808784cef852fe0be6f7"
   },
   {
+    "id": "40c770a5-c90b-8092-aa3a-d5a63f0c7cf0",
+    "title": "URC",
+    "date": "2026-11-04",
+    "end": null,
+    "note": "On site 10:00",
+    "employees": [
+      "AA",
+      "THEP",
+      "Ice"
+    ],
+    "employeesText": "AA, THEP, Ice",
+    "last_edited": "2026-11-02T14:39:00.000Z",
+    "url": "https://app.notion.com/p/URC-40c770a5c90b8092aa3ad5a63f0c7cf0"
+  },
+  {
     "id": "40c770a5-c90b-80b6-9f18-ed83e38c345a",
     "title": "I Am",
     "date": "2026-11-04",
@@ -221,6 +278,22 @@
     "url": "https://app.notion.com/p/Office-409770a5c90b80ea8898eab531aee8a2"
   },
   {
+    "id": "40c770a5-c90b-8097-9b18-f047770f07b4",
+    "title": "Ingenium",
+    "date": "2026-11-03",
+    "end": null,
+    "note": "meeting",
+    "employees": [
+      "LOVE",
+      "Tip",
+      "Title",
+      "KO"
+    ],
+    "employeesText": "LOVE, Tip, Title, KO",
+    "last_edited": "2026-11-02T14:36:00.000Z",
+    "url": "https://app.notion.com/p/Ingenium-40c770a5c90b80979b18f047770f07b4"
+  },
+  {
     "id": "409770a5-c90b-809c-99bd-e93f3bf942e2",
     "title": "3-4 P.M. Packing Machine Sharing by P’Sravin",
     "date": "2026-11-03",
@@ -243,6 +316,19 @@
     "employeesText": "Muk",
     "last_edited": "2026-10-30T01:59:00.000Z",
     "url": "https://app.notion.com/p/Office-409770a5c90b80b9b701e11b4e0378e7"
+  },
+  {
+    "id": "40c770a5-c90b-8075-a552-f896d073ebed",
+    "title": "CPF GAME EAK Magnet CERTIFICATE",
+    "date": "2026-11-02",
+    "end": null,
+    "note": "",
+    "employees": [
+      "EAK"
+    ],
+    "employeesText": "EAK",
+    "last_edited": "2026-11-02T12:14:00.000Z",
+    "url": "https://app.notion.com/p/CPF-GAME-EAK-Magnet-CERTIFICATE-40c770a5c90b8075a552f896d073ebed"
   },
   {
     "id": "409770a5-c90b-8071-a167-fe2f2431e343",
@@ -304,7 +390,7 @@
     "id": "3f8770a5-c90b-807b-a389-c20bcf814e3f",
     "title": "Carabao Cambodia",
     "date": "2026-11-01",
-    "end": "2026-11-03",
+    "end": "2026-11-01",
     "note": "เดินทางกลับ",
     "employees": [
       "LOVE",
@@ -313,7 +399,7 @@
       "EAK"
     ],
     "employeesText": "LOVE, Moo, Nok, EAK",
-    "last_edited": "2026-10-30T06:35:00.000Z",
+    "last_edited": "2026-11-02T10:05:00.000Z",
     "url": "https://app.notion.com/p/Carabao-Cambodia-3f8770a5c90b807ba389c20bcf814e3f"
   },
   {
