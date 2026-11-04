@@ -116,6 +116,20 @@
     "url": "https://app.notion.com/p/3bf770a5c90b80cb8729dfc2cbe0364d"
   },
   {
+    "id": "40e770a5-c90b-8051-a209-f3449f37caca",
+    "title": "10.00 CP Meji นัดพรีเซ็นงาน",
+    "date": "2026-11-13",
+    "end": null,
+    "note": "",
+    "employees": [
+      "AA",
+      "Game"
+    ],
+    "employeesText": "AA, Game",
+    "last_edited": "2026-11-04T04:53:00.000Z",
+    "url": "https://app.notion.com/p/10-00-CP-Meji-40e770a5c90b8051a209f3449f37caca"
+  },
+  {
     "id": "3d2770a5-c90b-806d-8ba0-c3d32e45566a",
     "title": "ลากิจ",
     "date": "2026-11-13",
@@ -147,10 +161,27 @@
     "date": "2026-11-11",
     "end": null,
     "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-11-03T04:59:00.000Z",
+    "employees": [
+      "AA"
+    ],
+    "employeesText": "AA",
+    "last_edited": "2026-11-03T08:33:00.000Z",
     "url": "https://app.notion.com/p/10-00-PROPAK-K-Game-40d770a5c90b808e89e0dea62e73734c"
+  },
+  {
+    "id": "40d770a5-c90b-809d-8eae-e900c4fa7656",
+    "title": "Kornthai ราชบุรี ",
+    "date": "2026-11-06",
+    "end": null,
+    "note": "Present งานเครื่องแพ็ค",
+    "employees": [
+      "Nok",
+      "Sky",
+      "Tip"
+    ],
+    "employeesText": "Nok, Sky, Tip",
+    "last_edited": "2026-11-03T10:33:00.000Z",
+    "url": "https://app.notion.com/p/Kornthai-40d770a5c90b809d8eaee900c4fa7656"
   },
   {
     "id": "40c770a5-c90b-80a1-9716-e201e5517a3c",
@@ -243,10 +274,12 @@
     "employees": [
       "AA",
       "THEP",
-      "Ice"
+      "Ice",
+      "Sky",
+      "Vin"
     ],
-    "employeesText": "AA, THEP, Ice",
-    "last_edited": "2026-11-02T14:39:00.000Z",
+    "employeesText": "AA, THEP, Ice, Sky, Vin",
+    "last_edited": "2026-11-03T15:15:00.000Z",
     "url": "https://app.notion.com/p/URC-40c770a5c90b8092aa3ad5a63f0c7cf0"
   },
   {
@@ -254,14 +287,15 @@
     "title": "I Am",
     "date": "2026-11-04",
     "end": null,
-    "note": "in the afternoon",
+    "note": "02.00 P.M.",
     "employees": [
       "AA",
       "Tip",
-      "THEP"
+      "THEP",
+      "Ice"
     ],
-    "employeesText": "AA, Tip, THEP",
-    "last_edited": "2026-11-02T02:14:00.000Z",
+    "employeesText": "AA, Tip, THEP, Ice",
+    "last_edited": "2026-11-03T08:32:00.000Z",
     "url": "https://app.notion.com/p/I-Am-40c770a5c90b80b69f18ed83e38c345a"
   },
   {
