@@ -123,10 +123,11 @@
     "note": "",
     "employees": [
       "AA",
-      "Game"
+      "Game",
+      "Benz"
     ],
-    "employeesText": "AA, Game",
-    "last_edited": "2026-11-04T04:53:00.000Z",
+    "employeesText": "AA, Game, Benz",
+    "last_edited": "2026-11-04T08:09:00.000Z",
     "url": "https://app.notion.com/p/10-00-CP-Meji-40e770a5c90b8051a209f3449f37caca"
   },
   {
@@ -169,6 +170,33 @@
     "url": "https://app.notion.com/p/10-00-PROPAK-K-Game-40d770a5c90b808e89e0dea62e73734c"
   },
   {
+    "id": "40e770a5-c90b-80bc-ab10-fc3c0e361b2f",
+    "title": "ลาพักร้อน",
+    "date": "2026-11-09",
+    "end": "2026-11-10",
+    "note": "พาปู่ไปหาหมอ  นกรับเรื่อง",
+    "employees": [
+      "Benz"
+    ],
+    "employeesText": "Benz",
+    "last_edited": "2026-11-04T08:21:00.000Z",
+    "url": "https://app.notion.com/p/40e770a5c90b80bcab10fc3c0e361b2f"
+  },
+  {
+    "id": "40f770a5-c90b-8069-9f2d-c70402eb807a",
+    "title": "CPF ฉะเชิงเทรา",
+    "date": "2026-11-06",
+    "end": null,
+    "note": "คุณเต้ยนัดไปคุยงานเตรียมเอาเครื่องเข้า",
+    "employees": [
+      "Game",
+      "pub"
+    ],
+    "employeesText": "Game, pub",
+    "last_edited": "2026-11-05T07:18:00.000Z",
+    "url": "https://app.notion.com/p/CPF-40f770a5c90b80699f2dc70402eb807a"
+  },
+  {
     "id": "40d770a5-c90b-809d-8eae-e900c4fa7656",
     "title": "Kornthai ราชบุรี ",
     "date": "2026-11-06",
@@ -192,11 +220,10 @@
     "employees": [
       "Daw",
       "LOVE",
-      "EAK",
-      "Game"
+      "EAK"
     ],
-    "employeesText": "Daw, LOVE, EAK, Game",
-    "last_edited": "2026-11-02T07:43:00.000Z",
+    "employeesText": "Daw, LOVE, EAK",
+    "last_edited": "2026-11-05T06:37:00.000Z",
     "url": "https://app.notion.com/p/Seng-Huad-40c770a5c90b80a19716e201e5517a3c"
   },
   {
@@ -211,6 +238,49 @@
     "employeesText": "Muk",
     "last_edited": "2026-10-30T02:01:00.000Z",
     "url": "https://app.notion.com/p/Office-409770a5c90b80bb9407ca5f34ac9da6"
+  },
+  {
+    "id": "40f770a5-c90b-80cc-9e31-c94799581c31",
+    "title": "WFH",
+    "date": "2026-11-05",
+    "end": null,
+    "note": "ไม่ค่อยสบาย ขอทำงานที่บ้าน (นกรับเรื่อง)",
+    "employees": [
+      "Game"
+    ],
+    "employeesText": "Game",
+    "last_edited": "2026-11-05T04:04:00.000Z",
+    "url": "https://app.notion.com/p/WFH-40f770a5c90b80cc9e31c94799581c31"
+  },
+  {
+    "id": "40f770a5-c90b-8093-b22a-ebc45455050e",
+    "title": "SPR Food",
+    "date": "2026-11-05",
+    "end": null,
+    "note": "เข้าไปงาน service เครื่อง Multiead",
+    "employees": [
+      "Nack",
+      "LOVE",
+      "EAK"
+    ],
+    "employeesText": "Nack, LOVE, EAK",
+    "last_edited": "2026-11-05T06:11:00.000Z",
+    "url": "https://app.notion.com/p/SPR-Food-40f770a5c90b8093b22aebc45455050e"
+  },
+  {
+    "id": "40f770a5-c90b-800e-938d-e1c568a50f4b",
+    "title": "ลาป่วยครึ่งวัน",
+    "date": "2026-11-05",
+    "end": null,
+    "note": "",
+    "employees": [
+      "KO",
+      "Daw",
+      "Title"
+    ],
+    "employeesText": "KO, Daw, Title",
+    "last_edited": "2026-11-05T04:02:00.000Z",
+    "url": "https://app.notion.com/p/40f770a5c90b800e938de1c568a50f4b"
   },
   {
     "id": "40d770a5-c90b-804c-93aa-ef1fc8945fce",
@@ -264,6 +334,17 @@
     "employeesText": "",
     "last_edited": "2026-10-20T08:24:00.000Z",
     "url": "https://app.notion.com/p/Moutain-Mist-Motor-Invertor-3ff770a5c90b808784cef852fe0be6f7"
+  },
+  {
+    "id": "40f770a5-c90b-8062-b52c-d42087eef5da",
+    "title": "F Plus sieve + filter training",
+    "date": "2026-11-04",
+    "end": null,
+    "note": "ล้าง filter",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-11-05T06:36:00.000Z",
+    "url": "https://app.notion.com/p/F-Plus-sieve-filter-training-40f770a5c90b8062b52cd42087eef5da"
   },
   {
     "id": "40c770a5-c90b-8092-aa3a-d5a63f0c7cf0",
@@ -1070,9 +1151,13 @@
     "date": "2026-10-19",
     "end": null,
     "note": "14:00 Meeting (I AM)",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-10-19T03:53:00.000Z",
+    "employees": [
+      "Ice",
+      "AA",
+      "THEP"
+    ],
+    "employeesText": "Ice, AA, THEP",
+    "last_edited": "2026-11-04T09:00:00.000Z",
     "url": "https://app.notion.com/p/City-Medical-Supply-Co-Ltd-3fd770a5c90b800bad6bd564f8827d38"
   },
   {
