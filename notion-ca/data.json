@@ -112,7 +112,7 @@
       "Ice"
     ],
     "employeesText": "Ice",
-    "last_edited": "2026-10-22T04:51:00.000Z",
+    "last_edited": "2026-11-09T07:01:00.000Z",
     "url": "https://app.notion.com/p/3bf770a5c90b80cb8729dfc2cbe0364d"
   },
   {
@@ -151,10 +151,11 @@
     "employees": [
       "AA",
       "Game",
-      "Benz"
+      "Benz",
+      "Nok"
     ],
-    "employeesText": "AA, Game, Benz",
-    "last_edited": "2026-11-04T08:09:00.000Z",
+    "employeesText": "AA, Game, Benz, Nok",
+    "last_edited": "2026-11-09T04:43:00.000Z",
     "url": "https://app.notion.com/p/10-00-CP-Meji-40e770a5c90b8051a209f3449f37caca"
   },
   {
@@ -169,6 +170,21 @@
     "employeesText": "Sky",
     "last_edited": "2026-10-01T03:29:00.000Z",
     "url": "https://app.notion.com/p/3d2770a5c90b806d8ba0c3d32e45566a"
+  },
+  {
+    "id": "413770a5-c90b-8087-869a-c217c40da38b",
+    "title": "TKS x IG",
+    "date": "2026-11-12",
+    "end": null,
+    "note": "Danone",
+    "employees": [
+      "LOVE",
+      "Title",
+      "Game"
+    ],
+    "employeesText": "LOVE, Title, Game",
+    "last_edited": "2026-11-09T04:31:00.000Z",
+    "url": "https://app.notion.com/p/TKS-x-IG-413770a5c90b8087869ac217c40da38b"
   },
   {
     "id": "410770a5-c90b-8032-b186-e9945bebffae",
@@ -211,6 +227,19 @@
     "url": "https://app.notion.com/p/3c9770a5c90b8093b7f0f15bc78055d4"
   },
   {
+    "id": "413770a5-c90b-8047-afdf-c8e309f83744",
+    "title": "ลาป่วย",
+    "date": "2026-11-11",
+    "end": null,
+    "note": "ขออนุญาตลาพบแพทย์",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-11-09T02:35:00.000Z",
+    "url": "https://app.notion.com/p/413770a5c90b8047afdfc8e309f83744"
+  },
+  {
     "id": "410770a5-c90b-8059-a0b1-fa09bfa274d4",
     "title": "Nishizawa-san ",
     "date": "2026-11-11",
@@ -222,6 +251,19 @@
     "employeesText": "AA",
     "last_edited": "2026-11-06T08:44:00.000Z",
     "url": "https://app.notion.com/p/Nishizawa-san-410770a5c90b8059a0b1fa09bfa274d4"
+  },
+  {
+    "id": "40e770a5-c90b-80bc-ab10-fc3c0e361b2f",
+    "title": "ลาพักร้อน",
+    "date": "2026-11-11",
+    "end": "2026-11-12",
+    "note": "พาปู่ไปหาหมอ  นกรับเรื่อง",
+    "employees": [
+      "Benz"
+    ],
+    "employeesText": "Benz",
+    "last_edited": "2026-11-09T03:44:00.000Z",
+    "url": "https://app.notion.com/p/40e770a5c90b80bcab10fc3c0e361b2f"
   },
   {
     "id": "40d770a5-c90b-808e-89e0-dea62e73734c",
@@ -237,18 +279,33 @@
     "url": "https://app.notion.com/p/10-00-PROPAK-K-Game-40d770a5c90b808e89e0dea62e73734c"
   },
   {
+    "id": "413770a5-c90b-8088-817e-cff316706f29",
+    "title": "TKS x IG",
+    "date": "2026-11-10",
+    "end": null,
+    "note": "Rayong Purina, Electrolux",
+    "employees": [
+      "Title",
+      "LOVE",
+      "Game"
+    ],
+    "employeesText": "Title, LOVE, Game",
+    "last_edited": "2026-11-09T04:30:00.000Z",
+    "url": "https://app.notion.com/p/TKS-x-IG-413770a5c90b8088817ecff316706f29"
+  },
+  {
     "id": "410770a5-c90b-80b3-b686-c8071e5c151b",
     "title": "Lanna Product",
     "date": "2026-11-10",
     "end": null,
-    "note": "Meeting Online 2nd Packing",
+    "note": "2nd packing Solution Meeting Online (Bags in bag) 10:00 AM.",
     "employees": [
       "Ice",
       "AA",
       "THEP"
     ],
     "employeesText": "Ice, AA, THEP",
-    "last_edited": "2026-11-06T04:56:00.000Z",
+    "last_edited": "2026-11-09T06:45:00.000Z",
     "url": "https://app.notion.com/p/Lanna-Product-410770a5c90b80b3b686c8071e5c151b"
   },
   {
@@ -264,6 +321,38 @@
     "employeesText": "Muk, Nack",
     "last_edited": "2026-11-06T04:46:00.000Z",
     "url": "https://app.notion.com/p/Office-410770a5c90b80449a62e7a5bc007b6f"
+  },
+  {
+    "id": "413770a5-c90b-8099-bf15-e02afd52e67f",
+    "title": "URC Team Internal meeting 16.00",
+    "date": "2026-11-09",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Nok",
+      "Sky",
+      "AA",
+      "Ice",
+      "THEP"
+    ],
+    "employeesText": "Nok, Sky, AA, Ice, THEP",
+    "last_edited": "2026-11-09T04:45:00.000Z",
+    "url": "https://app.notion.com/p/URC-Team-Internal-meeting-16-00-413770a5c90b8099bf15e02afd52e67f"
+  },
+  {
+    "id": "412770a5-c90b-8029-985a-ff8a06d8a993",
+    "title": "Carabao Meeting",
+    "date": "2026-11-09",
+    "end": null,
+    "note": "สรุปผล จะวางบิล ส่งงาน",
+    "employees": [
+      "Nok",
+      "Moo",
+      "Sky"
+    ],
+    "employeesText": "Nok, Moo, Sky",
+    "last_edited": "2026-11-08T11:47:00.000Z",
+    "url": "https://app.notion.com/p/Carabao-Meeting-412770a5c90b8029985aff8a06d8a993"
   },
   {
     "id": "410770a5-c90b-8086-8421-f31d92334040",
@@ -295,17 +384,18 @@
     "url": "https://app.notion.com/p/Office-410770a5c90b80bcb508fa5906890752"
   },
   {
-    "id": "40e770a5-c90b-80bc-ab10-fc3c0e361b2f",
-    "title": "ลาพักร้อน",
-    "date": "2026-11-09",
-    "end": "2026-11-10",
-    "note": "พาปู่ไปหาหมอ  นกรับเรื่อง",
+    "id": "413770a5-c90b-802c-a202-d40a79586817",
+    "title": "CPF NH",
+    "date": "2026-11-08",
+    "end": null,
+    "note": "ดูการกั้นพื้นที่",
     "employees": [
-      "Benz"
+      "LOVE",
+      "EAK"
     ],
-    "employeesText": "Benz",
-    "last_edited": "2026-11-04T08:21:00.000Z",
-    "url": "https://app.notion.com/p/40e770a5c90b80bcab10fc3c0e361b2f"
+    "employeesText": "LOVE, EAK",
+    "last_edited": "2026-11-09T02:36:00.000Z",
+    "url": "https://app.notion.com/p/CPF-NH-413770a5c90b802ca202d40a79586817"
   },
   {
     "id": "410770a5-c90b-80dd-8d97-d4e2c7dd33ca",
