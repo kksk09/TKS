@@ -103,6 +103,35 @@
     "url": "https://app.notion.com/p/401770a5c90b8046bab7d45c69de9e82"
   },
   {
+    "id": "414770a5-c90b-80e9-93b0-cd7a98860171",
+    "title": "ไทยลักซ์ เอ็นเตอร์ไพร์",
+    "date": "2026-11-16",
+    "end": null,
+    "note": "พบคุณตั้ม ฝ่ายวิศวะ",
+    "employees": [
+      "Daw",
+      "Nok",
+      "Title"
+    ],
+    "employeesText": "Daw, Nok, Title",
+    "last_edited": "2026-11-10T04:06:00.000Z",
+    "url": "https://app.notion.com/p/414770a5c90b80e993b0cd7a98860171"
+  },
+  {
+    "id": "413770a5-c90b-807a-8349-c7335dcc573e",
+    "title": "Carabao Meeting",
+    "date": "2026-11-16",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Nok",
+      "Moo"
+    ],
+    "employeesText": "Nok, Moo",
+    "last_edited": "2026-11-09T12:46:00.000Z",
+    "url": "https://app.notion.com/p/Carabao-Meeting-413770a5c90b807a8349c7335dcc573e"
+  },
+  {
     "id": "3bf770a5-c90b-80cb-8729-dfc2cbe0364d",
     "title": "ลากิจ",
     "date": "2026-11-16",
@@ -227,6 +256,50 @@
     "url": "https://app.notion.com/p/3c9770a5c90b8093b7f0f15bc78055d4"
   },
   {
+    "id": "414770a5-c90b-8095-a230-e75da2565c6c",
+    "title": "Worldfood",
+    "date": "2026-11-11T09:00:00.000+07:00",
+    "end": null,
+    "note": "เอาของคืนลูกค้า",
+    "employees": [
+      "EAK"
+    ],
+    "employeesText": "EAK",
+    "last_edited": "2026-11-10T02:29:00.000Z",
+    "url": "https://app.notion.com/p/Worldfood-414770a5c90b8095a230e75da2565c6c"
+  },
+  {
+    "id": "413770a5-c90b-800a-b8e4-f623a5acf6b5",
+    "title": "KRISPY FOOD AND MARKETING CO., LTD",
+    "date": "2026-11-11",
+    "end": null,
+    "note": "Meeting Project 10:00 AM.",
+    "employees": [
+      "Ice",
+      "THEP"
+    ],
+    "employeesText": "Ice, THEP",
+    "last_edited": "2026-11-09T13:02:00.000Z",
+    "url": "https://app.notion.com/p/KRISPY-FOOD-AND-MARKETING-CO-LTD-413770a5c90b800ab8e4f623a5acf6b5"
+  },
+  {
+    "id": "413770a5-c90b-80ed-a1ad-e42be2e3b0fa",
+    "title": "Krispy visit office 10.30 โมง(เจ้าของโรงงานSnack)",
+    "date": "2026-11-11",
+    "end": null,
+    "note": "ลค นัดเข้ามา ออฟฟิศ 10.30 โมง พี่เทพ",
+    "employees": [
+      "THEP",
+      "AA",
+      "Sky",
+      "Nok",
+      "Tip"
+    ],
+    "employeesText": "THEP, AA, Sky, Nok, Tip",
+    "last_edited": "2026-11-09T13:05:00.000Z",
+    "url": "https://app.notion.com/p/Krispy-visit-office-10-30-Snack-413770a5c90b80eda1ade42be2e3b0fa"
+  },
+  {
     "id": "413770a5-c90b-8047-afdf-c8e309f83744",
     "title": "ลาป่วย",
     "date": "2026-11-11",
@@ -277,6 +350,21 @@
     "employeesText": "AA",
     "last_edited": "2026-11-03T08:33:00.000Z",
     "url": "https://app.notion.com/p/10-00-PROPAK-K-Game-40d770a5c90b808e89e0dea62e73734c"
+  },
+  {
+    "id": "413770a5-c90b-80a4-b832-d22ddcfecdf3",
+    "title": "Nutrix-Project : Silo",
+    "date": "2026-11-10",
+    "end": null,
+    "note": "Review Design conveyor 13:00 AM.",
+    "employees": [
+      "Daw",
+      "Ice",
+      "Sky"
+    ],
+    "employeesText": "Daw, Ice, Sky",
+    "last_edited": "2026-11-09T13:05:00.000Z",
+    "url": "https://app.notion.com/p/Nutrix-Project-Silo-413770a5c90b80a4b832d22ddcfecdf3"
   },
   {
     "id": "413770a5-c90b-8088-817e-cff316706f29",
@@ -385,7 +473,7 @@
   },
   {
     "id": "413770a5-c90b-802c-a202-d40a79586817",
-    "title": "CPF NH",
+    "title": "วันอาทิตย์ CPF Chachoengsao",
     "date": "2026-11-08",
     "end": null,
     "note": "ดูการกั้นพื้นที่",
@@ -394,8 +482,8 @@
       "EAK"
     ],
     "employeesText": "LOVE, EAK",
-    "last_edited": "2026-11-09T02:36:00.000Z",
-    "url": "https://app.notion.com/p/CPF-NH-413770a5c90b802ca202d40a79586817"
+    "last_edited": "2026-11-09T10:54:00.000Z",
+    "url": "https://app.notion.com/p/CPF-Chachoengsao-413770a5c90b802ca202d40a79586817"
   },
   {
     "id": "410770a5-c90b-80dd-8d97-d4e2c7dd33ca",
@@ -1483,7 +1571,7 @@
       "Moo"
     ],
     "employeesText": "EAK, Moo",
-    "last_edited": "2026-10-16T03:18:00.000Z",
+    "last_edited": "2026-11-09T10:27:00.000Z",
     "url": "https://app.notion.com/p/505-3fa770a5c90b80c18ea0ce779e71018d"
   },
   {
@@ -1570,7 +1658,7 @@
       "LOVE"
     ],
     "employeesText": "AA, THEP, Daw, Title, LOVE",
-    "last_edited": "2026-10-16T03:19:00.000Z",
+    "last_edited": "2026-11-09T10:28:00.000Z",
     "url": "https://app.notion.com/p/SengHuad-3f7770a5c90b80bc905ddfa027ef6155"
   },
   {
@@ -1731,7 +1819,7 @@
       "MOO"
     ],
     "employeesText": "pub, Moo, EAK, MOO",
-    "last_edited": "2026-10-19T05:02:00.000Z",
+    "last_edited": "2026-11-09T10:28:00.000Z",
     "url": "https://app.notion.com/p/parinya-c-mama-co-th-3f7770a5c90b8068b6c1d3eada78aaf5"
   },
   {
@@ -2022,7 +2110,7 @@
       "PUP"
     ],
     "employeesText": "Moo, EAK, LOVE, pub, Vin, PUP",
-    "last_edited": "2026-10-16T03:22:00.000Z",
+    "last_edited": "2026-11-09T10:27:00.000Z",
     "url": "https://app.notion.com/p/PR-FOOD-LAND-SERVICE-3RD-3e4770a5c90b80f58a09f2510ad086a7"
   },
   {
