@@ -40,6 +40,17 @@
     "url": "https://app.notion.com/p/Christmas-3ce770a5c90b80b59018f2daeeb71d98"
   },
   {
+    "id": "414770a5-c90b-80c7-aa64-d4a40824a2a3",
+    "title": "วันหยุดราชการ น้อมอาลัยพระพันปีหลวง",
+    "date": "2026-12-16",
+    "end": null,
+    "note": "",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-11-10T15:30:00.000Z",
+    "url": "https://app.notion.com/p/414770a5c90b80c7aa64d4a40824a2a3"
+  },
+  {
     "id": "317770a5-c90b-803d-a72c-f1c850dac5c1",
     "title": "วันหยุดConstitution Day ",
     "date": "2026-12-10",
@@ -90,6 +101,35 @@
     "url": "https://app.notion.com/p/3d5770a5c90b80e3a0f3d3a20770636f"
   },
   {
+    "id": "415770a5-c90b-80e0-9da0-e7ac508c7b97",
+    "title": "Electrolux โหลดตู้+ ลงของ+ Install",
+    "date": "2026-11-22",
+    "end": "2026-11-27",
+    "note": "——-",
+    "employees": [
+      "LOVE",
+      "EAK"
+    ],
+    "employeesText": "LOVE, EAK",
+    "last_edited": "2026-11-11T03:06:00.000Z",
+    "url": "https://app.notion.com/p/Electrolux-Install-415770a5c90b80e09da0e7ac508c7b97"
+  },
+  {
+    "id": "415770a5-c90b-8025-beb7-cf1a80e41e62",
+    "title": "Glico ล้างcooling",
+    "date": "2026-11-22",
+    "end": null,
+    "note": "——- มีแค่ มาร์กสายไฟ",
+    "employees": [
+      "Moo",
+      "EAK",
+      "MOO"
+    ],
+    "employeesText": "Moo, EAK, MOO",
+    "last_edited": "2026-11-11T03:06:00.000Z",
+    "url": "https://app.notion.com/p/Glico-cooling-415770a5c90b8025beb7cf1a80e41e62"
+  },
+  {
     "id": "401770a5-c90b-8046-bab7-d45c69de9e82",
     "title": "ลากิจ ",
     "date": "2026-11-19",
@@ -103,8 +143,42 @@
     "url": "https://app.notion.com/p/401770a5c90b8046bab7d45c69de9e82"
   },
   {
+    "id": "415770a5-c90b-808d-8ee4-d90d03e87cda",
+    "title": "CPF silo Installation",
+    "date": "2026-11-18",
+    "end": null,
+    "note": "ด่วน เรื่อง Lifitng plan + Master Plan+ เรื่องถนนยุบ",
+    "employees": [
+      "Daw",
+      "pub",
+      "LOVE",
+      "EAK",
+      "Moo",
+      "DAW",
+      "PUP"
+    ],
+    "employeesText": "Daw, pub, LOVE, EAK, Moo, DAW, PUP",
+    "last_edited": "2026-11-11T03:06:00.000Z",
+    "url": "https://app.notion.com/p/CPF-silo-Installation-415770a5c90b808d8ee4d90d03e87cda"
+  },
+  {
+    "id": "415770a5-c90b-8018-bc4d-c03f5ecdf6f5",
+    "title": "Seng Houd  เข้าสรุปเรื่องพื้นที่ +กำลังไฟ",
+    "date": "2026-11-16",
+    "end": null,
+    "note": "——แม่งาน พี่พรเทพ",
+    "employees": [
+      "Daw",
+      "LOVE",
+      "EAK"
+    ],
+    "employeesText": "Daw, LOVE, EAK",
+    "last_edited": "2026-11-11T03:05:00.000Z",
+    "url": "https://app.notion.com/p/Seng-Houd-415770a5c90b8018bc4dc03f5ecdf6f5"
+  },
+  {
     "id": "414770a5-c90b-80e9-93b0-cd7a98860171",
-    "title": "ไทยลักซ์ เอ็นเตอร์ไพร์",
+    "title": "ไทยลักซ์ เอ็นเตอร์ไพร์ เพชรบุรี 13.30",
     "date": "2026-11-16",
     "end": null,
     "note": "พบคุณตั้ม ฝ่ายวิศวะ",
@@ -114,8 +188,8 @@
       "Title"
     ],
     "employeesText": "Daw, Nok, Title",
-    "last_edited": "2026-11-10T04:06:00.000Z",
-    "url": "https://app.notion.com/p/414770a5c90b80e993b0cd7a98860171"
+    "last_edited": "2026-11-11T02:33:00.000Z",
+    "url": "https://app.notion.com/p/13-30-414770a5c90b80e993b0cd7a98860171"
   },
   {
     "id": "413770a5-c90b-807a-8349-c7335dcc573e",
@@ -132,6 +206,19 @@
     "url": "https://app.notion.com/p/Carabao-Meeting-413770a5c90b807a8349c7335dcc573e"
   },
   {
+    "id": "40e770a5-c90b-80bc-ab10-fc3c0e361b2f",
+    "title": "ลาพักร้อน",
+    "date": "2026-11-16",
+    "end": "2026-11-17",
+    "note": "พาปู่ไปหาหมอ  นกรับเรื่อง",
+    "employees": [
+      "Benz"
+    ],
+    "employeesText": "Benz",
+    "last_edited": "2026-11-10T17:21:00.000Z",
+    "url": "https://app.notion.com/p/40e770a5c90b80bcab10fc3c0e361b2f"
+  },
+  {
     "id": "3bf770a5-c90b-80cb-8729-dfc2cbe0364d",
     "title": "ลากิจ",
     "date": "2026-11-16",
@@ -143,6 +230,35 @@
     "employeesText": "Ice",
     "last_edited": "2026-11-09T07:01:00.000Z",
     "url": "https://app.notion.com/p/3bf770a5c90b80cb8729dfc2cbe0364d"
+  },
+  {
+    "id": "415770a5-c90b-80bb-9030-d78c5e842266",
+    "title": "CRF ฝา MIXER ",
+    "date": "2026-11-14",
+    "end": null,
+    "note": "——ต้องคุย เรื่อง งาน การทำงาน——-",
+    "employees": [
+      "pub",
+      "Daw",
+      "DAW",
+      "PUP"
+    ],
+    "employeesText": "pub, Daw, DAW, PUP",
+    "last_edited": "2026-11-11T03:06:00.000Z",
+    "url": "https://app.notion.com/p/CRF-MIXER-415770a5c90b80bb9030d78c5e842266"
+  },
+  {
+    "id": "415770a5-c90b-8096-a833-e09fe0378ad7",
+    "title": "CPF ฉะเชิงเทรา ",
+    "date": "2026-11-13",
+    "end": null,
+    "note": "ไปส่งเอกสารให้คุณเต้ย ",
+    "employees": [
+      "Nack"
+    ],
+    "employeesText": "Nack",
+    "last_edited": "2026-11-11T07:11:00.000Z",
+    "url": "https://app.notion.com/p/CPF-415770a5c90b8096a833e09fe0378ad7"
   },
   {
     "id": "410770a5-c90b-809e-947d-f28308fdd1b0",
@@ -164,11 +280,10 @@
     "end": null,
     "note": "",
     "employees": [
-      "Muk",
-      "Nack"
+      "Muk"
     ],
-    "employeesText": "Muk, Nack",
-    "last_edited": "2026-11-06T04:47:00.000Z",
+    "employeesText": "Muk",
+    "last_edited": "2026-11-11T07:10:00.000Z",
     "url": "https://app.notion.com/p/Office-410770a5c90b80ad857dfd30b77a7d5c"
   },
   {
@@ -201,18 +316,35 @@
     "url": "https://app.notion.com/p/3d2770a5c90b806d8ba0c3d32e45566a"
   },
   {
+    "id": "415770a5-c90b-801d-a648-cd5172330464",
+    "title": "Sunrise โคราช",
+    "date": "2026-11-12",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Nok",
+      "AA",
+      "THEP",
+      "Ice"
+    ],
+    "employeesText": "Nok, AA, THEP, Ice",
+    "last_edited": "2026-11-11T02:06:00.000Z",
+    "url": "https://app.notion.com/p/Sunrise-415770a5c90b801da648cd5172330464"
+  },
+  {
     "id": "413770a5-c90b-8087-869a-c217c40da38b",
     "title": "TKS x IG",
     "date": "2026-11-12",
     "end": null,
-    "note": "Danone",
+    "note": "Danone // 9โมง",
     "employees": [
       "LOVE",
       "Title",
-      "Game"
+      "Game",
+      "TITLE"
     ],
-    "employeesText": "LOVE, Title, Game",
-    "last_edited": "2026-11-09T04:31:00.000Z",
+    "employeesText": "LOVE, Title, Game, TITLE",
+    "last_edited": "2026-11-11T03:02:00.000Z",
     "url": "https://app.notion.com/p/TKS-x-IG-413770a5c90b8087869ac217c40da38b"
   },
   {
@@ -269,6 +401,33 @@
     "url": "https://app.notion.com/p/Worldfood-414770a5c90b8095a230e75da2565c6c"
   },
   {
+    "id": "415770a5-c90b-80ff-a706-fcb96bf4fec3",
+    "title": "Electrolux",
+    "date": "2026-11-11",
+    "end": null,
+    "note": "ประชุมช่วง Method + Statement",
+    "employees": [
+      "LOVE",
+      "TITLE"
+    ],
+    "employeesText": "LOVE, TITLE",
+    "last_edited": "2026-11-11T03:03:00.000Z",
+    "url": "https://app.notion.com/p/Electrolux-415770a5c90b80ffa706fcb96bf4fec3"
+  },
+  {
+    "id": "414770a5-c90b-8043-a241-d631f40cde17",
+    "title": "office",
+    "date": "2026-11-11",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Nack"
+    ],
+    "employeesText": "Nack",
+    "last_edited": "2026-11-10T15:48:00.000Z",
+    "url": "https://app.notion.com/p/office-414770a5c90b8043a241d631f40cde17"
+  },
+  {
     "id": "413770a5-c90b-800a-b8e4-f623a5acf6b5",
     "title": "KRISPY FOOD AND MARKETING CO., LTD",
     "date": "2026-11-11",
@@ -319,24 +478,12 @@
     "end": null,
     "note": "Check-in 02.00 P.M @Park Village",
     "employees": [
-      "AA"
+      "AA",
+      "Title"
     ],
-    "employeesText": "AA",
-    "last_edited": "2026-11-06T08:44:00.000Z",
+    "employeesText": "AA, Title",
+    "last_edited": "2026-11-11T02:05:00.000Z",
     "url": "https://app.notion.com/p/Nishizawa-san-410770a5c90b8059a0b1fa09bfa274d4"
-  },
-  {
-    "id": "40e770a5-c90b-80bc-ab10-fc3c0e361b2f",
-    "title": "ลาพักร้อน",
-    "date": "2026-11-11",
-    "end": "2026-11-12",
-    "note": "พาปู่ไปหาหมอ  นกรับเรื่อง",
-    "employees": [
-      "Benz"
-    ],
-    "employeesText": "Benz",
-    "last_edited": "2026-11-09T03:44:00.000Z",
-    "url": "https://app.notion.com/p/40e770a5c90b80bcab10fc3c0e361b2f"
   },
   {
     "id": "40d770a5-c90b-808e-89e0-dea62e73734c",
@@ -350,6 +497,33 @@
     "employeesText": "AA",
     "last_edited": "2026-11-03T08:33:00.000Z",
     "url": "https://app.notion.com/p/10-00-PROPAK-K-Game-40d770a5c90b808e89e0dea62e73734c"
+  },
+  {
+    "id": "414770a5-c90b-8044-a8e4-ee43861c3214",
+    "title": "Electrolux ระยอง ดูหน้างาน",
+    "date": "2026-11-10",
+    "end": null,
+    "note": "Loading platform ",
+    "employees": [
+      "Title",
+      "LOVE"
+    ],
+    "employeesText": "Title, LOVE",
+    "last_edited": "2026-11-10T14:08:00.000Z",
+    "url": "https://app.notion.com/p/Electrolux-414770a5c90b8044a8e4ee43861c3214"
+  },
+  {
+    "id": "414770a5-c90b-8091-8bc2-cfadf2585c36",
+    "title": "Daily Report 10112026_ Benz",
+    "date": "2026-11-10",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Benz"
+    ],
+    "employeesText": "Benz",
+    "last_edited": "2026-11-10T17:21:00.000Z",
+    "url": "https://app.notion.com/p/Daily-Report-10112026_-Benz-414770a5c90b80918bc2cfadf2585c36"
   },
   {
     "id": "413770a5-c90b-80a4-b832-d22ddcfecdf3",
@@ -407,7 +581,7 @@
       "Nack"
     ],
     "employeesText": "Muk, Nack",
-    "last_edited": "2026-11-06T04:46:00.000Z",
+    "last_edited": "2026-11-10T09:28:00.000Z",
     "url": "https://app.notion.com/p/Office-410770a5c90b80449a62e7a5bc007b6f"
   },
   {
@@ -523,10 +697,10 @@
     "employees": [
       "Nok",
       "Sky",
-      "Tip"
+      "Vin"
     ],
-    "employeesText": "Nok, Sky, Tip",
-    "last_edited": "2026-11-03T10:33:00.000Z",
+    "employeesText": "Nok, Sky, Vin",
+    "last_edited": "2026-11-11T02:04:00.000Z",
     "url": "https://app.notion.com/p/Kornthai-40d770a5c90b809d8eaee900c4fa7656"
   },
   {
