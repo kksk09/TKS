@@ -143,6 +143,21 @@
     "url": "https://app.notion.com/p/401770a5c90b8046bab7d45c69de9e82"
   },
   {
+    "id": "415770a5-c90b-80bc-80a1-d4ff1143bbc7",
+    "title": "Seng Houd  ",
+    "date": "2026-11-18",
+    "end": null,
+    "note": "13:00 น.  เข้าสรุปเรื่องพื้นที่ +กำลังไฟ *พี่เทพแม่ทัพ*",
+    "employees": [
+      "Daw",
+      "LOVE",
+      "EAK"
+    ],
+    "employeesText": "Daw, LOVE, EAK",
+    "last_edited": "2026-11-11T07:47:00.000Z",
+    "url": "https://app.notion.com/p/Seng-Houd-415770a5c90b80bc80a1d4ff1143bbc7"
+  },
+  {
     "id": "415770a5-c90b-808d-8ee4-d90d03e87cda",
     "title": "CPF silo Installation",
     "date": "2026-11-18",
@@ -162,48 +177,48 @@
     "url": "https://app.notion.com/p/CPF-silo-Installation-415770a5c90b808d8ee4d90d03e87cda"
   },
   {
-    "id": "415770a5-c90b-8018-bc4d-c03f5ecdf6f5",
-    "title": "Seng Houd  เข้าสรุปเรื่องพื้นที่ +กำลังไฟ",
-    "date": "2026-11-16",
+    "id": "415770a5-c90b-806d-8b59-d53b40636c5a",
+    "title": "ไทย แสตมป์",
+    "date": "2026-11-17",
     "end": null,
-    "note": "——แม่งาน พี่พรเทพ",
+    "note": "พบซัพเครื่องนับ 10:00น.",
     "employees": [
       "Daw",
-      "LOVE",
-      "EAK"
+      "Nok",
+      "THEP"
     ],
-    "employeesText": "Daw, LOVE, EAK",
-    "last_edited": "2026-11-11T03:05:00.000Z",
-    "url": "https://app.notion.com/p/Seng-Houd-415770a5c90b8018bc4dc03f5ecdf6f5"
+    "employeesText": "Daw, Nok, THEP",
+    "last_edited": "2026-11-11T08:06:00.000Z",
+    "url": "https://app.notion.com/p/415770a5c90b806d8b59d53b40636c5a"
   },
   {
     "id": "414770a5-c90b-80e9-93b0-cd7a98860171",
-    "title": "ไทยลักซ์ เอ็นเตอร์ไพร์ เพชรบุรี 13.30",
+    "title": "ไทยลักซ์ เอ็นเตอร์ไพร์ ",
     "date": "2026-11-16",
     "end": null,
-    "note": "พบคุณตั้ม ฝ่ายวิศวะ",
+    "note": "พบคุณตั้ม ฝ่ายวิศวะ เพชรบุรี 13.30",
     "employees": [
       "Daw",
       "Nok",
       "Title"
     ],
     "employeesText": "Daw, Nok, Title",
-    "last_edited": "2026-11-11T02:33:00.000Z",
-    "url": "https://app.notion.com/p/13-30-414770a5c90b80e993b0cd7a98860171"
+    "last_edited": "2026-11-11T09:21:00.000Z",
+    "url": "https://app.notion.com/p/414770a5c90b80e993b0cd7a98860171"
   },
   {
     "id": "413770a5-c90b-807a-8349-c7335dcc573e",
-    "title": "Carabao Meeting",
+    "title": "Carabao ",
     "date": "2026-11-16",
     "end": null,
-    "note": "",
+    "note": "Meeting",
     "employees": [
       "Nok",
       "Moo"
     ],
     "employeesText": "Nok, Moo",
-    "last_edited": "2026-11-09T12:46:00.000Z",
-    "url": "https://app.notion.com/p/Carabao-Meeting-413770a5c90b807a8349c7335dcc573e"
+    "last_edited": "2026-11-11T09:21:00.000Z",
+    "url": "https://app.notion.com/p/Carabao-413770a5c90b807a8349c7335dcc573e"
   },
   {
     "id": "40e770a5-c90b-80bc-ab10-fc3c0e361b2f",
@@ -240,12 +255,26 @@
     "employees": [
       "pub",
       "Daw",
+      "LOVE",
       "DAW",
       "PUP"
     ],
-    "employeesText": "pub, Daw, DAW, PUP",
-    "last_edited": "2026-11-11T03:06:00.000Z",
+    "employeesText": "pub, Daw, LOVE, DAW, PUP",
+    "last_edited": "2026-11-11T09:30:00.000Z",
     "url": "https://app.notion.com/p/CRF-MIXER-415770a5c90b80bb9030d78c5e842266"
+  },
+  {
+    "id": "415770a5-c90b-80dc-a878-ca9a910fe1c9",
+    "title": "TKS x IG",
+    "date": "2026-11-13",
+    "end": null,
+    "note": "ดูหน้างาน Nestlé ระยอง",
+    "employees": [
+      "Game"
+    ],
+    "employeesText": "Game",
+    "last_edited": "2026-11-11T09:33:00.000Z",
+    "url": "https://app.notion.com/p/TKS-x-IG-415770a5c90b80dca878ca9a910fe1c9"
   },
   {
     "id": "415770a5-c90b-8096-a833-e09fe0378ad7",
@@ -288,10 +317,10 @@
   },
   {
     "id": "40e770a5-c90b-8051-a209-f3449f37caca",
-    "title": "10.00 CP Meji นัดพรีเซ็นงาน",
+    "title": "CP Meji",
     "date": "2026-11-13",
     "end": null,
-    "note": "",
+    "note": "10.00 CP Meji นัดพรีเซ็นงาน",
     "employees": [
       "AA",
       "Game",
@@ -299,8 +328,8 @@
       "Nok"
     ],
     "employeesText": "AA, Game, Benz, Nok",
-    "last_edited": "2026-11-09T04:43:00.000Z",
-    "url": "https://app.notion.com/p/10-00-CP-Meji-40e770a5c90b8051a209f3449f37caca"
+    "last_edited": "2026-11-11T09:20:00.000Z",
+    "url": "https://app.notion.com/p/CP-Meji-40e770a5c90b8051a209f3449f37caca"
   },
   {
     "id": "3d2770a5-c90b-806d-8ba0-c3d32e45566a",
@@ -340,11 +369,11 @@
     "employees": [
       "LOVE",
       "Title",
-      "Game",
+      "KO",
       "TITLE"
     ],
-    "employeesText": "LOVE, Title, Game, TITLE",
-    "last_edited": "2026-11-11T03:02:00.000Z",
+    "employeesText": "LOVE, Title, KO, TITLE",
+    "last_edited": "2026-11-11T09:19:00.000Z",
     "url": "https://app.notion.com/p/TKS-x-IG-413770a5c90b8087869ac217c40da38b"
   },
   {
