@@ -281,12 +281,14 @@
     "title": "CPF ฉะเชิงเทรา ",
     "date": "2026-11-13",
     "end": null,
-    "note": "ไปส่งเอกสารให้คุณเต้ย ",
+    "note": "ไปส่งเอกสารให้คุณเต้ย  คุยงานโปรแกรม 09:00น.",
     "employees": [
-      "Nack"
+      "Daw",
+      "LOVE",
+      "pub"
     ],
-    "employeesText": "Nack",
-    "last_edited": "2026-11-11T07:11:00.000Z",
+    "employeesText": "Daw, LOVE, pub",
+    "last_edited": "2026-11-12T04:49:00.000Z",
     "url": "https://app.notion.com/p/CPF-415770a5c90b8096a833e09fe0378ad7"
   },
   {
@@ -309,10 +311,11 @@
     "end": null,
     "note": "",
     "employees": [
-      "Muk"
+      "Muk",
+      "Nack"
     ],
-    "employeesText": "Muk",
-    "last_edited": "2026-11-11T07:10:00.000Z",
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-11-12T03:03:00.000Z",
     "url": "https://app.notion.com/p/Office-410770a5c90b80ad857dfd30b77a7d5c"
   },
   {
@@ -418,7 +421,7 @@
   },
   {
     "id": "414770a5-c90b-8095-a230-e75da2565c6c",
-    "title": "Worldfood",
+    "title": "Worldfood งานวัดโซ่ เปลี่ยนใหม่",
     "date": "2026-11-11T09:00:00.000+07:00",
     "end": null,
     "note": "เอาของคืนลูกค้า",
@@ -426,8 +429,21 @@
       "EAK"
     ],
     "employeesText": "EAK",
-    "last_edited": "2026-11-10T02:29:00.000Z",
+    "last_edited": "2026-11-12T07:13:00.000Z",
     "url": "https://app.notion.com/p/Worldfood-414770a5c90b8095a230e75da2565c6c"
+  },
+  {
+    "id": "415770a5-c90b-80b6-96f7-fc6798ceb6a7",
+    "title": "Daily Report 11112026_ Benz",
+    "date": "2026-11-11",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Benz"
+    ],
+    "employeesText": "Benz",
+    "last_edited": "2026-11-11T10:40:00.000Z",
+    "url": "https://app.notion.com/p/Daily-Report-11112026_-Benz-415770a5c90b80b696f7fc6798ceb6a7"
   },
   {
     "id": "415770a5-c90b-80ff-a706-fcb96bf4fec3",
