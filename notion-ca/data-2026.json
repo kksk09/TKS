@@ -130,6 +130,77 @@
     "url": "https://app.notion.com/p/Glico-cooling-415770a5c90b8025beb7cf1a80e41e62"
   },
   {
+    "id": "417770a5-c90b-80e5-8d00-d72d584475c7",
+    "title": "Office",
+    "date": "2026-11-20",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-11-13T02:12:00.000Z",
+    "url": "https://app.notion.com/p/Office-417770a5c90b80e58d00d72d584475c7"
+  },
+  {
+    "id": "416770a5-c90b-8056-a517-e729ea79326d",
+    "title": "Wold",
+    "date": "2026-11-20",
+    "end": null,
+    "note": "วัดหน้างาน 13:00 น.",
+    "employees": [
+      "THEP",
+      "Sky",
+      "Game",
+      "Tip"
+    ],
+    "employeesText": "THEP, Sky, Game, Tip",
+    "last_edited": "2026-11-12T14:04:00.000Z",
+    "url": "https://app.notion.com/p/Wold-416770a5c90b8056a517e729ea79326d"
+  },
+  {
+    "id": "417770a5-c90b-801d-954f-f91217140b7e",
+    "title": "Office",
+    "date": "2026-11-19",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-11-13T02:11:00.000Z",
+    "url": "https://app.notion.com/p/Office-417770a5c90b801d954ff91217140b7e"
+  },
+  {
+    "id": "416770a5-c90b-8063-9c56-e0e0f9d00b08",
+    "title": "URC (1)",
+    "date": null,
+    "end": null,
+    "note": "",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-11-12T14:04:00.000Z",
+    "url": "https://app.notion.com/p/URC-1-416770a5c90b80639c56e0e0f9d00b08"
+  },
+  {
+    "id": "416770a5-c90b-80df-81e5-c2a0596acbfb",
+    "title": "URC ",
+    "date": "2026-11-19",
+    "end": null,
+    "note": "วัดหน้างาน 13:00 น.",
+    "employees": [
+      "THEP",
+      "Sky",
+      "Game",
+      "Tip"
+    ],
+    "employeesText": "THEP, Sky, Game, Tip",
+    "last_edited": "2026-11-12T14:04:00.000Z",
+    "url": "https://app.notion.com/p/URC-416770a5c90b80df81e5c2a0596acbfb"
+  },
+  {
     "id": "401770a5-c90b-8046-bab7-d45c69de9e82",
     "title": "ลากิจ ",
     "date": "2026-11-19",
@@ -141,6 +212,20 @@
     "employeesText": "Ice",
     "last_edited": "2026-10-22T04:51:00.000Z",
     "url": "https://app.notion.com/p/401770a5c90b8046bab7d45c69de9e82"
+  },
+  {
+    "id": "417770a5-c90b-8083-a0b5-f243869b46c3",
+    "title": "Office",
+    "date": "2026-11-18",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-11-13T02:11:00.000Z",
+    "url": "https://app.notion.com/p/Office-417770a5c90b8083a0b5f243869b46c3"
   },
   {
     "id": "415770a5-c90b-80bc-80a1-d4ff1143bbc7",
@@ -177,6 +262,20 @@
     "url": "https://app.notion.com/p/CPF-silo-Installation-415770a5c90b808d8ee4d90d03e87cda"
   },
   {
+    "id": "417770a5-c90b-801e-ba45-f2d30855ae86",
+    "title": "Office",
+    "date": "2026-11-17",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk",
+      "Nack"
+    ],
+    "employeesText": "Muk, Nack",
+    "last_edited": "2026-11-13T02:10:00.000Z",
+    "url": "https://app.notion.com/p/Office-417770a5c90b801eba45f2d30855ae86"
+  },
+  {
     "id": "415770a5-c90b-806d-8b59-d53b40636c5a",
     "title": "ไทย แสตมป์",
     "date": "2026-11-17",
@@ -190,6 +289,46 @@
     "employeesText": "Daw, Nok, THEP",
     "last_edited": "2026-11-11T08:06:00.000Z",
     "url": "https://app.notion.com/p/415770a5c90b806d8b59d53b40636c5a"
+  },
+  {
+    "id": "417770a5-c90b-80ba-86cf-f637ba10902c",
+    "title": "บริษัท ไทยเพรซิเดนท์ฟูดส์ จำกัด (มหาชน) ",
+    "date": "2026-11-16",
+    "end": null,
+    "note": "วางบิล เช้า      บ่ายลากิจเอารถซ่อม แจ้งพี่นกแล้ว ",
+    "employees": [
+      "Nack"
+    ],
+    "employeesText": "Nack",
+    "last_edited": "2026-11-13T06:48:00.000Z",
+    "url": "https://app.notion.com/p/417770a5c90b80ba86cff637ba10902c"
+  },
+  {
+    "id": "417770a5-c90b-80af-bb96-d3e69edf252e",
+    "title": "บ.บุญประเสริฐ",
+    "date": "2026-11-16",
+    "end": null,
+    "note": "เปลี่ยนบอร์ด address",
+    "employees": [
+      "EAK",
+      "pub"
+    ],
+    "employeesText": "EAK, pub",
+    "last_edited": "2026-11-13T04:46:00.000Z",
+    "url": "https://app.notion.com/p/417770a5c90b80afbb96d3e69edf252e"
+  },
+  {
+    "id": "417770a5-c90b-80c2-9b74-cc20788b3fcc",
+    "title": "Office",
+    "date": "2026-11-16",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Muk"
+    ],
+    "employeesText": "Muk",
+    "last_edited": "2026-11-13T06:46:00.000Z",
+    "url": "https://app.notion.com/p/Office-417770a5c90b80c29b74cc20788b3fcc"
   },
   {
     "id": "414770a5-c90b-80e9-93b0-cd7a98860171",
@@ -264,19 +403,6 @@
     "url": "https://app.notion.com/p/CRF-MIXER-415770a5c90b80bb9030d78c5e842266"
   },
   {
-    "id": "415770a5-c90b-80dc-a878-ca9a910fe1c9",
-    "title": "TKS x IG",
-    "date": "2026-11-13",
-    "end": null,
-    "note": "ดูหน้างาน Nestlé ระยอง",
-    "employees": [
-      "Game"
-    ],
-    "employeesText": "Game",
-    "last_edited": "2026-11-11T09:33:00.000Z",
-    "url": "https://app.notion.com/p/TKS-x-IG-415770a5c90b80dca878ca9a910fe1c9"
-  },
-  {
     "id": "415770a5-c90b-8096-a833-e09fe0378ad7",
     "title": "CPF ฉะเชิงเทรา ",
     "date": "2026-11-13",
@@ -284,11 +410,11 @@
     "note": "ไปส่งเอกสารให้คุณเต้ย  คุยงานโปรแกรม 09:00น.",
     "employees": [
       "Daw",
-      "LOVE",
-      "pub"
+      "pub",
+      "Moo"
     ],
-    "employeesText": "Daw, LOVE, pub",
-    "last_edited": "2026-11-12T04:49:00.000Z",
+    "employeesText": "Daw, pub, Moo",
+    "last_edited": "2026-11-13T02:11:00.000Z",
     "url": "https://app.notion.com/p/CPF-415770a5c90b8096a833e09fe0378ad7"
   },
   {
@@ -346,6 +472,60 @@
     "employeesText": "Sky",
     "last_edited": "2026-10-01T03:29:00.000Z",
     "url": "https://app.notion.com/p/3d2770a5c90b806d8ba0c3d32e45566a"
+  },
+  {
+    "id": "416770a5-c90b-80a9-a7c0-fe9c3ef14322",
+    "title": "World Food Quotation เปลี่ยนโซ่",
+    "date": "2026-11-12",
+    "end": null,
+    "note": "ทุน 12900 →24350",
+    "employees": [
+      "EAK"
+    ],
+    "employeesText": "EAK",
+    "last_edited": "2026-11-12T12:56:00.000Z",
+    "url": "https://app.notion.com/p/World-Food-Quotation-416770a5c90b80a9a7c0fe9c3ef14322"
+  },
+  {
+    "id": "416770a5-c90b-80b3-9998-e93bc227c634",
+    "title": "Danone baby milk - Ingenium [Ladder |Rotary Valve| Sifter]",
+    "date": "2026-11-12",
+    "end": null,
+    "note": "ดูหน้า Scope of Work //  แต่ไม่ได้ดูส่วนงานหลัก !! ต้องเข้าอีกครั้ง\nงานเวลาได้แค่ 15 ธค น้อยยยยยยยยยย จัด",
+    "employees": [
+      "LOVE",
+      "Title",
+      "Moo"
+    ],
+    "employeesText": "LOVE, Title, Moo",
+    "last_edited": "2026-11-12T12:53:00.000Z",
+    "url": "https://app.notion.com/p/Danone-baby-milk-Ingenium-Ladder-Rotary-Valve-Sifter-416770a5c90b80b39998e93bc227c634"
+  },
+  {
+    "id": "416770a5-c90b-80e6-9e62-cb0426e4f746",
+    "title": "Daily Report 12112026_ Benz",
+    "date": "2026-11-12",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Benz"
+    ],
+    "employeesText": "Benz",
+    "last_edited": "2026-11-12T10:19:00.000Z",
+    "url": "https://app.notion.com/p/Daily-Report-12112026_-Benz-416770a5c90b80e69e62cb0426e4f746"
+  },
+  {
+    "id": "415770a5-c90b-80dc-a878-ca9a910fe1c9",
+    "title": "TKS x IG",
+    "date": "2026-11-12",
+    "end": null,
+    "note": "ดูหน้างาน Nestlé ระยอง",
+    "employees": [
+      "Game"
+    ],
+    "employeesText": "Game",
+    "last_edited": "2026-11-13T02:36:00.000Z",
+    "url": "https://app.notion.com/p/TKS-x-IG-415770a5c90b80dca878ca9a910fe1c9"
   },
   {
     "id": "415770a5-c90b-801d-a648-cd5172330464",
