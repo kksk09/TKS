@@ -145,19 +145,30 @@
   },
   {
     "id": "416770a5-c90b-8056-a517-e729ea79326d",
-    "title": "Wold",
+    "title": "World food",
     "date": "2026-11-20",
     "end": null,
-    "note": "วัดหน้างาน 13:00 น.",
+    "note": "Reveiw Drawing 2nd Packing 13:00 น.",
     "employees": [
       "THEP",
       "Sky",
       "Game",
-      "Tip"
+      "AA"
     ],
-    "employeesText": "THEP, Sky, Game, Tip",
-    "last_edited": "2026-11-12T14:04:00.000Z",
-    "url": "https://app.notion.com/p/Wold-416770a5c90b8056a517e729ea79326d"
+    "employeesText": "THEP, Sky, Game, AA",
+    "last_edited": "2026-11-13T10:52:00.000Z",
+    "url": "https://app.notion.com/p/World-food-416770a5c90b8056a517e729ea79326d"
+  },
+  {
+    "id": "417770a5-c90b-803a-bd3d-c7e0191905b4",
+    "title": "ไม่มีชื่อ",
+    "date": "2026-11-19",
+    "end": null,
+    "note": "",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-11-13T12:36:00.000Z",
+    "url": "https://app.notion.com/p/417770a5c90b803abd3dc7e0191905b4"
   },
   {
     "id": "417770a5-c90b-801d-954f-f91217140b7e",
@@ -251,14 +262,13 @@
     "employees": [
       "Daw",
       "pub",
-      "LOVE",
       "EAK",
       "Moo",
       "DAW",
       "PUP"
     ],
-    "employeesText": "Daw, pub, LOVE, EAK, Moo, DAW, PUP",
-    "last_edited": "2026-11-11T03:06:00.000Z",
+    "employeesText": "Daw, pub, EAK, Moo, DAW, PUP",
+    "last_edited": "2026-11-13T10:28:00.000Z",
     "url": "https://app.notion.com/p/CPF-silo-Installation-415770a5c90b808d8ee4d90d03e87cda"
   },
   {
@@ -289,6 +299,19 @@
     "employeesText": "Daw, Nok, THEP",
     "last_edited": "2026-11-11T08:06:00.000Z",
     "url": "https://app.notion.com/p/415770a5c90b806d8b59d53b40636c5a"
+  },
+  {
+    "id": "417770a5-c90b-8064-9653-fec08c3c0799",
+    "title": "Business Trip Türkiye",
+    "date": "2026-11-16",
+    "end": "2026-11-20",
+    "note": "with P’Sravin",
+    "employees": [
+      "AA"
+    ],
+    "employeesText": "AA",
+    "last_edited": "2026-11-13T11:10:00.000Z",
+    "url": "https://app.notion.com/p/Business-Trip-T-rkiye-417770a5c90b80649653fec08c3c0799"
   },
   {
     "id": "417770a5-c90b-80ba-86cf-f637ba10902c",
@@ -374,7 +397,7 @@
   },
   {
     "id": "3bf770a5-c90b-80cb-8729-dfc2cbe0364d",
-    "title": "ลากิจ",
+    "title": "ลาพักร้อน",
     "date": "2026-11-16",
     "end": "2026-11-17",
     "note": "",
@@ -382,7 +405,7 @@
       "Ice"
     ],
     "employeesText": "Ice",
-    "last_edited": "2026-11-09T07:01:00.000Z",
+    "last_edited": "2026-11-13T10:29:00.000Z",
     "url": "https://app.notion.com/p/3bf770a5c90b80cb8729dfc2cbe0364d"
   },
   {
