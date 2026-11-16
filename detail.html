@@ -145,17 +145,20 @@ body{
 
 .table-scroll{ overflow-x:hidden; max-height:75vh; overflow-y:auto; border-radius:12px; }
 
-/* ✅ กำหนดความกว้างคอลัมน์ตามลำดับคงที่: Customer, Quotation No., Job Name, Sale, Support, Requirement, Amount THB, Cost THB, PO(Month), Last Update */
-.data-table th:nth-child(1),  .data-table td:nth-child(1)  { width:12%; }
-.data-table th:nth-child(2),  .data-table td:nth-child(2)  { width:9%;  }
-.data-table th:nth-child(3),  .data-table td:nth-child(3)  { width:18%; }
-.data-table th:nth-child(4),  .data-table td:nth-child(4)  { width:7%;  }
+/* ✅ ความกว้างคอลัมน์ — รองรับทั้ง 10 คอลัมน์ปกติ และ 11 คอลัมน์เมื่อ type=13 (มี Order No)
+   ลำดับปกติ: Customer, Quotation No., Job Name, Sale, Support, Requirement, Amount THB, Cost THB, PO(Month), Last Update
+   type=13:    Customer, Quotation No., Order No, Job Name, Sale, Support, Requirement, Amount THB, Cost THB, PO(Month), Last Update */
+.data-table th:nth-child(1),  .data-table td:nth-child(1)  { width:11%; }
+.data-table th:nth-child(2),  .data-table td:nth-child(2)  { width:8%;  }
+.data-table th:nth-child(3),  .data-table td:nth-child(3)  { width:10%; }
+.data-table th:nth-child(4),  .data-table td:nth-child(4)  { width:10%; }
 .data-table th:nth-child(5),  .data-table td:nth-child(5)  { width:7%;  }
-.data-table th:nth-child(6),  .data-table td:nth-child(6)  { width:14%; }
-.data-table th:nth-child(7),  .data-table td:nth-child(7)  { width:10%; }
+.data-table th:nth-child(6),  .data-table td:nth-child(6)  { width:7%;  }
+.data-table th:nth-child(7),  .data-table td:nth-child(7)  { width:12%; }
 .data-table th:nth-child(8),  .data-table td:nth-child(8)  { width:9%;  }
-.data-table th:nth-child(9),  .data-table td:nth-child(9)  { width:7%;  }
+.data-table th:nth-child(9),  .data-table td:nth-child(9)  { width:8%;  }
 .data-table th:nth-child(10), .data-table td:nth-child(10) { width:7%;  }
+.data-table th:nth-child(11), .data-table td:nth-child(11) { width:7%;  }
 
 .tbl-footer{ display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:18px; }
 .tbl-count{ font-size:0.78rem; color:var(--txt-mute); }
@@ -372,11 +375,15 @@ function colLetterToIndex(letters) {
 const YEAR_COL_INDEX = colLetterToIndex('B'); // คอลัมน์ปี ใช้เป็นเงื่อนไข filter
 
 // ✅ คอลัมน์ที่ต้องแสดง — ตรงกับ sheet gid=48822130
-//    Year(B) Customer(C) QuotationNo(H) JobName(M) Sale(N) Support(O) Status2(R) PO(Month)(T) Requirement(U) AmountTHB(Y) CostTHB(AA)
+//    Year(B) Customer(C) QuotationNo(H) JobName(M) Sale(N) Support(O) Status2(R) PO(Month)(T) Requirement(W) AmountTHB(AA) CostTHB(AC)
+//    type=13 เพิ่ม Order No จากคอลัมน์ V
 const STATUS2_COL = 'R'; // ✅ ใช้กรองข้อมูลเท่านั้น (เทียบ 2 หลักแรก) ไม่เอามาโชว์เป็นคอลัมน์ในตาราง
+const USE_PO_MONTH = (TYPE_PARAM === '13');       // ✅ type=13 → เทียบเดือนจาก col T แทน col I + แสดง Order No (col V)
 const DISPLAY_COLUMNS = [
   { label: 'Customer',       col: 'C' },
   { label: 'Quotation No.',  col: 'H', sub: 'I' }, // sub = Quotation DATE (col I) แสดงต่อท้ายในช่องเดียวกัน ขึ้นบรรทัดใหม่
+  // ✅ type=13 เท่านั้น: แทรก Order No (col V) หลัง Quotation No.
+  ...(USE_PO_MONTH ? [{ label: 'Order No', col: 'V' }] : []),
   { label: 'Job Name',       col: 'M' },
   { label: 'Sale',           col: 'N' },
   { label: 'Support',        col: 'O' },
@@ -390,7 +397,6 @@ const colIndexMap = DISPLAY_COLUMNS.map(c => colLetterToIndex(c.col));
 const subIndexMap = DISPLAY_COLUMNS.map(c => c.sub ? colLetterToIndex(c.sub) : -1);
 const TYPE_COL_INDEX = colLetterToIndex(STATUS2_COL); // ยังใช้กรองด้วยคอลัมน์นี้เหมือนเดิม
 const PO_MONTH_COL_INDEX = colLetterToIndex('T'); // ✅ PO(Month) — ใช้แทน col I เป็นเงื่อนไขเดือนเมื่อ type=13
-const USE_PO_MONTH = (TYPE_PARAM === '13');       // ✅ type=13 → เทียบเดือนจาก col T แทน col I
 const QUOTATION_DATE_COL_INDEX = colLetterToIndex('I'); // ✅ ใช้ Quotation DATE (col I) คำนวณเดือนสำหรับ filter mth ให้ตรงกับกราฟใน index.html (Last Update col S ใช้แสดงผลเท่านั้น)
 
 let tableHeaders  = DISPLAY_COLUMNS.map(c => c.label); // header label คงที่ตามลำดับที่กำหนด
