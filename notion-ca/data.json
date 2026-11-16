@@ -15,7 +15,7 @@
     "title": "Christmas ",
     "date": "2026-12-25",
     "end": null,
-    "note": "แลกของขวัญ @ All หาก ได้ยอดใหญ่ จะย้ายไป outing ",
+    "note": "แลกของขวัญ @ All หาก ได้ยอด 100M จะย้ายไป outing ริมเล",
     "employees": [
       "Title",
       "Nok",
@@ -36,7 +36,7 @@
       "Moo"
     ],
     "employeesText": "Title, Nok, Ice, KO, AA, Game, Sky, Tip, pub, Daw, Nack, LOVE, Benz, EAK, Muk, TK, Moo",
-    "last_edited": "2026-10-28T14:29:00.000Z",
+    "last_edited": "2026-11-16T05:05:00.000Z",
     "url": "https://app.notion.com/p/Christmas-3ce770a5c90b80b59018f2daeeb71d98"
   },
   {
@@ -115,17 +115,17 @@
   },
   {
     "id": "415770a5-c90b-80e0-9da0-e7ac508c7b97",
-    "title": "Electrolux โหลดตู้+ ลงของ+ Install",
+    "title": "Electrolux ",
     "date": "2026-11-22",
     "end": "2026-11-27",
-    "note": "——-",
+    "note": "โหลดตู้+ ลงของ+ Install",
     "employees": [
       "LOVE",
       "EAK"
     ],
     "employeesText": "LOVE, EAK",
-    "last_edited": "2026-11-11T03:06:00.000Z",
-    "url": "https://app.notion.com/p/Electrolux-Install-415770a5c90b80e09da0e7ac508c7b97"
+    "last_edited": "2026-11-16T04:05:00.000Z",
+    "url": "https://app.notion.com/p/Electrolux-415770a5c90b80e09da0e7ac508c7b97"
   },
   {
     "id": "415770a5-c90b-8025-beb7-cf1a80e41e62",
@@ -171,17 +171,6 @@
     "employeesText": "THEP, Sky, Game, AA",
     "last_edited": "2026-11-13T10:52:00.000Z",
     "url": "https://app.notion.com/p/World-food-416770a5c90b8056a517e729ea79326d"
-  },
-  {
-    "id": "417770a5-c90b-803a-bd3d-c7e0191905b4",
-    "title": "ไม่มีชื่อ",
-    "date": "2026-11-19",
-    "end": null,
-    "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-11-13T12:36:00.000Z",
-    "url": "https://app.notion.com/p/417770a5c90b803abd3dc7e0191905b4"
   },
   {
     "id": "417770a5-c90b-801d-954f-f91217140b7e",
@@ -259,11 +248,12 @@
     "note": "13:00 น.  เข้าสรุปเรื่องพื้นที่ +กำลังไฟ *พี่เทพแม่ทัพ*",
     "employees": [
       "Daw",
-      "LOVE",
-      "EAK"
+      "EAK",
+      "Moo",
+      "Game"
     ],
-    "employeesText": "Daw, LOVE, EAK",
-    "last_edited": "2026-11-11T07:47:00.000Z",
+    "employeesText": "Daw, EAK, Moo, Game",
+    "last_edited": "2026-11-15T13:20:00.000Z",
     "url": "https://app.notion.com/p/Seng-Houd-415770a5c90b80bc80a1d4ff1143bbc7"
   },
   {
@@ -277,11 +267,12 @@
       "pub",
       "EAK",
       "Moo",
+      "Nok",
       "DAW",
       "PUP"
     ],
-    "employeesText": "Daw, pub, EAK, Moo, DAW, PUP",
-    "last_edited": "2026-11-13T10:28:00.000Z",
+    "employeesText": "Daw, pub, EAK, Moo, Nok, DAW, PUP",
+    "last_edited": "2026-11-15T15:06:00.000Z",
     "url": "https://app.notion.com/p/CPF-silo-Installation-415770a5c90b808d8ee4d90d03e87cda"
   },
   {
@@ -314,17 +305,44 @@
     "url": "https://app.notion.com/p/415770a5c90b806d8b59d53b40636c5a"
   },
   {
+    "id": "41a770a5-c90b-80ef-b640-e70d202cc38c",
+    "title": "CPF ฉะเชิงเทรา",
+    "date": "2026-11-16",
+    "end": "2026-11-17",
+    "note": "Silo install",
+    "employees": [
+      "pub",
+      "EAK"
+    ],
+    "employeesText": "pub, EAK",
+    "last_edited": "2026-11-16T04:56:00.000Z",
+    "url": "https://app.notion.com/p/CPF-41a770a5c90b80efb640e70d202cc38c"
+  },
+  {
+    "id": "41a770a5-c90b-8023-b181-c888ec5f0d3b",
+    "title": "Glico เข้าประชุม การล้างเครื่อง",
+    "date": "2026-11-16",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Moo"
+    ],
+    "employeesText": "Moo",
+    "last_edited": "2026-11-16T00:52:00.000Z",
+    "url": "https://app.notion.com/p/Glico-41a770a5c90b8023b181c888ec5f0d3b"
+  },
+  {
     "id": "419770a5-c90b-80ff-8952-cb8bd309e049",
     "title": "Electrolux",
     "date": "2026-11-16",
     "end": "2026-11-18",
-    "note": "Install ระยอง",
+    "note": "ระยอง Unload ตู้ และทำการขนย้าย stanby สำรวจหาร้านทำสีในพื้นที่ ",
     "employees": [
       "Title",
       "LOVE"
     ],
     "employeesText": "Title, LOVE",
-    "last_edited": "2026-11-15T02:29:00.000Z",
+    "last_edited": "2026-11-16T05:03:00.000Z",
     "url": "https://app.notion.com/p/Electrolux-419770a5c90b80ff8952cb8bd309e049"
   },
   {
@@ -363,7 +381,7 @@
       "EAK"
     ],
     "employeesText": "EAK",
-    "last_edited": "2026-11-15T03:43:00.000Z",
+    "last_edited": "2026-11-16T05:58:00.000Z",
     "url": "https://app.notion.com/p/417770a5c90b80afbb96d3e69edf252e"
   },
   {
@@ -387,11 +405,10 @@
     "note": "พบคุณตั้ม ฝ่ายวิศวะ เพชรบุรี 13.30",
     "employees": [
       "Daw",
-      "Nok",
-      "Title"
+      "Nok"
     ],
-    "employeesText": "Daw, Nok, Title",
-    "last_edited": "2026-11-11T09:21:00.000Z",
+    "employeesText": "Daw, Nok",
+    "last_edited": "2026-11-16T04:05:00.000Z",
     "url": "https://app.notion.com/p/414770a5c90b80e993b0cd7a98860171"
   },
   {
@@ -505,7 +522,7 @@
       "Nok"
     ],
     "employeesText": "AA, Game, Benz, Nok",
-    "last_edited": "2026-11-11T09:20:00.000Z",
+    "last_edited": "2026-11-16T05:29:00.000Z",
     "url": "https://app.notion.com/p/CP-Meji-40e770a5c90b8051a209f3449f37caca"
   },
   {
