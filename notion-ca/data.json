@@ -187,17 +187,6 @@
     "url": "https://app.notion.com/p/Office-417770a5c90b801d954ff91217140b7e"
   },
   {
-    "id": "416770a5-c90b-8063-9c56-e0e0f9d00b08",
-    "title": "URC (1)",
-    "date": null,
-    "end": null,
-    "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-11-12T14:04:00.000Z",
-    "url": "https://app.notion.com/p/URC-1-416770a5c90b80639c56e0e0f9d00b08"
-  },
-  {
     "id": "416770a5-c90b-80df-81e5-c2a0596acbfb",
     "title": "URC ",
     "date": "2026-11-19",
@@ -253,7 +242,7 @@
       "Game"
     ],
     "employeesText": "Daw, EAK, Moo, Game",
-    "last_edited": "2026-11-15T13:20:00.000Z",
+    "last_edited": "2026-11-16T13:10:00.000Z",
     "url": "https://app.notion.com/p/Seng-Houd-415770a5c90b80bc80a1d4ff1143bbc7"
   },
   {
@@ -274,6 +263,19 @@
     "employeesText": "Daw, pub, EAK, Moo, Nok, DAW, PUP",
     "last_edited": "2026-11-15T15:06:00.000Z",
     "url": "https://app.notion.com/p/CPF-silo-Installation-415770a5c90b808d8ee4d90d03e87cda"
+  },
+  {
+    "id": "41a770a5-c90b-8065-a867-f683a9eff330",
+    "title": "WFH",
+    "date": "2026-11-17",
+    "end": null,
+    "note": "",
+    "employees": [
+      "KO"
+    ],
+    "employeesText": "KO",
+    "last_edited": "2026-11-16T16:07:00.000Z",
+    "url": "https://app.notion.com/p/WFH-41a770a5c90b8065a867f683a9eff330"
   },
   {
     "id": "417770a5-c90b-801e-ba45-f2d30855ae86",
@@ -323,12 +325,12 @@
     "title": "Glico เข้าประชุม การล้างเครื่อง",
     "date": "2026-11-16",
     "end": null,
-    "note": "",
+    "note": "เอาอะไหล่ กับมาปิดรู",
     "employees": [
       "Moo"
     ],
     "employeesText": "Moo",
-    "last_edited": "2026-11-16T00:52:00.000Z",
+    "last_edited": "2026-11-16T10:53:00.000Z",
     "url": "https://app.notion.com/p/Glico-41a770a5c90b8023b181c888ec5f0d3b"
   },
   {
@@ -373,7 +375,7 @@
   },
   {
     "id": "417770a5-c90b-80af-bb96-d3e69edf252e",
-    "title": "บ.บุญประเสริฐ",
+    "title": "บ.บุญประเสริฐ // กลับไปซ่อมใหม่",
     "date": "2026-11-16",
     "end": null,
     "note": "เปลี่ยนบอร์ด address",
@@ -381,7 +383,7 @@
       "EAK"
     ],
     "employeesText": "EAK",
-    "last_edited": "2026-11-16T05:58:00.000Z",
+    "last_edited": "2026-11-16T10:56:00.000Z",
     "url": "https://app.notion.com/p/417770a5c90b80afbb96d3e69edf252e"
   },
   {
@@ -399,31 +401,32 @@
   },
   {
     "id": "414770a5-c90b-80e9-93b0-cd7a98860171",
-    "title": "ไทยลักซ์ เอ็นเตอร์ไพร์ ",
+    "title": "ไทยลักซ์ เอ็นเตอร์ไพร์  Tsukasa Introduction",
     "date": "2026-11-16",
     "end": null,
     "note": "พบคุณตั้ม ฝ่ายวิศวะ เพชรบุรี 13.30",
     "employees": [
       "Daw",
-      "Nok"
+      "Nok",
+      "EAK"
     ],
-    "employeesText": "Daw, Nok",
-    "last_edited": "2026-11-16T04:05:00.000Z",
-    "url": "https://app.notion.com/p/414770a5c90b80e993b0cd7a98860171"
+    "employeesText": "Daw, Nok, EAK",
+    "last_edited": "2026-11-16T10:57:00.000Z",
+    "url": "https://app.notion.com/p/Tsukasa-Introduction-414770a5c90b80e993b0cd7a98860171"
   },
   {
     "id": "413770a5-c90b-807a-8349-c7335dcc573e",
-    "title": "Carabao ",
+    "title": "Carabao >> สรุป จ่าย Installation แต่ ต้องถามลูกพี่ร่มก่อน",
     "date": "2026-11-16",
     "end": null,
-    "note": "Meeting",
+    "note": "Meeting — ทำ trend มาสรุป ค่า commision น้ำตาล ",
     "employees": [
       "Nok",
       "Moo"
     ],
     "employeesText": "Nok, Moo",
-    "last_edited": "2026-11-11T09:21:00.000Z",
-    "url": "https://app.notion.com/p/Carabao-413770a5c90b807a8349c7335dcc573e"
+    "last_edited": "2026-11-16T10:55:00.000Z",
+    "url": "https://app.notion.com/p/Carabao-Installation-413770a5c90b807a8349c7335dcc573e"
   },
   {
     "id": "40e770a5-c90b-80bc-ab10-fc3c0e361b2f",
@@ -1005,7 +1008,7 @@
       "EAK"
     ],
     "employeesText": "Daw, LOVE, EAK",
-    "last_edited": "2026-11-05T06:37:00.000Z",
+    "last_edited": "2026-11-16T13:07:00.000Z",
     "url": "https://app.notion.com/p/Seng-Huad-40c770a5c90b80a19716e201e5517a3c"
   },
   {
@@ -2122,7 +2125,7 @@
       "LOVE"
     ],
     "employeesText": "AA, THEP, Daw, Title, LOVE",
-    "last_edited": "2026-11-09T10:28:00.000Z",
+    "last_edited": "2026-11-16T13:09:00.000Z",
     "url": "https://app.notion.com/p/SengHuad-3f7770a5c90b80bc905ddfa027ef6155"
   },
   {
