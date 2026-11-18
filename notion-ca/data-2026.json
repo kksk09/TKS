@@ -101,6 +101,19 @@
     "url": "https://app.notion.com/p/Online-Boss-419770a5c90b803abd87ef4d9a0e4000"
   },
   {
+    "id": "41c770a5-c90b-8034-aa7f-e4230b77d499",
+    "title": "Thai Torey",
+    "date": "2026-11-26",
+    "end": null,
+    "note": "Meeting with Yoko-san at 01.30 P.M.",
+    "employees": [
+      "Tip"
+    ],
+    "employeesText": "Tip",
+    "last_edited": "2026-11-18T05:57:00.000Z",
+    "url": "https://app.notion.com/p/Thai-Torey-41c770a5c90b8034aa7fe4230b77d499"
+  },
+  {
     "id": "3d5770a5-c90b-80e3-a0f3-d3a20770636f",
     "title": "ลาพักร้อน",
     "date": "2026-11-25",
@@ -112,6 +125,33 @@
     "employeesText": "Daw",
     "last_edited": "2026-11-01T14:10:00.000Z",
     "url": "https://app.notion.com/p/3d5770a5c90b80e3a0f3d3a20770636f"
+  },
+  {
+    "id": "41c770a5-c90b-807c-b222-f5395252d6c0",
+    "title": "Business Trip in Chiang Mai",
+    "date": "2026-11-24",
+    "end": "2026-11-25",
+    "note": "24-25 Nov 2026",
+    "employees": [
+      "Tip"
+    ],
+    "employeesText": "Tip",
+    "last_edited": "2026-11-18T03:57:00.000Z",
+    "url": "https://app.notion.com/p/Business-Trip-in-Chiang-Mai-41c770a5c90b807cb222f5395252d6c0"
+  },
+  {
+    "id": "41c770a5-c90b-8091-837d-c7711bf23773",
+    "title": "Hillkoff",
+    "date": "2026-11-24",
+    "end": null,
+    "note": "Meeting at 01.30 P.M.",
+    "employees": [
+      "AA",
+      "THEP"
+    ],
+    "employeesText": "AA, THEP",
+    "last_edited": "2026-11-18T03:45:00.000Z",
+    "url": "https://app.notion.com/p/Hillkoff-41c770a5c90b8091837dc7711bf23773"
   },
   {
     "id": "415770a5-c90b-80e0-9da0-e7ac508c7b97",
@@ -143,6 +183,34 @@
     "url": "https://app.notion.com/p/Glico-cooling-415770a5c90b8025beb7cf1a80e41e62"
   },
   {
+    "id": "41c770a5-c90b-80ee-8b72-d170d2b7afc2",
+    "title": "Meeting with GP ( online ) in Morning",
+    "date": "2026-11-20",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Sky",
+      "THEP",
+      "Nok"
+    ],
+    "employeesText": "Sky, THEP, Nok",
+    "last_edited": "2026-11-18T04:47:00.000Z",
+    "url": "https://app.notion.com/p/Meeting-with-GP-online-in-Morning-41c770a5c90b80ee8b72d170d2b7afc2"
+  },
+  {
+    "id": "41c770a5-c90b-808b-af2b-cb6a44f17770",
+    "title": "European Snack",
+    "date": "2026-11-20",
+    "end": null,
+    "note": "Meeting at 10.00 A.M.",
+    "employees": [
+      "Tip"
+    ],
+    "employeesText": "Tip",
+    "last_edited": "2026-11-18T03:54:00.000Z",
+    "url": "https://app.notion.com/p/European-Snack-41c770a5c90b808baf2bcb6a44f17770"
+  },
+  {
     "id": "417770a5-c90b-80e5-8d00-d72d584475c7",
     "title": "Office",
     "date": "2026-11-20",
@@ -171,6 +239,19 @@
     "employeesText": "THEP, Sky, Game, AA",
     "last_edited": "2026-11-13T10:52:00.000Z",
     "url": "https://app.notion.com/p/World-food-416770a5c90b8056a517e729ea79326d"
+  },
+  {
+    "id": "41c770a5-c90b-8034-8aa6-dcbcd976da00",
+    "title": "Rubia ",
+    "date": "2026-11-19",
+    "end": null,
+    "note": "Meeting in the morning",
+    "employees": [
+      "Tip"
+    ],
+    "employeesText": "Tip",
+    "last_edited": "2026-11-18T03:52:00.000Z",
+    "url": "https://app.notion.com/p/Rubia-41c770a5c90b80348aa6dcbcd976da00"
   },
   {
     "id": "417770a5-c90b-801d-954f-f91217140b7e",
@@ -307,6 +388,19 @@
     "url": "https://app.notion.com/p/415770a5c90b806d8b59d53b40636c5a"
   },
   {
+    "id": "3bf770a5-c90b-80cb-8729-dfc2cbe0364d",
+    "title": "ลาพักร้อน",
+    "date": "2026-11-17",
+    "end": "2026-11-18",
+    "note": "",
+    "employees": [
+      "Ice"
+    ],
+    "employeesText": "Ice",
+    "last_edited": "2026-11-18T02:56:00.000Z",
+    "url": "https://app.notion.com/p/3bf770a5c90b80cb8729dfc2cbe0364d"
+  },
+  {
     "id": "41a770a5-c90b-80ef-b640-e70d202cc38c",
     "title": "CPF ฉะเชิงเทรา",
     "date": "2026-11-16",
@@ -351,13 +445,13 @@
     "id": "417770a5-c90b-8064-9653-fec08c3c0799",
     "title": "Business Trip Türkiye",
     "date": "2026-11-16",
-    "end": "2026-11-20",
+    "end": "2026-11-23",
     "note": "with P’Sravin",
     "employees": [
       "AA"
     ],
     "employeesText": "AA",
-    "last_edited": "2026-11-13T11:10:00.000Z",
+    "last_edited": "2026-11-18T06:30:00.000Z",
     "url": "https://app.notion.com/p/Business-Trip-T-rkiye-417770a5c90b80649653fec08c3c0799"
   },
   {
@@ -440,19 +534,6 @@
     "employeesText": "Benz",
     "last_edited": "2026-11-10T17:21:00.000Z",
     "url": "https://app.notion.com/p/40e770a5c90b80bcab10fc3c0e361b2f"
-  },
-  {
-    "id": "3bf770a5-c90b-80cb-8729-dfc2cbe0364d",
-    "title": "ลาพักร้อน",
-    "date": "2026-11-16",
-    "end": "2026-11-17",
-    "note": "",
-    "employees": [
-      "Ice"
-    ],
-    "employeesText": "Ice",
-    "last_edited": "2026-11-13T10:29:00.000Z",
-    "url": "https://app.notion.com/p/3bf770a5c90b80cb8729dfc2cbe0364d"
   },
   {
     "id": "415770a5-c90b-80bb-9030-d78c5e842266",
