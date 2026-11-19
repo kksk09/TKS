@@ -101,6 +101,19 @@
     "url": "https://app.notion.com/p/Online-Boss-419770a5c90b803abd87ef4d9a0e4000"
   },
   {
+    "id": "41d770a5-c90b-8017-9541-ccac5a30f42b",
+    "title": "BOI (Head Office)",
+    "date": "2026-11-26",
+    "end": null,
+    "note": "มีนัดหมายชี้แจงโครงการ 11.00 น.",
+    "employees": [
+      "Tip"
+    ],
+    "employeesText": "Tip",
+    "last_edited": "2026-11-19T04:08:00.000Z",
+    "url": "https://app.notion.com/p/BOI-Head-Office-41d770a5c90b80179541ccac5a30f42b"
+  },
+  {
     "id": "41c770a5-c90b-8034-aa7f-e4230b77d499",
     "title": "Thai Torey",
     "date": "2026-11-26",
@@ -112,6 +125,22 @@
     "employeesText": "Tip",
     "last_edited": "2026-11-18T05:57:00.000Z",
     "url": "https://app.notion.com/p/Thai-Torey-41c770a5c90b8034aa7fe4230b77d499"
+  },
+  {
+    "id": "41d770a5-c90b-801c-ad46-cb8562f16160",
+    "title": "Business Trip อิสาน",
+    "date": "2026-11-25",
+    "end": "2026-11-27",
+    "note": "",
+    "employees": [
+      "THEP",
+      "Ice",
+      "Benz",
+      "Nack"
+    ],
+    "employeesText": "THEP, Ice, Benz, Nack",
+    "last_edited": "2026-11-19T06:18:00.000Z",
+    "url": "https://app.notion.com/p/Business-Trip-41d770a5c90b801cad46cb8562f16160"
   },
   {
     "id": "3d5770a5-c90b-80e3-a0f3-d3a20770636f",
@@ -152,6 +181,22 @@
     "employeesText": "AA, THEP",
     "last_edited": "2026-11-18T03:45:00.000Z",
     "url": "https://app.notion.com/p/Hillkoff-41c770a5c90b8091837dc7711bf23773"
+  },
+  {
+    "id": "41d770a5-c90b-8064-a2d0-e4ff53410e94",
+    "title": "Paben ",
+    "date": "2026-11-23",
+    "end": "2026-11-24",
+    "note": "",
+    "employees": [
+      "Benz",
+      "Tip",
+      "Ice",
+      "THEP"
+    ],
+    "employeesText": "Benz, Tip, Ice, THEP",
+    "last_edited": "2026-11-19T04:11:00.000Z",
+    "url": "https://app.notion.com/p/Paben-41d770a5c90b8064a2d0e4ff53410e94"
   },
   {
     "id": "415770a5-c90b-80e0-9da0-e7ac508c7b97",
@@ -241,6 +286,19 @@
     "url": "https://app.notion.com/p/World-food-416770a5c90b8056a517e729ea79326d"
   },
   {
+    "id": "41c770a5-c90b-8051-a211-e728834f3eae",
+    "title": "SPR ",
+    "date": "2026-11-19",
+    "end": null,
+    "note": "Check Load Cell",
+    "employees": [
+      "EAK"
+    ],
+    "employeesText": "EAK",
+    "last_edited": "2026-11-18T09:40:00.000Z",
+    "url": "https://app.notion.com/p/SPR-41c770a5c90b8051a211e728834f3eae"
+  },
+  {
     "id": "41c770a5-c90b-8034-8aa6-dcbcd976da00",
     "title": "Rubia ",
     "date": "2026-11-19",
@@ -297,6 +355,17 @@
     "url": "https://app.notion.com/p/401770a5c90b8046bab7d45c69de9e82"
   },
   {
+    "id": "41c770a5-c90b-80a2-ac8f-fe136700af8c",
+    "title": "Daily Report 18112026_ Benz",
+    "date": "2026-11-18",
+    "end": null,
+    "note": "",
+    "employees": [],
+    "employeesText": "",
+    "last_edited": "2026-11-18T10:24:00.000Z",
+    "url": "https://app.notion.com/p/Daily-Report-18112026_-Benz-41c770a5c90b80a2ac8ffe136700af8c"
+  },
+  {
     "id": "417770a5-c90b-8083-a0b5-f243869b46c3",
     "title": "Office",
     "date": "2026-11-18",
@@ -323,7 +392,7 @@
       "Game"
     ],
     "employeesText": "Daw, EAK, Moo, Game",
-    "last_edited": "2026-11-16T13:10:00.000Z",
+    "last_edited": "2026-11-18T13:16:00.000Z",
     "url": "https://app.notion.com/p/Seng-Houd-415770a5c90b80bc80a1d4ff1143bbc7"
   },
   {
