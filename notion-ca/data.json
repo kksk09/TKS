@@ -162,10 +162,12 @@
     "end": null,
     "note": "Meeting with Yoko-san at 01.30 P.M.",
     "employees": [
-      "Tip"
+      "Tip",
+      "Nok",
+      "Sky"
     ],
-    "employeesText": "Tip",
-    "last_edited": "2026-11-18T05:57:00.000Z",
+    "employeesText": "Tip, Nok, Sky",
+    "last_edited": "2026-11-20T09:14:00.000Z",
     "url": "https://app.notion.com/p/Thai-Torey-41c770a5c90b8034aa7fe4230b77d499"
   },
   {
@@ -187,13 +189,41 @@
     "title": "ลาพักร้อน",
     "date": "2026-11-25",
     "end": "2026-11-27",
-    "note": "ดาวลา รับปริญญา🌟",
+    "note": "",
     "employees": [
       "Daw"
     ],
     "employeesText": "Daw",
-    "last_edited": "2026-11-01T14:10:00.000Z",
+    "last_edited": "2026-11-20T15:26:00.000Z",
     "url": "https://app.notion.com/p/3d5770a5c90b80e3a0f3d3a20770636f"
+  },
+  {
+    "id": "41e770a5-c90b-8094-9e70-ce9881a9ea7a",
+    "title": "ลาพักร้อน",
+    "date": "2026-11-24",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Daw"
+    ],
+    "employeesText": "Daw",
+    "last_edited": "2026-11-20T15:26:00.000Z",
+    "url": "https://app.notion.com/p/41e770a5c90b80949e70ce9881a9ea7a"
+  },
+  {
+    "id": "41e770a5-c90b-8015-98cf-c973965577f2",
+    "title": "Meeting CP Meiji online",
+    "date": "2026-11-24",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Sky",
+      "Benz",
+      "Nok"
+    ],
+    "employeesText": "Sky, Benz, Nok",
+    "last_edited": "2026-11-20T10:36:00.000Z",
+    "url": "https://app.notion.com/p/Meeting-CP-Meiji-online-41e770a5c90b801598cfc973965577f2"
   },
   {
     "id": "41e770a5-c90b-809f-bbf3-de253a031a56",
@@ -208,6 +238,20 @@
     "employeesText": "Muk, Nack",
     "last_edited": "2026-11-20T07:24:00.000Z",
     "url": "https://app.notion.com/p/Office-41e770a5c90b809fbbf3de253a031a56"
+  },
+  {
+    "id": "41e770a5-c90b-80af-98cd-d3c76db0c19b",
+    "title": "Nutrix",
+    "date": "2026-11-23",
+    "end": null,
+    "note": "10:00น. ตกลงราคากับคุณอ้น เอา po กลับบริษัท",
+    "employees": [
+      "Daw",
+      "Game"
+    ],
+    "employeesText": "Daw, Game",
+    "last_edited": "2026-11-20T15:26:00.000Z",
+    "url": "https://app.notion.com/p/Nutrix-41e770a5c90b80af98cdd3c76db0c19b"
   },
   {
     "id": "41e770a5-c90b-80c2-9b16-e81954791d18",
@@ -228,7 +272,7 @@
     "title": "Business Trip in Chiang Mai",
     "date": "2026-11-23",
     "end": "2026-11-25",
-    "note": "Paben ,Hillkoff",
+    "note": "Hillkoff",
     "employees": [
       "Benz",
       "Tip",
@@ -237,7 +281,7 @@
       "AA"
     ],
     "employeesText": "Benz, Tip, Ice, THEP, AA",
-    "last_edited": "2026-11-19T11:23:00.000Z",
+    "last_edited": "2026-11-20T10:49:00.000Z",
     "url": "https://app.notion.com/p/Business-Trip-in-Chiang-Mai-41d770a5c90b8064a2d0e4ff53410e94"
   },
   {
@@ -248,10 +292,10 @@
     "note": "ดูหน้างานติดตั้ง",
     "employees": [
       "Daw",
-      "Nok"
+      "Moo"
     ],
-    "employeesText": "Daw, Nok",
-    "last_edited": "2026-11-19T14:45:00.000Z",
+    "employeesText": "Daw, Moo",
+    "last_edited": "2026-11-20T13:10:00.000Z",
     "url": "https://app.notion.com/p/CPF-41d770a5c90b80cb940ed2c065001705"
   },
   {
@@ -282,6 +326,19 @@
     "employeesText": "LOVE, EAK",
     "last_edited": "2026-11-20T01:28:00.000Z",
     "url": "https://app.notion.com/p/Electrolux-415770a5c90b80e09da0e7ac508c7b97"
+  },
+  {
+    "id": "41e770a5-c90b-80eb-a52e-fda0b42fdec7",
+    "title": "Daily Report 20112026_ Benz",
+    "date": "2026-11-20",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Benz"
+    ],
+    "employeesText": "Benz",
+    "last_edited": "2026-11-20T09:56:00.000Z",
+    "url": "https://app.notion.com/p/Daily-Report-20112026_-Benz-41e770a5c90b80eba52efda0b42fdec7"
   },
   {
     "id": "41c770a5-c90b-80ee-8b72-d170d2b7afc2",
@@ -351,7 +408,7 @@
       "Benz"
     ],
     "employeesText": "Benz",
-    "last_edited": "2026-11-19T10:20:00.000Z",
+    "last_edited": "2026-11-20T09:53:00.000Z",
     "url": "https://app.notion.com/p/Daily-Report-19112026_-Benz-41d770a5c90b803da861cccb0f92e081"
   },
   {
