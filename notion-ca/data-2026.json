@@ -276,12 +276,11 @@
     "employees": [
       "Benz",
       "Tip",
-      "Ice",
-      "THEP",
-      "AA"
+      "AA",
+      "Nok"
     ],
-    "employeesText": "Benz, Tip, Ice, THEP, AA",
-    "last_edited": "2026-11-20T10:49:00.000Z",
+    "employeesText": "Benz, Tip, AA, Nok",
+    "last_edited": "2026-11-23T08:17:00.000Z",
     "url": "https://app.notion.com/p/Business-Trip-in-Chiang-Mai-41d770a5c90b8064a2d0e4ff53410e94"
   },
   {
@@ -292,10 +291,10 @@
     "note": "ดูหน้างานติดตั้ง",
     "employees": [
       "Daw",
-      "Moo"
+      "Nok"
     ],
-    "employeesText": "Daw, Moo",
-    "last_edited": "2026-11-20T13:10:00.000Z",
+    "employeesText": "Daw, Nok",
+    "last_edited": "2026-11-22T13:43:00.000Z",
     "url": "https://app.notion.com/p/CPF-41d770a5c90b80cb940ed2c065001705"
   },
   {
