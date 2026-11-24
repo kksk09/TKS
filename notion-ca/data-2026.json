@@ -101,6 +101,21 @@
     "url": "https://app.notion.com/p/Online-Boss-419770a5c90b803abd87ef4d9a0e4000"
   },
   {
+    "id": "415770a5-c90b-8025-beb7-cf1a80e41e62",
+    "title": "Glico ล้างcooling",
+    "date": "2026-11-29",
+    "end": null,
+    "note": "——- มีแค่ มาร์กสายไฟ",
+    "employees": [
+      "Moo",
+      "EAK",
+      "MOO"
+    ],
+    "employeesText": "Moo, EAK, MOO",
+    "last_edited": "2026-11-23T12:52:00.000Z",
+    "url": "https://app.notion.com/p/Glico-cooling-415770a5c90b8025beb7cf1a80e41e62"
+  },
+  {
     "id": "41e770a5-c90b-80a7-8310-d29f35f3cfed",
     "title": "Office",
     "date": "2026-11-27",
@@ -198,6 +213,20 @@
     "url": "https://app.notion.com/p/3d5770a5c90b80e3a0f3d3a20770636f"
   },
   {
+    "id": "421770a5-c90b-80ce-8ee5-f22ae62858d1",
+    "title": "แหลมทองสหการ บางปลากด",
+    "date": "2026-11-24",
+    "end": null,
+    "note": "ดูหน้างาน",
+    "employees": [
+      "Game",
+      "Title"
+    ],
+    "employeesText": "Game, Title",
+    "last_edited": "2026-11-23T12:26:00.000Z",
+    "url": "https://app.notion.com/p/421770a5c90b80ce8ee5f22ae62858d1"
+  },
+  {
     "id": "41e770a5-c90b-8094-9e70-ce9881a9ea7a",
     "title": "ลาพักร้อน",
     "date": "2026-11-24",
@@ -277,10 +306,11 @@
       "Benz",
       "Tip",
       "AA",
-      "Nok"
+      "Nok",
+      "Ice"
     ],
-    "employeesText": "Benz, Tip, AA, Nok",
-    "last_edited": "2026-11-23T08:17:00.000Z",
+    "employeesText": "Benz, Tip, AA, Nok, Ice",
+    "last_edited": "2026-11-23T12:26:00.000Z",
     "url": "https://app.notion.com/p/Business-Trip-in-Chiang-Mai-41d770a5c90b8064a2d0e4ff53410e94"
   },
   {
@@ -298,33 +328,34 @@
     "url": "https://app.notion.com/p/CPF-41d770a5c90b80cb940ed2c065001705"
   },
   {
-    "id": "415770a5-c90b-8025-beb7-cf1a80e41e62",
-    "title": "Glico ล้างcooling",
+    "id": "415770a5-c90b-80e0-9da0-e7ac508c7b97",
+    "title": "Electrolux ประกอบ platform   unload container เอารถเข้าหน้างาน",
     "date": "2026-11-22",
     "end": null,
-    "note": "——- มีแค่ มาร์กสายไฟ",
-    "employees": [
-      "Moo",
-      "EAK",
-      "MOO"
-    ],
-    "employeesText": "Moo, EAK, MOO",
-    "last_edited": "2026-11-11T03:06:00.000Z",
-    "url": "https://app.notion.com/p/Glico-cooling-415770a5c90b8025beb7cf1a80e41e62"
-  },
-  {
-    "id": "415770a5-c90b-80e0-9da0-e7ac508c7b97",
-    "title": "Electrolux ",
-    "date": "2026-11-21",
-    "end": "2026-11-27",
     "note": "โหลดตู้+ ลงของ+ Install",
     "employees": [
       "LOVE",
-      "EAK"
+      "EAK",
+      "Title"
     ],
-    "employeesText": "LOVE, EAK",
-    "last_edited": "2026-11-20T01:28:00.000Z",
-    "url": "https://app.notion.com/p/Electrolux-415770a5c90b80e09da0e7ac508c7b97"
+    "employeesText": "LOVE, EAK, Title",
+    "last_edited": "2026-11-23T12:55:00.000Z",
+    "url": "https://app.notion.com/p/Electrolux-platform-unload-container-415770a5c90b80e09da0e7ac508c7b97"
+  },
+  {
+    "id": "421770a5-c90b-80a5-8d91-f28cfc12c1e4",
+    "title": "Electrolux ประกอบ platform แบบไม่แบบ เสียเวลา เลิฟสั่งยำ (1)",
+    "date": "2026-11-21",
+    "end": null,
+    "note": "โหลดตู้+ ลงของ+ Install",
+    "employees": [
+      "LOVE",
+      "EAK",
+      "Title"
+    ],
+    "employeesText": "LOVE, EAK, Title",
+    "last_edited": "2026-11-23T12:52:00.000Z",
+    "url": "https://app.notion.com/p/Electrolux-platform-1-421770a5c90b80a58d91f28cfc12c1e4"
   },
   {
     "id": "41e770a5-c90b-80eb-a52e-fda0b42fdec7",
@@ -480,6 +511,20 @@
     "employeesText": "Ice",
     "last_edited": "2026-10-22T04:51:00.000Z",
     "url": "https://app.notion.com/p/401770a5c90b8046bab7d45c69de9e82"
+  },
+  {
+    "id": "421770a5-c90b-80d7-b12a-f94ab63f9116",
+    "title": "Electrolux  Unload ของ เสร็จ",
+    "date": "2026-11-18",
+    "end": null,
+    "note": "",
+    "employees": [
+      "LOVE",
+      "Title"
+    ],
+    "employeesText": "LOVE, Title",
+    "last_edited": "2026-11-23T12:48:00.000Z",
+    "url": "https://app.notion.com/p/Electrolux-Unload-421770a5c90b80d7b12af94ab63f9116"
   },
   {
     "id": "41c770a5-c90b-80a2-ac8f-fe136700af8c",
