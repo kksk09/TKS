@@ -88,6 +88,21 @@
     "url": "https://app.notion.com/p/Mama-3f7770a5c90b800794f1cf8d966d51e2"
   },
   {
+    "id": "424770a5-c90b-801a-aebd-f44a835fa0cc",
+    "title": "SPR ",
+    "date": "2026-11-30",
+    "end": null,
+    "note": "วัดหน้างาน Cooling + คัดขนม 10:00 น.",
+    "employees": [
+      "Ice",
+      "Title",
+      "EAK"
+    ],
+    "employeesText": "Ice, Title, EAK",
+    "last_edited": "2026-11-26T08:40:00.000Z",
+    "url": "https://app.notion.com/p/SPR-424770a5c90b801aaebdf44a835fa0cc"
+  },
+  {
     "id": "419770a5-c90b-803a-bd87-ef4d9a0e4000",
     "title": "ลากิจ  แต่รับงาน Online ภรรยาเกิด วันเวลา ตามBoss อาจเปลี่ยนแปลง",
     "date": "2026-11-30",
@@ -141,32 +156,16 @@
   },
   {
     "id": "41e770a5-c90b-8054-9ece-fe6225874a24",
-    "title": "Office",
+    "title": "BOI and Office  ",
     "date": "2026-11-26",
     "end": null,
-    "note": "",
+    "note": "BOI at 11.00 A.M. and Office in the afternoon",
     "employees": [
       "Muk"
     ],
     "employeesText": "Muk",
-    "last_edited": "2026-11-20T07:24:00.000Z",
-    "url": "https://app.notion.com/p/Office-41e770a5c90b80549ecefe6225874a24"
-  },
-  {
-    "id": "41d770a5-c90b-801c-ad46-cb8562f16160",
-    "title": "Business Trip อิสาน",
-    "date": "2026-11-26",
-    "end": "2026-11-27",
-    "note": "",
-    "employees": [
-      "THEP",
-      "Ice",
-      "Benz",
-      "Nack"
-    ],
-    "employeesText": "THEP, Ice, Benz, Nack",
-    "last_edited": "2026-11-19T11:24:00.000Z",
-    "url": "https://app.notion.com/p/Business-Trip-41d770a5c90b801cad46cb8562f16160"
+    "last_edited": "2026-11-26T02:31:00.000Z",
+    "url": "https://app.notion.com/p/BOI-and-Office-41e770a5c90b80549ecefe6225874a24"
   },
   {
     "id": "41d770a5-c90b-8017-9541-ccac5a30f42b",
@@ -188,13 +187,27 @@
     "end": null,
     "note": "Meeting with Yoko-san at 01.30 P.M.",
     "employees": [
-      "Tip",
       "Nok",
-      "Sky"
+      "Sky",
+      "AA"
     ],
-    "employeesText": "Tip, Nok, Sky",
-    "last_edited": "2026-11-20T09:14:00.000Z",
+    "employeesText": "Nok, Sky, AA",
+    "last_edited": "2026-11-26T03:34:00.000Z",
     "url": "https://app.notion.com/p/Thai-Torey-41c770a5c90b8034aa7fe4230b77d499"
+  },
+  {
+    "id": "423770a5-c90b-803f-92b3-d5ac36cd1df0",
+    "title": "SPR Food",
+    "date": "2026-11-25",
+    "end": null,
+    "note": "ลื้อ Plate Form ออกไป Modify",
+    "employees": [
+      "EAK",
+      "LOVE"
+    ],
+    "employeesText": "EAK, LOVE",
+    "last_edited": "2026-11-25T23:53:00.000Z",
+    "url": "https://app.notion.com/p/SPR-Food-423770a5c90b803f92b3d5ac36cd1df0"
   },
   {
     "id": "41e770a5-c90b-80ee-a765-f05f8095cfb2",
@@ -209,19 +222,6 @@
     "employeesText": "Muk, Nack",
     "last_edited": "2026-11-20T07:24:00.000Z",
     "url": "https://app.notion.com/p/Office-41e770a5c90b80eea765f05f8095cfb2"
-  },
-  {
-    "id": "3d5770a5-c90b-80e3-a0f3-d3a20770636f",
-    "title": "ลาพักร้อน",
-    "date": "2026-11-25",
-    "end": "2026-11-27",
-    "note": "",
-    "employees": [
-      "Daw"
-    ],
-    "employeesText": "Daw",
-    "last_edited": "2026-11-20T15:26:00.000Z",
-    "url": "https://app.notion.com/p/3d5770a5c90b80e3a0f3d3a20770636f"
   },
   {
     "id": "421770a5-c90b-80ce-8ee5-f22ae62858d1",
@@ -241,13 +241,13 @@
     "id": "41e770a5-c90b-8094-9e70-ce9881a9ea7a",
     "title": "ลาพักร้อน",
     "date": "2026-11-24",
-    "end": null,
+    "end": "2026-11-26",
     "note": "",
     "employees": [
       "Daw"
     ],
     "employeesText": "Daw",
-    "last_edited": "2026-11-20T15:26:00.000Z",
+    "last_edited": "2026-11-26T03:14:00.000Z",
     "url": "https://app.notion.com/p/41e770a5c90b80949e70ce9881a9ea7a"
   },
   {
@@ -278,6 +278,34 @@
     "employeesText": "Muk, Nack",
     "last_edited": "2026-11-20T07:24:00.000Z",
     "url": "https://app.notion.com/p/Office-41e770a5c90b809fbbf3de253a031a56"
+  },
+  {
+    "id": "424770a5-c90b-8050-bc80-ea1c622319d3",
+    "title": "WFH",
+    "date": "2026-11-23",
+    "end": "2026-11-27",
+    "note": "",
+    "employees": [
+      "Game"
+    ],
+    "employeesText": "Game",
+    "last_edited": "2026-11-26T03:16:00.000Z",
+    "url": "https://app.notion.com/p/WFH-424770a5c90b8050bc80ea1c622319d3"
+  },
+  {
+    "id": "423770a5-c90b-801a-9f9b-c9d098538330",
+    "title": "Electrolux ติดตั้ง",
+    "date": "2026-11-23",
+    "end": "2026-11-28",
+    "note": "",
+    "employees": [
+      "LOVE",
+      "EAK",
+      "Title"
+    ],
+    "employeesText": "LOVE, EAK, Title",
+    "last_edited": "2026-11-25T23:57:00.000Z",
+    "url": "https://app.notion.com/p/Electrolux-423770a5c90b801a9f9bc9d098538330"
   },
   {
     "id": "41e770a5-c90b-80af-98cd-d3c76db0c19b",
