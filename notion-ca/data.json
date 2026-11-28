@@ -199,6 +199,19 @@
     "url": "https://app.notion.com/p/JDE-Coffee-11-00-424770a5c90b8039a11ec4110eec8dd1"
   },
   {
+    "id": "425770a5-c90b-80c2-9554-c1e2af0d44c9",
+    "title": "Eletrolux ติดตั้ง",
+    "date": "2026-11-30",
+    "end": "2026-12-05",
+    "note": "",
+    "employees": [
+      "EAK"
+    ],
+    "employeesText": "EAK",
+    "last_edited": "2026-11-28T00:01:00.000Z",
+    "url": "https://app.notion.com/p/Eletrolux-425770a5c90b80c29554c1e2af0d44c9"
+  },
+  {
     "id": "425770a5-c90b-8031-94d9-e4b6d88acdb6",
     "title": "Office",
     "date": "2026-11-30",
@@ -257,17 +270,17 @@
   },
   {
     "id": "424770a5-c90b-8043-b90e-eb4c268821ca",
-    "title": "CPF ฉะเชิงเทรา Installation",
+    "title": "CPF ฉะเชิงเทรา ",
     "date": "2026-11-29",
     "end": null,
-    "note": "",
+    "note": "Installation",
     "employees": [
       "Nok",
       "Daw"
     ],
     "employeesText": "Nok, Daw",
-    "last_edited": "2026-11-26T12:54:00.000Z",
-    "url": "https://app.notion.com/p/CPF-Installation-424770a5c90b8043b90eeb4c268821ca"
+    "last_edited": "2026-11-27T15:10:00.000Z",
+    "url": "https://app.notion.com/p/CPF-424770a5c90b8043b90eeb4c268821ca"
   },
   {
     "id": "415770a5-c90b-8025-beb7-cf1a80e41e62",
@@ -285,15 +298,60 @@
     "url": "https://app.notion.com/p/Glico-cooling-415770a5c90b8025beb7cf1a80e41e62"
   },
   {
-    "id": "423770a5-c90b-8007-8665-d960f3bc1397",
-    "title": "Glico เจอ ShinMaywa 13:30",
+    "id": "425770a5-c90b-80aa-82c1-f99e2f6835c0",
+    "title": "CPF ฉะเชิงเทรา ",
+    "date": "2026-11-28",
+    "end": null,
+    "note": "Installation",
+    "employees": [
+      "Nok",
+      "Daw",
+      "Moo"
+    ],
+    "employeesText": "Nok, Daw, Moo",
+    "last_edited": "2026-11-27T16:03:00.000Z",
+    "url": "https://app.notion.com/p/CPF-425770a5c90b80aa82c1f99e2f6835c0"
+  },
+  {
+    "id": "425770a5-c90b-800d-a997-d1f86ad785f8",
+    "title": "MAMA ระยอง ส่ง chopper ขัดตาทัพ แล้วเหลือ วัดกระแส",
     "date": "2026-11-27",
     "end": null,
     "note": "",
-    "employees": [],
-    "employeesText": "",
-    "last_edited": "2026-11-25T06:19:00.000Z",
-    "url": "https://app.notion.com/p/Glico-ShinMaywa-13-30-423770a5c90b80078665d960f3bc1397"
+    "employees": [
+      "Title",
+      "LOVE",
+      "EAK"
+    ],
+    "employeesText": "Title, LOVE, EAK",
+    "last_edited": "2026-11-27T14:16:00.000Z",
+    "url": "https://app.notion.com/p/MAMA-chopper-425770a5c90b800da997d1f86ad785f8"
+  },
+  {
+    "id": "425770a5-c90b-8089-8f60-cb7bc54c95d8",
+    "title": "Daily Report 27112026_ Benz",
+    "date": "2026-11-27",
+    "end": null,
+    "note": "",
+    "employees": [
+      "Benz"
+    ],
+    "employeesText": "Benz",
+    "last_edited": "2026-11-27T10:40:00.000Z",
+    "url": "https://app.notion.com/p/Daily-Report-27112026_-Benz-425770a5c90b80898f60cb7bc54c95d8"
+  },
+  {
+    "id": "423770a5-c90b-8007-8665-d960f3bc1397",
+    "title": "Glico เจอ ShinMaywa 13:30-14:30",
+    "date": "2026-11-27",
+    "end": null,
+    "note": "หารือ เรื่องต่อท่อ โบลเว้อร 12m + ล้าง ราคารวม 600,000บาท",
+    "employees": [
+      "Moo"
+    ],
+    "employeesText": "Moo",
+    "last_edited": "2026-11-27T14:15:00.000Z",
+    "url": "https://app.notion.com/p/Glico-ShinMaywa-13-30-14-30-423770a5c90b80078665d960f3bc1397"
   },
   {
     "id": "41e770a5-c90b-80a7-8310-d29f35f3cfed",
@@ -404,7 +462,7 @@
       "Benz"
     ],
     "employeesText": "Tip, AA, Ice, Nok, Benz",
-    "last_edited": "2026-11-27T04:54:00.000Z",
+    "last_edited": "2026-11-27T10:45:00.000Z",
     "url": "https://app.notion.com/p/HILLKOFF-COMPANY-LIMITED-425770a5c90b8023aac7e7b3e978befd"
   },
   {
